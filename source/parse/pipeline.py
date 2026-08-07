@@ -53,24 +53,47 @@ def _op_para(d: dict):
             or _leading_para(d.get("new_text")))
 
 
+_BLOCK = re.compile(r"(?m)(?=^\s*§\s*\d+(?:-\d+)?[a-z]?\.)")
+
+
+def _split_block(new_text: str):
+    """A '§ X skal lyde' / 'Kapittel N skal lyde' new_text can carry SEVERAL
+    provisions ('§ 1-1.…\\n§ 1-2.…'). Split on line-start '§ N.' headings into
+    [(para, piece_with_heading)] so each provision is set from its own slice, not all
+    dumped onto the first. Body cross-references ('… jf. § 2-2') are mid-line and
+    never split. Returns [] if there is no leading heading."""
+    pieces = []
+    for part in _BLOCK.split(new_text):
+        m = _PARA.match(part.lstrip())
+        if m:
+            pieces.append(("§" + m.group(1), part.strip()))
+    return pieces
+
+
 def load_ops(target_law: str):
     """Ordered ops for a law WITH change_type + clean para (richer than
     amendments.load_for). change_type ∈ {change, add, repeal, renumber, move,
-    unknown}; renumber/move/unknown are left for replay to flag, not fabricate."""
+    unknown}; renumber/move/unknown are left for replay to flag, not fabricate.
+    Multi-provision new_text blocks are expanded to one op per provision."""
     ops = []
     with gzip.open(amendments.DATA, "rt", encoding="utf-8") as fh:
         for line in fh:
             d = json.loads(line)
             if d.get("target_law") != target_law:
                 continue
-            ops.append({
-                "para": _op_para(d),
+            base = {
                 "change_type": d.get("change_type"),
                 "instruction": d.get("instruction"),
-                "new_text": d.get("new_text"),
                 "date": d.get("date_in_force_resolved") or d.get("date_in_force"),
                 "act": d.get("act_refid"),
-            })
+            }
+            new = d.get("new_text")
+            pieces = _split_block(new) if new and new.lstrip().startswith("§") else []
+            if pieces:                        # whole-provision block: one op per §
+                for para, piece in pieces:
+                    ops.append({**base, "para": para, "new_text": piece})
+            else:                             # sub-provision / repeal / structural
+                ops.append({**base, "para": _op_para(d), "new_text": new})
     ops.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
     return ops
 
