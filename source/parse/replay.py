@@ -15,39 +15,78 @@ ASSUMES: base is {paragraf_id: text}; ops come from amendments.load_for (ordered
 """
 from __future__ import annotations
 
+import re
+
 from source.parse import ledd
+
+_HEADING = re.compile(r"^\s*§\s*\d+(?:-\d+)?[a-z]?\.?\s*")
+
+
+def _strip_heading(new_text: str) -> str:
+    """Whole-provision new_text starts '§ N. …'; drop the heading so it matches the
+    gate's provision bodies (which exclude headings). Collapse whitespace."""
+    return " ".join(_HEADING.sub("", new_text).split())
 
 
 def replay(base: dict, ops: list, as_of: str | None = None):
     """Apply ops (up to as_of) to base. Returns (provisions, flags).
 
-    flags: [{para, kind, date, instruction}] — ops we could not apply (need the
-    ledd engine or are malformed); their provisions are left unreconstructed for
-    that change, never filled with invented text.
+    Ops carry `change_type` (from load_ops) or the legacy `kind` (amendments.load_for).
+    flags: ops we could not apply (renumber/move/unknown/sub-provision the ledd engine
+    can't do) — their provisions are left as-is, never filled with invented text.
     """
     doc = dict(base)
     flags = []
     for op in ops:
-        if as_of and op["date"] and op["date"] > as_of:
+        if as_of and op.get("date") and op["date"] > as_of:
             continue
-        para, kind, new = op["para"], op["kind"], op.get("new_text")
-        if kind == "replace" and new:
-            doc[para] = new
-        elif kind == "add" and new:
-            doc[para] = new
-        elif kind == "repeal":
-            doc.pop(para, None)
-        elif kind == "subprovision":
-            result = ledd.apply(doc.get(para, ""), op.get("instruction"), new)
-            if result is not None:
-                doc[para] = result
-            else:  # ledd engine can't handle this case yet -> FLAG, don't fabricate
-                flags.append({"para": para, "kind": kind, "date": op.get("date"),
-                              "instruction": op.get("instruction")})
-        else:  # other / malformed -> FLAG, do not fabricate
-            flags.append({"para": para, "kind": kind, "date": op.get("date"),
-                          "instruction": op.get("instruction")})
+        if "change_type" in op:
+            _apply_change_type(doc, op, flags)
+        else:
+            _apply_kind(doc, op, flags)   # legacy path (run_convergence)
     return doc, flags
+
+
+def _flag(flags, op, why):
+    flags.append({"para": op.get("para"), "why": why, "date": op.get("date"),
+                  "instruction": op.get("instruction")})
+
+
+def _apply_change_type(doc, op, flags):
+    para = op.get("para")
+    ct = op.get("change_type")
+    new = op.get("new_text")
+    instr = op.get("instruction") or ""
+    if ct == "repeal" and para:
+        doc.pop(para, None)
+        return
+    if ct in ("add", "change") and para and new:
+        if "overskrift" in instr:          # heading-only change: provision body unchanged
+            return
+        if new.lstrip().startswith("§"):   # whole-provision replacement
+            doc[para] = _strip_heading(new)
+            return
+        result = ledd.apply(doc.get(para, ""), instr, new)   # sub-provision -> ledd engine
+        if result is not None:
+            doc[para] = result
+            return
+    _flag(flags, op, ct)                    # renumber / move / unknown / unhandled
+
+
+def _apply_kind(doc, op, flags):
+    para, kind, new = op.get("para"), op.get("kind"), op.get("new_text")
+    if kind in ("replace", "add") and new:
+        doc[para] = new
+    elif kind == "repeal":
+        doc.pop(para, None)
+    elif kind == "subprovision":
+        result = ledd.apply(doc.get(para, ""), op.get("instruction"), new)
+        if result is not None:
+            doc[para] = result
+        else:
+            _flag(flags, op, kind)
+    else:
+        _flag(flags, op, kind)
 
 
 def reconstructable(ops):
