@@ -1,0 +1,6 @@
+build/
+__pycache__/
+*.pyc
+*~
+# Lovdata Pro ground-truth is eval-only and NEVER redistributed (repo may go public)
+data/ground_truth/*/
