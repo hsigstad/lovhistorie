@@ -15,6 +15,8 @@ ASSUMES: base is {paragraf_id: text}; ops come from amendments.load_for (ordered
 """
 from __future__ import annotations
 
+from source.parse import ledd
+
 
 def replay(base: dict, ops: list, as_of: str | None = None):
     """Apply ops (up to as_of) to base. Returns (provisions, flags).
@@ -35,7 +37,14 @@ def replay(base: dict, ops: list, as_of: str | None = None):
             doc[para] = new
         elif kind == "repeal":
             doc.pop(para, None)
-        else:  # subprovision / other / malformed -> FLAG, do not fabricate
+        elif kind == "subprovision":
+            result = ledd.apply(doc.get(para, ""), op.get("instruction"), new)
+            if result is not None:
+                doc[para] = result
+            else:  # ledd engine can't handle this case yet -> FLAG, don't fabricate
+                flags.append({"para": para, "kind": kind, "date": op.get("date"),
+                              "instruction": op.get("instruction")})
+        else:  # other / malformed -> FLAG, do not fabricate
             flags.append({"para": para, "kind": kind, "date": op.get("date"),
                           "instruction": op.get("instruction")})
     return doc, flags
