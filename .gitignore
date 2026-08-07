@@ -6,3 +6,4 @@ __pycache__/
 data/ground_truth/*/
 data/amendments.jsonl.gz
 data/current/
+data/lti/
