@@ -4,9 +4,14 @@ Reconstruct the **point-in-time text of Norwegian statutes** (*gjeldende rett* o
 time) — "the law as it read at date *t*" — from public-domain sources, as an
 **owned, publishable** corpus.
 
-**Current focus:** **Phase 0** — build the evaluation framework and assemble the
-held-out Lovdata-Pro ground-truth set. Autonomous work starts once the eval harness
-runs and ground truth exists.
+**Current focus:** **Blocked on 2 decisions — see `BLOCKER.md`.** Phase 0 eval
+framework is DONE: the completion gate (`python -m source.eval.gate`, one exit code =
+anti-gaming guards + corpus convergence) works, and the method is validated on clean
+post-2001 data (tjenesteloven 27/33). But the 9-law dev set is 61% pre-2001 laws with
+no clean base, so the 0.97 gate is unreachable (ceiling ~0.39) until Henrik decides
+(1) a clean pre-2001 source (Lovdata CD discs recommended) and (2) splitting the gate
+into post-2001-clean vs pre-2001 tracks (`gate.py`). Convergence this session:
+0.043 → 0.094.
 
 - Success criteria + metrics: `docs/evaluation.md`
 - The autonomous goal + the machine-checkable condition: `docs/goal.md`.

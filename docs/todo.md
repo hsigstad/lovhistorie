@@ -1,5 +1,20 @@
 # Todo
 
+## Henrik — 2 decisions blocking the autonomous loop (see `BLOCKER.md`)
+
+- [ ] **Clean pre-2001 source** — recommended: acquire the structured Lovdata CD discs
+  (email NB AI Lab; `docs/notes/lovdata_cd_2005.md`). Alt: NB OCR + OCR-calibrated τ.
+- [ ] **Split the convergence gate** (`source/eval/gate.py`, loop-forbidden) into a
+  post-2001-clean track (achievable target now) and a pre-2001 track. Approving this
+  lets Claude edit `gate.py` outside the loop and re-run `/goal` on an achievable bar.
+
+## Next engine work (once unblocked; loop can do these)
+
+- [ ] Re-derive block ops from LTI XMLs to remove the 4000-char `new_text` truncation
+  (119 vphl provisions lost).
+- [ ] Extend the ledd engine (unnumbered ledd, punktum/bokstav/nr.) — the flagged 55%.
+- [ ] Build post-2001 enactment bases for more dev laws (`build_post2001`).
+
 ## Henrik — manual (ground truth for the eval)
 
 - [ ] **Download Lovdata Pro historical versions** for the ground-truth eval set.
