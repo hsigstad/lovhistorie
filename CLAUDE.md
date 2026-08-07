@@ -9,7 +9,10 @@ held-out Lovdata-Pro ground-truth set. Autonomous work starts once the eval harn
 runs and ground truth exists.
 
 - Success criteria + metrics: `docs/evaluation.md`
-- The autonomous goal (for the `goal` skill): `docs/goal.md`
+- The autonomous goal + the machine-checkable condition: `docs/goal.md`.
+  The `/goal` condition compiles to one exit code: `python -m source.eval.gate`
+  (exit 0 ⟺ anti-gaming guards pass **and** convergence ≥ threshold). The
+  reconstruction entrypoint the loop improves is `source/parse/pipeline.py`.
 - Phased plan: `docs/roadmap.md`
 - Ground-truth download task (Henrik, manual): `docs/ground_truth.md`
 - Full technical background (from the vague feasibility work): `docs/notes/statutory_law_versioning.md`

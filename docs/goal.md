@@ -53,10 +53,47 @@ held-out metric**, not convergence alone.
 - Not Lovdata Pro as a data source (validation oracle only; its files never enter
   the published corpus).
 
+## The machine-checkable condition (`/goal`)
+
+The whole goal is compiled into one exit code:
+
+```
+python -m source.eval.gate     # exit 0 ⟺ done
+```
+
+`source/eval/gate.py` returns **0 only if** all three anti-gaming guards pass **and**
+corpus convergence ≥ `THRESHOLD`:
+
+- **G1 no-answer-key-import** — the reconstruction path (`source/parse/pipeline.py`
+  and everything it imports) must not import the harness (`source.eval`) or hardcode
+  the current dump. AST-enforced. This is hard rule 2 in code.
+- **G2 runs-isolated** — with the answer-key dir physically removed, the current
+  loader returns nothing yet `reconstruct()` still produces provisions → it provably
+  doesn't consume the answer key.
+- **G3 base-integrity** — an *amended* provision whose enactment base is identical to
+  the current text means the base was seeded from the answer → fail (hard rule 1/2).
+- **convergence** — `matched / ALL current provisions` (denominator is every
+  provision, so "reconstruct fewer, easier provisions" can't inflate the score).
+
+Exit codes: `0` PASS · `1` guards clean but convergence below threshold (keep
+working) · `3` a guard tripped (a hard stop — something is gaming the metric, fix the
+approach, don't chase the number). All three guards are verified to fire when cheated.
+
+**This gate uses convergence, which is a strong-but-not-final signal (see below).**
+The un-gameable *deliverable* bar is still the point-in-time held-out metric. So the
+`/goal` condition for an autonomous run is:
+
+> `python -m source.eval.gate` exits 0, **or** `BLOCKER.md` exists at the repo root
+> describing a specific obstacle needing human input.
+
+The `BLOCKER.md` disjunction is the honest stop: if the real ceiling sits below the
+threshold, the run writes the blocker instead of grinding or fabricating.
+
 ## For the `goal` skill
 
-Optimize the pipeline against the harness (`source/eval/`) under the hard rules
-above. The eval harness is the reward; the held-out set is the guard against
-gaming. Prerequisites (roadmap Phase 0): the eval harness runs and the held-out
-Lovdata-Pro set exists. Until then, iterate on **convergence with inputs
-restricted** — but do not report success without the point-in-time metric.
+Optimize the pipeline (`source/parse/pipeline.py`, chiefly `enactment_base` and the
+`ledd` engine) against the gate under the hard rules above. The gate is the reward
+and the guard in one. Prerequisites (roadmap Phase 0): the eval harness runs (done —
+the gate) and the held-out Lovdata-Pro set exists (for the final point-in-time
+metric). Iterate on **convergence with inputs restricted**; do not report the
+*deliverable* done without the point-in-time metric, even when the gate exits 0.
