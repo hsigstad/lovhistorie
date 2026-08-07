@@ -65,10 +65,27 @@ Proposed targets — finalize once the ground-truth set exists:
 - **Corpus dashboard**: convergence distribution, coverage, point-in-time accuracy
   on the eval set, fidelity curve by era.
 
-## Anti-gaming
+## Anti-gaming (the hard rules — see [goal.md](goal.md))
 
-- The eval set is **held out** and never used to tune the pipeline.
-- Normalization is **fixed and documented** — "similarity" can't be inflated by
-  quietly loosening it.
-- Report the **raw distribution**, not just the mean (a good mean can hide a bad
-  tail — the tail is where wrong law text lives).
+The optimizer will exploit anything unspecified. These close the shortcut doors:
+
+- **Target is historical, not current.** The success metric is point-in-time
+  (check 2) against **held-out** past-date versions. "Reproduce current" is
+  gameable by `return current text` — so convergence (check 1) is a **dev proxy
+  only**, never the success bar.
+- **Input restriction (the reconstruct contract).** The pipeline function
+  `reconstruct(datokode, as_of) -> {para: text}` receives **only** the enacting act
+  (gazette) + the Lovtidend amendments. The current text and the historical
+  versions are held by the **harness alone** as answer keys — never passed to the
+  pipeline, and no network lookup of law text at eval time. This defeats
+  "return the answer" even for convergence.
+- **Deterministic, no LLM, flag-don't-fabricate.** Reconstruction is pure
+  rules/regex (reproducible/auditable); no LLM in the path (it could fabricate
+  passing text); an op/provision the pipeline cannot handle is **flagged**, never
+  filled with guessed text.
+- **Held out means held out** — never tune or select on the eval set (laws *or*
+  dates). Develop on a separate dev set.
+- **Fixed normalization** — documented in `source/eval/metrics.py`; "similarity"
+  can't be inflated by quietly loosening it.
+- **Report the raw distribution**, not just the mean — a good mean can hide a bad
+  tail, and the tail is where wrong law text lives.
