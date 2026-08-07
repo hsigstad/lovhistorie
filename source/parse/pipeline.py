@@ -15,22 +15,31 @@ ASSUMES: amendments.load_for gives ordered ops; replay applies them; enactment_b
 """
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 from source.parse import amendments, replay
+
+_ENACTMENT = Path(__file__).resolve().parents[2] / "data" / "enactment"
 
 
 def enactment_base(target_law: str) -> dict:
     """{paragraf_id: text} of the law AS ORIGINALLY ENACTED, from the gazette.
 
-    HARD RULE: this must be built from Norsk Lovtidend (the enactment issue) — the
-    public-domain source — NEVER from the current consolidated text. Reading the
-    current text here is the cheat the gate exists to catch; do not do it.
+    Reads the cached, public-domain enactment built OFFLINE by
+    source.scrape.build_enactment (data/enactment/<datokode>.json). No network, no
+    OCR, no current text at runtime — deterministic (hard rule 3).
 
-    TODO (main lever): parse the enactment issue via source.scrape.nb_lovtidend into
-    per-provision text. Until then this returns {} and provisions that were never
-    amended cannot be reconstructed (they score 0 against the current text) — which
-    is the honest state, and exactly what convergence should expose.
+    HARD RULE: the cache must come from Norsk Lovtidend, NEVER from the current
+    consolidated text (the gate's base-integrity guard enforces this). Laws not yet
+    built return {} — their never-amended provisions can't be reconstructed and
+    score 0 against the current text, which is the honest state convergence exposes.
     """
-    return {}
+    dk = target_law.split("/")[-1]
+    f = _ENACTMENT / f"{dk}.json"
+    if not f.exists():
+        return {}
+    return json.loads(f.read_text(encoding="utf-8")).get("provisions", {})
 
 
 def reconstruct(target_law: str, as_of: str | None = None):

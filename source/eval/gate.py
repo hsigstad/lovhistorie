@@ -42,8 +42,15 @@ TAU = 0.98                # per-provision similarity counted as a match
 # must not tune on the point-in-time test set. Expand with laws that have BOTH a row in
 # amendments.jsonl.gz and a current nl-<datokode>.xml.
 DEV_LAWS = [
-    ("lov/1986-06-20-35", "1986-06-20-35"),   # mesterbrevloven
-    ("lov/1997-06-13-44", "1997-06-13-44"),   # aksjeloven
+    ("lov/1918-05-31-4", "1918-05-31-4"),      # avtaleloven
+    ("lov/1959-10-23-3", "1959-10-23-3"),      # oreigningslova
+    ("lov/1979-05-18-18", "1979-05-18-18"),    # foreldelsesloven
+    ("lov/1982-12-17-86", "1982-12-17-86"),    # rettsgebyrloven
+    ("lov/1986-06-20-35", "1986-06-20-35"),    # mesterbrevloven (enactment base built)
+    ("lov/1988-05-13-27", "1988-05-13-27"),    # kjøpsloven
+    ("lov/1997-06-13-44", "1997-06-13-44"),    # aksjeloven
+    ("lov/2007-06-29-75", "2007-06-29-75"),    # verdipapirhandelloven
+    ("lov/2009-06-19-103", "2009-06-19-103"),  # tjenesteloven
 ]
 
 # The reconstruction path — the modules the input-isolation guard scans. If a new
