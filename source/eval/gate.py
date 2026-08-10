@@ -37,6 +37,11 @@ DEFAULT_CURRENT = str(ROOT / "data" / "current")
 # --- the target ------------------------------------------------------------------
 THRESHOLD = 0.97          # corpus convergence required to pass (fraction of provisions)
 TAU = 0.98                # per-provision similarity counted as a match
+# G3 (base-integrity) uses a SEPARATE, tighter threshold than TAU: real contamination
+# (a base copied out of the answer key) normalizes to ~1.0, whereas an honestly barely-
+# amended provision can sit just above TAU (e.g. vphl §5-10, one changed amount → 0.9974).
+# ≥0.999 catches copies without punishing legitimate near-identity. (Henrik, 2026-08-10.)
+G3_TAU = 0.999
 
 # Dev-set laws: (target_law, datokode). NEVER put held-out/test laws here — the loop
 # must not tune on the point-in-time test set. Expand with laws that have BOTH a row in
@@ -70,21 +75,24 @@ def _fname(datokode: str) -> str:
 
 
 def current_provisions(datokode: str):
-    """{para: text} of the current text — ANSWER KEY, harness-only. None if absent."""
+    """{para: text} of the current text — ANSWER KEY, harness-only. None if absent.
+
+    Parsed STRUCTURALLY, via the same data-name-keyed parser as the enactment base
+    (build_enactment.parse_lovdata_xml), so base and answer are split IDENTICALLY. The
+    old regex reader split on every in-body "§ N", inventing phantom provisions from
+    cross-references (tjenesteloven: 33 vs 29 real) and truncating provisions mid-
+    sentence — which understated convergence for every law. Symmetry is the point: a
+    never-amended provision's base then equals its answer. (Henrik, 2026-08-10.)
+
+    Note: this reads the answer key at CALL time (so G2 can hide it by removing the
+    dir → f.exists() False → None) and only PARSES it; nothing here leaks into the
+    reconstruction path (build_enactment is not a RECON_MODULE and is never imported
+    by pipeline/replay/ledd/amendments)."""
     f = _current_dir() / _fname(datokode)
     if not f.exists():
         return None
-    t = re.sub(r"<[^>]+>", " ", f.read_text(encoding="utf-8", errors="ignore"))
-    t = re.sub(r"\s+", " ", t)
-    titles = list(re.finditer(r"\[\w+loven\]|Lov om ", t))
-    body = t[titles[-1].start():] if titles else t
-    order, seen = [], set()
-    for m in re.finditer(r"§\s*(\d+(?:-\d+)?[a-z]?)", body):
-        p = "§" + m.group(1)
-        if p not in seen:
-            seen.add(p)
-            order.append(p)
-    return metrics.provisions_ordered(body, order)
+    from source.scrape.build_enactment import parse_lovdata_xml
+    return parse_lovdata_xml(f.read_text(encoding="utf-8", errors="ignore"))
 
 
 # --- G1: the reconstruction path must not be able to see the answer key ----------
@@ -146,7 +154,7 @@ def guard_base_integrity():
                    if op["kind"] in ("replace", "add", "subprovision") and op["para"]}
         for para in amended:
             if para in base and para in cur and \
-                    metrics.similarity(base[para], cur[para]) >= TAU:
+                    metrics.similarity(base[para], cur[para]) >= G3_TAU:
                 offenders.append(f"{law} {para}: enactment base == current text")
     return offenders
 

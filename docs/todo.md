@@ -9,11 +9,21 @@
 
 ## Next engine work (the real remaining lift)
 
-- [ ] **Build the endringslov *structuring* parser** — split the harvested gazette into
-  per-act enactment + amendment units keyed by ikraft date; feed `replay`. This is the
-  substantive project. `source/parse/endringslov.py` already parses a *single* amendment
-  block (validated on Lovtidend 1991 Nr. 3) — needs the upstream act-boundary /
-  running-header-dedup layer over the raw per-page harvest.
+- [x] **Structuring parser v1** — `source/parse/gazette.py` (TOC-anchored acts, target
+  resolution, disjoint body slicing, `--build` → `data/pre2001_amendments.jsonl.gz`).
+  Validated on the 1999-2000 cache. (see done.md)
+- [ ] **Wire `pre2001_amendments.jsonl.gz` into replay** — merge it with the LTI stream in
+  `source/parse/amendments.py` `load_for` (both are enactment+amendment source, not answer
+  key). Do this once the harvest is fuller AND the `ledd` engine lands, then re-run the
+  gate to measure the real convergence lift. (~46% of pre-2001 ops are subprovision →
+  currently deferred by `apply_amendments` until the ledd engine handles them.)
+- [ ] **Ledd engine** for the deferred subprovision ops (377/822 pre-2001 ops are
+  ledd/punktum/bokstav/nr.) — the single biggest applicability gap.
+- [ ] **Name→datokode map** for name-only citations (offentlighetsloven, straffeloven, …);
+  11/78 amend acts in the cache don't resolve a target and are dropped from `--build`.
+- [ ] Resolve true **ikrafttredelse dates** (bodies say "trer i kraft <date>"); `--build`
+  currently uses the act date as `date_in_force_resolved` (first approximation).
+- [ ] Run `gazette.py --build` over the FULL harvest once it completes.
 - [ ] Fix `source/scrape/build_enactment.py` regexes: `_HEAD` for `§N-M` chapter-section
   headings, and `_NEXT_LAW` for the two-column reflowed next-law boundary (blocks
   aksjeloven-style laws). Then build the 5 recoverable pre-2001 dev-law bases.

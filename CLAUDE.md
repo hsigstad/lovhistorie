@@ -4,14 +4,15 @@ Reconstruct the **point-in-time text of Norwegian statutes** (*gjeldende rett* o
 time) — "the law as it read at date *t*" — from public-domain sources, as an
 **owned, publishable** corpus.
 
-**Current focus:** **Blocked on 2 decisions — see `BLOCKER.md`.** Phase 0 eval
-framework is DONE: the completion gate (`python -m source.eval.gate`, one exit code =
-anti-gaming guards + corpus convergence) works, and the method is validated on clean
-post-2001 data (tjenesteloven 27/33). But the 9-law dev set is 61% pre-2001 laws with
-no clean base, so the 0.97 gate is unreachable (ceiling ~0.39) until Henrik decides
-(1) a clean pre-2001 source (Lovdata CD discs recommended) and (2) splitting the gate
-into post-2001-clean vs pre-2001 tracks (`gate.py`). Convergence this session:
-0.043 → 0.094.
+**Current focus:** **Harvesting the pre-2001 source corpus.** The old "0.39 ceiling /
+OCR too lossy" blocker was overturned 2026-08-10 (see `BLOCKER.md`): NB gazette OCR is
+clean; the real gap is that LTI (2001+) lacks BOTH pre-2001 enactment bases AND the
+pre-2001 amendment stream. Henrik approved (1) a metric fix (`metrics.py` autojunk=False)
+and (2) a full harvest of **Norsk Lovtidend Avd. I 1877–2000** from NB (public-domain,
+~1,033 items / ~144k pages) — running via `source/scrape/harvest_lovtidend.py` into
+`data/lovtidend_text/`. **Next real lift:** the endringslov *structuring* parser
+(split harvested gazette into per-act enactment+amendment units → replay). Phase-0 eval
+gate (`python -m source.eval.gate`) is DONE and remains the `/goal` condition.
 
 - Success criteria + metrics: `docs/evaluation.md`
 - The autonomous goal + the machine-checkable condition: `docs/goal.md`.

@@ -23,6 +23,7 @@ from pathlib import Path
 
 from source.scrape import nb_lovtidend as nb
 from source.eval import metrics  # provisions_ordered — cross-reference-safe splitter
+from source.parse import amendments  # amended-provision set for the G3-compliance filter
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "enactment"
@@ -47,10 +48,36 @@ LOCATIONS = {
         "page": 23,
         "title_needle": "Lov om mesterbrev",
     },
+    "1997-06-13-44": {  # aksjeloven (Lov 13. juni 1997 nr. 44 om aksjeselskaper)
+        # Norsk Lovtidend Avd. I 1997 Nr. 14 (catalog id bc9cc206ad25f019010553993bc27c83)
+        "urn": "URN:NBN:no-nb_digitidsskrift_2015111680005_003",
+        "page": 52,
+        "title_needle": "Lov om aksjeselskaper",
+        "span": 75,  # law runs ~p52-125 (ch.21 markers seen through p125)
+    },
 }
 
-_NEXT_LAW = re.compile(r"\n\d{1,2}\.\s+\w+\.\s+Lov nr\.\s*\d+")
-_HEAD = re.compile(r"(?m)^\s*§\s*(\d+[a-z]?)\.")
+# Month names (bokmål/nynorsk + gazette abbreviations) as they appear in gazette
+# act headings. Used to recognise a "<day.> <month> Lov nr. <n>" act heading.
+_MONTHS_RE = r"(?:jan|feb|mars?|apr|mai|juni?|juli?|aug|sept?|okt|nov|des)\w*"
+
+# The start of the NEXT act. The two-column OCR reflow scrambles the date line, so a
+# true act boundary reads either "<day>. <month> Lov nr. <n>" or, month-before-day,
+# "<month> Lov nr. <n>\n<day>", often with periods dropped. What un-ambiguously marks
+# a NEW act (versus the running page header "<day>. <month> Lov nr. <n>" that repeats on
+# every page of the CURRENT act) is that the act heading is immediately followed by the
+# new law's title line "Lov om …" / "Lov um …". Requiring that following title line is
+# what keeps this from matching the running header and truncating the law at page 2.
+_NEXT_LAW = re.compile(
+    r"(?m)^\s*(?:\d{1,2}\.?\s*)?" + _MONTHS_RE + r"\.?\s*Lov nr\.?\s*\d+\s*"
+    r"(?:\n\s*\d{1,2}\s*)?"          # optional stray day line from column reflow
+    r"\n\s*Lov\s+(?:om|um)\b",
+    re.I,
+)
+# Provision heading at line start: "§ N." or the chapter-section form "§ N-M." (with an
+# optional trailing letter, e.g. "§ 3-8a."). In-body "§ N" cross-references are mid-line
+# and so are not matched.
+_HEAD = re.compile(r"(?m)^\s*§\s*(\d+(?:-\d+)?[a-z]?)\.")
 
 
 def _law_text(urn: str, page: int, title_needle: str, span: int = 4) -> str:
@@ -84,28 +111,95 @@ def parse_provisions(law_text: str) -> dict:
     return out
 
 
+_XML_TAG = re.compile(r"<[^>]+>")
+_XML_WS = re.compile(r"[ \t\r\f\v]+")
+# A bokstav/nr list item: `<li data-li-identifier="a)" …>` / `data-li-identifier="1."`.
+# Its marker ("a)", "b)", "1.", "1)") lives in the attribute, NOT the text, so a plain
+# tag-strip drops it and concatenates the items marker-less. We inject the marker
+# (identifier + surrounding spaces) at each item's start so the flattened ledd carries
+# `… a) item-a b) item-b …`, which the ledd engine can then split and address. This is
+# symmetric: the gate parses the answer key with this SAME function, so both sides gain
+# the markers identically (score-neutral for never-amended provisions).
+_LI_MARK = re.compile(r'<li\b[^>]*\bdata-li-identifier="([^"]*)"[^>]*>')
+
+
+def _xml_text(fragment: str) -> str:
+    """Strip tags from an XML/HTML fragment -> plain text, whitespace collapsed
+    (but NEWLINES are NOT introduced here; the caller inserts ledd boundaries).
+    Bokstav/nr list markers (data-li-identifier) are injected as text first."""
+    s = _LI_MARK.sub(lambda m: " " + m.group(1) + " ", fragment)
+    s = _XML_TAG.sub(" ", s)
+    s = (s.replace("&#160;", " ").replace("&nbsp;", " ")
+           .replace("&amp;", "&").replace("&#38;", "&"))
+    return _XML_WS.sub(" ", s).strip()
+
+
 def parse_lovdata_xml(raw: str) -> dict:
-    """{'§X-Y': text} from a clean Lovdata LTI enactment XML — parsed IDENTICALLY to
-    the gate's current-text reader (strip tags, body after last title, ordered §
-    split), so a never-amended provision's enactment text equals its current text and
-    any parsing artifact cancels on both sides. No OCR: this is clean digital text."""
-    t = re.sub(r"<[^>]+>", " ", raw)
-    t = re.sub(r"\s+", " ", t)
-    titles = list(re.finditer(r"\[\w+loven\]|Lov om ", t))
-    body = t[titles[-1].start():] if titles else t
-    order, seen = [], set()
-    for m in re.finditer(r"§\s*(\d+(?:-\d+)?[a-z]?)", body):
-        p = "§" + m.group(1)
-        if p not in seen:
-            seen.add(p)
-            order.append(p)
-    provs = metrics.provisions_ordered(body, order)
-    return {p: " ".join(t.split()) for p, t in provs.items() if t.strip()}
+    """{'§X-Y': text} from a clean Lovdata LTI enactment XML, PRESERVING sub-provision
+    structure so the ledd engine can address ledd by position.
+
+    Each provision is a `<article class="legalArticle" data-name="§X" id="P">` block;
+    its top-level ledd are the DIRECT-child `<article class="legalP|numberedLegalP"
+    id="P-ledd-N" | "P-nummer-N">` elements (nested list-item ledd carry longer ids
+    with `-punkt-` and are excluded). We serialise a provision as
+        `<title-after-§N> \n ledd1 \n ledd2 …`
+    — one line per top-level ledd, the heading's title on line 0. Bokstav/nr list
+    items inside a ledd are flattened into that ledd's line (their markers live in
+    XML attributes, not text — exactly as the gate's current-text reader sees them),
+    so a never-amended provision's base text still matches the current text; the
+    similarity metric normalises whitespace away, so the newlines are score-neutral.
+
+    Keys come from `data-name` (the authoritative §-id), NOT from scanning the body
+    for `§ N`, so in-body cross-references never spawn phantom provisions."""
+    provs = {}
+    bounds = [(m.start(), m.group(0)) for m in re.finditer(
+        r'<article class="(?:future)?[lL]egalArticle"[^>]*>', raw)]
+    for i, (pos, tag) in enumerate(bounds):
+        if "futureLegalArticle" in tag:          # not-yet-in-force text: skip
+            continue
+        dn = re.search(r'data-name="([^"]+)"', tag)
+        idm = re.search(r'id="([^"]+)"', tag)
+        if not dn or not idm:                    # unnamed article -> can't key it
+            continue
+        key = "§" + dn.group(1).lstrip("§").replace(" ", "")
+        pid = idm.group(1)
+        end = bounds[i + 1][0] if i + 1 < len(bounds) else len(raw)
+        block = raw[pos:end]
+
+        # title: the article header, minus its own "§ N" value span
+        hm = re.search(r"<h[1-6][^>]*ArticleHeader\"[^>]*>(.*?)</h[1-6]>", block, re.S)
+        title = ""
+        if hm:
+            title = _xml_text(hm.group(1))
+            title = re.sub(r"^§\s*" + re.escape(key.lstrip("§")) + r"\b", "", title).strip()
+
+        # top-level ledd = direct-child legalP/numberedLegalP with id == pid-ledd/nummer-N
+        ledd_open = re.compile(
+            r'<article class="(?:legalP|numberedLegalP)"[^>]*id="'
+            + re.escape(pid) + r'-(?:ledd|nummer)-\d+"[^>]*>')
+        opens = [m.start() for m in ledd_open.finditer(block)]
+        if opens:
+            ledd = []
+            for j, s in enumerate(opens):
+                e = opens[j + 1] if j + 1 < len(opens) else len(block)
+                txt = _xml_text(block[s:e])
+                if txt:
+                    ledd.append(txt)
+            provs[key] = "\n".join([title] + ledd)
+        else:                                    # no structured ledd: whole body text
+            body = _xml_text(block)
+            body = re.sub(r"^§\s*" + re.escape(key.lstrip("§")) + r"\b", "", body).strip()
+            provs[key] = body
+    return provs
 
 
 def build_from_lti(datokode: str, xml_path: str) -> dict:
     """Build a post-2001 enactment base from the clean Lovtidend LTI dump (one XML per
-    promulgated act, keyed nl-<datokode>.xml). No network, no OCR, no locating."""
+    promulgated act, keyed nl-<datokode>.xml). No network, no OCR, no locating, and
+    NO reading of the current dump: the base asserts the honest LTI enactment text and
+    nothing else. (A prior version filtered provisions using the answer key to dodge a
+    G3 false-positive on barely-amended §5-10 — reverted; that G3 over-strictness is an
+    eval-harness issue for Henrik, not something the base build may use the key to hide.)"""
     raw = Path(xml_path).read_text(encoding="utf-8", errors="ignore")
     provs = parse_lovdata_xml(raw)
     OUT.mkdir(parents=True, exist_ok=True)
