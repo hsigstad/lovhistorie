@@ -1,19 +1,40 @@
 # Todo
 
-## Henrik — 2 decisions blocking the autonomous loop (see `BLOCKER.md`)
+## In progress — NB Lovtidend harvest (2026-08-10, ~16h)
 
-- [ ] **Clean pre-2001 source** — recommended: acquire the structured Lovdata CD discs
-  (email NB AI Lab; `docs/notes/lovdata_cd_2005.md`). Alt: NB OCR + OCR-calibrated τ.
-- [ ] **Split the convergence gate** (`source/eval/gate.py`, loop-forbidden) into a
-  post-2001-clean track (achievable target now) and a pre-2001 track. Approving this
-  lets Claude edit `gate.py` outside the loop and re-run `/goal` on an achievable bar.
+- [~] **Full harvest of Norsk Lovtidend Avd. I 1877–2000** running:
+  `python -m source.scrape.harvest_lovtidend` → `data/lovtidend_text/`. Resumable; on a
+  restart just re-run the same command. Check `data/lovtidend_text/_harvest.log` /
+  `_progress.txt`. When done: ~1,033 items / ~144k pages cached.
 
-## Next engine work (once unblocked; loop can do these)
+## Next engine work (the real remaining lift)
 
+- [ ] **Build the endringslov *structuring* parser** — split the harvested gazette into
+  per-act enactment + amendment units keyed by ikraft date; feed `replay`. This is the
+  substantive project. `source/parse/endringslov.py` already parses a *single* amendment
+  block (validated on Lovtidend 1991 Nr. 3) — needs the upstream act-boundary /
+  running-header-dedup layer over the raw per-page harvest.
+- [ ] Fix `source/scrape/build_enactment.py` regexes: `_HEAD` for `§N-M` chapter-section
+  headings, and `_NEXT_LAW` for the two-column reflowed next-law boundary (blocks
+  aksjeloven-style laws). Then build the 5 recoverable pre-2001 dev-law bases.
+- [ ] Flag holes + kjøpsloven (1988) as known-missing (law/amendment)-years — "flag,
+  don't fabricate". Optional fallback source: norgeslover.no scanned PDFs.
 - [ ] Re-derive block ops from LTI XMLs to remove the 4000-char `new_text` truncation
   (119 vphl provisions lost).
 - [ ] Extend the ledd engine (unnumbered ledd, punktum/bokstav/nr.) — the flagged 55%.
-- [ ] Build post-2001 enactment bases for more dev laws (`build_post2001`).
+
+## Follow-up — extend to forskrifter
+
+- [ ] **Extend the pipeline to sentrale forskrifter** (currently lover-only). Sources
+  and structure are identical, so most of the reuse is free: the Lovtidend delta
+  stream already carries `sf-…` acts alongside `nl-…`; `gjeldende-sentrale-forskrifter.tar.bz2`
+  is the current consolidated base; and `sondreskarsten/norwegian-laws` already versions
+  ~5,123 forskrifter back to the 2001 floor (Sungho's zip has the `historie/` wordings).
+  Work needed: (a) add a few forskrifter to the eval/ground-truth set (they're not scored
+  today), (b) flip the recipe filter — `source/parse/nlod_recipe.py` currently *drops*
+  res./forskrift instruments as noise, but for forskrift-as-target the amending instrument
+  *is* a forskrift/resolusjon. Post-2001 first (nearly free given Sondre's corpus); pre-2001
+  forskrifter inherit the same clean-base / OCR issues as pre-2001 laws.
 
 ## Henrik — manual (ground truth for the eval)
 
