@@ -55,6 +55,35 @@ LOCATIONS = {
         "title_needle": "Lov om aksjeselskaper",
         "span": 75,  # law runs ~p52-125 (ch.21 markers seen through p125)
     },
+    "1979-05-18-18": {  # foreldelsesloven (Lov 18. mai 1979 nr. 18 om foreldelse av fordringer)
+        # Norsk Lovtidend Avd. I 1979 Nr. 15 (catalog id e75bd1fbf45e1ef8fc2d00fa8187ffa8).
+        # Whole issue is this one act; headings are the period-less "§ N (tittel)" form.
+        "urn": "URN:NBN:no-nb_digitidsskrift_2025070980003_015",
+        "page": 4,
+        "title_needle": "Lov om foreldelse av fordringer",
+        "span": 13,  # pages 4-16 = the entire issue (single act, no next law)
+    },
+    "1959-10-23-3": {  # oreigningslova (Lov 23. okt. 1959 nr. 3 om oreigning av fast eigedom)
+        # Norsk Lovtidend Avd. I 1959 Nr. 39 (catalog id c4051bf6c6c0d7aa9c15257a5b82fcf7).
+        # Whole issue is this one act (single "Vi OLAV ... gjer kunnig" preamble).
+        "urn": "URN:NBN:no-nb_digitidsskrift_2025110680050_016",
+        "page": 8,
+        "title_needle": "Lov om oreigning av fast eigedom",
+        "span": 19,  # pages 8-26 = the entire issue (single act, no next law)
+    },
+    "1918-05-31-4": {  # avtaleloven (Lov 31. mai 1918 nr. 4 om avslutning av avtaler ...)
+        # Norsk Lovtidend 1. Afdeling 1918 (pre-1949 BOUND ANNUAL, cid
+        # 9e50e3a594ecedf23c3b0dccfd88ffab). Old layout: the next act ("31 mai Nr. 5")
+        # shares the last page (604) with avtaleloven's tail, and its heading is NOT the
+        # modern "<month> Lov nr. <n>" form _NEXT_LAW keys on, so we cut at end_needle
+        # (the statsråd signature that closes the law) instead. Title wraps "Lov\nom ...",
+        # so the needle omits the leading "Lov".
+        "urn": "URN:NBN:no-nb_digitidsskrift_2015110481241_001",
+        "page": 597,
+        "title_needle": "om avslutning av avtaler",
+        "span": 8,          # pages 597-604
+        "end_needle": "Gunnar Knudsen.",   # statsrad signature ending §41's promulgation
+    },
 }
 
 # Month names (bokmål/nynorsk + gazette abbreviations) as they appear in gazette
@@ -76,17 +105,31 @@ _NEXT_LAW = re.compile(
 )
 # Provision heading at line start: "§ N." or the chapter-section form "§ N-M." (with an
 # optional trailing letter, e.g. "§ 3-8a."). In-body "§ N" cross-references are mid-line
-# and so are not matched.
-_HEAD = re.compile(r"(?m)^\s*§\s*(\d+(?:-\d+)?[a-z]?)\.")
+# and so are not matched. Older layouts (e.g. foreldelsesloven 1979) print the heading as
+# "§ N (kort tittel)" with NO period, so a "(" immediately after the number also opens a
+# heading. Requiring a "." or "(" right after the number still rejects in-body references
+# like "§ 292 første ledd skal lyde:" (letter follows) even when they wrap to line start.
+_HEAD = re.compile(r"(?m)^\s*§\s*(\d+(?:-\d+)?[a-z]?)\s*(?:\.|\()")
 
 
-def _law_text(urn: str, page: int, title_needle: str, span: int = 4) -> str:
-    """Raw text of the law: from its title line to the next law's gazette heading."""
+def _law_text(urn: str, page: int, title_needle: str, span: int = 4,
+              end_needle: str | None = None) -> str:
+    """Raw text of the law: from its title line to the next law's gazette heading.
+
+    `end_needle` (optional): a literal string that closes the law, used for pre-1949
+    bound-annual layouts where the next act's heading is NOT the modern
+    "<month> Lov nr. <n>" form _NEXT_LAW keys on (so the running boundary can't be
+    found automatically) and the next act shares the last page with this law's tail.
+    """
     txt = "\n".join(nb.page_text(urn, p) for p in range(page, page + span))
     start = re.search(re.escape(title_needle), txt)
     if not start:
         raise ValueError(f"title needle {title_needle!r} not found on p{page}+")
     after = txt[start.start():]
+    if end_needle:
+        e = after.find(end_needle, 50)         # skip the law's own heading line
+        if e >= 0:
+            return after[: e + len(end_needle)]
     nxt = _NEXT_LAW.search(after, 50)          # skip the law's own heading line
     return after[: nxt.start() if nxt else len(after)]
 
@@ -211,7 +254,8 @@ def build_from_lti(datokode: str, xml_path: str) -> dict:
 
 def build(datokode: str, loc: dict | None = None) -> dict:
     loc = loc or LOCATIONS[datokode]
-    law = _law_text(loc["urn"], loc["page"], loc["title_needle"], loc.get("span", 4))
+    law = _law_text(loc["urn"], loc["page"], loc["title_needle"], loc.get("span", 4),
+                    loc.get("end_needle"))
     provs = parse_provisions(law)
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / f"{datokode}.json"

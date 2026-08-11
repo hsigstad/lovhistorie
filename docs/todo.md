@@ -1,37 +1,26 @@
 # Todo
 
-## In progress — NB Lovtidend harvest (2026-08-10, ~16h)
-
-- [~] **Full harvest of Norsk Lovtidend Avd. I 1877–2000** running:
-  `python -m source.scrape.harvest_lovtidend` → `data/lovtidend_text/`. Resumable; on a
-  restart just re-run the same command. Check `data/lovtidend_text/_harvest.log` /
-  `_progress.txt`. When done: ~1,033 items / ~144k pages cached.
-
 ## Next engine work (the real remaining lift)
 
-- [ ] **Preserve nr/bokstav markers in whole-provision replacement bodies** (the biggest
-  remaining lever, per the ledd-engine session). `endringslov.py`/`gazette.py` strip the
-  `1. 2.` / `a) b)` markers from `§X skal lyde` / `Kapittel N skal lyde` bodies, so a later
-  `nr. 4 skal lyde` finds no list and correctly flags (~77 flagged nr ops). Preserving them
-  there would unlock most of those. (The ledd *engine* already handles nr/bokstav when the
-  markers are present — this is upstream in the amendment-text parser.)
-- [ ] **Wire `pre2001_amendments.jsonl.gz` into replay** — merge it with the LTI stream in
-  `source/parse/amendments.py` `load_for` (both are enactment+amendment source, not answer
-  key). Do once the harvest is fuller, then re-run the gate to measure the real lift.
-- [ ] **Build the other 4 recoverable pre-2001 dev-law bases** — avtaleloven (1918),
-  oreigningslova (1959), foreldelsesloven (1979), rettsgebyrloven (via 1983). The §N-M /
-  reflowed-boundary OCR parser is fixed (aksjeloven done, 26→123); locate each in the
-  harvest cache as its year lands and add a LOCATIONS entry + build.
+- [ ] **Name→datokode map (TOP LEVER for the pre-2001 half).** avtaleloven/aksjeloven/
+  foreldelsesloven are amended by acts citing them BY NAME ("aksjeloven"), so ~0 of their
+  pre-2001 amendments resolve a target and they're dropped from `--build` — their
+  convergence is base-only. A name→datokode map in `gazette.py` (short-name → enactment
+  datokode; seed from the current-law catalog / a curated list) would unlock these. Re-run
+  `gazette.py --build` after. Also fixes ~name-only acts across the whole corpus.
+- [ ] **Preserve nr/bokstav markers in whole-provision replacement bodies.** `endringslov`/
+  `gazette` strip `1. 2.` / `a) b)` markers from `§X skal lyde` / `Kapittel N skal lyde`
+  bodies, so a later `nr. 4 skal lyde` finds no list and flags (~77 flagged nr ops). The
+  ledd *engine* already handles these when markers are present — this is upstream.
 - [ ] **Unnumbered-ledd on OCR bases** — `parse_provisions` collapses whitespace, so
   pre-2001 laws (unnumbered ledd) lose ledd boundaries and the engine can't split them.
   Preserve line breaks in the OCR base to enable ledd editing there (LTI already does this).
-- [ ] **Name→datokode map** for name-only citations (offentlighetsloven, straffeloven, …);
-  ~11/78 amend acts in the cache don't resolve a target and are dropped from `--build`.
+- [ ] **Fallback base source for hole-year laws** — kjøpsloven (1988) and rettsgebyrloven
+  (1982) enactments fell in NB digitisation holes (verified absent). Both have amendments
+  ready. Options: norgeslover.no scanned PDFs, or Lovdata CD discs. Otherwise flag as
+  known-missing.
 - [ ] Resolve true **ikrafttredelse dates** (bodies say "trer i kraft <date>"); `--build`
   currently uses the act date as `date_in_force_resolved` (first approximation).
-- [ ] Run `gazette.py --build` over the FULL harvest once it completes.
-- [ ] Flag holes + kjøpsloven (1988) as known-missing (law/amendment)-years — "flag,
-  don't fabricate". Optional fallback source: norgeslover.no scanned PDFs.
 - [ ] Re-derive block ops from LTI XMLs to remove the 4000-char `new_text` truncation
   (119 vphl provisions lost).
 

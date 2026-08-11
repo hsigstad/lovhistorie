@@ -85,6 +85,20 @@ def worklist(years: set[int] | None = None) -> list[dict]:
     return out
 
 
+def _resolve_urn(catalog_id: str, retries: int = 5) -> str | None:
+    """URN for a catalog id, with backoff. None on hard failure. Retried because a
+    transient network blip here (e.g. right after a machine suspend/resume) must NOT
+    crash the whole run — the item is just skipped this pass and picked up on re-run."""
+    for attempt in range(retries):
+        try:
+            return nb.resolve_urn(catalog_id)
+        except Exception:
+            if attempt == retries - 1:
+                return None
+            time.sleep(2 ** attempt)
+    return None
+
+
 def _fetch_page(urn: str, p: int, retries: int = 4) -> str | None:
     """One page's reflowed OCR text, with exponential backoff. None on hard failure."""
     for attempt in range(retries):
@@ -135,7 +149,7 @@ def harvest_item(item: dict) -> dict:
     pre-1948 bound annuals are ~1000-1500 pp, so per-item restart would waste hours)."""
     if _done(item):
         return {**item, "status": "cached", "chars": 0, "failed": 0}
-    urn = nb.resolve_urn(item["id"])
+    urn = _resolve_urn(item["id"])
     if not urn:
         return {**item, "status": "no-urn", "chars": 0, "failed": item["pages"]}
     part = OUT / f"{item['id']}.part.jsonl"
@@ -191,7 +205,13 @@ def main():
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
         futs = {ex.submit(harvest_item, it): it for it in pending}
         for i, fut in enumerate(as_completed(futs), 1):
-            r = fut.result()
+            try:
+                r = fut.result()
+            except Exception as e:  # one item's failure must not abort the whole run
+                it = futs[fut]
+                print(f"[{i}/{len(pending)}] {it['year']} {it['id'][:8]} ERROR {e!r} "
+                      f"— skipped (will retry on re-run)", flush=True)
+                continue
             got_pages += r["pages"]
             n_ok += 1 if r["status"] in ("ok", "cached") else 0
             n_fail += r.get("failed", 0)

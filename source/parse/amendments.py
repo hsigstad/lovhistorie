@@ -38,10 +38,19 @@ def classify(instruction: str):
     return para, "other"
 
 
-def load_for(target_law: str, data: Path = DATA):
-    """Ordered ops for one law (target_law like 'lov/1986-06-20-35')."""
+# The pre-2001 amendment stream, OCR-parsed from the NB Lovtidend gazette by
+# source.parse.gazette (--build). Same schema as the LTI dump; it is enactment+
+# amendment SOURCE (public-domain gazette), NOT an answer key — LTI only covers
+# 2001+, so this is the only source of pre-2001 amendments. Absent → skipped.
+PRE2001 = DATA.parent / "pre2001_amendments.jsonl.gz"
+
+
+def _ops_from(path: Path, target_law: str):
+    """Parse one jsonl.gz amendment file into ops for `target_law` (unordered)."""
     ops = []
-    with gzip.open(data, "rt", encoding="utf-8") as fh:
+    if not path.exists():
+        return ops
+    with gzip.open(path, "rt", encoding="utf-8") as fh:
         for line in fh:
             d = json.loads(line)
             if d.get("target_law") != target_law:
@@ -55,8 +64,24 @@ def load_for(target_law: str, data: Path = DATA):
                 "date": d.get("date_in_force_resolved") or d.get("date_in_force"),
                 "act": d.get("act_refid"),
             })
-    ops.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
     return ops
+
+
+def load_for(target_law: str, data: Path = DATA):
+    """Ordered ops for one law (target_law like 'lov/1986-06-20-35'), merging the LTI
+    stream (2001+) with the gazette-OCR pre-2001 stream, sorted by resolved in-force
+    date. The two cover disjoint date ranges (pre-2001 vs 2001+); dedup by
+    (act, para, date, instruction) guards the boundary against any overlap."""
+    ops = _ops_from(data, target_law) + _ops_from(PRE2001, target_law)
+    seen, uniq = set(), []
+    for o in ops:
+        key = (o["act"], o["para"], o["date"], o["instruction"])
+        if key in seen:
+            continue
+        seen.add(key)
+        uniq.append(o)
+    uniq.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
+    return uniq
 
 
 def target_laws(data: Path = DATA):

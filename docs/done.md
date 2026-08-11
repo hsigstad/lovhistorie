@@ -1,5 +1,26 @@
 # Done
 
+## 2026-08-11 — harvest complete; pre-2001 bases + amendment stream wired (session)
+
+- [x] **Harvest 100%** — 1,033 issues / 143,963 pages (Norsk Lovtidend Avd. I 1877–2000).
+  Hardened `harvest_lovtidend.py` after suspend-induced crashes: `resolve_urn` retries,
+  one item's failure no longer aborts the run.
+- [x] **Full pre-2001 amendment stream** — `gazette.py --build` over the whole corpus:
+  **6,087 ops / 253 laws** (was 822 partial). Wired into replay: `amendments.load_for`
+  now merges the LTI (2001+) + gazette-OCR (pre-2001) streams (deduped, date-ordered).
+- [x] **3 of 4 pre-2001 dev bases built** (OCR, honest, guards PASS, no answer-key read):
+  avtaleloven 1918 (**24/45**), oreigningslova 1959 (**14/33**), foreldelsesloven 1979
+  (**12/79**). `build_enactment.py` tweaks: `_HEAD` accepts `(`-closed headings (1979
+  layout); `_law_text` optional `end_needle` (1918 bound-annual boundary).
+- [x] **Result**: convergence **0.215 → 0.262** (264/1008). Session trajectory:
+  0.043 → 0.097 → 0.119 → 0.215 → 0.262. Guards G1/G2/G3 PASS.
+- **Two confirmed hole casualties** (unbuildable from NB, digitisation gaps): kjøpsloven
+  (1988) and **rettsgebyrloven (1982)** — verified: 0 harvested 1982/83 issues contain
+  "Lov om rettsgebyr". Its 62 amendments are ready but the base needs a fallback source.
+- **Load-bearing limiter identified**: the **name→datokode gap** — avtaleloven/aksjeloven/
+  foreldelsesloven are amended by acts citing them BY NAME, so their pre-2001 amendments
+  (~0 resolved) are missing; their convergence is base-only for now.
+
 ## 2026-08-10 (cont. 3) — ledd engine tail: bokstav/nr/multi-ledd (session)
 
 - [x] **Preserved list markers** in `parse_lovdata_xml` (inject `a) `/`1. ` from
