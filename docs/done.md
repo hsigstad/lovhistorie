@@ -1,5 +1,24 @@
 # Done
 
+## 2026-08-11 (cont.) — 4000-char block truncation fixed: 0.262 → 0.343 (session)
+
+- [x] **Diagnosed the loss** — categorized 527 non-converged provisions across based laws:
+  low-sim 221, missing 217, flagged 89, concentrated on vphl (239, clean LTI data → pure
+  replay failure) and aksjeloven (170). Root cause: `amendments.jsonl.gz` caps `new_text`
+  at 4000 chars, so big "Kapittel N skal lyde:" blocks lose their tail provisions.
+- [x] **Fixed it** — `source/scrape/rederive_blocks.py` (OFFLINE) re-derives full block
+  text from the LTI amending-act XMLs, keyed by (act, target_law, instruction) →
+  `data/amendment_blocks.jsonl.gz`. `amendments.py` reads that derived file and serves a
+  patched stream to `load_ops`/`load_for`. **G1 kept clean**: all nl-*.xml/LTI access is
+  offline-only; the RECON path reads only derived data files (verified G1 PASS).
+- [x] **Anti-fabrication guarantee**: an override is accepted ONLY if its first 4000 chars
+  reproduce the truncated original byte-for-byte (verified: 66/66 hold, 0 violations) —
+  so the full text is the genuine continuation, never invented.
+- [x] **Result**: convergence **0.262 → 0.343** (346/1008). vphl **61 → 142**/300;
+  aksjeloven 123 → 124. vphl missing provisions 114 → 72. Guards G1/G2/G3 PASS.
+  66 blocks re-derived; skipped ops are forskrift/no-LTI or >2024 acts (LTI ends 2024,
+  e.g. vphl's lov/2026-02-06-3) — left truncated, not guessed.
+
 ## 2026-08-11 — harvest complete; pre-2001 bases + amendment stream wired (session)
 
 - [x] **Harvest 100%** — 1,033 issues / 143,963 pages (Norsk Lovtidend Avd. I 1877–2000).

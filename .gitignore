@@ -5,6 +5,8 @@ __pycache__/
 # Lovdata Pro ground-truth is eval-only and NEVER redistributed (repo may go public)
 data/ground_truth/*/
 data/amendments.jsonl.gz
+data/amendment_blocks.jsonl.gz
+data/amendments.patched.jsonl.gz
 data/pre2001_amendments.jsonl.gz
 data/current/
 data/lti/

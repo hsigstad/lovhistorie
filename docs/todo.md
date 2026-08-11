@@ -21,8 +21,6 @@
   known-missing.
 - [ ] Resolve true **ikrafttredelse dates** (bodies say "trer i kraft <date>"); `--build`
   currently uses the act date as `date_in_force_resolved` (first approximation).
-- [ ] Re-derive block ops from LTI XMLs to remove the 4000-char `new_text` truncation
-  (119 vphl provisions lost).
 
 ## Follow-up — extend to forskrifter
 
