@@ -117,11 +117,28 @@ def enactment_base(target_law: str) -> dict:
     return json.loads(f.read_text(encoding="utf-8")).get("provisions", {})
 
 
+def base_as_of(target_law: str) -> str | None:
+    """The version boundary a SNAPSHOT base was captured at (booklet 'ajourført' date),
+    or None for a pure enactment base. When set, the base already incorporates every
+    amendment dated <= this, so reconstruction must replay ONLY later amendments."""
+    dk = target_law.split("/")[-1]
+    f = _ENACTMENT / f"{dk}.json"
+    if not f.exists():
+        return None
+    return json.loads(f.read_text(encoding="utf-8")).get("base_as_of")
+
+
 def reconstruct(target_law: str, as_of: str | None = None):
     """Rebuild {paragraf_id: text} for `target_law` as of `as_of` (or latest).
 
     Returns (provisions, flags). Inputs are enactment base + amendment ops ONLY.
+    For a snapshot base (base_as_of set), amendments already baked into the snapshot
+    (date <= base_as_of) are skipped so they are not double-applied; dates before the
+    snapshot are not reconstructable from it and are the honest floor of its reach.
     """
     base = enactment_base(target_law)
     ops = load_ops(target_law)
+    since = base_as_of(target_law)
+    if since:
+        ops = [o for o in ops if not o.get("date") or o["date"] >= since]
     return replay.replay(base, ops, as_of=as_of)

@@ -150,8 +150,15 @@ def guard_base_integrity():
         if not base:
             continue  # empty base can't be contaminated (honest current state)
         cur = current_provisions(dk) or {}
+        # For a snapshot base (booklet ajourført at base_as_of) a provision amended only
+        # ON/BEFORE base_as_of is LEGITIMATELY identical to current — the snapshot bakes
+        # that amendment in — so it is not contamination. Only amendments dated AFTER the
+        # snapshot must leave base != current; those are the ones G3 polices. Pure
+        # enactment bases have base_as_of None and check every amendment (unchanged).
+        since = pipeline.base_as_of(law)
         amended = {op["para"] for op in amendments.load_for(law)
-                   if op["kind"] in ("replace", "add", "subprovision") and op["para"]}
+                   if op["kind"] in ("replace", "add", "subprovision") and op["para"]
+                   and (not since or (op.get("date") or "") > since)}
         for para in amended:
             if para in base and para in cur and \
                     metrics.similarity(base[para], cur[para]) >= G3_TAU:

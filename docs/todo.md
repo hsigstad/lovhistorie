@@ -24,10 +24,17 @@
 - [ ] **Unnumbered-ledd on OCR bases** — `parse_provisions` collapses whitespace, so
   pre-2001 laws (unnumbered ledd) lose ledd boundaries and the engine can't split them.
   Preserve line breaks in the OCR base to enable ledd editing there (LTI already does this).
-- [ ] **Fallback base source for hole-year laws** — kjøpsloven (1988) and rettsgebyrloven
-  (1982) enactments fell in NB digitisation holes (verified absent). Both have amendments
-  ready. Options: norgeslover.no scanned PDFs, or Lovdata CD discs. Otherwise flag as
-  known-missing.
+- [x] ~~**Fallback base source for hole-year laws** — kjøpsloven (1988) and rettsgebyrloven
+  (1982) enactments fell in NB digitisation holes.~~ DONE 2026-08-12: recovered from PD NB
+  *booklets* (særtrykk) as SNAPSHOT bases with `base_as_of` (see done.md). Not enactment —
+  they bake in early amendments and reconstruct dates ≥ their ajourført boundary; earlier
+  dates flagged. Remaining gap is post-snapshot add-ops/ledd edits (amendment coverage), not base.
+- [ ] **PD booklets as a public-domain point-in-time VALIDATION set** (follow-up from the base
+  recovery). Each NB law særtrykk is a dated snapshot ("Ajourført senest …") = the same thing
+  Lovdata-Pro historical versions give us, but free and redistributable. Could supplement/replace
+  the encumbered oracle for check-2. Needs: (a) a catalog sweep of available booklets per law×year,
+  (b) held-out partitioning (a booklet used as a base for law L must NOT also validate L),
+  (c) OCR-calibrated τ (booklet-OCR vs recon-OCR is OCR-vs-OCR). Opportunistic coverage only.
 - [ ] Resolve true **ikrafttredelse dates** (bodies say "trer i kraft <date>"); `--build`
   currently uses the act date as `date_in_force_resolved` (first approximation).
 

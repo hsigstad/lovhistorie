@@ -5,6 +5,19 @@ This project's history is full of "hard walls" and "obvious causes" that turned 
 a misunderstanding we actually made and corrected (2026-08). Read this before concluding
 "the reconstruction is bad" or "this is a hard limit."
 
+## -1. "Base unrecoverable — the volume isn't digitised" was another wrong hard wall
+kjøpsloven (1988) and rettsgebyrloven (1982) were called "unbuildable from NB" because their
+annual Lovtidend Avd. I volumes sit in NB's digitisation gap. WRONG conclusion: the *annual
+volume* isn't the only route to the text. Both laws are at NB as **public-domain standalone
+booklets (særtrykk)**, digitised, EVERYWHERE-access, fetchable via the same ALTO endpoint as the
+harvest (kjøpsloven digibok `2012050708164`; rettsgebyr `2012083008131`). Norwegian statutory text
+is public-domain by statute (åndsverkloven §14) regardless of the container's copyright flag, so
+`api.nb.no/catalog/v1` full-text/booklet search is a general fallback for any hole-year law. Caveat:
+a booklet is a **mid-life SNAPSHOT** ("Ajourført senest …"), not enactment — record its version
+boundary as `base_as_of`, replay only amendments dated ≥ it, and refine G3 to police only
+post-snapshot amendments (a pre-snapshot amendment legitimately makes base == current). See done.md
+2026-08-12. Meta-point: same pattern as every other "hard wall" here — the wall was in the framing.
+
 ## 0. Meta-lesson: when a number looks bad, suspect the METRIC first
 The eval harness had *four* separate bugs that made good reconstruction look bad. Every
 time we chased "the reconstruction/OCR is the problem" we were wrong; the fix was in the

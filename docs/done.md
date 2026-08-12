@@ -1,5 +1,39 @@
 # Done
 
+## 2026-08-12 (cont.) — "unrecoverable" hole bases RECOVERED from PD booklets: 0.391 → 0.431 (session)
+
+- [x] **Overturned the kjøpsloven/rettsgebyrloven "unbuildable from NB" blocker.** The 1982/1988
+  annual Lovtidend Avd. I *content* volumes are a scattered NB digitisation gap (1980/82/84/87/88/89
+  undigitised while neighbouring years are fine — missing scans, NOT a copyright wall). But the
+  annual volume isn't the only route: **both laws exist at NB as public-domain, EVERYWHERE-access
+  digitised standalone booklets (særtrykk)**, fetchable via the same ALTO endpoint the harvest uses.
+  (Norwegian statutory text is public-domain by statute — åndsverkloven §14 — regardless of container.)
+  - kjøpsloven `1988-05-13-27`: NB digibok `2012050708164` (1993 "med endringer"), body p5–28.
+  - rettsgebyrloven `1982-12-17-86`: NB digibok `2012083008131` (1992), body p3–13.
+- [x] **These are SNAPSHOT bases, not enactment** — each booklet self-declares its version boundary
+  ("Ajourført med endringer, senest …"): kjøpsloven **1993-01-01**, rettsgebyr **1992-08-01**. So the
+  booklet already bakes in the law's early amendments — which neatly sidesteps the pre-2001 gazette
+  holes (we never needed the 1988–92 amendments; they're in the snapshot). Recorded as `base_as_of`.
+- [x] **New snapshot-base machinery (deterministic, offline, faithful):**
+  - `build_enactment.BOOKLETS` + `build_booklet()` — resilient page fetch (skips the blank cover/back
+    pages NB 500s on), writes `base_as_of` into the enactment JSON. 96 / 29 provisions built.
+  - `pipeline.base_as_of()` + `reconstruct()` now replays **only amendments dated ≥ base_as_of** on a
+    snapshot base (pre-snapshot ones are already incorporated — double-applying would corrupt).
+  - **G3 anti-gaming refinement (maintainer sign-off):** for a snapshot base, a provision amended only
+    ON/BEFORE `base_as_of` is *legitimately* identical to current (the snapshot bakes it in), so G3
+    now polices only **post-snapshot** amendments. Pure enactment bases (base_as_of None) check every
+    amendment as before. Guards G1/G2/G3 **PASS** — no false-trip, and the base is a PD booklet, never
+    the answer key (G1/G2 confirm the recon path stays isolated).
+- [x] **Result:** convergence **0.391 → 0.431** (394 → 434/1008). kjøpsloven **0 → 39**/180,
+  rettsgebyr **1 → 2**/38. Faithful — §3/§6/§9 kjøpsloven reconstruct at sim **1.000** vs current.
+- **Residual (the next lever, not this task):** the two laws' remaining gap is (a) ~95 kjøpsloven
+  current provisions ADDED post-1993 via add-ops we don't yet apply, (b) rettsgebyr fee amounts change
+  almost yearly → post-1992 ledd edits the ledd engine flags, (c) leading footnote-digit OCR pollution
+  ("Heving 1 (1)") nudging near-misses just under 0.98. All amendment-coverage / ledd-engine, separate.
+- **Follow-up lever noted:** these PD booklets are themselves point-in-time snapshots at a known date —
+  a candidate **public-domain validation set** to supplement/replace the encumbered, un-publishable
+  Lovdata-Pro oracle (needs held-out partitioning: a booklet used as a base for law L can't validate L).
+
 ## 2026-08-12 (cont.) — chapter-block pieces inheriting `unknown` change_type: 0.344 → 0.391 (session)
 
 - [x] **Diagnosed the biggest clean-source lever.** vphl (2007-06-29-75) sat at 142/300 on

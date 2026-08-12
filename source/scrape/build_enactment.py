@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+import time
 from pathlib import Path
 
 from source.scrape import nb_lovtidend as nb
@@ -266,6 +267,66 @@ def build_from_lti(datokode: str, xml_path: str) -> dict:
     return provs
 
 
+# PD standalone-law booklets (særtrykk) at NB — the recovery route for laws whose
+# annual Lovtidend Avd. I volume is in NB's digitisation gap (kjøpsloven 1988,
+# rettsgebyrloven 1982). These are NOT enactment texts: each is a dated MID-LIFE
+# snapshot ("Ajourført med endringer, senest …") that already incorporates the law's
+# early amendments — so `base_as_of` records the version boundary the booklet prints,
+# and reconstruction replays only amendments dated >= base_as_of (pipeline), while G3
+# only checks post-base amendments for contamination (gate). Public-domain, EVERYWHERE
+# access, mediatype books; text is public-domain by statute (åndsverkloven §14) anyway.
+BOOKLETS = {
+    "1988-05-13-27": {  # kjøpsloven — NB digibok 2012050708164 (1993 særtrykk, "med endringer")
+        "urn": "URN:NBN:no-nb_digibok_2012050708164",
+        "page": 5, "span": 26, "title_needle": "Lov om kjøp.",
+        "base_as_of": "1993-01-01",  # ajourført senest 03.07.1992 nr. 93 fra 01.01.1993
+    },
+    "1982-12-17-86": {  # rettsgebyrloven — NB digibok 2012083008131 (1992 særtrykk)
+        "urn": "URN:NBN:no-nb_digibok_2012083008131",
+        "page": 3, "span": 12, "title_needle": "Lov om rettsgebyr.",
+        "base_as_of": "1992-08-01",  # ajourført senest 15.05.1992 nr. 46 fra 01.08.1992
+    },
+}
+
+
+def _resilient_pages(urn: str, page: int, span: int) -> str:
+    """Join OCR text for pages [page, page+span). Tolerates the blank cover/back pages
+    a booklet manifest counts but that have no ALTO layer (NB returns 500) — those are
+    skipped, not fatal, so a build never aborts on a trailing non-content page."""
+    out = []
+    for p in range(page, page + span):
+        for i in range(4):
+            try:
+                out.append(nb.page_text(urn, p))
+                break
+            except Exception:
+                if i == 3:
+                    out.append("")   # unfetchable cover/blank tail page — skip
+                else:
+                    time.sleep(1.2 * (i + 1))
+    return "\n".join(out)
+
+
+def build_booklet(datokode: str, loc: dict | None = None) -> dict:
+    """Build a SNAPSHOT base from a PD standalone-law booklet (see BOOKLETS). Writes
+    the same enactment JSON plus `base_as_of` (the booklet's ajourført version boundary)
+    so the recon path replays only post-snapshot amendments and G3 only checks those."""
+    loc = loc or BOOKLETS[datokode]
+    txt = _resilient_pages(loc["urn"], loc["page"], loc["span"])
+    start = re.search(re.escape(loc["title_needle"]), txt)
+    if not start:
+        raise ValueError(f"title needle {loc['title_needle']!r} not found in booklet")
+    provs = parse_provisions(txt[start.start():])
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / f"{datokode}.json").write_text(json.dumps({
+        "datokode": datokode,
+        "source": {"urn": loc["urn"], "page": loc["page"], "booklet": True},
+        "base_as_of": loc["base_as_of"],
+        "provisions": provs,
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
+    return provs
+
+
 def build(datokode: str, loc: dict | None = None) -> dict:
     loc = loc or LOCATIONS[datokode]
     law = _law_text(loc["urn"], loc["page"], loc["title_needle"], loc.get("span", 4),
@@ -283,7 +344,8 @@ def build(datokode: str, loc: dict | None = None) -> dict:
 
 if __name__ == "__main__":
     dk = sys.argv[1] if len(sys.argv) > 1 else "1986-06-20-35"
-    provs = build(dk)
-    print(f"{dk}: {len(provs)} provisions -> data/enactment/{dk}.json")
+    provs = build_booklet(dk) if dk in BOOKLETS else build(dk)
+    tag = " (booklet snapshot)" if dk in BOOKLETS else ""
+    print(f"{dk}: {len(provs)} provisions -> data/enactment/{dk}.json{tag}")
     for p, t in provs.items():
         print(f"  {p}: {t[:70]}")
