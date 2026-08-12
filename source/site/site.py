@@ -37,12 +37,16 @@ _PERF_BRIEF = None
 if _STATUS and _STATUS.get("total"):
     _pct = f"{_STATUS['convergence'] * 100:.0f}%"
     _guards = "pass" if _STATUS.get("guards_pass") else "FAIL"
+    _strict = _STATUS.get("convergence_strict")
+    _strict_txt = (f" ({_strict * 100:.0f}% at the strict &ge;98% bar)"
+                   if _strict is not None else "")
     _PERF_BRIEF = (
         "docs/status.md", "docs/status.html",
         f"Performance: {_pct} convergence",
         (f"Latest reconstruction fidelity &mdash; {_STATUS['matched']}/{_STATUS['total']} "
-         f"dev-set provisions rebuilt from gazette history to today&rsquo;s official "
-         f"text (anti-gaming guards {_guards}). As of {_STATUS['as_of']}."),
+         f"statutory dev-set provisions rebuilt from gazette history to today&rsquo;s "
+         f"official text, OCR-calibrated{_strict_txt} (anti-gaming guards {_guards}). "
+         f"As of {_STATUS['as_of']}."),
         "Live", "priority-start",
     )
 

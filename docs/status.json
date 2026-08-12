@@ -1,9 +1,13 @@
 {
   "as_of": "2026-08-12",
-  "convergence": 0.3442,
-  "matched": 347,
-  "total": 1008,
+  "convergence": 0.5621,
+  "convergence_strict": 0.4989,
+  "matched": 489,
+  "matched_strict": 434,
+  "total": 870,
+  "annex_out_of_scope": 138,
   "tau": 0.98,
+  "tau_ocr": 0.9,
   "threshold": 0.97,
   "guards_pass": true,
   "guards": {
@@ -17,56 +21,74 @@
     {
       "datokode": "1918-05-31-4",
       "law": "avtaleloven",
-      "matched": 24,
-      "total": 45
+      "matched": 29,
+      "total": 45,
+      "tau": 0.9,
+      "annex": 0
     },
     {
       "datokode": "1959-10-23-3",
       "law": "oreigningslova",
-      "matched": 14,
-      "total": 33
+      "matched": 16,
+      "total": 33,
+      "tau": 0.9,
+      "annex": 0
     },
     {
       "datokode": "1979-05-18-18",
       "law": "foreldelsesloven",
-      "matched": 12,
-      "total": 79
+      "matched": 18,
+      "total": 33,
+      "tau": 0.9,
+      "annex": 46
     },
     {
       "datokode": "1982-12-17-86",
       "law": "rettsgebyrloven",
-      "matched": 1,
-      "total": 38
+      "matched": 3,
+      "total": 38,
+      "tau": 0.9,
+      "annex": 0
     },
     {
       "datokode": "1986-06-20-35",
       "law": "mesterbrevloven",
-      "matched": 3,
-      "total": 11
+      "matched": 4,
+      "total": 11,
+      "tau": 0.9,
+      "annex": 0
     },
     {
       "datokode": "1988-05-13-27",
       "law": "kjøpsloven",
-      "matched": 0,
-      "total": 180
+      "matched": 55,
+      "total": 88,
+      "tau": 0.9,
+      "annex": 92
     },
     {
       "datokode": "1997-06-13-44",
       "law": "aksjeloven",
-      "matched": 125,
-      "total": 293
+      "matched": 149,
+      "total": 293,
+      "tau": 0.9,
+      "annex": 0
     },
     {
       "datokode": "2007-06-29-75",
       "law": "verdipapirhandelloven",
-      "matched": 142,
-      "total": 300
+      "matched": 189,
+      "total": 300,
+      "tau": 0.98,
+      "annex": 0
     },
     {
       "datokode": "2009-06-19-103",
       "law": "tjenesteloven",
       "matched": 26,
-      "total": 29
+      "total": 29,
+      "tau": 0.98,
+      "annex": 0
     }
   ]
 }
