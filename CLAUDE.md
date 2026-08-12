@@ -41,7 +41,7 @@ from `projects/vague`: `source/scrape/nb_lovtidend.py`,
 **Data policy:** `data/ground_truth/` (Lovdata Pro) is **eval-only, never
 redistributed**. Published outputs come solely from public-domain sources.
 
-**Git:** commit straight to `master`, stage files by name; push to
+**Git:** commit straight to `main`, stage files by name; push to
 `git@github.com:hsigstad/lovhistorie.git` (`origin`). The encumbered/large data
 (`data/{ground_truth,current,lti,lovtidend_text}`, amendment streams) is gitignored and
 stays local — only public-domain bases, catalog metadata, code and docs are pushed.
