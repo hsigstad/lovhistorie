@@ -14,6 +14,9 @@
   pre-2001 gap each sub-lever accounts for before building.
 - [ ] ~~OCR/LLM correction, multimodal re-OCR~~ — TESTED + DEPRIORITISED (2026-08-12,
   see done.md): safe but low ceiling; OCR is a minor contributor.
+- [ ] **Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser** (shared by Sungho, 2026-08-12)
+  for the omnibus-act / `§N-M`-heading structuring lift — deterministic parts only, no RAG/LLM.
+  See `docs/notes/external_source_repos.md`.
 - [ ] **Preserve nr/bokstav markers in whole-provision replacement bodies.** `endringslov`/
   `gazette` strip `1. 2.` / `a) b)` markers from `§X skal lyde` / `Kapittel N skal lyde`
   bodies, so a later `nr. 4 skal lyde` finds no list and flags (~77 flagged nr ops). The
