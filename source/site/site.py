@@ -32,8 +32,7 @@ DOC_REGISTRY = [
     # --- Working notes ---
     ("docs/notes/lessons_and_pitfalls.md",        "Lessons & Pitfalls",        "Measurement bugs mistaken for hard walls — read first", "Working notes"),
     ("docs/notes/enactment_base.md",              "Enactment Base",            "Original-enactment base construction",                "Working notes"),
-    ("docs/notes/external_source_repos.md",       "External Source Repos",     "Assessment of shared / external corpora",             "Working notes"),
-    ("docs/notes/data_backups.md",                "Data Backups",              "Dropbox inventory + restore guide",                   "Working notes"),
+    ("docs/notes/external_source_repos.md",       "External Source Repos",     "Assessment of external corpora",                      "Working notes"),
     ("docs/notes/lovdata_cd_2005.md",             "Lovdata CD 2005",           "The 2005 CD-ROM base",                                "Working notes"),
     ("BLOCKER.md",                                "Resolved Blocker",          "Record of the resolved pre-2001 blocker",             "Working notes"),
     # --- Tasks ---

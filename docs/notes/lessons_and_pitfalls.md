@@ -93,11 +93,11 @@ Point-in-time (Lovdata Pro versions in `data/ground_truth/`) is the TEST set. Di
   `#document/HIST/lov/<datokode>-<YYYYMMDD>/*` (the date MUST be an exact version boundary —
   arbitrary dates redirect to current). Toolbar **Last ned → HTML** (find the button by
   ref, not coordinates — the `/*` view defeats blind clicks). Files land in Chrome's
-  download folder, set to `~/research/gt_incoming` (= sandbox `/workspace/gt_incoming`);
+  download folder (a local `gt_incoming` folder mapped into the sandbox);
   move them to `data/ground_truth/<datokode>/<date>.html` (gitignored; only `index.csv`
   tracked). `lovdata_html.parse_file` parses them.
-- **OpenAI key**: `projects/scheme/.env` (`OpenAI()` reads `OPENAI_API_KEY` from env).
-  `llmkit` framework at `~/research/packages/llmkit` (pip install -e; not installed in the
+- **OpenAI key**: `OpenAI()` reads `OPENAI_API_KEY` from the environment.
+  An LLM-extraction helper package is used (pip install -e; not installed in the
   sandbox venv by default). The venv's `wordfreq` is broken (a conflicting `locate`
   package) — build lexicons from LTI instead.
 - **Concurrent sessions**: this is a SHARED repo; another session was active this session

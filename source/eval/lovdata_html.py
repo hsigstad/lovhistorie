@@ -34,7 +34,7 @@ def parse(html: str) -> dict[str, str]:
         # since metrics.normalize maps § -> space but keeps the digits, that heading would
         # inject spurious "1 2" tokens and deflate similarity vs a correct reconstruction.
         # Drop the leading heading number (+ any superscript footnote digits) so both
-        # sides are scored on the provision BODY only. (Henrik, 2026-08-12.)
+        # sides are scored on the provision BODY only. (2026-08-12.)
         txt = re.sub(r"^\s*§\s*" + re.escape(pid) + r"\s*\.?\s*\d{0,3}\s*", "", txt)
         out.setdefault("§" + pid, txt)
     return out

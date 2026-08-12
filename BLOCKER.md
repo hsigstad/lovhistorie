@@ -2,8 +2,8 @@
 
 The original blocker (below the line) claimed the 0.97 gate was unreachable because the
 dev set is 61% pre-2001 with "no clean base" and NB OCR is "too lossy" (ceiling ~0.39).
-**Investigation on 2026-08-10 showed that diagnosis was wrong on mechanism**, and Henrik
-made the two decisions. This file is retained as history; the pipeline is NOT blocked on
+**Investigation on 2026-08-10 showed that diagnosis was wrong on mechanism**, and the two
+decisions below were made. This file is retained as history; the pipeline is NOT blocked on
 a human anymore.
 
 ## What the investigation found
@@ -20,7 +20,7 @@ a human anymore.
   1984, 1987, 1988, 1989** → **kjøpsloven (1988) is unrecoverable from NB**; the other 5
   pre-2001 dev laws are fine (rettsgebyrloven via its 1983 gazette-appearance year).
 
-## Decisions (Henrik, 2026-08-10)
+## Decisions (2026-08-10)
 1. **Metric fix** — `source/eval/metrics.py` now uses `autojunk=False` (correctness fix,
    not a loosening; signed off in the docstring).
 2. **Full harvest approved** — `python -m source.scrape.harvest_lovtidend` pulls the
@@ -33,14 +33,14 @@ a human anymore.
    enactment + amendment units keyed by date, feed replay. This is the substantive lift.
 3. Handle holes + kjøpsloven: flag those (law/amendment)-years as known-missing
    ("flag, don't fabricate"); optionally seek a fallback source (norgeslover.no PDFs).
-4. (Henrik, manual) download Lovdata-Pro held-out ground truth for the deliverable
+4. (manual) download Lovdata-Pro held-out ground truth for the deliverable
    point-in-time metric — see `docs/ground_truth.md`.
 
 ---
 
 # BLOCKER (original, 2026-08-07) — superseded, see above
 
-# BLOCKER — the 0.97 gate is unreachable on this dev set (needs a Henrik decision)
+# BLOCKER — the 0.97 gate is unreachable on this dev set (needs a human decision)
 
 The pre-2001 dev laws had no enactment base in hand and NB OCR was assumed too lossy to
 reach τ=0.98. The 2026-08-10 investigation overturned the "too lossy" premise: OCR is

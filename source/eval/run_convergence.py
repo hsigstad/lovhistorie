@@ -21,7 +21,7 @@ from source.eval import metrics
 # gjeldende-lover extraction (NLOD current dump). Overridable via env for the harness.
 CURRENT_DIR = Path(os.environ.get(
     "LOVHISTORIE_CURRENT_DIR",
-    "/tmp/claude-1000/-workspace/abf882c9-8e7b-487d-ac08-83e1bb6afe47/scratchpad/nl"))
+    str(Path(__file__).resolve().parents[2] / "data" / "current")))
 
 
 def _fname(datokode: str) -> str:

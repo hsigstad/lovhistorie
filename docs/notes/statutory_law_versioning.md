@@ -3,7 +3,7 @@
 Can we reconstruct the exact text of Norwegian statutes as they read at past
 dates (e.g. what a clause said in 2001-2005, before later amendments)? This
 note records what is available, what is reconstructable, and the verified
-limits. Separate from the Lovdata *court decision* corpus (see `data.md`).
+limits. Separate from the Lovdata *court decision* corpus (a separate case-law project).
 
 ## Proof-of-concept validated (2026-08)
 
@@ -130,7 +130,7 @@ are done.
 
 ## Sources in hand
 
-Dropbox `personal-dropbox-ro:Legal_WealthAmbiguity/data/laws/`:
+Local data archive (`data/laws/`):
 
 - `gjeldende-lover.tar.bz2` (5.8 MB) - current consolidated statutes, 756 laws,
   one XML per law keyed `nl-YYYYMMDD-NNN`. Each provision carries its full
@@ -177,10 +177,10 @@ zip's `historie/` mirrors this (5,123 forskrift changelog files). Auto-updates
 daily; even carries future-dated commits for passed-but-not-yet-in-force laws
 (e.g. a 2028 valglov change).
 
-### Our copy: Sungho's zip (data preserved) vs a full mirror
+### Our copy: the source zip (data preserved) vs a full mirror
 
-Sungho already placed `norwegian-laws-main.zip` (47 MB) in
-`Legal_WealthAmbiguity/data/laws/`. It is a GitHub source-zip of the **main
+A copy of `norwegian-laws-main.zip` (47 MB) is in the local data
+archive. It is a GitHub source-zip of the **main
 branch only** (no `.git`, no `law-history` branch), but it does contain the
 reconstruction data in flat form: `historie/*.md` = per-provision dated
 amendment wordings ("YYYY-MM-DD - lov/... / § X skal lyde: <full new text>")
@@ -192,12 +192,11 @@ What the zip does NOT give versus a full mirror/bundle: the pre-assembled git
 `law-history` branch (so `git checkout <date>` yields the whole consolidated
 law as of that date; from the zip you assemble per-date text yourself from
 `historie/` + current text, same silent-baseline caveat); and updatability (the
-zip is a one-time snapshot, a mirror stays current). A mirror/bundle backup is
-staged for the host (`inbox/messages/`, on hold) if we want those; otherwise the
-zip suffices for data preservation.
+zip is a one-time snapshot, a mirror stays current). A mirror/bundle backup
+could be produced if we want those; otherwise the zip suffices for data preservation.
 
-Sondre also maintains `tidybrreg` (R interface to Brønnøysund/Enhetsregisteret,
-relevant to our firm-party data) and `stortingsverv-parser`. Possible contact.
+Sondre also maintains `tidybrreg` (R interface to Brønnøysund/Enhetsregisteret)
+and `stortingsverv-parser`.
 
 ### Verified capability and limits (checked Aug 2026)
 
@@ -242,19 +241,19 @@ close it:
   versions back to 1998** - either removes both the 2001 floor and the
   baseline-placeholder trap. Could fold into the pending Lovdata agreement or
   raise with marked@lovdata.no.
-- **Free pre-2001 route via Nasjonalbiblioteket (Sungho's finds, 2026-08).**
+- **Free pre-2001 route via Nasjonalbiblioteket (2026-08).**
   The pre-2001 gap is closable without Lovdata Pro, at the cost of OCR:
   - *Base anchors*: NB-digitized printed **Norges Lover** editions - full
     consolidated snapshots at each print year. The main *Norges Lover 1687-YYYY*
     compilation is **comprehensive** (all laws of general practical
     significance), not a subset - the small subsets are the sector "lovsamling
-    for X" editions (and probably what Sungho's
+    for X" editions (and probably what the
     `nb.no/.../URN:NBN:no-nb_digibok_2023030748057` link is). **The 1687-2001
     edition (updated Jan 2002, ISBN 9788205298941) is effectively the 2001
     snapshot itself** - OCR the book, strip the small Jan-2002 tail, done. NB has
     the series digitized (confirmed 1685-1991/1992, 1687-2006/2007, 1687-2014);
-    in-copyright volumes are access-restricted (Norwegian IP / library / Feide -
-    UiO can reach them). Use a base **at or before 2001** since replay is
+    in-copyright volumes are access-restricted (Norwegian IP / library / Feide
+    access). Use a base **at or before 2001** since replay is
     forward-only; the 2006 edition is after 2001 and less useful as a base.
   - *Delta stream*: **`norgeslover.no/lovtidend-arkiv.php`** - scanned-PDF
     archive of **Norsk Lovtidend 1877-2016** (avd. I laws + central regs, avd.
@@ -269,11 +268,11 @@ close it:
     could not confirm it in NB's public catalog (ISBN 9788205298941 -> 0 hits;
     adjacent editions 1991/2006/2014/2017 surface, 2001-2003 do not). And it is
     in-copyright: not freely downloadable - read via Norwegian-IP/library, bulk
-    OCR-text via NB research/DH-lab or a request (UiO library can facilitate).
+    OCR-text via NB research/DH-lab or a request (a Norwegian university library can facilitate).
     Either way the book is ~3,000 pages of dense two-column legal text, so
     producing clean machine-readable statute text is a real OCR project, not a
     quick step. Effort ladder, easiest first: (1) Lovdata Pro "per 1.1.2001"
-    (clean structured data, skips the book); (2) ask NB/UiO for the digitized
+    (clean structured data, skips the book); (2) ask NB / a university library for the digitized
     edition + text access; (3) 1992 digitized base + roll forward with
     Lovtidend 1992-2001 (adds ~9 yrs of scanned-Lovtidend OCR); (4) self-scan a
     physical copy (fallback; one book but 3,000 dense pages). Self-scanning is
@@ -329,8 +328,8 @@ the Lovdata Pro route and for the open route, even at higher effort:
   endpoint TBD (IIIF annotations / DH-lab text service) at build time.
 - **Revised division of labour**: because the source is open-everywhere, the
   sandbox can prototype fetch + text-extract + endringslov-parse + replay
-  end-to-end without Henrik's browser. (Confirm reuse specifics with UiO library
-  / NB; informed guidance, not legal advice.)
+  end-to-end without a controlled browser. (Confirm reuse specifics with a
+  Norwegian university library / NB; informed guidance, not legal advice.)
 
 ## Bottom line
 

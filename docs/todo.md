@@ -14,7 +14,7 @@
   pre-2001 gap each sub-lever accounts for before building.
 - [ ] ~~OCR/LLM correction, multimodal re-OCR~~ — TESTED + DEPRIORITISED (2026-08-12,
   see done.md): safe but low ceiling; OCR is a minor contributor.
-- [ ] **Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser** (shared by Sungho, 2026-08-12)
+- [ ] **Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser** (external, 2026-08-12)
   for the omnibus-act / `§N-M`-heading structuring lift — deterministic parts only, no RAG/LLM.
   See `docs/notes/external_source_repos.md`.
 - [ ] **Preserve nr/bokstav markers in whole-provision replacement bodies.** `endringslov`/
@@ -37,14 +37,14 @@
   and structure are identical, so most of the reuse is free: the Lovtidend delta
   stream already carries `sf-…` acts alongside `nl-…`; `gjeldende-sentrale-forskrifter.tar.bz2`
   is the current consolidated base; and `sondreskarsten/norwegian-laws` already versions
-  ~5,123 forskrifter back to the 2001 floor (Sungho's zip has the `historie/` wordings).
+  ~5,123 forskrifter back to the 2001 floor (the source zip has the `historie/` wordings).
   Work needed: (a) add a few forskrifter to the eval/ground-truth set (they're not scored
   today), (b) flip the recipe filter — `source/parse/nlod_recipe.py` currently *drops*
   res./forskrift instruments as noise, but for forskrift-as-target the amending instrument
   *is* a forskrift/resolusjon. Post-2001 first (nearly free given Sondre's corpus); pre-2001
   forskrifter inherit the same clean-base / OCR issues as pre-2001 laws.
 
-## Henrik — manual (ground truth for the eval)
+## Manual (ground truth for the eval)
 
 - [ ] **Download Lovdata Pro historical versions** for the ground-truth eval set.
   Spec: `docs/ground_truth.md`. Save each as **HTML** ("Historiske versjoner" →

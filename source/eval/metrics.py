@@ -58,7 +58,7 @@ def similarity(a, b):
     silently collapses the ratio toward 0 for any non-byte-identical text (a genuinely
     ~98%-identical §1-1 scored 0.011 with autojunk vs 0.768 without). It corrupts the
     measurement rather than tightening it; short (<200 char) provisions are unaffected
-    either way. Sign-off: Henrik, 2026-08-10. Normalization above is still fixed."""
+    either way. Sign-off: maintainer, 2026-08-10. Normalization above is still fixed."""
     a, b = normalize(a), normalize(b)
     if not a and not b:
         return 1.0

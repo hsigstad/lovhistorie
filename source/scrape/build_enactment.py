@@ -135,7 +135,7 @@ def _law_text(urn: str, page: int, title_needle: str, span: int = 4,
 
 
 # Deterministic OCR post-correction (docs/goal.md rule 3: OCR post-correction is allowed
-# with sign-off IF deterministic — Henrik, 2026-08-12). Non-Norwegian diacritics never
+# with sign-off IF deterministic — 2026-08-12). Non-Norwegian diacritics never
 # occur in Norwegian statutory text, so every ö/ä/ü/ï/ë is an OCR misread of its base
 # letter — most damagingly o->ö, which the scorer's normalize() strips to a SPACE and so
 # splits common words (generalforsamlingen -> "generalf rsamlingen"). Fold them back.
@@ -256,7 +256,7 @@ def build_from_lti(datokode: str, xml_path: str) -> dict:
     NO reading of the current dump: the base asserts the honest LTI enactment text and
     nothing else. (A prior version filtered provisions using the answer key to dodge a
     G3 false-positive on barely-amended §5-10 — reverted; that G3 over-strictness is an
-    eval-harness issue for Henrik, not something the base build may use the key to hide.)"""
+    eval-harness issue for the maintainer, not something the base build may use the key to hide.)"""
     raw = Path(xml_path).read_text(encoding="utf-8", errors="ignore")
     provs = parse_lovdata_xml(raw)
     OUT.mkdir(parents=True, exist_ok=True)

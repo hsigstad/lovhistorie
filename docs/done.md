@@ -17,9 +17,9 @@
   omnibus/name-cited acts that changed them.
 - **Conclusion**: OCR is a MINOR contributor; the pre-2001 limiter is **amendment coverage**
   (name→datokode + omnibus/blanket-terminology acts). Deprioritise OCR/LLM correction and
-  multimodal re-OCR — low ceiling. Infra now in place: OpenAI key at
-  `projects/scheme/.env`; a validated-safe held-out LLM-eval harness (scratchpad) for any
-  future narrow LLM task.
+  multimodal re-OCR — low ceiling. Infra now in place: OpenAI key from the environment
+  (`OPENAI_API_KEY`); a validated-safe held-out LLM-eval harness for any future narrow
+  LLM task.
 
 ## 2026-08-12 — point-in-time metric UNBLOCKED (the real deliverable bar) (session)
 
@@ -28,8 +28,8 @@
   version boundary — arbitrary dates redirect to current). Download flow: toolbar
   "Last ned dokumentet" (find by ref, NOT coordinates — the /* view defeats blind clicks)
   → Format=HTML → submit → lands in a Chrome-download folder mapped into the sandbox
-  (`/workspace/gt_incoming`, = host `~/research/gt_incoming`; Henrik set Chrome's download
-  dir there). `lovdata_html.parse_file` parses it. (Programmatic Blob download is blocked;
+  (a local `gt_incoming` folder Chrome's download dir points at).
+  `lovdata_html.parse_file` parses it. (Programmatic Blob download is blocked;
   the versions-list "bulk" download only yields a Referanseliste, not contents.)
 - [x] **Found + fixed a truth-parser metric artifact** (was masquerading as "OCR").
   `lovdata_html.parse_file` kept the `§ N-M` heading number and left `&#xa0;` undecoded,
@@ -37,7 +37,7 @@
   0.98. Objective test (never-amended `base`, pure OCR, exact-match count): vs the gate
   parser = 81, vs the truth parser = **43 → 69 (drop `§` heading) → 81 (decode entities)**.
   Fix: strip the leading `§ N-M` heading + `_html.unescape` in `lovdata_html.py`. This is
-  an eval-harness correctness fix (Henrik sign-off, held-out metric) — same class as
+  an eval-harness correctness fix (maintainer sign-off, held-out metric) — same class as
   autojunk / G3 / phantom-reader. Not pipeline tuning.
 - [x] **True point-in-time scores** — aksjeloven (1997-06-13-44), reconstruct(as_of) vs
   held-out Lovdata truth, ALIGNED parser:
@@ -133,7 +133,7 @@
 - [x] **Caught + reverted an answer-key-coupling hack** — a subagent had the base build
   read the current dump to dodge a G3 false-positive; removed (base asserts honest LTI
   text only).
-- [x] **Two eval-harness fixes (Henrik sign-off)**: G3 threshold ≥0.98→**≥0.999** (real
+- [x] **Two eval-harness fixes (maintainer sign-off)**: G3 threshold ≥0.98→**≥0.999** (real
   contamination normalizes to ~1.0; honest barely-amended vphl §5-10=0.9974 no longer
   false-trips); `gate.current_provisions` now parses the answer key **structurally via
   data-name** (was inventing phantom provisions from in-body § cross-refs + truncating).
@@ -148,7 +148,7 @@
   twice**: LTI has neither pre-2001 bases nor the pre-2001 amendment stream. Plus a metric
   bug and two parser bugs — not OCR noise. (see updated `BLOCKER.md`.)
 - [x] **Metric correctness fix** — `source/eval/metrics.py` now `autojunk=False` (difflib's
-  default silently collapsed long-provision similarity toward 0). Henrik sign-off.
+  default silently collapsed long-provision similarity toward 0). Maintainer sign-off.
 - [x] **Mapped NB Lovtidend Avd. I coverage 1877–2000** — 1,033 items / ~144k pages,
   all public-domain; holes = 1891,1976,1980,1982,1984,1987,1988,1989. kjøpsloven (1988)
   unrecoverable from NB; other 5 pre-2001 dev laws fine (rettsgebyrloven via 1983).
@@ -156,7 +156,7 @@
   per-page ALTO is the only running-text source (~0.3GB text, ~16h).
 - [x] **Built + launched the harvester** — `source/scrape/harvest_lovtidend.py`
   (newest-first, page-resumable, 6 workers) → `data/lovtidend_text/` (gitignored),
-  work-list `data/lovtidend_index.json`. Henrik approved the full harvest.
+  work-list `data/lovtidend_index.json`. The full harvest was approved.
 - [x] **Built the gazette structuring parser** — `source/parse/gazette.py`: TOC-anchored
   act inventory (date, nr, class, target-law datokode ~96% resolved), disjoint nr-ordered
   body slicing (boundary-checked, 0 bleeds), `--build` emits the pre-2001 amendment stream
@@ -186,5 +186,5 @@
 
 **Key finding that stopped the run** (see `BLOCKER.md`): 574/938 dev provisions (61%)
 are pre-2001 laws with no clean base → 0.97 gate mathematically unreachable (ceiling
-~0.39). Two decisions pending for Henrik. Secondary: `amendments.jsonl.gz` truncates
+~0.39). Two decisions pending. Secondary: `amendments.jsonl.gz` truncates
 `new_text` at 4000 chars (liftable from LTI XMLs).

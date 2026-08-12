@@ -6,7 +6,7 @@ The gold-standard evaluation ([evaluation.md](evaluation.md), check 2) compares 
 reconstruction to Lovdata Pro's professionally-curated historical versions. This is
 the **held-out test set** — the pipeline is *never tuned* on it, only scored.
 
-## What to download  *(Henrik, via the Lovdata Pro subscription)*
+## What to download  *(manual, via a Lovdata Pro subscription)*
 
 A **stratified** sample spanning eras, sizes, and amendment intensity. Target
 ~**15–20 laws × 3–5 dates each ≈ 60–100 versions** — enough to measure, small

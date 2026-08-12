@@ -5,6 +5,10 @@ __pycache__/
 # Site: staticrypt password + salt artifact (never committed)
 .site-password
 .staticrypt.json
+# Internal working-process docs — kept local, never published to the public repo
+CLAUDE.md
+docs/notes/data_backups.md
+docs/notes/handoffs/
 # Lovdata Pro ground-truth is eval-only and NEVER redistributed (repo may go public)
 data/ground_truth/*/
 data/amendments.jsonl.gz
@@ -15,3 +19,5 @@ data/current/
 data/lti/
 data/lovtidend_text/
 data/_backup/
+# Local restore archives (incl. encumbered ground truth) — never publish
+_dl/

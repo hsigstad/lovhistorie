@@ -40,7 +40,7 @@ TAU = 0.98                # per-provision similarity counted as a match
 # G3 (base-integrity) uses a SEPARATE, tighter threshold than TAU: real contamination
 # (a base copied out of the answer key) normalizes to ~1.0, whereas an honestly barely-
 # amended provision can sit just above TAU (e.g. vphl §5-10, one changed amount → 0.9974).
-# ≥0.999 catches copies without punishing legitimate near-identity. (Henrik, 2026-08-10.)
+# ≥0.999 catches copies without punishing legitimate near-identity. (2026-08-10.)
 G3_TAU = 0.999
 
 # Dev-set laws: (target_law, datokode). NEVER put held-out/test laws here — the loop
@@ -82,7 +82,7 @@ def current_provisions(datokode: str):
     old regex reader split on every in-body "§ N", inventing phantom provisions from
     cross-references (tjenesteloven: 33 vs 29 real) and truncating provisions mid-
     sentence — which understated convergence for every law. Symmetry is the point: a
-    never-amended provision's base then equals its answer. (Henrik, 2026-08-10.)
+    never-amended provision's base then equals its answer. (2026-08-10.)
 
     Note: this reads the answer key at CALL time (so G2 can hide it by removing the
     dir → f.exists() False → None) and only PARSES it; nothing here leaks into the

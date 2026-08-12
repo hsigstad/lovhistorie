@@ -8,8 +8,8 @@ single-law robustness, then scale, then deep history.
 ## Phase 0 — Evaluation infrastructure  *(FIRST; blocks autonomy)*
 
 - Build the **eval harness** (`source/eval/`): convergence, point-in-time, OCR
-  fidelity, reporting. Seed: `reconstruction_qa.py` (from the vague feasibility work).
-- Assemble the **held-out ground-truth set** — Henrik downloads Lovdata Pro
+  fidelity, reporting. Seed: `reconstruction_qa.py` (from earlier feasibility work).
+- Assemble the **held-out ground-truth set** — download Lovdata Pro
   historical versions for a curated sample ([ground_truth.md](ground_truth.md)).
 - Freeze metrics + pass bar ([evaluation.md](evaluation.md)).
 - **Exit criterion**: a runnable eval that scores any pipeline version against

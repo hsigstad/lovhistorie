@@ -15,4 +15,4 @@ Lovdata Pro has true historical versions but is subscription-gated with reuse li
 This pipeline builds the corpus from the public-domain gazette instead — owned, and
 correct back to 1877.
 
-Migrated from the feasibility work in `projects/vague`.
+Migrated from earlier feasibility work.

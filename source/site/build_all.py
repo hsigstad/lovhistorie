@@ -1,7 +1,7 @@
 # INTENT: site build entry point. Hands the SiteConfig in site.py to
 # sitekit.build_site() and exits with its return code.
 # REASONING: sitekit (the shared rendering machinery) lives in the sibling
-# research-kit repo. On educloud the system venv is read-only, so a
+# research-kit repo. In some environments the system venv is read-only, so a
 # `pip install -e` is impossible; we add sitekit to sys.path instead.
 # ASSUMES: this file sits at pipelines/lovhistorie/source/site/build_all.py,
 # five parents below the workspace root that also holds research-kit/.
