@@ -4,15 +4,21 @@ Reconstruct the **point-in-time text of Norwegian statutes** (*gjeldende rett* o
 time) — "the law as it read at date *t*" — from public-domain sources, as an
 **owned, publishable** corpus.
 
-**Current focus:** **Harvesting the pre-2001 source corpus.** The old "0.39 ceiling /
-OCR too lossy" blocker was overturned 2026-08-10 (see `BLOCKER.md`): NB gazette OCR is
-clean; the real gap is that LTI (2001+) lacks BOTH pre-2001 enactment bases AND the
-pre-2001 amendment stream. Henrik approved (1) a metric fix (`metrics.py` autojunk=False)
-and (2) a full harvest of **Norsk Lovtidend Avd. I 1877–2000** from NB (public-domain,
-~1,033 items / ~144k pages) — running via `source/scrape/harvest_lovtidend.py` into
-`data/lovtidend_text/`. **Next real lift:** the endringslov *structuring* parser
-(split harvested gazette into per-act enactment+amendment units → replay). Phase-0 eval
-gate (`python -m source.eval.gate`) is DONE and remains the `/goal` condition.
+> **READ `docs/notes/lessons_and_pitfalls.md` FIRST.** Nearly every "hard wall" or
+> "obvious cause" in this project turned out to be a *measurement* bug, not a
+> reconstruction limit. That doc lists the misunderstandings we already made and
+> corrected — don't repeat them.
+
+**Current focus (as of 2026-08-12):** the full **Norsk Lovtidend Avd. I 1877–2000**
+harvest is DONE (`source/scrape/harvest_lovtidend.py` → `data/lovtidend_text/`); the
+gazette structuring parser (`source/parse/gazette.py`), pre-2001 amendment stream, ledd
+engine, and the post-2001 + 5 pre-2001 OCR bases are all built. **Convergence 0.043 →
+0.344** (`python -m source.eval.gate`), guards green. The **point-in-time deliverable
+metric is unblocked and validated** (aksjeloven 2024 ≈ convergence) — see
+`docs/ground_truth.md` + the lessons doc for the Lovdata-Pro acquisition flow. **Next
+lift:** amendment coverage for the pre-2001 half (name→datokode + omnibus + blanket
+terminology) — a set of small deterministic fixes; OCR/LLM correction was TESTED and
+DEPRIORITISED (see lessons doc). Newest work log: `docs/done.md`; open items: `docs/todo.md`.
 
 - Success criteria + metrics: `docs/evaluation.md`
 - The autonomous goal + the machine-checkable condition: `docs/goal.md`.
