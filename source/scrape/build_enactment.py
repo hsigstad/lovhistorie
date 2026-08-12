@@ -134,6 +134,19 @@ def _law_text(urn: str, page: int, title_needle: str, span: int = 4,
     return after[: nxt.start() if nxt else len(after)]
 
 
+# Deterministic OCR post-correction (docs/goal.md rule 3: OCR post-correction is allowed
+# with sign-off IF deterministic — Henrik, 2026-08-12). Non-Norwegian diacritics never
+# occur in Norwegian statutory text, so every ö/ä/ü/ï/ë is an OCR misread of its base
+# letter — most damagingly o->ö, which the scorer's normalize() strips to a SPACE and so
+# splits common words (generalforsamlingen -> "generalf rsamlingen"). Fold them back.
+# (Verified held-out: aksjeloven point-in-time 2001 +2 @>=0.98 / +5 @>=0.90, nothing drops.)
+_OCR_DIACRITICS = str.maketrans("öÖäÄüÜïÏëË", "oOaAuUiIeE")
+
+
+def _ocr_postcorrect(text: str) -> str:
+    return text.translate(_OCR_DIACRITICS)
+
+
 def parse_provisions(law_text: str) -> dict:
     """{'§N': text} from enactment text. Order = line-start '§ N.' headings (dedup);
     extraction via provisions_ordered so in-body '§ N' references don't split."""
@@ -149,6 +162,7 @@ def parse_provisions(law_text: str) -> dict:
     for p, t in provs.items():
         t = re.sub(r"^\s*\.\s*", "", t)
         t = " ".join(t.split())
+        t = _ocr_postcorrect(t)
         if t:
             out[p] = t
     return out
