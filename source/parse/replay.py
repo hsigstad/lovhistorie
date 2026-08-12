@@ -60,11 +60,19 @@ def _apply_change_type(doc, op, flags):
     if ct == "repeal" and para:
         doc.pop(para, None)
         return
+    if "overskrift" not in instr and para and new and new.lstrip().startswith("§"):
+        # A whole-provision body ('§ N. …') IS the provision's new enacted text,
+        # whatever the instruction's change_type parsed to. Chapter/part block
+        # replacements ('Kapittel N skal lyde', 'Etter kapittel M skal del … lyde')
+        # are split into per-§ pieces upstream (pipeline._split_block) but every piece
+        # inherits the block's change_type — often 'unknown' — so the add/change gate
+        # below would flag them. Apply by the §-heading body instead. Faithful (the
+        # act's own enacted text, never fabricated); move/renumber/repeal never carry
+        # a §-body (verified), so this cannot mis-fire on a structural op.
+        doc[para] = _strip_heading(new)
+        return
     if ct in ("add", "change") and para and new:
         if "overskrift" in instr:          # heading-only change: provision body unchanged
-            return
-        if new.lstrip().startswith("§"):   # whole-provision replacement
-            doc[para] = _strip_heading(new)
             return
         result = ledd.apply(doc.get(para, ""), instr, new)   # sub-provision -> ledd engine
         if result is not None:

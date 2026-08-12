@@ -1,5 +1,33 @@
 # Done
 
+## 2026-08-12 (cont.) — chapter-block pieces inheriting `unknown` change_type: 0.344 → 0.391 (session)
+
+- [x] **Diagnosed the biggest clean-source lever.** vphl (2007-06-29-75) sat at 142/300 on
+  fully clean LTI data — pure engine. Categorized the 158 failures on the LIVE `load_ops`
+  (`change_type`) path: 45 failing had a last op of `change_type="unknown"` that got FLAGGED,
+  not applied. Root cause: chapter/part block replacements (`Kapittel N skal lyde`,
+  `Etter kapittel M skal del … lyde`) are correctly split into per-`§` pieces by
+  `pipeline._split_block`, but every piece **inherits the block's `change_type`** — which the
+  offline classifier parsed as `unknown` for chapter-level instructions — so
+  `replay._apply_change_type` refused them (its gate only accepted `add`/`change`). vphl's 2018
+  MiFID II rewrite (chapters 1,2,8,9,10 + new del 4–6 §11-x) was entirely inert.
+- [x] **Quantified before building**: 60 `unknown` ops carry a whole-provision `§ N.` body and
+  all 60 are current provisions; `move`/`renumber`/`repeal` carry a `§`-body **0** times — so
+  gating a fix on "new_text starts with `§`" is provably safe (can't mis-fire on a structural op).
+- [x] **Fix** (`source/parse/replay.py`, `_apply_change_type`): a whole-provision `§ N.` body IS
+  the provision's new enacted text regardless of the parsed `change_type`; apply it (heading
+  stripped) ahead of the add/change gate, excluding `overskrift` heading-only and repeal.
+  Faithful — the amending act's own text, never fabricated.
+- [x] **Result**: convergence **0.344 → 0.391** (347 → 394/1008). vphl **142 → 189**/300.
+  All other laws byte-identical (surgical). Guards G1/G2/G3 PASS. Faithfulness spot-checked:
+  §11-1/§11-9/§13-1/§1-1 reconstruct at sim **1.000** vs current; §8-1 at 0.900 is an honest
+  later-amendment residual (heading reworded by a still-later act), not fabrication.
+- **Residual vphl (111 still failing)**: 94 `change`-flags are sub-provision (ledd) edits the
+  ledd engine can't resolve (the next engine lever); ~29 missing are post-2024 acts (LTI ends
+  2024 — flag, don't fabricate); 15 are repealed stubs whose current text is a prose
+  `(Opphevet) … ved lov …` annotation we can't reconstruct verbatim (a metric-representation
+  question, not an engine gap).
+
 ## 2026-08-12 (cont.) — OCR-correction experiments: OCR is NOT the pre-2001 limiter
 
 - Ran BOTH a deterministic speller (LTI-lexicon Norvig edit-1) AND an LLM pass
