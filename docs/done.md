@@ -1,5 +1,26 @@
 # Done
 
+## 2026-08-12 (cont.) — OCR-correction experiments: OCR is NOT the pre-2001 limiter
+
+- Ran BOTH a deterministic speller (LTI-lexicon Norvig edit-1) AND an LLM pass
+  (gpt-4o-mini, constrained "fix char-level OCR only, change as few chars as possible",
+  never told the law/date, cached) on the aksjeloven base, evaluated through the
+  **held-out point-in-time harness** (the recall discriminator).
+- **Both safe, both weak**: deterministic +2, LLM +3 (2001 ≥0.98). LLM char-edit rate
+  **2.3%**, and it helped held-out **2001 MORE than 2024** — i.e. no modernization/recall
+  bias. So a *constrained* LLM task gated on held-out point-in-time does NOT cheat here
+  (useful: settles the "can we use LLMs" question — yes, for narrow held-out-eval'd tasks).
+- **Residual diagnosis (the real finding)**: the still-failing "never-amended" provisions
+  differ from current by REAL missing amendments — `§8-4`/`§16-19` `skifteretten→tingretten`
+  (2002 court reform), `§20-5` a wording change — plus stray date-header artifacts. NOT OCR.
+  These are labelled "never amended" only because our stream didn't resolve the
+  omnibus/name-cited acts that changed them.
+- **Conclusion**: OCR is a MINOR contributor; the pre-2001 limiter is **amendment coverage**
+  (name→datokode + omnibus/blanket-terminology acts). Deprioritise OCR/LLM correction and
+  multimodal re-OCR — low ceiling. Infra now in place: OpenAI key at
+  `projects/scheme/.env`; a validated-safe held-out LLM-eval harness (scratchpad) for any
+  future narrow LLM task.
+
 ## 2026-08-12 — point-in-time metric UNBLOCKED (the real deliverable bar) (session)
 
 - [x] **Cracked Lovdata-Pro historical-version acquisition via Claude-in-Chrome.** Whole-

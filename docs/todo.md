@@ -2,12 +2,18 @@
 
 ## Next engine work (the real remaining lift)
 
-- [ ] **Name→datokode map (TOP LEVER for the pre-2001 half).** avtaleloven/aksjeloven/
-  foreldelsesloven are amended by acts citing them BY NAME ("aksjeloven"), so ~0 of their
-  pre-2001 amendments resolve a target and they're dropped from `--build` — their
-  convergence is base-only. A name→datokode map in `gazette.py` (short-name → enactment
-  datokode; seed from the current-law catalog / a curated list) would unlock these. Re-run
-  `gazette.py --build` after. Also fixes ~name-only acts across the whole corpus.
+- [ ] **Amendment coverage — THE pre-2001 lever (confirmed by OCR experiments 2026-08-12).**
+  Correcting OCR (deterministic OR LLM) barely helps; the residual gap on "never-amended"
+  provisions is REAL missing amendments (e.g. skifteretten→tingretten 2002 court reform,
+  wording changes) whose amending acts our gazette parser didn't resolve. Three sub-levers:
+  (a) **name→datokode map** — resolve "endr. i aksjeloven" style name citations;
+  (b) **omnibus acts** — "endr. i X, Y og enkelte andre lover" amend MANY laws but
+  `gazette.py` extracts only the first/none target — parse ALL targets per act;
+  (c) **blanket terminology reforms** — sweeping renames (skifteretten→tingretten) applied
+  across all laws; may need special handling. FIRST STEP: quantify how much of the
+  pre-2001 gap each sub-lever accounts for before building.
+- [ ] ~~OCR/LLM correction, multimodal re-OCR~~ — TESTED + DEPRIORITISED (2026-08-12,
+  see done.md): safe but low ceiling; OCR is a minor contributor.
 - [ ] **Preserve nr/bokstav markers in whole-provision replacement bodies.** `endringslov`/
   `gazette` strip `1. 2.` / `a) b)` markers from `§X skal lyde` / `Kapittel N skal lyde`
   bodies, so a later `nr. 4 skal lyde` finds no list and flags (~77 flagged nr ops). The
