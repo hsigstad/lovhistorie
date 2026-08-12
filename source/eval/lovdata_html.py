@@ -11,6 +11,7 @@ ASSUMES: provision ids look like `X-Y` / `X-Ya` (chapter-section, e.g. aksjelove
 """
 from __future__ import annotations
 
+import html as _html
 import re
 
 _ANCHOR = re.compile(r'<a name="_(\d+(?:-\d+)?[a-z]?)"\s*>', re.I)
@@ -22,8 +23,20 @@ def parse(html: str) -> dict[str, str]:
     out: dict[str, str] = {}
     for i, (pos, pid) in enumerate(anchors):
         end = anchors[i + 1][0] if i + 1 < len(anchors) else len(html)
-        txt = re.sub(r"<[^>]+>", " ", html[pos:end])
-        out.setdefault("§" + pid, " ".join(txt.split()))
+        # Decode HTML entities (the Aspose export uses &#xa0; etc.) BEFORE tag-strip, so
+        # a non-breaking space becomes real whitespace rather than the literal token "xa0"
+        # (x,a,0 are alphanumerics that normalize would otherwise keep as spurious text).
+        seg = _html.unescape(html[pos:end])
+        txt = " ".join(re.sub(r"<[^>]+>", " ", seg).split())
+        # Align with the gate's current-text representation (parse_lovdata_xml), which
+        # starts each provision at ". <title>" — i.e. the "§ N-M" heading number is NOT
+        # part of the provision text. The Lovdata HTML export keeps it ("§ 1-2. …"), and
+        # since metrics.normalize maps § -> space but keeps the digits, that heading would
+        # inject spurious "1 2" tokens and deflate similarity vs a correct reconstruction.
+        # Drop the leading heading number (+ any superscript footnote digits) so both
+        # sides are scored on the provision BODY only. (Henrik, 2026-08-12.)
+        txt = re.sub(r"^\s*§\s*" + re.escape(pid) + r"\s*\.?\s*\d{0,3}\s*", "", txt)
+        out.setdefault("§" + pid, txt)
     return out
 
 

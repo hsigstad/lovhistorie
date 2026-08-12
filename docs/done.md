@@ -10,15 +10,26 @@
   (`/workspace/gt_incoming`, = host `~/research/gt_incoming`; Henrik set Chrome's download
   dir there). `lovdata_html.parse_file` parses it. (Programmatic Blob download is blocked;
   the versions-list "bulk" download only yields a Referanseliste, not contents.)
-- [x] **First real point-in-time scores** — aksjeloven (1997-06-13-44), reconstruct(as_of)
-  vs held-out Lovdata truth:
-  - **2001-01-01**: mean **0.773**; ≥0.98 **0/265**; dist 0.90-0.98=92, 0.70-0.90=119, <0.70=54.
-  - **2024-01-01**: mean 0.692; ≥0.98 78/292; dist ≥0.98=78, 0.90-0.98=72, 0.70-0.90=44, <0.70=98.
-  - **Read**: reconstruction is RECOGNIZABLE (most provisions 0.70-0.98) but the strict
-    ≥0.98 exact bar is OCR-hostile — near-enactment (2001) everything is OCR-sourced
-    (enactment base + pre-2001 gazette-OCR amendments), so ~0 exact but 92 sit at 0.90-0.98
-    just under the bar. At 2024 the clean-LTI-replaced provisions hit ≥0.98. So: report
-    mean + distribution (per evaluation.md), and TAU=0.98 suits clean-data laws, not OCR.
+- [x] **Found + fixed a truth-parser metric artifact** (was masquerading as "OCR").
+  `lovdata_html.parse_file` kept the `§ N-M` heading number and left `&#xa0;` undecoded,
+  so `normalize` injected spurious `1 2`/`xa0` tokens and demoted correct provisions below
+  0.98. Objective test (never-amended `base`, pure OCR, exact-match count): vs the gate
+  parser = 81, vs the truth parser = **43 → 69 (drop `§` heading) → 81 (decode entities)**.
+  Fix: strip the leading `§ N-M` heading + `_html.unescape` in `lovdata_html.py`. This is
+  an eval-harness correctness fix (Henrik sign-off, held-out metric) — same class as
+  autojunk / G3 / phantom-reader. Not pipeline tuning.
+- [x] **True point-in-time scores** — aksjeloven (1997-06-13-44), reconstruct(as_of) vs
+  held-out Lovdata truth, ALIGNED parser:
+  - **2024-01-01** (near-current): ≥0.98 **125/292 (0.43)**, ≥0.90 150/292, mean 0.70 —
+    ≈ convergence-to-current (124/293), confirming the engine reconstructs recent past
+    states as well as the gate measures.
+  - **2001-01-01** (near-enactment): ≥0.98 **7/265 (0.03)**, ≥0.90 **128/265 (0.48)**,
+    mean 0.80.
+  - **Read (honest, resolved)**: the headline deflation was the metric artifact, now gone.
+    The RESIDUAL 2001 gap IS genuine OCR — near enactment everything is OCR-sourced
+    (base + pre-2001 gazette-OCR amendments), so provisions land ~0.90-0.97 (recognizable)
+    but rarely hit the strict 0.98. So: post-2001/clean-source point-in-time is strong;
+    pre-2001/OCR point-in-time is recognizable-not-exact and wants an OCR-calibrated τ.
 - Ground-truth files (`data/ground_truth/1997-06-13-44/{2001-01-01,2024-01-01}.html`) are
   gitignored (encumbered oracle); only `index.csv` is tracked.
 
