@@ -1,5 +1,32 @@
 # Done
 
+## 2026-08-12 (cont.) — ledd-engine lever MEASURED and deprioritised (measure-before-building)
+
+- **Question:** the ledd engine flags 334 `change` ops across the dev set (258 ledd, 32 punktum,
+  20 nr) — is finishing it the next big lever? **Measured answer: no.**
+- **The flag count is misleading.** 91 of 334 flags are on provisions that are EMPTY at apply
+  time (the provision was later wholesale-replaced by a `Kapittel N skal lyde` block, or never
+  created) — a pre-rewrite ledd edit to a provision that no longer exists **does not affect
+  convergence** (the final block replace determines current text). Of the rest, 147 are on
+  unstructured OCR-blob bases (no ledd markers) and 96 on structured bases (many aksjeloven-OCR
+  with noisy `(1) (1)` doubled markers).
+- **True convergence-relevant ceiling = 56 provisions** (failing current provisions whose LAST op
+  is a flagged ledd/punktum edit): aksjeloven 24, vphl 11, rettsgebyr 10, others ≤6. And these are
+  the *riskiest* cases: `nytt … punktum` / `nytt nr. N` INSERTS need Norwegian legal-sentence
+  segmentation (jf./nr./mv. abbreviations) → high fabrication risk for ~0.05 convergence. The one
+  "safe" subset (plain whole-ledd replace on clean vphl) turned out to be artifact-entangled
+  (empty `new_text`, doubled `(1) (1)`), not clean engine gaps. Doubled-marker collapse: 15
+  provisions, crosses 0.98 for **0** (errors cluster — lessons #6). **No clean win exists here.**
+- **τ-calibration measured** (the lever evaluation.md/lessons #6 actually prescribe for OCR laws):
+  corpus convergence @0.98=0.431, @0.95=0.472, @0.90=0.499; split-τ (clean@0.98, OCR@0.90)=**0.485**.
+  So the gap to 0.97 is **NOT** mainly metric strictness — even at τ=0.90 we're at ~0.50. Adopting a
+  per-source τ is a legitimate metric-policy decision (Henrik's call — it moves the headline number)
+  but buys only ~+55 provisions.
+- **The ACTUAL remaining levers (redirect):** (1) **missing/renumbered provisions** — add-op coverage
+  + `nåværende § X blir § Y` renumbering (kjøpsloven 125 missing, vphl cascade-empty); this is the
+  large structural bucket. (2) **hard-OCR provisions** well below 0.90 on pre-2001 bases. (3) post-2024
+  acts (LTI ends 2024 — permanently flagged). Ledd engine stays flag-don't-fabricate as-is.
+
 ## 2026-08-12 (cont.) — "unrecoverable" hole bases RECOVERED from PD booklets: 0.391 → 0.431 (session)
 
 - [x] **Overturned the kjøpsloven/rettsgebyrloven "unbuildable from NB" blocker.** The 1982/1988

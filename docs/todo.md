@@ -17,6 +17,19 @@
 - [ ] **Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser** (external, 2026-08-12)
   for the omnibus-act / `§N-M`-heading structuring lift — deterministic parts only, no RAG/LLM.
   See `docs/notes/external_source_repos.md`.
+- [ ] **Missing/renumbered provisions — the large structural lever (measured 2026-08-12).** The
+  biggest failing bucket is current provisions ABSENT from recon: added post-base via add-ops we
+  don't apply, or shifted by `nåværende § X blir § Y` renumbering (kjøpsloven 125 missing; vphl
+  ~45 "cascade-empty" where every later ledd edit then flags too). Resolve add/renumber ops so the
+  provisions exist. Higher yield + lower risk than the ledd engine.
+- [ ] ~~**ledd engine — finish insert/nr/punktum ops.**~~ MEASURED + DEPRIORITISED 2026-08-12
+  (see done.md): true convergence ceiling is only ~56 provisions and they are the *riskiest*
+  (INSERT `nytt … punktum` needs legal-sentence segmentation → fabrication risk). Not worth it vs
+  the missing-provision lever. Keep flag-don't-fabricate.
+- [ ] **DECISION (Henrik): adopt a per-source τ?** evaluation.md/lessons #6 prescribe OCR-calibrated
+  τ (~0.90) for pre-2001 OCR laws + report the distribution. Measured lift: split-τ (clean@0.98,
+  OCR@0.90) = 0.485 vs 0.431 flat. Legitimate (documented), but moves the headline number, so it's
+  a metric-policy call, not engine work.
 - [ ] **Preserve nr/bokstav markers in whole-provision replacement bodies.** `endringslov`/
   `gazette` strip `1. 2.` / `a) b)` markers from `§X skal lyde` / `Kapittel N skal lyde`
   bodies, so a later `nr. 4 skal lyde` finds no list and flags (~77 flagged nr ops). The
