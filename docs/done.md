@@ -1,5 +1,28 @@
 # Done
 
+## 2026-08-12 (cont.) — OCR-calibrated τ, DERIVED not guessed: strict 0.499 → OCR-calib 0.562 (session)
+
+- **Calibrated τ_OCR from the OCR-fidelity distribution, not a round number.** On NEVER-AMENDED
+  provisions (current == enactment → any gap is PURE OCR error, not reconstruction error;
+  evaluation.md check 3), pooled across the 7 OCR-based laws (n=311): a clean mode ≥0.98 (167),
+  a genuine-noise band [0.90,0.98) (45), then a distinct extraction-DEFECT tail below 0.90 (severe
+  corruption — a base-build problem τ must NOT hide). Rescue-ratio test (definitely-correct
+  never-amended : possibly-risky amended, in the band [τ,0.98)) holds **~4:1 from τ=0.97 down to
+  0.90**, then collapses to ~2.6:1 at 0.85. So **τ_OCR = 0.90** is the floor that recovers the
+  correct-but-noisy band and stops where the defect tail begins.
+- **Implementation (per-source, transparent, Henrik sign-off):** `pipeline.is_ocr_base()` = the
+  enactment `source` has no clean-LTI `lti` key (objective provenance set at build time — can't
+  hand-pick). `gate.TAU_OCR=0.90` applies ONLY to OCR-based laws; clean-LTI laws keep 0.98. The gate
+  now prints BOTH `convergence (OCR-calib)` and `convergence (strict τ)` + the τ used per law — the
+  loosening is always visible, never silently the bar.
+- **Result:** OCR-calibrated **0.562** (489/870) vs strict **0.499** (434/870). Guards G1/G2/G3 PASS.
+  Per-law rescues (all OCR laws @0.90): avtaleloven 24→29, oreigningslova 14→16, foreldelsesloven
+  12→18, rettsgebyr 2→3, mesterbrev 3→4, kjøpsloven 39→55, aksjeloven 125→149.
+- **Honest residual risk:** τ_OCR also loosens ~11 AMENDED OCR provisions in [0.90,0.98) which the
+  4:1 ratio says are *plausibly* OCR-noise but can't be individually confirmed as correct — hence
+  the strict number stays reported. The BIGGER OCR lever remains the sub-0.90 defect tail
+  (page-number/footnote leaks, boundary errors) — deterministic base-build fixes, not τ.
+
 ## 2026-08-12 (cont.) — "missing provisions" were treaty annexes: scope fix 0.431 → 0.499 (session)
 
 - **Chased the missing-provision lever; it was mostly a DENOMINATOR artifact.** Classifying every

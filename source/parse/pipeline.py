@@ -117,6 +117,20 @@ def enactment_base(target_law: str) -> dict:
     return json.loads(f.read_text(encoding="utf-8")).get("provisions", {})
 
 
+def is_ocr_base(target_law: str) -> bool:
+    """True if the enactment base was OCR'd from a gazette/booklet (its `source` has no
+    clean-LTI-XML `lti` key). OCR bases carry irreducible character noise, so the eval
+    applies an OCR-calibrated τ to them (gate.TAU_OCR); clean LTI bases keep the strict
+    τ. Objective + structural (the source provenance recorded at build time), so it can't
+    be used to hand-pick which provisions get the looser bar."""
+    dk = target_law.split("/")[-1]
+    f = _ENACTMENT / f"{dk}.json"
+    if not f.exists():
+        return False
+    src = json.loads(f.read_text(encoding="utf-8")).get("source", {})
+    return "lti" not in src
+
+
 def base_as_of(target_law: str) -> str | None:
     """The version boundary a SNAPSHOT base was captured at (booklet 'ajourført' date),
     or None for a pure enactment base. When set, the base already incorporates every

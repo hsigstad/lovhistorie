@@ -32,10 +32,9 @@
   (see done.md): true convergence ceiling is only ~56 provisions and they are the *riskiest*
   (INSERT `nytt … punktum` needs legal-sentence segmentation → fabrication risk). Not worth it vs
   the missing-provision lever. Keep flag-don't-fabricate.
-- [ ] **DECISION (Henrik): adopt a per-source τ?** evaluation.md/lessons #6 prescribe OCR-calibrated
-  τ (~0.90) for pre-2001 OCR laws + report the distribution. Measured lift: split-τ (clean@0.98,
-  OCR@0.90) = 0.485 vs 0.431 flat. Legitimate (documented), but moves the headline number, so it's
-  a metric-policy call, not engine work.
+- [x] ~~**DECISION (Henrik): adopt a per-source τ?**~~ DONE 2026-08-12: τ_OCR=0.90 DERIVED from the
+  never-amended OCR-fidelity distribution (4:1 rescue-ratio floor), applied per-source, dual-reported
+  (OCR-calib + strict) in the gate. Convergence 0.499→0.562 (statutory). See done.md.
 - [ ] **Preserve nr/bokstav markers in whole-provision replacement bodies.** `endringslov`/
   `gazette` strip `1. 2.` / `a) b)` markers from `§X skal lyde` / `Kapittel N skal lyde`
   bodies, so a later `nr. 4 skal lyde` finds no list and flags (~77 flagged nr ops). The

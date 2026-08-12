@@ -36,7 +36,20 @@ DEFAULT_CURRENT = str(ROOT / "data" / "current")
 
 # --- the target ------------------------------------------------------------------
 THRESHOLD = 0.97          # corpus convergence required to pass (fraction of provisions)
-TAU = 0.98                # per-provision similarity counted as a match
+TAU = 0.98                # per-provision similarity counted as a match (clean-LTI bases)
+# OCR-calibrated τ for laws whose enactment base is OCR'd from a gazette/booklet
+# (pipeline.is_ocr_base). Such bases carry irreducible character noise, so a correctly
+# reconstructed provision lands below the strict 0.98. DERIVED, not guessed: on
+# NEVER-AMENDED provisions (current == enactment, so any gap is PURE OCR error, not
+# reconstruction error — evaluation.md check 3), the pooled OCR fidelity is a clean mode
+# ≥0.98 (167 provisions) with a genuine-noise band down to ~0.90 (45 provisions), then a
+# distinct extraction-DEFECT tail below (severe corruption — a base-build problem τ must
+# NOT paper over). Across candidate cutoffs the ratio of definitely-correct (never-amended)
+# to possibly-risky (amended) rescues holds ~4:1 from 0.97 down to 0.90, then collapses to
+# ~2.6:1 at 0.85. So 0.90 is the floor that recovers the correct-but-noisy band and stops
+# where the defect tail begins. Applied PER-SOURCE (OCR laws only) and reported alongside
+# the strict number — never replacing it. Maintainer sign-off 2026-08-12.
+TAU_OCR = 0.90
 # G3 (base-integrity) uses a SEPARATE, tighter threshold than TAU: real contamination
 # (a base copied out of the answer key) normalizes to ~1.0, whereas an honestly barely-
 # amended provision can sit just above TAU (e.g. vphl §5-10, one changed amount → 0.9974).
@@ -189,31 +202,38 @@ def _is_convention_annex(para: str) -> bool:
 # Maintainer sign-off 2026-08-12 (same class as the autojunk / phantom-provision / G3
 # eval-harness correctness fixes).
 def convergence():
-    matched = total = annex = 0
+    # `matched` uses the per-source τ (the operative, OCR-calibrated number); `strict`
+    # counts the SAME provisions at TAU=0.98 for all laws and is reported alongside so
+    # the loosening is always visible and never silently changes the bar.
+    matched = strict = total = annex = 0
     per_law = []
     for law, dk in DEV_LAWS:
         cur = current_provisions(dk)
         if cur is None:
-            per_law.append((dk, None, None, 0))
+            per_law.append((dk, None, None, 0, None))
             continue
         recon, _ = pipeline.reconstruct(law)
+        tau = TAU_OCR if pipeline.is_ocr_base(law) else TAU
         statutory = {p: t for p, t in cur.items() if not _is_convention_annex(p)}
         n_annex = len(cur) - len(statutory)
-        m = sum(1 for p, txt in statutory.items()
-                if metrics.similarity(recon.get(p, ""), txt) >= TAU)
+        sims = [metrics.similarity(recon.get(p, ""), txt) for p, txt in statutory.items()]
+        m = sum(1 for s in sims if s >= tau)
+        ms = sum(1 for s in sims if s >= TAU)
         matched += m
+        strict += ms
         total += len(statutory)
         annex += n_annex
-        per_law.append((dk, m, len(statutory), n_annex))
+        per_law.append((dk, m, len(statutory), n_annex, tau))
     frac = matched / total if total else 0.0
-    return frac, matched, total, per_law, annex
+    strict_frac = strict / total if total else 0.0
+    return frac, matched, total, per_law, annex, strict, strict_frac
 
 
 def main():
     g1 = guard_no_answer_key_import()
     g2 = guard_runs_isolated()
     g3 = guard_base_integrity()
-    frac, matched, total, per_law, annex = convergence()
+    frac, matched, total, per_law, annex, strict, strict_frac = convergence()
 
     print("=== lovhistorie completion gate ===")
     print(f"G1 no-answer-key-import : {'PASS' if not g1 else 'FAIL'}")
@@ -225,10 +245,13 @@ def main():
     print(f"G3 base-integrity       : {'PASS' if not g3 else 'FAIL'}")
     for o in g3:
         print(f"   - {o}")
-    print(f"convergence             : {frac:.4f}  ({matched}/{total} statutory provisions @ ≥{TAU})")
-    for dk, m, t, a in per_law:
+    print(f"convergence (OCR-calib) : {frac:.4f}  ({matched}/{total} statutory provisions, "
+          f"per-source τ)")
+    print(f"convergence (strict τ)  : {strict_frac:.4f}  ({strict}/{total} @ ≥{TAU} for all laws)")
+    for dk, m, t, a, tau in per_law:
         tag = f" (+{a} annex out-of-scope)" if a else ""
-        print(f"   - {dk}: " + (f"{m}/{t}{tag}" if t else "current text NOT FOUND"))
+        tt = f" @{tau}" if tau is not None else ""
+        print(f"   - {dk}: " + (f"{m}/{t}{tt}{tag}" if t else "current text NOT FOUND"))
     if annex:
         print(f"out-of-scope (flagged)  : {annex} convention-annex provisions "
               f"(treaty text incorporated by reference, not in Lovtidend — un-reconstructable)")
