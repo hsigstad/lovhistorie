@@ -17,11 +17,17 @@
 - [ ] **Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser** (external, 2026-08-12)
   for the omnibus-act / `§N-M`-heading structuring lift — deterministic parts only, no RAG/LLM.
   See `docs/notes/external_source_repos.md`.
-- [ ] **Missing/renumbered provisions — the large structural lever (measured 2026-08-12).** The
-  biggest failing bucket is current provisions ABSENT from recon: added post-base via add-ops we
-  don't apply, or shifted by `nåværende § X blir § Y` renumbering (kjøpsloven 125 missing; vphl
-  ~45 "cascade-empty" where every later ledd edit then flags too). Resolve add/renumber ops so the
-  provisions exist. Higher yield + lower risk than the ledd engine.
+- [x] ~~**Missing/renumbered provisions — the large structural lever.**~~ MEASURED 2026-08-12: it
+  was mostly a DENOMINATOR artifact — 138/1008 "missing" were treaty annexes (CISG/limitation
+  convention) incorporated by reference, un-reconstructable from Lovtidend. Fixed by scoping the
+  convergence denominator to statutory provisions (see done.md). Real remaining tail is small:
+  a few OCR base-drops (kjøpsloven §1/§50/§71, foreldelsesloven §15a) + ~35 renumber-targets.
+- [ ] **Renumber-target provisions (~35, the hard residual).** `nåværende § X blir § Y` structural
+  ops move a provision to a new id; we flag them, so the target id is absent from recon. Handling
+  needs tracking id remaps over time (a provision's id is version-dependent). Fiddly; modest yield.
+- [ ] **OCR base-drops (small, safe).** A handful of real statutory provisions are dropped by base
+  OCR extraction — kjøpsloven §1/§50 (l/1 confusion: "§ l."), §71; foreldelsesloven §15a. Fix the
+  `_HEAD` regex / booklet page span. ~4 provisions, low risk.
 - [ ] ~~**ledd engine — finish insert/nr/punktum ops.**~~ MEASURED + DEPRIORITISED 2026-08-12
   (see done.md): true convergence ceiling is only ~56 provisions and they are the *riskiest*
   (INSERT `nytt … punktum` needs legal-sentence segmentation → fabrication risk). Not worth it vs

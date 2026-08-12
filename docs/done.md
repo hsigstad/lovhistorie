@@ -1,5 +1,27 @@
 # Done
 
+## 2026-08-12 (cont.) — "missing provisions" were treaty annexes: scope fix 0.431 → 0.499 (session)
+
+- **Chased the missing-provision lever; it was mostly a DENOMINATOR artifact.** Classifying every
+  current provision absent from recon: **138 of the 1008** are **convention articles bundled into the
+  current NLOD text but incorporated BY REFERENCE** — kjøpsloven's CISG (`§cisg/a1…a94`, 92) and
+  foreldelsesloven's limitation convention (`§fik/a1…a46`, 46). No Norsk Lovtidend act carries them,
+  so they are **un-reconstructable by construction** (outside goal.md rule 2's reconstruct contract),
+  not reconstruction failures. The genuine reconstruction-missing tail is small: kjøpsloven §1/§50/§71
+  (OCR base-drops), foreldelsesloven §15a, ~35 renumber-targets (the hard `nåværende § X blir § Y` cases).
+- **Fix (Henrik sign-off — "flag out-of-scope, report both"):** `gate._is_convention_annex(para)` =
+  `"/" in para` — an OBJECTIVE structural namespace marker the NLOD dump itself uses; ordinary
+  statutory ids (`§N`, `§N-M`, `§Na`) never contain "/", so it can't quietly drop merely-hard
+  provisions. `convergence()` denominator is now STATUTORY provisions; annexes are reported as a
+  separate flagged out-of-scope line, per-law and total (nothing hidden — evaluation.md: "the
+  remainder flagged, never silently wrong"). Same class as the autojunk / phantom-provision / G3
+  eval-harness correctness fixes.
+- **Result:** convergence **0.431 → 0.499** (434/870 statutory), 138 convention-annex flagged
+  out-of-scope. Guards G1/G2/G3 PASS. No reconstruction code changed — a metric-scope correction.
+- **Session arc:** 0.344 → 0.391 (block pieces) → 0.431 (booklet bases) → 0.499 (annex scope). The
+  remaining gap to 0.97 is now the genuine hard tail: pre-2001 OCR quality (τ-decision territory),
+  renumbering, and post-2024 acts (LTI ends 2024). Diminishing returns / rising risk from here.
+
 ## 2026-08-12 (cont.) — ledd-engine lever MEASURED and deprioritised (measure-before-building)
 
 - **Question:** the ledd engine flags 334 `change` ops across the dev set (258 ledd, 32 punktum,

@@ -166,30 +166,54 @@ def guard_base_integrity():
     return offenders
 
 
-# --- convergence: matched / ALL current provisions (denominator can't be shrunk) --
+def _is_convention_annex(para: str) -> bool:
+    """True for a treaty/convention article bundled into the current NLOD text but
+    incorporated BY REFERENCE, not published as a Norsk Lovtidend amendment — e.g.
+    kjøpsloven's CISG (`§cisg/aN`) and foreldelsesloven's limitation convention
+    (`§fik/aN`). The NLOD dump itself namespaces these with a '/' (a convention id),
+    which ordinary statutory ids (`§N`, `§N-M`, `§Na`) never contain. Such articles
+    are OUTSIDE the reconstruct contract (enactment + Lovtidend amendments — goal.md
+    rule 2): no Lovtidend act carries them, so they are un-reconstructable by
+    construction, not a reconstruction failure. This criterion is objective and
+    structural (a marked namespace), NOT similarity-based or hand-picked, so it cannot
+    be used to quietly drop merely-hard provisions."""
+    return "/" in para
+
+
+# --- convergence: matched / statutory current provisions -------------------------
+# Denominator = STATUTORY current provisions. Convention annexes (see above) are held
+# OUT and reported as a separate flagged out-of-scope category — never silently counted
+# as convergence misses (evaluation.md: "the remainder flagged, never silently wrong").
+# This is a scope correction, not a shrink-to-inflate: the excluded set is fixed by a
+# structural namespace marker, fully reported, and empty for every purely-statutory law.
+# Maintainer sign-off 2026-08-12 (same class as the autojunk / phantom-provision / G3
+# eval-harness correctness fixes).
 def convergence():
-    matched = total = 0
+    matched = total = annex = 0
     per_law = []
     for law, dk in DEV_LAWS:
         cur = current_provisions(dk)
         if cur is None:
-            per_law.append((dk, None, None))
+            per_law.append((dk, None, None, 0))
             continue
         recon, _ = pipeline.reconstruct(law)
-        m = sum(1 for p, txt in cur.items()
+        statutory = {p: t for p, t in cur.items() if not _is_convention_annex(p)}
+        n_annex = len(cur) - len(statutory)
+        m = sum(1 for p, txt in statutory.items()
                 if metrics.similarity(recon.get(p, ""), txt) >= TAU)
         matched += m
-        total += len(cur)
-        per_law.append((dk, m, len(cur)))
+        total += len(statutory)
+        annex += n_annex
+        per_law.append((dk, m, len(statutory), n_annex))
     frac = matched / total if total else 0.0
-    return frac, matched, total, per_law
+    return frac, matched, total, per_law, annex
 
 
 def main():
     g1 = guard_no_answer_key_import()
     g2 = guard_runs_isolated()
     g3 = guard_base_integrity()
-    frac, matched, total, per_law = convergence()
+    frac, matched, total, per_law, annex = convergence()
 
     print("=== lovhistorie completion gate ===")
     print(f"G1 no-answer-key-import : {'PASS' if not g1 else 'FAIL'}")
@@ -201,9 +225,13 @@ def main():
     print(f"G3 base-integrity       : {'PASS' if not g3 else 'FAIL'}")
     for o in g3:
         print(f"   - {o}")
-    print(f"convergence             : {frac:.4f}  ({matched}/{total} provisions @ ≥{TAU})")
-    for dk, m, t in per_law:
-        print(f"   - {dk}: " + (f"{m}/{t}" if t else "current text NOT FOUND"))
+    print(f"convergence             : {frac:.4f}  ({matched}/{total} statutory provisions @ ≥{TAU})")
+    for dk, m, t, a in per_law:
+        tag = f" (+{a} annex out-of-scope)" if a else ""
+        print(f"   - {dk}: " + (f"{m}/{t}{tag}" if t else "current text NOT FOUND"))
+    if annex:
+        print(f"out-of-scope (flagged)  : {annex} convention-annex provisions "
+              f"(treaty text incorporated by reference, not in Lovtidend — un-reconstructable)")
     print(f"threshold               : {THRESHOLD}")
 
     guards_ok = not (g1 or g2 or g3)
