@@ -1,5 +1,27 @@
 # Done
 
+## 2026-08-12 — point-in-time metric UNBLOCKED (the real deliverable bar) (session)
+
+- [x] **Cracked Lovdata-Pro historical-version acquisition via Claude-in-Chrome.** Whole-
+  document view URL = `#document/HIST/lov/<datokode>-<YYYYMMDD>/*` (date must be an exact
+  version boundary — arbitrary dates redirect to current). Download flow: toolbar
+  "Last ned dokumentet" (find by ref, NOT coordinates — the /* view defeats blind clicks)
+  → Format=HTML → submit → lands in a Chrome-download folder mapped into the sandbox
+  (`/workspace/gt_incoming`, = host `~/research/gt_incoming`; Henrik set Chrome's download
+  dir there). `lovdata_html.parse_file` parses it. (Programmatic Blob download is blocked;
+  the versions-list "bulk" download only yields a Referanseliste, not contents.)
+- [x] **First real point-in-time scores** — aksjeloven (1997-06-13-44), reconstruct(as_of)
+  vs held-out Lovdata truth:
+  - **2001-01-01**: mean **0.773**; ≥0.98 **0/265**; dist 0.90-0.98=92, 0.70-0.90=119, <0.70=54.
+  - **2024-01-01**: mean 0.692; ≥0.98 78/292; dist ≥0.98=78, 0.90-0.98=72, 0.70-0.90=44, <0.70=98.
+  - **Read**: reconstruction is RECOGNIZABLE (most provisions 0.70-0.98) but the strict
+    ≥0.98 exact bar is OCR-hostile — near-enactment (2001) everything is OCR-sourced
+    (enactment base + pre-2001 gazette-OCR amendments), so ~0 exact but 92 sit at 0.90-0.98
+    just under the bar. At 2024 the clean-LTI-replaced provisions hit ≥0.98. So: report
+    mean + distribution (per evaluation.md), and TAU=0.98 suits clean-data laws, not OCR.
+- Ground-truth files (`data/ground_truth/1997-06-13-44/{2001-01-01,2024-01-01}.html`) are
+  gitignored (encumbered oracle); only `index.csv` is tracked.
+
 ## 2026-08-11 (cont.) — 4000-char block truncation fixed: 0.262 → 0.343 (session)
 
 - [x] **Diagnosed the loss** — categorized 527 non-converged provisions across based laws:
