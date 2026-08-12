@@ -10,6 +10,7 @@
 # link/citation refs are no-ops here (this repo has no AN/cite/anec/hyp docs).
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 from sitekit import SiteConfig
@@ -18,10 +19,40 @@ from sitekit import SiteConfig
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 
 
+# --- live performance snapshot (written by `python -m source.eval.status`) --------
+# Headlined at the top of the landing page so the latest number is the first thing
+# a visitor sees. Absent (fresh clone, never run) -> the card is simply omitted.
+def _load_status():
+    p = PROJECT_ROOT / "docs" / "status.json"
+    if not p.exists():
+        return None
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return None
+
+
+_STATUS = _load_status()
+_PERF_BRIEF = None
+if _STATUS and _STATUS.get("total"):
+    _pct = f"{_STATUS['convergence'] * 100:.0f}%"
+    _guards = "pass" if _STATUS.get("guards_pass") else "FAIL"
+    _PERF_BRIEF = (
+        "docs/status.md", "docs/status.html",
+        f"Performance: {_pct} convergence",
+        (f"Latest reconstruction fidelity &mdash; {_STATUS['matched']}/{_STATUS['total']} "
+         f"dev-set provisions rebuilt from gazette history to today&rsquo;s official "
+         f"text (anti-gaming guards {_guards}). As of {_STATUS['as_of']}."),
+        "Live", "priority-start",
+    )
+
+
 # (rel_path, title, description, category)
 # Handoff notes under docs/notes/handoffs/ are ephemeral (consumed and
 # git-rm'd) and are intentionally left out of the site.
 DOC_REGISTRY = [
+    # --- Status ---
+    ("docs/status.md",                            "Performance",               "Latest convergence number and what it means",         "Status"),
     # --- Reference ---
     ("README.md",                                 "Overview",                  "What the pipeline builds and why",                    "Reference"),
     ("docs/goal.md",                              "Goal",                      "Autonomous goal + machine-checkable gate condition",  "Reference"),
@@ -43,7 +74,9 @@ DOC_REGISTRY = [
 
 # (rel_path, href, label, description, priority, priority_class)
 # The landing-page "Reading Guide" — start-here entry points, in reading order.
-GUIDE_BRIEFS = [
+# The live Performance card (if a status snapshot exists) is prepended below so the
+# latest number leads the page.
+_BASE_GUIDE_BRIEFS = [
     ("docs/notes/lessons_and_pitfalls.md", "docs/notes/lessons_and_pitfalls.html",
      "Lessons &amp; Pitfalls",
      "Read first &mdash; nearly every &ldquo;hard wall&rdquo; here turned out to be a measurement bug, not a reconstruction limit.",
@@ -65,6 +98,8 @@ GUIDE_BRIEFS = [
      "The Lovdata-Pro validation oracle &mdash; eval-only, never redistributed.",
      "Reference", "priority-ref"),
 ]
+
+GUIDE_BRIEFS = ([_PERF_BRIEF] if _PERF_BRIEF else []) + _BASE_GUIDE_BRIEFS
 
 
 config = SiteConfig(

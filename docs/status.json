@@ -1,0 +1,72 @@
+{
+  "as_of": "2026-08-12",
+  "convergence": 0.3442,
+  "matched": 347,
+  "total": 1008,
+  "tau": 0.98,
+  "threshold": 0.97,
+  "guards_pass": true,
+  "guards": {
+    "G1": true,
+    "G2": true,
+    "G3": true
+  },
+  "verdict": "IN PROGRESS",
+  "n_dev_laws": 9,
+  "per_law": [
+    {
+      "datokode": "1918-05-31-4",
+      "law": "avtaleloven",
+      "matched": 24,
+      "total": 45
+    },
+    {
+      "datokode": "1959-10-23-3",
+      "law": "oreigningslova",
+      "matched": 14,
+      "total": 33
+    },
+    {
+      "datokode": "1979-05-18-18",
+      "law": "foreldelsesloven",
+      "matched": 12,
+      "total": 79
+    },
+    {
+      "datokode": "1982-12-17-86",
+      "law": "rettsgebyrloven",
+      "matched": 1,
+      "total": 38
+    },
+    {
+      "datokode": "1986-06-20-35",
+      "law": "mesterbrevloven",
+      "matched": 3,
+      "total": 11
+    },
+    {
+      "datokode": "1988-05-13-27",
+      "law": "kjøpsloven",
+      "matched": 0,
+      "total": 180
+    },
+    {
+      "datokode": "1997-06-13-44",
+      "law": "aksjeloven",
+      "matched": 125,
+      "total": 293
+    },
+    {
+      "datokode": "2007-06-29-75",
+      "law": "verdipapirhandelloven",
+      "matched": 142,
+      "total": 300
+    },
+    {
+      "datokode": "2009-06-19-103",
+      "law": "tjenesteloven",
+      "matched": 26,
+      "total": 29
+    }
+  ]
+}
