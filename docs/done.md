@@ -36,9 +36,14 @@
   that ledd (§5-10 0.998→0.887, §4-13 0.998→0.629). ROOT CAUSE: op `date` is the ACT date, not the true
   ikrafttredelse, so sub- and whole-provision ops on one § apply out of order + the ledd engine isn't
   idempotent. Sub-provision recovery needs TRUE in-force dates first (the `date_in_force_resolved` TODO);
-  the `whole_only=False` path exists to re-measure once that lands. (b) blanket-terminology sections
-  ("«Kredittilsynet» → «Finanstilsynet» i følgende bestemmelser: …") — deterministic term substitution
-  across listed provisions, a real op type still skipped; (c) pre-2001 acts (~55, gazette/OCR — harder).
+  the `whole_only=False` path exists to re-measure once that lands. (b) ~~blanket-terminology sections~~
+  MEASURED-ZERO 2026-08-13: 68 blanket-substitution sections across LTI, only 8 touch a dev law, and
+  applying them converts **0** currently-missed dev provisions (the dev laws have no term-ONLY misses;
+  §7-2 helps 0.438→0.495 but has other diffs). Not worth a new op type for the dev set — revisit only if
+  a full-corpus run shows term-only misses elsewhere. (c) pre-2001 acts (~55, gazette/OCR — harder).
+  **Net: the LTI omnibus lever is fully exploited by whole-provision v1 (+14); both extensions measured
+  not-worth-it. The remaining real convergence lever is TRUE ikrafttredelse dates (unlocks sub-provision
+  +6 and general op-ordering correctness), then the pre-2001 gazette tail.**
 
 ## 2026-08-13 (cont.) — sub-unit-repeal over-deletion BUG fixed: 0.621 → 0.638, deliverable 0.786 → 0.804
 
