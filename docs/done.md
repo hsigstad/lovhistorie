@@ -1,6 +1,45 @@
 # Done
 
-## 2026-08-13 (cont.) — in-force-date lever DIAGNOSED: the sub-provision −6 is NOT-YET-IN-FORCE ops, not op-ordering (needs a res-harvest, corpus lacks it)
+## 2026-08-13 (cont.) — the −6 was a BLOCK-HEADER LEAK (not in-force); fixed + sub-unit repeals enabled: 0.655 → 0.662
+
+- **RESOLVED the sub-provision −6 — and the earlier same-session "blocked on a res-harvest" call was wrong.**
+  Kept digging one step past it. The aksjeloven regressions (§4-13/§5-10/§13-18/§4-24) were NOT
+  not-yet-in-force ops — they were **allmennaksjeloven (`1997-06-13-45`) ops mis-attributed to aksjeloven
+  (`…-44`)** via a missed block boundary. `lov 2019-03-15-6`'s consequential-amendments chapter introduces
+  its nr. 44 block with "**I** lov 13. juni 1997 nr. 44 … gjøres følgende endringer:" but its nr. 45 block
+  with "**Lov av** 13. juni 1997 nr. 45 … gjøres følgende endringer:". `_BLOCK_HEADER` required the "I lov"
+  prefix, so the nr. 45 block was never bounded and ALL of allmennaksjeloven's VPS ops (§4-13 "registrering i
+  en verdipapirsentral" etc. — a *public*-company concept that was never private aksjeloven's §4-13) leaked
+  into the nr. 44 block. Same bug-class as the earlier section-vs-block fix, via a header form it missed.
+- **Fix (deterministic, no network):** broadened `_BLOCK_HEADER` to accept `(?:I\s+lov|Lov(?:\s+av)?)` before
+  the cite. Safe — the "gjøres følgende endringer:" anchor is the real guard and `[^§]*?` can't span a prior
+  block's ops (they contain §), so preamble title lines can't false-match. Global effect: +96 correctly-bounded
+  blocks across 83 acts, all resolving; the derived stream grew 735 → 1,502 correct missing sections. Under the
+  shipped whole-provision path convergence is UNCHANGED at 0.655 (correctness-neutral; the leaked ops weren't
+  moving the whole-provision score) — but it flips `whole_only=False` from **net 0 → net +3**.
+- **Then captured a CLEAN +6 by enabling SUB-UNIT REPEALS (the safe subset), keeping sub-provision replace/add
+  off.** The `whole_only=False` gains split perfectly by op TYPE: all 6 gains are ledd *repeals*
+  ("§ X annet ledd oppheves" — kjøpsloven §7/§17/§32/§35/§45/§67, the 2002 forbrukerkjøp reform, from a
+  concrete-dated in-force act), all 3 residual regressions are ledd *replacements* ("… skal lyde"). Sub-unit
+  repeals are safe: replay routes them through `ledd.apply`, which flags-and-leaves-intact on an unresolved
+  address (the 2026-08-13 over-deletion fix), never emptying a §. Enabled them in `_parse_block` (default path).
+  **Result: convergence 0.6550 → 0.6622 (+6, 543→549), strict τ 0.5754 → 0.5826, guards PASS, ZERO τ-regression**
+  (verified per-provision; the lone non-crossing move is §31 0.747→0.629, already failing, recon longer-not-
+  emptied — no score impact, no corruption). Deliverable point-in-time μ unchanged at 0.807 (the +6 are
+  kjøpsloven; all 3 held-out GT versions are aksjeloven).
+- **The residual −3 replacements (§21-15/§5-27/§16-9) are NOT in-force — I proved it.** Built an in-force
+  resolution index from the corpus itself (the ikrafttredelsesresolusjoner are `sf-` forskrifter already in
+  `data/lti/`, NOT a missing harvest as I'd first concluded): 1,173 "Ikraftsetting av lov …" resolutions →
+  1,007 triggered acts. All three regressing acts ARE triggered/in force (2021-04-23-22 → 2021-07-01,
+  2020-11-20-128 → 2021-01-01, etc.), so applying their sub-provision REPLACEMENTS should help but instead
+  garbles — i.e. the blocker is **ledd-engine idempotency / double-application** (a whole-provision rebuild +
+  an in-force sub-op on one §), the risky ledd tail already deferred, NOT in-force dates. The `sf-` in-force
+  index remains available for future point-in-time gating, but convergence doesn't need it.
+- **Net: +6 clean (0.662), one deterministic parse fix + one safe scope widening. Deferred: sub-provision
+  replace/add (ledd double-application — needs an idempotent ledd apply, then the sf- in-force gate for the
+  point-in-time side).**
+
+## 2026-08-13 (cont.) — in-force-date lever DIAGNOSED: the sub-provision −6 is NOT-YET-IN-FORCE ops, not op-ordering (needs a res-harvest, corpus lacks it) [SUPERSEDED same day — see entry above: the −6 was a header leak, and the res-data was already in-corpus as sf- docs]
 
 - **Set out to "resolve true ikrafttredelse dates" — the follow-up the LTI-omnibus entry named as the
   key remaining convergence lever ("unlocks sub-provision +6, op-ordering correctness").** Measured the

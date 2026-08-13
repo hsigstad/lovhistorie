@@ -30,10 +30,10 @@
     "similarity_mean": 0.8067
   },
   "as_of": "2026-08-13",
-  "convergence": 0.655,
-  "convergence_strict": 0.5754,
-  "matched": 543,
-  "matched_strict": 477,
+  "convergence": 0.6622,
+  "convergence_strict": 0.5826,
+  "matched": 549,
+  "matched_strict": 483,
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -92,7 +92,7 @@
     {
       "datokode": "1988-05-13-27",
       "law": "kjøpsloven",
-      "matched": 55,
+      "matched": 61,
       "total": 87,
       "tau": 0.9,
       "annex": 92

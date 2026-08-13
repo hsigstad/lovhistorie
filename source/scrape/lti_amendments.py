@@ -14,8 +14,11 @@ REASONING: each `<section class="section">` is one target law's block: a header
     trailed by the new-text content articles up to the next instruction. Structure-based
     extraction (not OCR regex): the instruction is the defaultP, the new text is the
     content between it and the next instruction.
-ASSUMES / SCOPE: modern (2001+) LTI XML with `class="section"` blocks. Only "I lov <cite>
-    ... gjøres følgende endringer:" sections are parsed; blanket-terminology sections
+ASSUMES / SCOPE: modern (2001+) LTI XML with `class="section"` blocks. Blocks are bounded by
+    the amendment header "I lov <cite> ... gjøres følgende endringer:" OR the bare-title variant
+    "Lov [av] <cite> om <name> ... gjøres følgende endringer:" (a consequential-amendments chapter
+    uses both — see _BLOCK_HEADER). Op scope = whole-provision replace/add + sub-unit repeals;
+    sub-provision replace/add is gated (see _parse_block). Blanket-terminology sections
     ("uttrykket «A» endres til «B» i følgende bestemmelser: …") and ikrafttredelse tails
     are SKIPPED (flag-don't-fabricate — recorded, not guessed). Emits only (act,target)
     sections NOT already present in the external stream, so the merge is purely additive
@@ -48,8 +51,18 @@ OUT = ROOT / "data" / "lti_amendments.jsonl.gz"
 # block; splitting on <section> mis-lumped them all under the first cite. So we scan the WHOLE
 # act body for these headers and bound each block at the next header. `[^§]*?` keeps the header
 # from swallowing the first op's '§' if a title is unusually long.
+#
+# The prefix is "I lov <cite>" for most blocks, but a consequential-amendments chapter listing
+# many laws also uses the bare-title form "Lov [av] <cite> om <name> … gjøres følgende endringer:"
+# for some items (e.g. lov 2019-03-15-6 introduces its nr. 44 aksjeloven block with "I lov …" but
+# its nr. 45 allmennaksjeloven block with "Lov av …"). Missing the "Lov [av] …" form left the nr.
+# 45 block unbounded, so ALL of allmennaksjeloven's ops (its §4-13/§5-10/§13-18 verdipapirsentral
+# amendments) leaked into the preceding nr. 44 aksjeloven block — a mis-attribution, NOT an in-force
+# problem. Accepting both prefixes fixes the boundary. Safe to broaden: the "gjøres følgende
+# endringer:" anchor is the real guard, and `[^§]*?` cannot span a preceding block's ops (they
+# contain §), so a bare preamble title line can't false-match a later law's "gjøres" header.
 _BLOCK_HEADER = re.compile(
-    r"I\s+lov\s+(\d{1,2}\.?\s*[a-zæøå]+\.?\s*\d{4}\s*nr\.?\s*\d+)[^§]*?"
+    r"(?:I\s+lov|Lov(?:\s+av)?)\s+(\d{1,2}\.?\s*[a-zæøå]+\.?\s*\d{4}\s*nr\.?\s*\d+)[^§]*?"
     r"gj[øo]res?\s+f[øo]lg\w*\s+endring\w*\s*:", re.I)
 # an instruction paragraph (defaultP that states an op, not the header/plain prose)
 _DEFP = re.compile(r'<article class="defaultP"[^>]*>(.*?)</article>', re.S)
@@ -90,20 +103,26 @@ def _parse_block(block_html: str, whole_only: bool = True):
         content = _xml_text(block_html[e:end])
         para = _para_id(instr)
         ct = _change_type(instr)
-        # SCOPE — WHOLE-PROVISION replace/add ONLY (whole_only, the default + shipped path).
-        # These are self-contained: the new text is the entire provision body, so re-attaching
-        # its '§ N.' heading makes a clean overwrite via replay's §-body branch.
-        # Sub-provision ops (ledd/punktum/nr) are MEASURED-net-zero and disabled: including
-        # them gave +6 provisions but −6 regressions on the dev set (2026-08-13). The
-        # regressions are DOUBLE-APPLICATION — a "nytt sjette ledd skal lyde" applied to a
-        # provision a later whole-provision op already rebuilt with that ledd (§5-10 0.998→0.887,
-        # §4-13 0.998→0.629). Root cause: our op `date` is the ACT date, not the true
-        # ikrafttredelse, so sub-provision and whole-provision ops on one § apply out of order
-        # and the ledd engine is not idempotent. Enabling sub-provision recovery needs true
-        # in-force dates FIRST. `whole_only=False` exists to re-measure once that lands.
+        # SCOPE (shipped default): WHOLE-PROVISION replace/add + SUB-UNIT REPEALS.
+        # - Whole-provision replace/add: self-contained (new text is the entire provision body),
+        #   so re-attaching its '§ N.' heading makes a clean overwrite via replay's §-body branch.
+        # - Sub-unit repeals ("§ X annet ledd oppheves"): SAFE to include — replay routes them
+        #   through ledd.apply, which FLAGS-AND-LEAVES-INTACT if the address doesn't resolve
+        #   (never deletes the whole §; see the 2026-08-13 over-deletion fix). Net +6 on the dev
+        #   set (kjøpsloven §7/§17/§32/§35/§45/§67), ZERO τ-regression.
+        # Sub-provision REPLACE/ADD ("… skal lyde:" on a ledd/punktum/nr) stay gated off
+        # (`whole_only`): they gave +6 but −6 on the dev set — DOUBLE-APPLICATION when a
+        # whole-provision rebuild and an in-force sub-op touch the same § and the ledd engine is
+        # not idempotent (§21-15 1.000→0.729, §5-27, §16-9). NB: the −6 that used to hit aksjeloven
+        # was a BLOCK-HEADER LEAK (allmennaksjeloven ops mis-attributed via a "Lov av …" header),
+        # now fixed in _BLOCK_HEADER; and the residual −3 are in-force acts (confirmed triggered),
+        # so the blocker is the ledd engine, NOT in-force dates. `whole_only=False` re-measures.
+        is_subunit_repeal = ct == "repeal" and para and bool(_SUBUNIT.search(instr))
         if ct in ("change", "add") and para and not _SUBUNIT.search(instr) and content:
             num = para.lstrip("§")
             ops.append((instr, f"§ {num}. {content}".strip(), ct))
+        elif is_subunit_repeal:
+            ops.append((instr, None, "repeal"))
         elif not whole_only and para and (content or ct == "repeal"):
             ops.append((instr, (content or None) if ct != "repeal" else None, ct))
     return ops
