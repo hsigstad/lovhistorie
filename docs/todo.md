@@ -2,7 +2,17 @@
 
 ## Next engine work (the real remaining lift)
 
-- [ ] **Amendment coverage — THE pre-2001 lever (confirmed by OCR experiments 2026-08-12).**
+> **Ceiling reality (2026-08-13, from `loss_breakdown`).** The 0.97 gate is **not reachable
+> on this dev set**: hitting it needs +355 of the 381 misses (~93% of *everything*), but 8%
+> is char-OCR noise with a proven low ceiling (lesson 4) and 29% is the risky ledd/renumber
+> tail. Best case, stacking every safe + risky lever, tops out ~**0.90–0.94**. This is
+> expected — `goal.md` calls the 0.97 target "provisional until the held-out set is
+> assembled", and the *real* deliverable bar is the held-out point-in-time metric (blocked on
+> the manual Lovdata-Pro download below), not convergence. **Do not lower `gate.THRESHOLD`
+> without Henrik sign-off** (that is the anti-gaming "loosen the bar" move). Keep working the
+> safe capture lever; when it is exhausted, the honest stop is a `BLOCKER.md`, not chasing OCR.
+
+- [ ] **Amendment coverage — THE lever, now QUANTIFIED (2026-08-13, `source.eval.loss_breakdown`).**
   Correcting OCR (deterministic OR LLM) barely helps; the residual gap on "never-amended"
   provisions is REAL missing amendments (e.g. skifteretten→tingretten 2002 court reform,
   wording changes) whose amending acts our gazette parser didn't resolve. Three sub-levers:
@@ -10,8 +20,13 @@
   (b) **omnibus acts** — "endr. i X, Y og enkelte andre lover" amend MANY laws but
   `gazette.py` extracts only the first/none target — parse ALL targets per act;
   (c) **blanket terminology reforms** — sweeping renames (skifteretten→tingretten) applied
-  across all laws; may need special handling. FIRST STEP: quantify how much of the
-  pre-2001 gap each sub-lever accounts for before building.
+  across all laws; may need special handling.
+  **Quantified (loss_breakdown, 381 misses):** the single biggest, SAFEST lever is amendment
+  *capture* — **184 of 381 misses (48%) have ZERO op** in our stream targeting that provision
+  (`uncaptured-amdt` 100 + most of `base-missing` 84, whose examples §9a/§38a-c/§5a/§15a are
+  uncaptured `ny §` adds). Solving capture is deterministic + flag-safe and would move
+  convergence ~0.56 → ~0.75–0.80. NEXT: start with omnibus multi-target in `gazette.py` +
+  applying `ny §` adds. Run `python -m source.eval.loss_breakdown` for the current attribution.
 - [ ] ~~OCR/LLM correction, multimodal re-OCR~~ — TESTED + DEPRIORITISED (2026-08-12,
   see done.md): safe but low ceiling; OCR is a minor contributor.
 - [ ] **Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser** (external, 2026-08-12)

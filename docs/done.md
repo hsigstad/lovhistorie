@@ -1,5 +1,31 @@
 # Done
 
+## 2026-08-13 (cont.) — loss_breakdown diagnostic: attributed all 381 misses; 0.97 unreachable, capture is the lever
+
+- **Built `source/eval/loss_breakdown.py`** (harness-side; reuses the gate's exact scope +
+  per-source τ, so its miss count == the gate's `total - matched` = 381). Classifies every
+  convergence miss into ONE cause bucket mapped 1:1 onto the todo levers; writes
+  `build/eval/loss_breakdown.md`. This is the "measure before building" step the amendment-
+  coverage todo item had been waiting on.
+- **Attribution (489/870 converge, 381 miss):**
+  - `uncaptured-amdt` 100 (26%) — provision carried but NO op targets it and text differs a lot.
+  - `base-missing` 84 (22%) — absent from recon AND no op (examples §9a/§38a-c/§5a/§15a are
+    uncaptured `ny §` adds; a few plain-id OCR base-drops / renumber targets).
+  - `engine-gap:ledd` 96 (25%) — op present, ledd/sub-provision engine can't apply (risky lever).
+  - `applied-wrong` 51 (13%) — whole-provision op applied but result far off (truncation / wrong-op).
+  - `engine-gap:struct` 17 (4%) — renumber/move id-remap.
+  - OCR fidelity 33 (8%) — char noise, proven low ceiling (lesson 4).
+- **Headline #1 — the lever:** **184/381 (48%) have ZERO amendment op** in our stream (uncaptured-amdt
+  + the uncaptured-add half of base-missing). Amendment *capture* — omnibus multi-target parsing in
+  `gazette.py` (currently first-target-only) + applying `ny §` adds — is the biggest, safest,
+  flag-compatible lift; solving it plausibly moves convergence ~0.56 → ~0.75–0.80.
+- **Headline #2 — the ceiling:** **0.97 is not reachable on this dev set** (needs +355 of 381,
+  ~93% of everything; 8% OCR is capped, 29% is the risky tail). Realistic all-levers ceiling
+  ~0.90–0.94. Consistent with goal.md ("targets provisional until the held-out set exists") — the
+  deliverable bar is the held-out point-in-time metric, still blocked on the manual Lovdata-Pro
+  download. Did NOT touch `gate.THRESHOLD` (lowering it needs Henrik sign-off; anti-gaming).
+- Read-only against the dev set; no reconstruction code changed. Committed `01940a0`.
+
 ## 2026-08-13 (cont.) — booklet extraction cleanup: flag garbage, not fabricate (gap 9.1→7.3pp)
 
 - Chased the 11 near-zero booklet provisions from the aksjeloven-2001 cross-check. Root cause: the
