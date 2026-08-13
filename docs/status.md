@@ -45,6 +45,25 @@ necessary but not sufficient (two errors can cancel). The deliverable metric is
 as it read at a *past* date, which the pipeline is scored on but never tuned on. See
 [Evaluation](evaluation.html) and [Goal](goal.html).
 
+## Point-in-time accuracy — the deliverable
+
+The decisive metric (evaluation.md check 2): reconstruct each law **as it read at a past
+date** and score against the held-out **Lovdata Pro** historical version — text the pipeline
+is scored on but never tuned on. Reported as the ≥τ rate **and** the mean character-similarity
+(the honest reading, since the score runs over the current provision set).
+
+**Point-in-time μ: 0.786 similarity** &nbsp;·&nbsp;
+53.9% at ≥τ &nbsp;·&nbsp; over 3
+held-out (law × date) versions. Point-in-time **tracks convergence** — the engine reconstructs
+past states about as well as the current one, so convergence is a validated proxy (no
+date-specific failure); the residual is the same ledd / OCR / capture tail.
+
+| Law | As of | ≥τ rate | mean similarity |
+|---|---|---|---|
+| aksjeloven (`1997-06-13-44`) | 2001-01-01 | 53.6% | 0.805 |
+| aksjeloven (`1997-06-13-44`) | 2003-01-01 | 51.9% | 0.800 |
+| aksjeloven (`1997-06-13-44`) | 2024-01-01 | 56.3% | 0.752 |
+
 ## Per-law breakdown
 
 Provisions reproduced at each law's threshold (`@98%` clean-base, `@90%` OCR-base);

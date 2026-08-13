@@ -1,5 +1,31 @@
 # Done
 
+## 2026-08-13 (cont.) — FIRST real deliverable number: point-in-time measured + wired into status
+
+- **Ran the actual deliverable metric (evaluation.md check 2) for the first time** — the ground truth
+  was already on disk (aksjeloven Lovdata-Pro HTML at 2001/2003/2024). Drove `harness.evaluate_law`
+  with the real pipeline + gate scope/τ.
+- **Result — point-in-time TRACKS convergence** (the todo prediction, now confirmed with held-out data):
+  aksjeloven convergence(current) rate 0.556 / mean 0.746; point-in-time **2001 rate 0.536 / mean 0.805**,
+  **2003 rate 0.519 / mean 0.800**, 2024 rate 0.563 / mean 0.752. Past states reconstruct as well as (mean
+  slightly BETTER than) the current one → no date-specific failure; the residual is the same ledd/OCR/capture
+  tail as convergence. The harness convergence (0.556) equals the gate's aksjeloven number exactly → scoring
+  is consistent. **This validates convergence as a proxy**: legitimate convergence gains move the deliverable.
+- **Strategic consequence:** a *snapshot base* (booklet ajourført at a later date) would GAME this — it lifts
+  convergence-to-current by replaying fewer amendments but breaks point-in-time at dates BEFORE the snapshot.
+  So snapshots are legitimate ONLY for hole-year laws that have no clean enactment (kjøpsloven, rettsgebyr);
+  for laws with a true enactment base, a snapshot base is proxy-gaming. Snapshots-as-validation (PD booklet
+  oracle) are measurement, redundant where we already hold the Lovdata-Pro version.
+- **Wired into `status`:** `status._point_in_time()` runs over any dev law with `data/ground_truth/` versions
+  (encumbered, local-only — graceful "none present" fallback otherwise), same scope/τ as the gate; NOT
+  repealed-stub-scoped (a repeal is date-dependent). `status.json`/`status.md` now headline
+  **point-in-time μ 0.786 similarity / 53.9% ≥τ over 3 versions** ALONGSIDE convergence. The project now
+  reports the deliverable, not only the proxy. Caveat noted in-code: the harness scores over the CURRENT
+  provision set, so the mean-similarity column is the honest reading at past dates.
+- **Next (cheap + decisive):** 1–2 Lovdata-Pro versions for a CLEAN-base law (vphl conv 0.66 / tjeneste 0.90)
+  to confirm point-in-time≈convergence holds there too → would show the deliverable is strong for clean laws
+  and the OCR bases are the residual drag. See `docs/ground_truth.md`.
+
 ## 2026-08-13 (cont.) — name→datokode lever MEASURED ~zero on dev set; safe pre-2001 levers exhausted
 
 - **Question:** does resolving name-cited amend acts ("endr. i avtalelova") recover the pre-2001

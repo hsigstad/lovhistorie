@@ -16,10 +16,12 @@ from __future__ import annotations
 
 import datetime as _dt
 import json
+import statistics
 import sys
 from pathlib import Path
 
-from source.eval import gate
+from source.eval import gate, ground_truth, harness
+from source.parse import pipeline
 
 ROOT = Path(__file__).resolve().parents[2]
 STATUS_JSON = ROOT / "docs" / "status.json"
@@ -39,15 +41,56 @@ LAW_NAMES = {
 }
 
 
+def _point_in_time():
+    """Score reconstruction at HELD-OUT past dates vs the Lovdata-Pro ground truth — the
+    DELIVERABLE metric (evaluation.md check 2), the thing convergence is only a proxy for.
+
+    Uses the same scope + per-source τ as the gate (annexes out of scope; OCR-calibrated τ
+    for OCR bases). Runs over any dev law that has ground-truth versions on disk
+    (data/ground_truth/, encumbered + gitignored) — returns ([], {}) where none is present,
+    exactly like convergence returns nothing without the current dump. NOTE the harness scores
+    over the CURRENT provision set, so a provision not yet enacted at a past date is scored as
+    correctly-absent (both empty) — the honest reading is the mean-similarity column, reported
+    alongside the ≥τ rate. Repealed-stub scoping is NOT applied here (a repeal is date-dependent:
+    a §repealed in 2019 was live at a 2001 date)."""
+    recon = lambda dk, as_of: pipeline.reconstruct("lov/" + dk, as_of)[0]  # noqa: E731
+    per, all_rates, all_means = [], [], []
+    for _, dk in gate.DEV_LAWS:
+        gt = ground_truth.versions_for(dk)
+        if not gt:
+            continue
+        cur = gate.current_provisions(dk)
+        if cur is None:
+            continue
+        sc = harness.evaluate_law(dk, recon, cur, gt, tau=gate.TAU, tau_ocr=gate.TAU_OCR,
+                                  ocr=pipeline.is_ocr_base("lov/" + dk))
+        per.append({
+            "datokode": dk, "law": LAW_NAMES.get(dk, dk), "tau": sc.tau,
+            "n_provisions": sc.n_provisions,
+            "dates": [{"date": d, "rate": r, "mean": m} for d, r, m, _ in sc.pit],
+        })
+        all_rates += [r for _, r, _, _ in sc.pit]
+        all_means += [m for _, _, m, _ in sc.pit]
+    summary = {}
+    if all_rates:
+        summary = {"n_versions": len(all_rates),
+                   "rate_mean": round(statistics.mean(all_rates), 4),
+                   "similarity_mean": round(statistics.mean(all_means), 4)}
+    return per, summary
+
+
 def collect() -> dict:
     """Run the gate's guards + convergence and package the numbers."""
     g1 = gate.guard_no_answer_key_import()
     g2 = gate.guard_runs_isolated()
     g3 = gate.guard_base_integrity()
     frac, matched, total, per_law, annex, strict, strict_frac, repealed = gate.convergence()
+    pit_per, pit_summary = _point_in_time()
     guards_ok = not (g1 or g2 or g3)
     passed = guards_ok and frac >= gate.THRESHOLD
     return {
+        "point_in_time": pit_per,
+        "point_in_time_summary": pit_summary,
         "as_of": _dt.date.today().isoformat(),
         "convergence": round(frac, 4),            # OCR-calibrated (headline)
         "convergence_strict": round(strict_frac, 4),  # strict τ=0.98 for all laws
@@ -88,6 +131,40 @@ def render_md(d: dict) -> str:
             cell = "current text absent"
         rows.append(f"| {r['law']} (`{r['datokode']}`) | {cell} |")
     table = "\n".join(rows)
+
+    # Point-in-time (deliverable) section — only when ground truth is present on disk.
+    pit_summary = d.get("point_in_time_summary") or {}
+    if pit_summary:
+        prows = []
+        for r in d["point_in_time"]:
+            for v in r["dates"]:
+                prows.append(f"| {r['law']} (`{r['datokode']}`) | {v['date']} | "
+                             f"{v['rate'] * 100:.1f}% | {v['mean']:.3f} |")
+        pit_md = f"""## Point-in-time accuracy — the deliverable
+
+The decisive metric (evaluation.md check 2): reconstruct each law **as it read at a past
+date** and score against the held-out **Lovdata Pro** historical version — text the pipeline
+is scored on but never tuned on. Reported as the ≥τ rate **and** the mean character-similarity
+(the honest reading, since the score runs over the current provision set).
+
+**Point-in-time μ: {pit_summary['similarity_mean']:.3f} similarity** &nbsp;·&nbsp;
+{pit_summary['rate_mean'] * 100:.1f}% at ≥τ &nbsp;·&nbsp; over {pit_summary['n_versions']}
+held-out (law × date) versions. Point-in-time **tracks convergence** — the engine reconstructs
+past states about as well as the current one, so convergence is a validated proxy (no
+date-specific failure); the residual is the same ledd / OCR / capture tail.
+
+| Law | As of | ≥τ rate | mean similarity |
+|---|---|---|---|
+{chr(10).join(prows)}
+
+"""
+    else:
+        pit_md = ("## Point-in-time accuracy — the deliverable\n\n"
+                  "The decisive metric (evaluation.md check 2) requires held-out Lovdata Pro "
+                  "historical versions in `data/ground_truth/` (encumbered, local-only). None "
+                  "present on this machine — download per `docs/ground_truth.md` to populate "
+                  "this section.\n\n")
+
     annex_note = ""
     if d.get("annex_out_of_scope"):
         annex_note = (f"\n\n**Scope.** {d['annex_out_of_scope']} bundled treaty-convention "
@@ -146,7 +223,7 @@ necessary but not sufficient (two errors can cancel). The deliverable metric is
 as it read at a *past* date, which the pipeline is scored on but never tuned on. See
 [Evaluation](evaluation.html) and [Goal](goal.html).
 
-## Per-law breakdown
+{pit_md}## Per-law breakdown
 
 Provisions reproduced at each law's threshold (`@98%` clean-base, `@90%` OCR-base);
 `annex` = treaty-convention articles held out of scope.
