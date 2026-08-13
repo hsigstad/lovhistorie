@@ -1,5 +1,25 @@
 # Done
 
+## 2026-08-13 (cont.) — name→datokode lever MEASURED ~zero on dev set; safe pre-2001 levers exhausted
+
+- **Question:** does resolving name-cited amend acts ("endr. i avtalelova") recover the pre-2001
+  uncaptured provisions (todo lever a)? **Measured across ALL 1033 harvested issues: no.** TOC-title
+  name-citation of the dev laws is essentially ZERO — avtaleloven 0, foreldelse 0, rettsgebyr 0,
+  mesterbrev 0, kjøp 0; oreigning's 1 "name" hit is a DIFFERENT law ("vederlag ved oreigning"). A
+  name→datokode map would recover nothing on the dev set. Confirms lesson 5 (name-map "only partly
+  right") emphatically.
+- **Consequence — the two safe pre-2001 levers are both spent:** neither name-citation (0) nor
+  omnibus-secondary (`I lov <dev-cite>` body headers: 3/6/1) explains the pre-2001 under-capture
+  (avtaleloven has just 9 amendment rows for a 1918 law). The missing amendments (e.g. avtaleloven §36,
+  the 1983 general clause) are NOT surfacing as parseable standalone/omnibus acts in the current
+  harvest — the residual is harvest/TOC COVERAGE of specific amending issues + blanket terminology
+  reforms, not a resolution bug we can regex away.
+- **State:** convergence **0.621** is the practical ceiling of the current harvest + deterministic
+  approach. Further gains need one of: (i) risky ledd engine (fabrication risk — deferred), (ii) more
+  SOURCE work (targeted re-harvest of missing amending issues / OCR base re-fetch — network), or
+  (iii) the point-in-time deliverable, which is gated on the manual Lovdata-Pro download. No code
+  changed — a measurement that (correctly) prevented building a zero-yield name map.
+
 ## 2026-08-13 (cont.) — omnibus multi-target lever MEASURED and deprioritised (measure-before-building)
 
 - **Question:** is the omnibus sub-lever (todo (b): `gazette.py`/streams attribute an omnibus act's

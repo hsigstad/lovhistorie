@@ -16,7 +16,9 @@
   Correcting OCR (deterministic OR LLM) barely helps; the residual gap on "never-amended"
   provisions is REAL missing amendments (e.g. skifteretten→tingretten 2002 court reform,
   wording changes) whose amending acts our gazette parser didn't resolve. Three sub-levers:
-  (a) **name→datokode map** — resolve "endr. i aksjeloven" style name citations;
+  (a) ~~**name→datokode map**~~ — MEASURED ~ZERO 2026-08-13 (see done.md): across all 1033 harvested
+  issues, TOC-title name-citation of the dev laws is 0 (avtale/foreld/rettsg/mester/kjøp), so a name
+  map recovers nothing on the dev set. The pre-2001 residual is harvest COVERAGE + blanket reforms;
   (b) ~~**omnibus acts**~~ — MEASURED SMALL 2026-08-13 (see done.md): LTI stream already well-targeted
   (1/304 header rows mis-file a dev law); pre-2001 `I lov <dev-cite>` secondary headers only 3/6/1 for
   avtale/foreld/kjøp. Not worth a full-stream rebuild; the pre-2001 gap is (a)/(c), not omnibus;
