@@ -21,6 +21,23 @@ import json
 import re
 from pathlib import Path
 
+
+def _is_failed_extraction(text: str) -> bool:
+    """True when a booklet provision parsed to garbage rather than its text — the dense
+    særtrykk layout interleaves 'Jfr. §…' footnotes with inline headings, so a provision
+    occasionally aligns to a footnote fragment ("," or a bare cross-reference list) instead
+    of its body. We DROP those (flag-don't-fabricate: a GT entry we couldn't extract is
+    absent, never a false answer) rather than let them score as spurious 0.0 mismatches.
+    Conservative — only unambiguous garbage: <8 real characters, or a reference-dominated
+    fragment (opens with punctuation/§/digit, carries 'Jfr'/multiple §-refs, little prose).
+    Verified on aksjeloven-2001: catches 8/11 true failures with ZERO real provisions lost."""
+    s = text.strip()
+    if len(re.sub(r"[\s,.;:§)\d()-]", "", s)) < 8:
+        return True
+    head, prose = s[:45], re.findall(r"[a-zæøå]{4,}", s.lower())
+    return bool(re.match(r"^[,.;:)]|^§|^\d", s)) and ("Jfr" in head or head.count("§") >= 2) \
+        and len(prose) < 6
+
 GT_ROOT = Path(__file__).resolve().parents[2] / "data" / "booklet_gt"
 
 # datokode -> [snapshot spec]. `date` is the booklet's ajourført version boundary (the
@@ -41,7 +58,8 @@ def _ocr_parse(spec: dict) -> dict:
     txt = be._resilient_pages(spec["urn"], spec["page"], spec["span"])
     m = re.search(re.escape(spec["title_needle"]), txt)
     body = txt[m.start():] if m else txt
-    return be.parse_provisions(body, repair_headings=True)
+    provs = be.parse_provisions(body, repair_headings=True)
+    return {p: t for p, t in provs.items() if not _is_failed_extraction(t)}
 
 
 def load_version(datokode: str, date: str, root: Path = GT_ROOT, refresh: bool = False):

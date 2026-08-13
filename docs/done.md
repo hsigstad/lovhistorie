@@ -1,5 +1,23 @@
 # Done
 
+## 2026-08-13 (cont.) — booklet extraction cleanup: flag garbage, not fabricate (gap 9.1→7.3pp)
+
+- Chased the 11 near-zero booklet provisions from the aksjeloven-2001 cross-check. Root cause: the
+  dense særtrykk interleaves "Jfr. §…" footnotes with INLINE headings on the same OCR lines, so
+  `provisions_ordered` sometimes locks onto a footnote §-token (§5-18 → ",", §12-1 → ", § 13-2 …").
+- **Tried to RECOVER them five ways — all regressed** (title-anchored heading detection 12–38% cov;
+  "Jfr."-strip 42%; aggressive fragment-drop lost 12–15 real provisions). The mess is pervasive
+  (many real provisions also carry leading footnote contamination), so there is no clean deterministic
+  re-extraction at reasonable effort.
+- **Shipped the safe move (flag-don't-fabricate): `booklet_gt._is_failed_extraction`** drops only
+  UNAMBIGUOUS garbage (<8 real chars, or a reference-dominated fragment) — catches **8/11** true
+  failures with **ZERO** real provisions lost. A GT entry we couldn't extract is now absent, never a
+  spurious 0.0. Result: same-verdict gap **9.1% → 7.3%** (mean 0.078 → 0.057); booklet↔oracle median
+  **0.994** unchanged; coverage 92%.
+- **Honest residual:** the remaining ~7pp is now mostly the INTRINSIC OCR-vs-OCR penalty (scoring an
+  OCR reconstruction against a scanned booklet) plus 3 uncaught fragments — an OCR-vs-OCR τ or
+  born-digital editions, NOT more extraction heuristics. (This is the "other half" flagged last entry.)
+
 ## 2026-08-13 (cont.) — booklet validation loader built + scored end-to-end vs the oracle
 
 - Built `source/eval/booklet_gt.py` — a PUBLIC-DOMAIN parallel to `ground_truth.py`: a registry of

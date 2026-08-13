@@ -64,10 +64,12 @@
     2026-08-13: `source/eval/booklet_gt.py` (registry + cache), aksjeloven-2001 scored vs the oracle
     end-to-end — content faithful (booklet↔oracle median 0.994) but a ~9pp same-verdict gap
     (see done.md). Two residual items before it's a drop-in numeric oracle substitute:
-    - **11 segmentation fails** (booklet §5-18/§12-1/… parse to "," or a footnote) — footnote-aware
-      heading alignment; ~half the gap.
-    - **OCR-vs-OCR τ** — scoring an OCR reconstruction against a scanned booklet double-counts OCR;
-      needs a lower τ than the clean-oracle 0.90, or a born-digital edition. (~half the gap.)
+    - ~~11 segmentation fails~~ PARTLY DONE 2026-08-13: `_is_failed_extraction` flags/drops 8/11
+      unambiguous garbage (zero collateral); gap 9.1→7.3pp. Recovering the rest needs layout-aware
+      OCR (footnote-zone detection lost in flattened ALTO) — five deterministic re-extraction
+      attempts all regressed, so not worth more heuristics; 3 fragments remain flagged-absent.
+    - **OCR-vs-OCR τ** (now the DOMINANT residual) — scoring an OCR reconstruction against a scanned
+      booklet double-counts OCR; needs a lower τ than the clean-oracle 0.90, or a born-digital edition.
   - (b) **held-out partition** — a booklet used as a base for law L must NOT also validate L
     (encoded: `booklet_gt.BOOKLETS` omits kjøpsloven/rettsgebyr, whose booklets ARE their bases).
   - (c) re-test **aksjeloven-2001 as a cleaner BASE** now the parser lands (median 0.994 vs 2001 GT
