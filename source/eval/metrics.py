@@ -81,6 +81,29 @@ def is_convention_annex(para: str) -> bool:
     return "/" in para
 
 
+# The repeal title is the closed parenthetical PAST PARTICIPLE '(Opphevet)' (bokmål) /
+# '(Oppheva)' (nynorsk). Requiring the ')' right after excludes a live provision whose
+# title merely opens with the NOUN 'Opphevelse' — e.g. foreldelsesloven §32 '(Opphevelse
+# eller endring av andre lover.)', a real consequential-amendments clause, not a stub.
+_REPEALED_STUB = re.compile(r"^[.\s]*\(Opphev(?:et|a)\)", re.I)
+
+
+def is_repealed_stub(text: str) -> bool:
+    """True for a CURRENT provision that is a repealed-provision PLACEHOLDER — NLOD keeps a
+    repealed §'s slot with the title '(Opphevet)' and a `changesToParent` editorial note
+    ('Opphevet ved lov …') as its only body, no statutory text. The reconstruction correctly
+    replays the repeal op and drops the provision, so it can never match this annotation:
+    the placeholder holds Lovdata's editorial note, not law text the pipeline may reproduce.
+    Objective + structural: the parsed body opens with Lovdata's '(Opphevet)' repeal title,
+    which live statutory text never does — not similarity-based, not hand-picked.
+
+    CURRENT-CONTEXT ONLY. Unlike a convention annex (always out of scope), a repeal is
+    date-dependent: a provision repealed in 2019 was LIVE at a 2010 point-in-time date. So
+    this is applied ONLY to convergence-to-current (gate / loss_breakdown), NEVER in the
+    point-in-time harness — there the provision must be scored live at pre-repeal dates."""
+    return bool(_REPEALED_STUB.match(text or ""))
+
+
 def _heading_pat(num):
     core = num.lstrip("§")
     if core[-1:].isalpha():

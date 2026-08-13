@@ -75,7 +75,7 @@ def classify_law(law: str, dk: str):
     if cur is None:
         return None, None, None
     statutory = {p: t for p, t in cur.items()
-                 if not gate._is_convention_annex(p)}
+                 if not gate._is_convention_annex(p) and not metrics.is_repealed_stub(t)}
     tau = gate.TAU_OCR if pipeline.is_ocr_base(law) else gate.TAU
 
     base = pipeline.enactment_base(law)

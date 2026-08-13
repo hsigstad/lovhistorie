@@ -1,11 +1,12 @@
 {
   "as_of": "2026-08-13",
-  "convergence": 0.592,
-  "convergence_strict": 0.5241,
+  "convergence": 0.6212,
+  "convergence_strict": 0.5501,
   "matched": 515,
   "matched_strict": 456,
-  "total": 870,
+  "total": 829,
   "annex_out_of_scope": 138,
+  "repealed_out_of_scope": 41,
   "tau": 0.98,
   "tau_ocr": 0.9,
   "threshold": 0.97,
@@ -30,7 +31,7 @@
       "datokode": "1959-10-23-3",
       "law": "oreigningslova",
       "matched": 16,
-      "total": 33,
+      "total": 31,
       "tau": 0.9,
       "annex": 0
     },
@@ -46,7 +47,7 @@
       "datokode": "1982-12-17-86",
       "law": "rettsgebyrloven",
       "matched": 4,
-      "total": 38,
+      "total": 34,
       "tau": 0.9,
       "annex": 0
     },
@@ -62,7 +63,7 @@
       "datokode": "1988-05-13-27",
       "law": "kjøpsloven",
       "matched": 55,
-      "total": 88,
+      "total": 87,
       "tau": 0.9,
       "annex": 92
     },
@@ -70,7 +71,7 @@
       "datokode": "1997-06-13-44",
       "law": "aksjeloven",
       "matched": 163,
-      "total": 293,
+      "total": 291,
       "tau": 0.9,
       "annex": 0
     },
@@ -78,7 +79,7 @@
       "datokode": "2007-06-29-75",
       "law": "verdipapirhandelloven",
       "matched": 198,
-      "total": 300,
+      "total": 268,
       "tau": 0.98,
       "annex": 0
     },

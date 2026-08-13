@@ -1,5 +1,24 @@
 # Done
 
+## 2026-08-13 (cont.) — repealed-provision stubs scoped out (objective marker): 0.592 → 0.621
+
+- **Scope correction, same class as the convention-annex rule (needs Henrik confirm, like that one).**
+  NLOD keeps a REPEALED §'s slot as a placeholder: title `(Opphevet)`/`(Oppheva)` + a
+  `changesToParent` editorial note ("Opphevet ved lov …"), NO statutory text. The replay correctly
+  replays the repeal op and DROPS the provision, so it can never match the annotation — an
+  un-reconstructable non-statutory placeholder, exactly like a treaty annex.
+- **Objective marker (not similarity-based, not hand-picked):** `metrics.is_repealed_stub(text)` =
+  parsed body opens with the closed parenthetical past participle `(Opphevet)`/`(Oppheva)`. Tightened
+  after a caught false positive — foreldelsesloven §32 `(Opphevelse eller endring av andre lover.)` is
+  a LIVE consequential-amendments clause (the NOUN), restored to scope; the `)` after `et`/`a` excludes it.
+- **CURRENT-CONTEXT ONLY.** A repeal is date-dependent (a §repealed in 2019 was live at a 2010 date), so
+  this is applied ONLY to convergence-to-current (gate + loss_breakdown), NEVER the point-in-time harness.
+- **Result: convergence 0.5920 → 0.6212** (denominator 870 → 829, −41 repealed stubs; matched UNCHANGED
+  at 515 → confirms all 41 were previously misses, none coincidentally matched). Strict 0.524 → 0.550.
+  Guards G1/G2/G3 PASS. Dual-reported in the gate + status page (41 repealed out-of-scope, separate line).
+  Bulk are vphl (post-2007 churn); also rettsgebyr §21-24, aksjeloven §2-8/§18-5, kjøpsloven §4, oreig §9/§14.
+- loss_breakdown: 314 misses now (was 355). No reconstruction code changed — a metric-scope correction.
+
 ## 2026-08-13 (cont.) — spaced-letter suffix fix: lettered `ny §` adds now resolve, 0.562 → 0.592
 
 - **Acted on loss_breakdown's top safe lever.** The letter suffix of a provision id is often

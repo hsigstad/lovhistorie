@@ -196,7 +196,7 @@ def convergence():
     # `matched` uses the per-source τ (the operative, OCR-calibrated number); `strict`
     # counts the SAME provisions at TAU=0.98 for all laws and is reported alongside so
     # the loosening is always visible and never silently changes the bar.
-    matched = strict = total = annex = 0
+    matched = strict = total = annex = repealed = 0
     per_law = []
     for law, dk in DEV_LAWS:
         cur = current_provisions(dk)
@@ -205,8 +205,17 @@ def convergence():
             continue
         recon, _ = pipeline.reconstruct(law)
         tau = TAU_OCR if pipeline.is_ocr_base(law) else TAU
-        statutory = {p: t for p, t in cur.items() if not _is_convention_annex(p)}
-        n_annex = len(cur) - len(statutory)
+        # Held out of the statutory denominator (reported separately, never a silent miss):
+        #   convention annexes — treaty text incorporated by reference (metrics.is_convention_annex);
+        #   repealed-provision stubs — NLOD keeps a repealed §'s '(Opphevet)' placeholder + editorial
+        #   note, which the replay correctly drops, so it is un-reconstructable law-text by construction
+        #   (metrics.is_repealed_stub — current-context only; see its docstring).
+        statutory = {p: t for p, t in cur.items()
+                     if not _is_convention_annex(p) and not metrics.is_repealed_stub(t)}
+        n_annex = sum(1 for p in cur if _is_convention_annex(p))
+        n_repealed = sum(1 for p, t in cur.items()
+                         if not _is_convention_annex(p) and metrics.is_repealed_stub(t))
+        repealed += n_repealed
         sims = [metrics.similarity(recon.get(p, ""), txt) for p, txt in statutory.items()]
         m = sum(1 for s in sims if s >= tau)
         ms = sum(1 for s in sims if s >= TAU)
@@ -217,14 +226,14 @@ def convergence():
         per_law.append((dk, m, len(statutory), n_annex, tau))
     frac = matched / total if total else 0.0
     strict_frac = strict / total if total else 0.0
-    return frac, matched, total, per_law, annex, strict, strict_frac
+    return frac, matched, total, per_law, annex, strict, strict_frac, repealed
 
 
 def main():
     g1 = guard_no_answer_key_import()
     g2 = guard_runs_isolated()
     g3 = guard_base_integrity()
-    frac, matched, total, per_law, annex, strict, strict_frac = convergence()
+    frac, matched, total, per_law, annex, strict, strict_frac, repealed = convergence()
 
     print("=== lovhistorie completion gate ===")
     print(f"G1 no-answer-key-import : {'PASS' if not g1 else 'FAIL'}")
@@ -246,6 +255,9 @@ def main():
     if annex:
         print(f"out-of-scope (flagged)  : {annex} convention-annex provisions "
               f"(treaty text incorporated by reference, not in Lovtidend — un-reconstructable)")
+    if repealed:
+        print(f"out-of-scope (flagged)  : {repealed} repealed-provision stubs "
+              f"('(Opphevet)' placeholder kept by NLOD; replay correctly drops the provision)")
     print(f"threshold               : {THRESHOLD}")
 
     guards_ok = not (g1 or g2 or g3)
