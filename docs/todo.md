@@ -93,8 +93,18 @@
   - (c) re-test **aksjeloven-2001 as a cleaner BASE** now the parser lands (median 0.994 vs 2001 GT
     beats the noisy gazette base's 149/293 — build it with base_as_of=2001-01-01 and compare).
   - (Booklet-as-cleaner-BASE for foreldelse still unproven: 1993 base-only 14/33 @0.9 vs gazette 18/33.)
-- [ ] Resolve true **ikrafttredelse dates** (bodies say "trer i kraft <date>"); `--build`
-  currently uses the act date as `date_in_force_resolved` (first approximation).
+- [ ] Resolve true **ikrafttredelse dates** — DIAGNOSED 2026-08-13 (see done.md), corrects the earlier
+  "unlocks sub-provision +6 via op-ordering" call. The LTI XML has a clean structured field
+  `<dd class="dateInForce">`: concrete ISO date (1,279 acts) or "Kongen bestemmer" (deferred, 1,589; 97 of
+  156 dev-law acts). The sub-provision `whole_only=False` −6 regressions are ops from **deferred, not-yet-in-
+  force** acts (chiefly `lov 2019-03-15-6`, the staged verdipapirsentral reform still showing pre-2019 text in
+  current), NOT misordering. Two parts:
+  - (concrete dates, shippable now, ~0 dev yield) wire `date_in_force_resolved` from the ISO field for correct
+    ordering + true point-in-time dates; deferred to bundle with the res-harvest that makes it pay off.
+  - (the actual +6, BLOCKED on data) safely gating the not-in-force deferred ops needs the triggering
+    **ikrafttredelsesresolusjon** (`res-` docs) to tell deferred-in-force from deferred-not-in-force. The
+    corpus has none (`data/lti/` = `nl-`/`sf-` only) → needs a **post-2001 res-harvest from Lovtidend Avd. I**
+    (network, Henrik-approve). Blanket-skipping deferred ops is NOT safe (most deferred acts ARE in force).
 
 ## Follow-up — extend to forskrifter
 

@@ -1,5 +1,43 @@
 # Done
 
+## 2026-08-13 (cont.) — in-force-date lever DIAGNOSED: the sub-provision −6 is NOT-YET-IN-FORCE ops, not op-ordering (needs a res-harvest, corpus lacks it)
+
+- **Set out to "resolve true ikrafttredelse dates" — the follow-up the LTI-omnibus entry named as the
+  key remaining convergence lever ("unlocks sub-provision +6, op-ordering correctness").** Measured the
+  `whole_only=False` net-zero at PROVISION grain to find WHY, per lesson 0.
+- **The +6 / −6 is concrete and stable:** **+6** = kjøpsloven §7/§17/§32/§35/§45 (all one act, `2002-06-21-34`)
+  + vphl §3-5; **−6** = aksjeloven §4-13/§5-10/§5-27/§13-18/§16-9/§4-24. Net matched@τ unchanged (543).
+- **Root cause of the −6 is NOT out-of-order application (the earlier hypothesis) — it is ops from acts
+  that are NOT (yet) in force.** Traced §4-13: its 1997 base already equals current (0.998, provision
+  unchanged since enactment), yet `whole_only=False` applies three ops from **lov 2019-03-15-6** (the
+  verdipapirsentral reform) → re-inserts a "nytt fjerde ledd", renumbering (4)(5)→(5)(6) → 0.629. The
+  attribution is CORRECT (the act really has those §4-13 ops); the problem is **current NLOD §4-13 still
+  shows the PRE-2019 text** — lov 2019-03-15-6 is `<dd class="dateInForce">Kongen bestemmer</dd>` +
+  "de ulike bestemmelsene kan settes i kraft til ulik tid", i.e. deferred and (for these §§) never
+  triggered. Applying it at the act date fabricates a not-in-force state. `2019-03-15-6` recurs in 4 of
+  the 6 losses (§4-13/§5-10/§13-18/§4-24). (Ruled out the snapshot-contamination alternative: post-1997
+  inserts §18-5/§3-3a/§14-11a/§8-2a/§5-7a/§8-2b are ALL absent from the base, so aksjeloven's base is a
+  genuine ~1997 enactment, not a modern consolidation — convergence/point-in-time integrity intact.)
+- **The LTI XML carries a clean, structured, public-domain in-force field** — `<dd class="dateInForce">`:
+  concrete ISO date (`2001-01-01`, 1,279 acts) OR "Kongen bestemmer/fastsetter" (deferred, 1,589 acts).
+  G1-safe (LTI source, offline build), unlike the NLOD "(i kraft … iflg. res. …)" parenthetical (answer key).
+- **But the field alone can't gate the −6 safely.** Of 156 dev-law amending acts, **97 are deferred** — and
+  MOST deferred acts DID enter force (the King triggered them; they're reflected in current, e.g. vphl §3-5's
+  deferred acts drive a GAIN). Blanket-skipping deferred ops would drop dozens of real amendments and regress
+  broadly. Distinguishing "deferred-and-in-force" from "deferred-and-not-in-force" (2019-03-15-6) needs the
+  **triggering ikrafttredelsesresolusjon** (the `res-` document, published separately in Lovtidend Avd. I).
+- **The corpus does not contain it.** `data/lti/` = 2,882 `nl-` (laws) + 33,511 `sf-` (forskrifter), **zero
+  `res-` docs**; the pre-2001 `data/lovtidend_text/` harvest predates these 2019 acts. So the safe form of
+  this lever is **blocked on a new harvest of post-2001 ikrafttredelsesresolusjoner** (network), not a parse.
+- **What is shippable now (deferred, low yield):** wire `date_in_force_resolved` from the concrete ISO
+  `dateInForce` field (1,279 acts) for correct ORDERING + true point-in-time dates. Measured ~0 convergence on
+  the dev set (ordering isn't the binding constraint — whole-provision ops overwrite) and unmeasurable on
+  point-in-time (all 3 held-out GT versions are aksjeloven, whose acts are deferred not concrete). Deferred to
+  bundle with the res-harvest, which is what actually turns the field into the +6.
+- **Net: the "+6 sub-provision" is real but gated on ikrafttredelsesresolusjon data we don't hold, NOT on op
+  ordering. `whole_only=True` stays the shipped path; convergence unchanged at 0.655, guards PASS.** The honest
+  higher-value step remains the deliverable-side one (a clean-base Lovdata-Pro HIST version), per CLAUDE.md.
+
 ## 2026-08-13 (cont.) — LTI omnibus re-parse recovers dropped amendments: 0.638 → 0.655, deliverable → 0.807
 
 - **Reopened the "missing amendments" lever — and corrected an earlier wrong call.** The current NLOD
