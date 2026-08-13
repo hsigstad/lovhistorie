@@ -1,5 +1,22 @@
 # Done
 
+## 2026-08-13 (cont.) — PD-booklet validation-set lever tested → blocked on OCR (negative result)
+
+- **Question:** did we scrape all findable booklets, and can PD law booklets replace the encumbered
+  Lovdata-Pro oracle for the point-in-time metric? **Swept NB, then ran the decisive cross-check.**
+- **Sweep:** we had NOT exhausted booklets — genuine unused PD snapshots of dev laws exist
+  (aksjeloven 2001, foreldelsesloven 1992/1993, kjøpsloven 1991, rettsgebyr 1993). But booklet-as-a-
+  cleaner-BASE is not a clear win (foreldelsesloven-1993 booklet base-only 14/33 @0.9 vs current
+  gazette base 18/33 with amendments; same footnote-digit OCR pollution).
+- **Decisive cross-check:** the aksjeloven-2001 booklet (`digibok_2023030748042`, ajourført exactly
+  **2001-01-01** — matching a GT we already hold) vs Lovdata-Pro 2001: **26% coverage (69/265),
+  mean 0.60 / median 0.55, only 28% ≥0.98.** The booklet is a dense Cappelen paperback whose OCR
+  mangles §N-M headings ("§ 1 —3", "3— 4?", "Konsemer") — `parse_provisions` under-segments and the
+  char OCR is *worse* than the antiqua gazette. **Verdict: scanned law paperbacks cannot replace the
+  oracle as-is.** The validation-set lever is blocked on OCR quality, not on booklet availability.
+- **Recorded in todo** with the three revival paths (booklet-robust heading parser / multimodal
+  re-OCR / born-digital editions). No code changed — an investigation with a clean negative result.
+
 ## 2026-08-13 — point-in-time harness now mirrors the gate's eval-scope rules (handoff consumed)
 
 - Consumed the 2026-08-12T16-42 handoff: the two eval calibrations (convention-annex scoping +
