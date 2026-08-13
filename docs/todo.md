@@ -60,10 +60,16 @@
   `parse_provisions(repair_headings=True)`, booklet-only — the clean gazette bases don't benefit and
   a global repair regressed aksjeloven, so it's off by default; regression-clean). aksjeloven-2001
   booklet now parses 95% coverage / median 0.994 vs the 2001 oracle. NEXT:
-  - (a) **bank booklets as a PD validation set** — a small loader that, given a booklet URN + body
-    span + ajourført date, yields `{para: text}` for point-in-time scoring (route through the harness,
-    which already applies annex-scope + OCR-τ). Start with aksjeloven-2001 (we hold the matching GT).
-  - (b) **held-out partition** — a booklet used as a base for law L must NOT also validate L.
+  - (a) ~~**bank booklets as a PD validation set** — a loader yielding `{para: text}`.~~ DONE
+    2026-08-13: `source/eval/booklet_gt.py` (registry + cache), aksjeloven-2001 scored vs the oracle
+    end-to-end — content faithful (booklet↔oracle median 0.994) but a ~9pp same-verdict gap
+    (see done.md). Two residual items before it's a drop-in numeric oracle substitute:
+    - **11 segmentation fails** (booklet §5-18/§12-1/… parse to "," or a footnote) — footnote-aware
+      heading alignment; ~half the gap.
+    - **OCR-vs-OCR τ** — scoring an OCR reconstruction against a scanned booklet double-counts OCR;
+      needs a lower τ than the clean-oracle 0.90, or a born-digital edition. (~half the gap.)
+  - (b) **held-out partition** — a booklet used as a base for law L must NOT also validate L
+    (encoded: `booklet_gt.BOOKLETS` omits kjøpsloven/rettsgebyr, whose booklets ARE their bases).
   - (c) re-test **aksjeloven-2001 as a cleaner BASE** now the parser lands (median 0.994 vs 2001 GT
     beats the noisy gazette base's 149/293 — build it with base_as_of=2001-01-01 and compare).
   - (Booklet-as-cleaner-BASE for foreldelse still unproven: 1993 base-only 14/33 @0.9 vs gazette 18/33.)

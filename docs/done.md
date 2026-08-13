@@ -1,5 +1,25 @@
 # Done
 
+## 2026-08-13 (cont.) — booklet validation loader built + scored end-to-end vs the oracle
+
+- Built `source/eval/booklet_gt.py` — a PUBLIC-DOMAIN parallel to `ground_truth.py`: a registry of
+  booklet snapshots (URN + body span + ajourført date) that OCR+parse (via the booklet heading
+  repair) into `{para: text}` and cache, so the harness can score `reconstruct(datokode, date)`
+  against a redistributable source. Held-out discipline noted in-module (a booklet used as a BASE
+  must not also validate that law; kjøpsloven/rettsgebyr booklets are omitted, aksjeloven's 1997
+  base is the gazette so its 2001 booklet is a legitimate validator).
+- **End-to-end score, aksjeloven 2001-01-01 (τ=0.90, OCR-calibrated):**
+  - **Content faithful:** booklet ↔ Lovdata-Pro oracle = **median 0.994**, 95% coverage (253/265).
+    The PD booklet reproduces the encumbered oracle's *text*.
+  - **As a numeric yardstick (same-frame):** reconstruct-2001 scores ≥0.90 on 50% vs Lovdata but
+    41% vs booklet — a ~9pp gap. Diagnosed (again mostly segmentation, not OCR): ~half is **11
+    residual extraction failures** (booklet provisions parsed as "," or a footnote — §5-18, §12-1,
+    §6-24 …), the other ~half is intrinsic **OCR-vs-OCR** noise (scoring an OCR reconstruction against
+    a scanned booklet double-counts OCR error).
+- **Verdict:** PD booklets are a viable validation source for CONTENT now; to be a drop-in numeric
+  substitute for the clean oracle they need (a) the 11 residual segmentation fails cleaned up
+  (footnote-aware heading alignment), and (b) an OCR-vs-OCR-calibrated τ or a born-digital edition.
+
 ## 2026-08-13 (cont.) — heading-tolerant parser built (opt-in, regression-clean); booklets unlocked
 
 - Built `_repair_headings` (LINE-ANCHORED): canonicalises OCR-garbled `§ N —M` section headings
