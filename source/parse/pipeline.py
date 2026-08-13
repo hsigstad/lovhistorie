@@ -91,30 +91,54 @@ def _split_block(new_text: str):
     return pieces
 
 
+# Derived amendment stream re-parsed from the LTI acts (source.scrape.lti_amendments):
+# recovers omnibus sections the external amendments stream dropped. A DERIVED public-domain
+# jsonl.gz (NOT an LTI XML, NOT the answer key) — read here exactly like amendments.DATA;
+# the LTI XMLs themselves are only ever touched by the offline build script (anti-gaming
+# lesson #7). Absent → skipped.
+_LTI_AMEND = amendments.DATA.parent / "lti_amendments.jsonl.gz"
+
+
 def load_ops(target_law: str):
     """Ordered ops for a law WITH change_type + clean para (richer than
     amendments.load_for). change_type ∈ {change, add, repeal, renumber, move,
     unknown}; renumber/move/unknown are left for replay to flag, not fabricate.
-    Multi-provision new_text blocks are expanded to one op per provision."""
-    ops = []
-    with gzip.open(amendments.DATA, "rt", encoding="utf-8") as fh:
-        for line in fh:
-            d = json.loads(line)
-            if d.get("target_law") != target_law:
-                continue
-            base = {
-                "change_type": d.get("change_type"),
-                "instruction": d.get("instruction"),
-                "date": d.get("date_in_force_resolved") or d.get("date_in_force"),
-                "act": d.get("act_refid"),
-            }
-            new = d.get("new_text")
-            pieces = _split_block(new) if new and new.lstrip().startswith("§") else []
-            if pieces:                        # whole-provision block: one op per §
-                for para, piece in pieces:
-                    ops.append({**base, "para": para, "new_text": piece})
-            else:                             # sub-provision / repeal / structural
-                ops.append({**base, "para": _op_para(d), "new_text": new})
+    Multi-provision new_text blocks are expanded to one op per provision.
+
+    Merges the external amendment stream with the LTI-reparse stream (the omnibus
+    sections the external stream dropped); dedup by (act, para, date, instruction) guards
+    the boundary so a section present in both is not applied twice."""
+    ops, seen = [], set()
+    for path in (amendments.DATA, _LTI_AMEND):
+        if not path.exists():
+            continue
+        with gzip.open(path, "rt", encoding="utf-8") as fh:
+            for line in fh:
+                d = json.loads(line)
+                if d.get("target_law") != target_law:
+                    continue
+                base = {
+                    "change_type": d.get("change_type"),
+                    "instruction": d.get("instruction"),
+                    "date": d.get("date_in_force_resolved") or d.get("date_in_force"),
+                    "act": d.get("act_refid"),
+                }
+                new = d.get("new_text")
+                pieces = _split_block(new) if new and new.lstrip().startswith("§") else []
+                if pieces:                    # whole-provision block: one op per §
+                    for para, piece in pieces:
+                        key = (base["act"], para, base["date"], base["instruction"])
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        ops.append({**base, "para": para, "new_text": piece})
+                else:                         # sub-provision / repeal / structural
+                    para = _op_para(d)
+                    key = (base["act"], para, base["date"], base["instruction"])
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    ops.append({**base, "para": para, "new_text": new})
     ops.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
     return ops
 

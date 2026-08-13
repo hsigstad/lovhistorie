@@ -1,5 +1,40 @@
 # Done
 
+## 2026-08-13 (cont.) — LTI omnibus re-parse recovers dropped amendments: 0.638 → 0.655, deliverable → 0.807
+
+- **Reopened the "missing amendments" lever — and corrected an earlier wrong call.** The current NLOD
+  dump annotates each provision with the acts that amended it ("Endret ved lov 4 mars 1983 nr. 4"). Using
+  that as a DIAGNOSTIC (target list only — amendment text comes from public sources), compared the full
+  amendment history to what we captured: ~279 acts across dev laws, ~151 missing. Most missing POST-2001
+  acts are **omnibus acts** — one act amends dozens of laws — whose full text we ALREADY hold in `data/lti/`
+  (2,882 clean act XMLs). The external `amendments.jsonl.gz` captured only SOME laws' sections per act and
+  dropped the rest (e.g. lov 2009-06-19-48 amends 34 laws; 8 captured). So this is a PARSING gap in data on
+  disk, not a scraping gap. (My earlier "omnibus is small / safe levers exhausted" was measured too
+  narrowly — inside the pre-parsed stream, not the original acts. Lesson 0 again.)
+- **Built `source/scrape/lti_amendments.py`** (offline build; reads `data/lti/`, NEVER a recon module —
+  anti-gaming lesson 7). Splits each act on the true op-block boundary — the `I lov <cite> … gjøres
+  følgende endringer:` header (NOT the `<section>` tag) — resolves each block's target law, and extracts
+  ops structurally (instruction = the `defaultP`; new text = the following content articles). Writes the
+  MISSING `(act,target)` sections to `data/lti_amendments.jsonl.gz` (gitignored, derived); `pipeline.load_ops`
+  merges it with dedup. Full run over 2,882 acts in 6s → 735 recovered whole-provision sections.
+- **Two bugs found + fixed in the loop (both were corrupting attribution):**
+  - *Section-vs-block mis-attribution:* a new-enactment act's consequential-amendments chapter (e.g.
+    angrerettloven 2014-06-20-27) holds several `I lov <cite>` blocks in ONE `<section>`; splitting on
+    `<section>` lumped other laws' ops (sales/marketing law) under avtaleloven and wrongly deleted its
+    §14/§15. Fixed by splitting on the `I lov <cite>` headers across the whole body.
+  - *Sub-provision content leakage:* ledd/punktum/nr op new-text is bounded only by the next instruction, so
+    it can leak across op boundaries (corrupted aksjeloven §12-6/§10-12). **v1 scope = WHOLE-PROVISION
+    replace/add ONLY** (self-contained; own heading). Same net gain, ZERO per-law regression; sub-provision
+    bounding is the documented follow-up.
+- **Result: convergence 0.6381 → 0.6550** (+14: vphl 201→211, aksjeloven 174→178), guards PASS, **no law
+  regressed**, recoveries verbatim (§21-1 0.992, §4-7 1.000, §4-20 1.000, §10-6 0.978). **Deliverable
+  point-in-time μ 0.804 → 0.807** (aksjeloven 2024 rate 0.601→0.611; 2001/2003 correctly unchanged — the
+  recovered acts are post-2007).
+- **Follow-ups (measured, deferred):** (a) harden sub-provision op content bounding → recovers more
+  (kjøpsloven +5 was lost to the safe-scope filter); (b) blanket-terminology sections ("«Kredittilsynet» →
+  «Finanstilsynet» i følgende bestemmelser: …") — deterministic string substitution across listed
+  provisions, a real op type we currently skip; (c) pre-2001 acts (~55, gazette/OCR — harder).
+
 ## 2026-08-13 (cont.) — sub-unit-repeal over-deletion BUG fixed: 0.621 → 0.638, deliverable 0.786 → 0.804
 
 - **The ledd scoping surfaced a real correctness bug (the opposite of fabrication risk — over-deletion).**
