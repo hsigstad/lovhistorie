@@ -1,5 +1,20 @@
 # Done
 
+## 2026-08-13 — point-in-time harness now mirrors the gate's eval-scope rules (handoff consumed)
+
+- Consumed the 2026-08-12T16-42 handoff: the two eval calibrations (convention-annex scoping +
+  OCR-calibrated τ) lived only in the convergence gate, not the point-in-time harness
+  (`source/eval/harness.py`, flat `tau=0.98`), so the deliverable metric would have diverged from
+  convergence for pure eval-scope reasons once OCR-law / annex-bearing ground truth landed.
+- **Single source of truth:** moved the annex predicate to `metrics.is_convention_annex` (`"/" in
+  para`); `gate._is_convention_annex` is now an alias of it. `harness.evaluate_law/evaluate_corpus`
+  hold annex articles out of scope automatically and take per-source τ (`tau` clean-LTI, `tau_ocr`
+  for OCR laws; caller passes `ocr=`/`ocr_of=pipeline.is_ocr_base`). `LawScore` carries the τ used +
+  `n_annex`; summary reports `annex_out_of_scope`.
+- **Verified consistent:** driving the harness with the real pipeline reproduces the gate's per-law
+  convergence EXACTLY for all 9 dev laws (@0.9 OCR / @0.98 clean) and the same 138 annex-out-of-scope;
+  harness self-test green; gate unregressed (0.562 / 0.499, guards PASS). No reconstruction code touched.
+
 ## 2026-08-12 (cont.) — OCR-calibrated τ, DERIVED not guessed: strict 0.499 → OCR-calib 0.562 (session)
 
 - **Calibrated τ_OCR from the OCR-fidelity distribution, not a round number.** On NEVER-AMENDED

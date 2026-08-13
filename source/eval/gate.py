@@ -179,18 +179,9 @@ def guard_base_integrity():
     return offenders
 
 
-def _is_convention_annex(para: str) -> bool:
-    """True for a treaty/convention article bundled into the current NLOD text but
-    incorporated BY REFERENCE, not published as a Norsk Lovtidend amendment — e.g.
-    kjøpsloven's CISG (`§cisg/aN`) and foreldelsesloven's limitation convention
-    (`§fik/aN`). The NLOD dump itself namespaces these with a '/' (a convention id),
-    which ordinary statutory ids (`§N`, `§N-M`, `§Na`) never contain. Such articles
-    are OUTSIDE the reconstruct contract (enactment + Lovtidend amendments — goal.md
-    rule 2): no Lovtidend act carries them, so they are un-reconstructable by
-    construction, not a reconstruction failure. This criterion is objective and
-    structural (a marked namespace), NOT similarity-based or hand-picked, so it cannot
-    be used to quietly drop merely-hard provisions."""
-    return "/" in para
+# The convention-annex scope rule is shared with the point-in-time harness — its single
+# source of truth is metrics.is_convention_annex (imported here as _is_convention_annex).
+_is_convention_annex = metrics.is_convention_annex
 
 
 # --- convergence: matched / statutory current provisions -------------------------

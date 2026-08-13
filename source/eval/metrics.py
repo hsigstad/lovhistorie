@@ -67,6 +67,20 @@ def similarity(a, b):
     return difflib.SequenceMatcher(None, a, b, autojunk=False).ratio()
 
 
+def is_convention_annex(para: str) -> bool:
+    """True for a treaty/convention article bundled into the current NLOD text but
+    incorporated BY REFERENCE, not published as a Norsk Lovtidend amendment — e.g.
+    kjøpsloven's CISG (`§cisg/aN`) and foreldelsesloven's limitation convention
+    (`§fik/aN`). The NLOD dump namespaces these with a '/' (a convention id); ordinary
+    statutory ids (`§N`, `§N-M`, `§Na`) never contain one. Such articles are outside the
+    reconstruct contract (enactment + Lovtidend amendments — goal.md rule 2): no Lovtidend
+    act carries them, so they are un-reconstructable by construction, held out of scope
+    in BOTH the convergence gate and the point-in-time harness (never a silent failure).
+    The single source of truth for this scope rule; the criterion is objective and
+    structural (a marked namespace), never similarity-based or hand-picked."""
+    return "/" in para
+
+
 def _heading_pat(num):
     core = num.lstrip("§")
     if core[-1:].isalpha():

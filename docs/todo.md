@@ -84,3 +84,9 @@
     utlendingsloven `2008-05-15-35`, Oppgaveregisteret `1997-06-06-35`.
   - ~3–5 dates per law, spread across its life, bracketing major amendments.
   - This unblocks the point-in-time metric → autonomous work via the `goal` skill.
+  - **Prediction to verify** (from the 2026-08-12 morning handoff): clean-base laws
+    (vphl `2007-06-29-75`, tjenesteloven `2009-06-19-103`) should score point-in-time at
+    PAST dates about as high as their convergence, since their 2024-equivalent already
+    matches. Confirm once 1–2 HIST versions each are downloaded — cleanest evidence the
+    engine reconstructs clean past states well. The harness is now wired for per-source τ +
+    annex scope, so these numbers will be gate-consistent out of the box.

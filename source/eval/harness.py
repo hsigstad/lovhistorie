@@ -55,28 +55,45 @@ class LawScore:
     convergence_mean: float = 0.0
     convergence_flags: list = field(default_factory=list)
     pit: list = field(default_factory=list)   # [(date, rate, mean, flags)]
-    n_provisions: int = 0
+    n_provisions: int = 0                       # STATUTORY provisions scored
+    n_annex: int = 0                            # convention annexes held out of scope
+    tau: float = 0.98                           # the threshold actually applied
 
 
-def evaluate_law(datokode, reconstruct, current_provs, gt_versions=(), tau=0.98):
-    """Score one law. current_provs / gt_versions values are {para: text}."""
-    order = list(current_provs)
-    sc = LawScore(datokode=datokode, n_provisions=len(order))
+def evaluate_law(datokode, reconstruct, current_provs, gt_versions=(),
+                 tau=0.98, tau_ocr=None, ocr=False):
+    """Score one law. current_provs / gt_versions values are {para: text}.
+
+    Applies the SAME two eval-scope rules as the convergence gate so the point-in-time
+    (deliverable) number stays consistent with convergence:
+    - convention-annex articles (metrics.is_convention_annex) are held OUT of scope;
+    - OCR-based laws use the OCR-calibrated `tau_ocr` (pass ocr=True), clean-LTI laws
+      use the strict `tau`. Callers resolve `ocr` via pipeline.is_ocr_base.
+    """
+    eff_tau = tau_ocr if (ocr and tau_ocr is not None) else tau
+    order = [p for p in current_provs if not metrics.is_convention_annex(p)]
+    sc = LawScore(datokode=datokode, n_provisions=len(order),
+                  n_annex=len(current_provs) - len(order), tau=eff_tau)
     # 1. convergence: reconstruct "current" and compare to authoritative current
     recon_cur = reconstruct(datokode, None)
     sc.convergence_rate, sc.convergence_mean, _, sc.convergence_flags = _score_pair(
-        recon_cur, current_provs, order, tau)
+        recon_cur, current_provs, order, eff_tau)
     # 2. point-in-time vs the held-out ground truth
     for date, gt in gt_versions:
-        r, m, _, fl = _score_pair(reconstruct(datokode, date), gt, order, tau)
+        r, m, _, fl = _score_pair(reconstruct(datokode, date), gt, order, eff_tau)
         sc.pit.append((date, round(r, 3), round(m, 3), fl))
     return sc
 
 
-def evaluate_corpus(datokoder, reconstruct, current_of, gt_of, tau=0.98):
+def evaluate_corpus(datokoder, reconstruct, current_of, gt_of,
+                    tau=0.98, tau_ocr=None, ocr_of=None):
     """Aggregate over laws. current_of/gt_of are callables datokode->{para:text} /
-    datokode->[(date,{para:text})]. Returns (per-law scores, summary dict)."""
-    scores = [evaluate_law(dk, reconstruct, current_of(dk), gt_of(dk), tau)
+    datokode->[(date,{para:text})]. `ocr_of` (datokode->bool, e.g. pipeline.is_ocr_base)
+    selects the OCR-calibrated τ per law; omit it to score every law at the strict `tau`.
+    Returns (per-law scores, summary dict)."""
+    scores = [evaluate_law(dk, reconstruct, current_of(dk), gt_of(dk),
+                           tau=tau, tau_ocr=tau_ocr,
+                           ocr=bool(ocr_of(dk)) if ocr_of else False)
               for dk in datokoder]
     conv = [s.convergence_rate for s in scores]
     pit = [rate for s in scores for (_, rate, _, _) in s.pit]
@@ -84,8 +101,10 @@ def evaluate_corpus(datokoder, reconstruct, current_of, gt_of, tau=0.98):
         "n_laws": len(scores),
         "convergence_rate_mean": round(statistics.mean(conv), 4) if conv else None,
         "point_in_time_rate_mean": round(statistics.mean(pit), 4) if pit else None,
-        "laws_below_bar": [s.datokode for s in scores if s.convergence_rate < tau],
+        "laws_below_bar": [s.datokode for s in scores if s.convergence_rate < s.tau],
+        "annex_out_of_scope": sum(s.n_annex for s in scores),
         "tau": tau,
+        "tau_ocr": tau_ocr,
     }
     return scores, summary
 
