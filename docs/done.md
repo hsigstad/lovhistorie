@@ -1,5 +1,27 @@
 # Done
 
+## 2026-08-13 (cont.) — ledd engine SCOPED (provision-level): hard/risky tail, one bounded-safe subset
+
+- **Measured the 89 `engine-gap:ledd` misses at provision level** (instrumented `ledd.apply`'s None-returns
+  + classified each gap provision by base source/structure). Op-INSTANCE view is dominated by blob bases
+  (462), but the PROVISION split is what matters:
+  - **42 blob/absent-OCR** (37 blob + 5 absent) — pre-2001 OCR laws whose base is a flat blob with no ledd
+    boundaries, so any ledd op flags. A base-structure fix (preserve ledd line breaks in OCR extraction, the
+    "unnumbered-ledd on OCR bases" todo) — BUT entangled with the pre-2001 amendment-CAPTURE gap (exhausted),
+    so low direct provision yield. avtale 2, oreig 8, foreld 7, rettsgebyr 13, mester 2, aksjeloven 5.
+  - **11 absent** (6 clean + 5 OCR) — the ledd op targets a provision empty at apply time (wholesale-replaced
+    later / never built). NOT ledd-recoverable at all.
+  - **~36 structured** (aksjeloven OCR/num 23 + vphl clean/num 14 + clean/nl 3) — engine-side, but the
+    failures are cascading (a prior flagged op left the provision short a ledd), noisy inline markers
+    ("(1)(1)" doubles), non-consecutive nr/bokstav runs, punktum-split <2, or INSERT punktum/ledd (34+6
+    op-instances — the RISKY segmentation cases, fabrication risk per goal.md).
+- **Verdict — confirms the standing deprioritisation.** The clean, no-fabrication subset is small: vphl's
+  ~14-17 **clean-structured REPLACE** ops (overwrite a located ledd/nr/punktum on a clean LTI base — safe,
+  no segmentation). That's the ONE bounded-safe ledd lever (~+15 provisions, 0.62→~0.64), and it is
+  high-value BECAUSE vphl is a clean-base law where point-in-time is predicted strong — so it lifts the
+  deliverable, not just an OCR-capped proxy. Everything else (blob bases, inserts, marker-noise, absent) is
+  the hard/risky/entangled tail. No engine code changed — a scoping measurement.
+
 ## 2026-08-13 (cont.) — FIRST real deliverable number: point-in-time measured + wired into status
 
 - **Ran the actual deliverable metric (evaluation.md check 2) for the first time** — the ground truth
