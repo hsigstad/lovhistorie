@@ -56,13 +56,32 @@ def _flag(flags, op, why):
                   "instruction": op.get("instruction")})
 
 
+# A repeal that names a SUB-UNIT ("§ X femte ledd oppheves", "nr. 3 oppheves") must remove
+# only that ledd/punktum/nr/bokstav — NOT the whole provision. The gazette/LTI stream labels
+# these change_type="repeal" with the provision as `para`, so a naive doc.pop(para) deletes
+# the entire §. (ledd.py's own docstring flags this exact hazard: "§4 pkt.b oppheves wrongly
+# deletes all of §4".)
+_SUBUNIT = re.compile(r"\b(?:ledd|punktum|bokstav|nr\.?)\b")
+
+
 def _apply_change_type(doc, op, flags):
     para = op.get("para")
     ct = op.get("change_type")
     new = op.get("new_text")
     instr = op.get("instruction") or ""
     if ct == "repeal" and para:
-        doc.pop(para, None)
+        if _SUBUNIT.search(instr):
+            # sub-unit repeal — route to the ledd engine; if it can't resolve the address
+            # cleanly, FLAG and LEAVE THE PROVISION INTACT (never delete the whole § on a
+            # sub-unit repeal — flag-don't-fabricate, and keeping it is far closer to current
+            # than an empty provision).
+            result = ledd.apply(doc.get(para, ""), instr, new)
+            if result is not None:
+                doc[para] = result
+            else:
+                _flag(flags, op, "repeal-subunit")
+            return
+        doc.pop(para, None)          # whole-provision repeal
         return
     if "overskrift" not in instr and para and new and new.lstrip().startswith("§"):
         # A whole-provision body ('§ N. …') IS the provision's new enacted text,

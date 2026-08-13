@@ -1,5 +1,29 @@
 # Done
 
+## 2026-08-13 (cont.) — sub-unit-repeal over-deletion BUG fixed: 0.621 → 0.638, deliverable 0.786 → 0.804
+
+- **The ledd scoping surfaced a real correctness bug (the opposite of fabrication risk — over-deletion).**
+  `replay._apply_change_type` handled `change_type="repeal"` with `doc.pop(para)` — so a SUB-UNIT repeal
+  ("§ 21-1 femte ledd oppheves", "nr. 3 oppheves") DELETED THE WHOLE PROVISION. Flagship: vphl §21-1 was
+  built correctly by the 2019 "Kapittel 21 skal lyde" block, then wiped by a 2024 fifth-ledd repeal.
+  ledd.py's own docstring warned of exactly this ("§4 pkt.b oppheves wrongly deletes all of §4") — the
+  change_type path just skipped the guard.
+- **Measured 38 provisions wrongly emptied** (aksjeloven 23, vphl 8, rettsgebyr 6, oreig 1) before fixing.
+- **Fix:** a repeal whose instruction names a ledd/punktum/nr/bokstav routes to `ledd.apply`; if the engine
+  can't resolve the address cleanly it **FLAGS and LEAVES THE PROVISION INTACT** — never deletes the whole
+  § on a sub-unit repeal (flag-don't-fabricate; a kept provision is far closer to current than an empty one).
+  Whole-provision repeals ("§ X oppheves", no sub-unit) still pop as before (verified: §5-11 stays absent).
+- **Result: convergence 0.6212 → 0.6381** (+14: aksjeloven 163→174, vphl 198→201), guards PASS, no law
+  regressed. Faithful recoveries verbatim (§21-1 0.992, §13-1 0.997, §10-1 0.993).
+- **Deliverable moved TOO — the thesis in action:** point-in-time μ **0.786 → 0.804** similarity
+  (aksjeloven 2024 rate 0.563 → 0.601); 2001/2003 correctly UNCHANGED (those repeals took effect later).
+  A legitimate convergence fix lifted the held-out deliverable by the same mechanism — exactly what
+  point-in-time≈convergence predicted.
+- Note: a few repealed-STUB provisions whose only repeal in our stream is a sub-unit one (§3-9, §8-4) are
+  now kept present (honest — we lack the whole-repeal act); they are is_repealed_stub-scoped-out, so
+  convergence is unaffected. The remaining ~24 of the 38 are kept-but-still-below-τ (need the actual ledd
+  removal + other changes) — no longer sim 0, a strict improvement.
+
 ## 2026-08-13 (cont.) — ledd engine SCOPED (provision-level): hard/risky tail, one bounded-safe subset
 
 - **Measured the 89 `engine-gap:ledd` misses at provision level** (instrumented `ledd.apply`'s None-returns
