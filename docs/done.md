@@ -1,5 +1,21 @@
 # Done
 
+## 2026-08-13 (cont.) — heading-tolerant parser built (opt-in, regression-clean); booklets unlocked
+
+- Built `_repair_headings` (LINE-ANCHORED): canonicalises OCR-garbled `§ N —M` section headings
+  ("§ 1 —3", "§3— 4?") back to `§N-M.` so dense paperback særtrykk segment. `parse_provisions`
+  gained a `repair_headings=False` flag; **only `build_booklet` opts in**.
+- **Regression check drove the design.** Applied globally (unanchored) it regressed aksjeloven's
+  gazette base 149→146 (canonicalised in-body cross-refs into phantom headings). Line-anchored still
+  regressed it (any change to the already-tuned clean antiqua base displaces provisions). Conclusion:
+  the gazette bases are already clean and do NOT benefit — so the repair is booklet-only. Full gate
+  after rebuilding all booklet bases: aksjeloven 149, kjøpsloven 55, rettsgebyr 3, everything else
+  identical, convergence **0.5621 unchanged**, guards PASS (base JSONs byte-identical → §N-M repair
+  is a verified no-op for single-§ and gazette laws).
+- **Booklet unlocked:** with the opt-in repair, the aksjeloven-2001 booklet parses at **95% coverage
+  (253/265), median 0.994** vs the Lovdata-Pro 2001 oracle (was 26% / 0.60 pre-fix). The PD-booklet
+  validation-set lever is now mechanically viable; next is banking booklets + held-out partitioning.
+
 ## 2026-08-13 (cont.) — PD-booklet validation set is VIABLE (corrected: parser, not OCR)
 
 - **Question:** did we scrape all findable booklets, and can PD law booklets replace the encumbered

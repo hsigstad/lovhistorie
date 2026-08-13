@@ -148,9 +148,36 @@ def _ocr_postcorrect(text: str) -> str:
     return text.translate(_OCR_DIACRITICS)
 
 
-def parse_provisions(law_text: str) -> dict:
+# OCR of chapter-section headings often mangles the "§N-M." token — the hyphen picks up
+# stray spaces or becomes an en/em-dash/tilde and the trailing period drops or turns to
+# noise: "§ 1 —3", "§3— 4", "§ 3-8 a". Canonicalise any "§ N <dash> M [letter]" back to
+# "§N-M[letter]. " so the line-anchored _HEAD and provisions_ordered can segment §N-M laws
+# whose scan garbled the hyphen (e.g. dense paperback særtrykk). Single-§ laws have no N-M
+# form so they never match and are untouched. The letter suffix must be IMMEDIATE (no space)
+# so "§ 2-11 første" is not mis-read as suffix "f"; the trailing "\s*\.?" absorbs an existing
+# period so an already-clean "§3-8." is not doubled. LINE-ANCHORED ((?m)^): a real heading
+# opens its line, whereas an in-body cross-reference ("jf. § 2-11 …") is mid-line — so this
+# repairs headings without canonicalising cross-refs into phantom provisions. (An unanchored
+# version regressed the already-clean antiqua gazette bases by exactly that; verified.)
+_GARBLED_SECT = re.compile(r"(?m)^(\s*)§\s*(\d+)\s*[-–—~]\s*(\d+)([a-z])?\s*\.?")
+
+
+def _repair_headings(text: str) -> str:
+    return _GARBLED_SECT.sub(
+        lambda m: f"{m.group(1)}§{m.group(2)}-{m.group(3)}{m.group(4) or ''}. ", text)
+
+
+def parse_provisions(law_text: str, repair_headings: bool = False) -> dict:
     """{'§N': text} from enactment text. Order = line-start '§ N.' headings (dedup);
-    extraction via provisions_ordered so in-body '§ N' references don't split."""
+    extraction via provisions_ordered so in-body '§ N' references don't split.
+
+    `repair_headings` canonicalises OCR-garbled '§ N —M' section headings first — needed
+    for dense paperback særtrykk (booklets), but LEFT OFF for the gazette bases, whose
+    antiqua headings are already clean and which a repair only perturbs (verified: it
+    regressed aksjeloven 149→146). So the gazette build path keeps the default False and
+    only build_booklet opts in."""
+    if repair_headings:
+        law_text = _repair_headings(law_text)
     order, seen = [], set()
     for m in _HEAD.finditer(law_text):
         p = "§" + m.group(1)
@@ -316,7 +343,7 @@ def build_booklet(datokode: str, loc: dict | None = None) -> dict:
     start = re.search(re.escape(loc["title_needle"]), txt)
     if not start:
         raise ValueError(f"title needle {loc['title_needle']!r} not found in booklet")
-    provs = parse_provisions(txt[start.start():])
+    provs = parse_provisions(txt[start.start():], repair_headings=True)
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f"{datokode}.json").write_text(json.dumps({
         "datokode": datokode,

@@ -56,13 +56,17 @@
   segment garbled `§ 1 —3` headings, not OCR**: the OCR carries 279 of 293 headings; the strict
   `_HEAD` regex matched only 71. **Repairing the heading token (same OCR) → 94% coverage (250/265),
   median 0.991, mean 0.846, 63% ≥0.98 / 73% ≥0.90.** So the booklet DOES reproduce the oracle.
-  NEXT: make `build_enactment._HEAD` / `parse_provisions` tolerant of spaced/garbled `§N-M`
-  (`§\s*(\d+)\s*[-—~]\s*(\d+)`), then (a) bank booklets as a PD validation set, (b) held-out
-  partition (a booklet used as base for law L must not validate L), (c) OCR-calibrated τ. The same
-  heading-tolerance may also lift the pre-2001 gazette bases — check for regressions on the 7 built.
-  - (Booklet-as-cleaner-BASE still unproven: foreldelse-1993 base-only 14/33 @0.9 vs gazette 18/33;
-    but re-test aksjeloven-2001 as a base once the heading parser lands — median 0.991 vs GT is
-    promising and could beat the noisy gazette base's 149/293.)
+  DONE 2026-08-13: heading-tolerant parser built (`_repair_headings`, line-anchored, opt-in via
+  `parse_provisions(repair_headings=True)`, booklet-only — the clean gazette bases don't benefit and
+  a global repair regressed aksjeloven, so it's off by default; regression-clean). aksjeloven-2001
+  booklet now parses 95% coverage / median 0.994 vs the 2001 oracle. NEXT:
+  - (a) **bank booklets as a PD validation set** — a small loader that, given a booklet URN + body
+    span + ajourført date, yields `{para: text}` for point-in-time scoring (route through the harness,
+    which already applies annex-scope + OCR-τ). Start with aksjeloven-2001 (we hold the matching GT).
+  - (b) **held-out partition** — a booklet used as a base for law L must NOT also validate L.
+  - (c) re-test **aksjeloven-2001 as a cleaner BASE** now the parser lands (median 0.994 vs 2001 GT
+    beats the noisy gazette base's 149/293 — build it with base_as_of=2001-01-01 and compare).
+  - (Booklet-as-cleaner-BASE for foreldelse still unproven: 1993 base-only 14/33 @0.9 vs gazette 18/33.)
 - [ ] Resolve true **ikrafttredelse dates** (bodies say "trer i kraft <date>"); `--build`
   currently uses the act date as `date_in_force_resolved` (first approximation).
 
