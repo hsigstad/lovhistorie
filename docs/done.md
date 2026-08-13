@@ -30,10 +30,15 @@
   regressed**, recoveries verbatim (§21-1 0.992, §4-7 1.000, §4-20 1.000, §10-6 0.978). **Deliverable
   point-in-time μ 0.804 → 0.807** (aksjeloven 2024 rate 0.601→0.611; 2001/2003 correctly unchanged — the
   recovered acts are post-2007).
-- **Follow-ups (measured, deferred):** (a) harden sub-provision op content bounding → recovers more
-  (kjøpsloven +5 was lost to the safe-scope filter); (b) blanket-terminology sections ("«Kredittilsynet» →
-  «Finanstilsynet» i følgende bestemmelser: …") — deterministic string substitution across listed
-  provisions, a real op type we currently skip; (c) pre-2001 acts (~55, gazette/OCR — harder).
+- **Follow-ups:** (a) ~~sub-provision op recovery~~ MEASURED net-zero 2026-08-13 (`whole_only=False`):
+  +6 provisions but −6 regressions on the dev set. The regressions are DOUBLE-APPLICATION — a sub-provision
+  op ("nytt sjette ledd skal lyde") applied to a provision a later whole-provision op already rebuilt with
+  that ledd (§5-10 0.998→0.887, §4-13 0.998→0.629). ROOT CAUSE: op `date` is the ACT date, not the true
+  ikrafttredelse, so sub- and whole-provision ops on one § apply out of order + the ledd engine isn't
+  idempotent. Sub-provision recovery needs TRUE in-force dates first (the `date_in_force_resolved` TODO);
+  the `whole_only=False` path exists to re-measure once that lands. (b) blanket-terminology sections
+  ("«Kredittilsynet» → «Finanstilsynet» i følgende bestemmelser: …") — deterministic term substitution
+  across listed provisions, a real op type still skipped; (c) pre-2001 acts (~55, gazette/OCR — harder).
 
 ## 2026-08-13 (cont.) — sub-unit-repeal over-deletion BUG fixed: 0.621 → 0.638, deliverable 0.786 → 0.804
 

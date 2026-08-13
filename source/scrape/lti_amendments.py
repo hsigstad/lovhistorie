@@ -73,7 +73,7 @@ def _change_type(instr: str) -> str:
     return "change"
 
 
-def _parse_block(block_html: str):
+def _parse_block(block_html: str, whole_only: bool = True):
     """Yield (instruction, new_text, change_type) ops for ONE target-law block (already
     bounded to its own '§ … skal lyde' ops — the caller slices between amendment headers).
     Structure-based: instruction = a defaultP op line; new_text = the content articles up
@@ -90,21 +90,26 @@ def _parse_block(block_html: str):
         content = _xml_text(block_html[e:end])
         para = _para_id(instr)
         ct = _change_type(instr)
-        # v1 SCOPE — WHOLE-PROVISION replace/add ONLY. These are self-contained: the new
-        # text is the entire provision body, so re-attaching its '§ N.' heading makes it a
-        # clean overwrite via replay's §-body branch. Sub-provision ops (ledd/punktum/nr)
-        # and repeals are SKIPPED for now: their new-text span can leak across consecutive
-        # op boundaries (content bounded only by the next instruction), which corrupted a
-        # few provisions in testing (aksjeloven §12-6/§10-12). Emitting only whole-provision
-        # ops gave the same net gain with ZERO per-law regression; hardening the
-        # sub-provision content bounds is the follow-up. (flag-don't-fabricate: skip, not guess.)
+        # SCOPE — WHOLE-PROVISION replace/add ONLY (whole_only, the default + shipped path).
+        # These are self-contained: the new text is the entire provision body, so re-attaching
+        # its '§ N.' heading makes a clean overwrite via replay's §-body branch.
+        # Sub-provision ops (ledd/punktum/nr) are MEASURED-net-zero and disabled: including
+        # them gave +6 provisions but −6 regressions on the dev set (2026-08-13). The
+        # regressions are DOUBLE-APPLICATION — a "nytt sjette ledd skal lyde" applied to a
+        # provision a later whole-provision op already rebuilt with that ledd (§5-10 0.998→0.887,
+        # §4-13 0.998→0.629). Root cause: our op `date` is the ACT date, not the true
+        # ikrafttredelse, so sub-provision and whole-provision ops on one § apply out of order
+        # and the ledd engine is not idempotent. Enabling sub-provision recovery needs true
+        # in-force dates FIRST. `whole_only=False` exists to re-measure once that lands.
         if ct in ("change", "add") and para and not _SUBUNIT.search(instr) and content:
             num = para.lstrip("§")
             ops.append((instr, f"§ {num}. {content}".strip(), ct))
+        elif not whole_only and para and (content or ct == "repeal"):
+            ops.append((instr, (content or None) if ct != "repeal" else None, ct))
     return ops
 
 
-def parse_act(xml_path: Path):
+def parse_act(xml_path: Path, whole_only: bool = True):
     """All amendment rows an LTI act carries, one per (target law × op). act date is the
     first approximation of entry-into-force (true ikr. is resolved elsewhere)."""
     raw = xml_path.read_text(encoding="utf-8", errors="ignore")
@@ -119,7 +124,7 @@ def parse_act(xml_path: Path):
         if not target_dk:
             continue
         block_end = heads[i + 1][0] if i + 1 < len(heads) else len(raw)
-        for instr, new_text, ct in _parse_block(raw[he:block_end]):
+        for instr, new_text, ct in _parse_block(raw[he:block_end], whole_only):
             rows.append({
                 "act_refid": f"lov/{act_dk}",
                 "target_law": f"lov/{target_dk}",
