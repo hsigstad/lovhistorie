@@ -1,21 +1,26 @@
 # Done
 
-## 2026-08-13 (cont.) — PD-booklet validation-set lever tested → blocked on OCR (negative result)
+## 2026-08-13 (cont.) — PD-booklet validation set is VIABLE (corrected: parser, not OCR)
 
 - **Question:** did we scrape all findable booklets, and can PD law booklets replace the encumbered
-  Lovdata-Pro oracle for the point-in-time metric? **Swept NB, then ran the decisive cross-check.**
-- **Sweep:** we had NOT exhausted booklets — genuine unused PD snapshots of dev laws exist
-  (aksjeloven 2001, foreldelsesloven 1992/1993, kjøpsloven 1991, rettsgebyr 1993). But booklet-as-a-
-  cleaner-BASE is not a clear win (foreldelsesloven-1993 booklet base-only 14/33 @0.9 vs current
-  gazette base 18/33 with amendments; same footnote-digit OCR pollution).
-- **Decisive cross-check:** the aksjeloven-2001 booklet (`digibok_2023030748042`, ajourført exactly
-  **2001-01-01** — matching a GT we already hold) vs Lovdata-Pro 2001: **26% coverage (69/265),
-  mean 0.60 / median 0.55, only 28% ≥0.98.** The booklet is a dense Cappelen paperback whose OCR
-  mangles §N-M headings ("§ 1 —3", "3— 4?", "Konsemer") — `parse_provisions` under-segments and the
-  char OCR is *worse* than the antiqua gazette. **Verdict: scanned law paperbacks cannot replace the
-  oracle as-is.** The validation-set lever is blocked on OCR quality, not on booklet availability.
-- **Recorded in todo** with the three revival paths (booklet-robust heading parser / multimodal
-  re-OCR / born-digital editions). No code changed — an investigation with a clean negative result.
+  Lovdata-Pro oracle? **Swept NB, ran the decisive cross-check — and then caught myself repeating the
+  project's signature "blame OCR" trap.**
+- **Sweep:** booklets NOT exhausted — unused PD snapshots exist (aksjeloven 2001, foreldelsesloven
+  1992/1993, kjøpsloven 1991, rettsgebyr 1993).
+- **Cross-check, FIRST (wrong) read:** aksjeloven-2001 booklet (`digibok_2023030748042`, ajourført
+  exactly **2001-01-01**, matching a GT we hold) vs Lovdata-Pro 2001 = 26% coverage, mean 0.60. I
+  labelled it "OCR too noisy — paperbacks can't replace the oracle." **That was wrong** (Henrik
+  flagged it — lessons #0/#2/#8: suspect the measurement, not OCR).
+- **Cross-check, CORRECTED read:** the failure was **`parse_provisions` not segmenting garbled
+  `§ 1 —3` headings**, not char OCR. The OCR carries **279 of 293** headings; strict `_HEAD` matched
+  only **71**, so parsed provisions swallowed everything to the next recognised heading (§21-1 came
+  out 7110 chars vs GT's 172 — and where aligned, matched GT *verbatim*). **Repairing the heading
+  token alone (identical OCR) → 94% coverage (250/265), median 0.991, mean 0.846, 63% ≥0.98 /
+  73% ≥0.90.** So the booklet DOES reproduce the oracle; the limiter was our parser.
+- **Consequence:** the PD-booklet validation-set lever is VIABLE, gated on a small deterministic
+  heading-tolerance fix (not multimodal re-OCR). Corrected the todo entry. Method note for the
+  lessons doc: I mis-attributed a segmentation bug to OCR and committed it — re-verify "it's OCR"
+  claims by checking coverage/segment lengths before concluding. No pipeline code changed yet.
 
 ## 2026-08-13 — point-in-time harness now mirrors the gate's eval-scope rules (handoff consumed)
 

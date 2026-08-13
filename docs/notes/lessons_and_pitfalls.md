@@ -25,6 +25,19 @@ scorer. **Diagnose the measurement before diagnosing the pipeline.** And **measu
 building** — the data-driven loss breakdown found the real lever (block truncation, +82
 provisions) after we'd guessed wrong twice.
 
+## 0b. A low similarity score is often SEGMENTATION/coverage, not char-OCR (2026-08-13)
+When the aksjeloven-2001 PD booklet scored 26% coverage / mean 0.60 against the Lovdata-Pro
+2001 oracle, I concluded "OCR too noisy — scanned paperbacks can't be a validation source"
+**and committed it**. Wrong — the classic trap. Two checks refute it instantly: (a) the OCR
+carried **279 of 293** `§N-M` headings; the strict `_HEAD` regex matched only **71** — so the
+*parser* under-segmented, (b) a mis-segmented provision is grotesquely the wrong LENGTH (§21-1
+came out 7110 chars vs the truth's 172, having swallowed everything to the next recognised
+heading) and where it *does* align it matches the truth **verbatim**. Repairing the garbled
+heading token alone (**identical OCR**) took it to **94% coverage, median 0.991**. **Before
+concluding "it's OCR," check parse COVERAGE and per-provision LENGTH ratios — a real char-OCR
+problem lowers similarity uniformly; a segmentation problem shows missing headings + wild
+length mismatches.** (Char OCR here is clean, exactly as everywhere else in this project.)
+
 ## 1. The "0.39 ceiling / OCR too lossy" blocker was WRONG
 The original `BLOCKER.md` said pre-2001 was capped at ~0.39 because OCR is too lossy.
 Reality: OCR is *clean*; the gap was the **2001 cliff** — the LTI dump (`data/lti/`, 2001+)

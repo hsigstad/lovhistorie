@@ -47,20 +47,22 @@
   *booklets* (særtrykk) as SNAPSHOT bases with `base_as_of` (see done.md). Not enactment —
   they bake in early amendments and reconstruct dates ≥ their ajourført boundary; earlier
   dates flagged. Remaining gap is post-snapshot add-ops/ledd edits (amendment coverage), not base.
-- [~] **PD booklets as a public-domain point-in-time VALIDATION set** — TESTED 2026-08-13,
-  currently BLOCKED ON OCR QUALITY. Catalog sweep done: genuine unused PD snapshots exist —
-  aksjeloven 2001 (`digibok_2023030748042`), foreldelsesloven 1992/1993, kjøpsloven 1991,
-  rettsgebyr 1993. Ran the decisive cross-check (aksjeloven-2001 booklet, ajourført exactly
-  2001-01-01, vs the Lovdata-Pro 2001 GT we already hold): **only 26% coverage (69/265) and
-  mean 0.60 similarity** — the booklet is a dense Cappelen paperback whose OCR mangles the
-  §N-M headings ("§ 1 —3", "3— 4?"), so `parse_provisions` under-segments and the char OCR is
-  *worse* than the antiqua gazette. **These scanned paperbacks cannot replace the oracle as-is.**
-  To revive: (a) a booklet-robust heading parser tolerant of spaced/garbled `§N-M`, and/or
-  (b) multimodal re-OCR (deprioritised elsewhere — low ceiling), OR (c) find *born-digital* /
-  clean-text law editions rather than scanned særtrykk. Not worth more scraping until OCR is solved.
-  - (Also confirmed booklet-as-cleaner-BASE is not a clear win: foreldelsesloven-1993 booklet
-    base-only = 14/33 @0.9 vs the current gazette base's 18/33 with amendments; same footnote-digit
-    pollution. Don't swap working gazette bases for booklets.)
+- [ ] **PD booklets as a public-domain point-in-time VALIDATION set — VIABLE; needs a
+  heading-tolerant parser (NOT an OCR problem).** Corrected 2026-08-13 (I first mis-blamed OCR —
+  the project's signature trap). Catalog sweep found unused PD snapshots: aksjeloven 2001
+  (`digibok_2023030748042`), foreldelsesloven 1992/1993, kjøpsloven 1991, rettsgebyr 1993. The
+  aksjeloven-2001 cross-check (ajourført exactly 2001-01-01, vs the Lovdata-Pro 2001 GT we hold)
+  looked bad at first (26% coverage, mean 0.60) — but that was **`parse_provisions` failing to
+  segment garbled `§ 1 —3` headings, not OCR**: the OCR carries 279 of 293 headings; the strict
+  `_HEAD` regex matched only 71. **Repairing the heading token (same OCR) → 94% coverage (250/265),
+  median 0.991, mean 0.846, 63% ≥0.98 / 73% ≥0.90.** So the booklet DOES reproduce the oracle.
+  NEXT: make `build_enactment._HEAD` / `parse_provisions` tolerant of spaced/garbled `§N-M`
+  (`§\s*(\d+)\s*[-—~]\s*(\d+)`), then (a) bank booklets as a PD validation set, (b) held-out
+  partition (a booklet used as base for law L must not validate L), (c) OCR-calibrated τ. The same
+  heading-tolerance may also lift the pre-2001 gazette bases — check for regressions on the 7 built.
+  - (Booklet-as-cleaner-BASE still unproven: foreldelse-1993 base-only 14/33 @0.9 vs gazette 18/33;
+    but re-test aksjeloven-2001 as a base once the heading parser lands — median 0.991 vs GT is
+    promising and could beat the noisy gazette base's 149/293.)
 - [ ] Resolve true **ikrafttredelse dates** (bodies say "trer i kraft <date>"); `--build`
   currently uses the act date as `date_in_force_resolved` (first approximation).
 
