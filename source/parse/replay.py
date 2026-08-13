@@ -19,7 +19,11 @@ import re
 
 from source.parse import ledd
 
-_HEADING = re.compile(r"^\s*§\s*\d+(?:-\d+)?[a-z]?\.?\s*")
+# Leading provision heading '§ N. …' so the stored body excludes the heading, matching the
+# gate's heading-free provision bodies. A spaced suffix letter ('§ 5-8 a.') is stripped ONLY
+# when a period follows it (first alternative) — otherwise '§ 27 første' would lose the 'f'
+# of 'første'; the bare form (second alternative) keeps the original behaviour.
+_HEADING = re.compile(r"^\s*§\s*(?:\d+(?:-\d+)?\s*[a-z]\.|\d+(?:-\d+)?[a-z]?\.?)\s*")
 
 
 def _strip_heading(new_text: str) -> str:

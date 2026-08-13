@@ -1,5 +1,28 @@
 # Done
 
+## 2026-08-13 (cont.) — spaced-letter suffix fix: lettered `ny §` adds now resolve, 0.562 → 0.592
+
+- **Acted on loss_breakdown's top safe lever.** The letter suffix of a provision id is often
+  rendered/OCR'd with a SPACE before it ("Ny § 5-8 a skal lyde:", body "§ 5-8 a.Opplysninger…",
+  "I kapittel 4 skal ny § 38 c lyde:"). The id parsers (`§\s*(\d+(?:-\d+)?[a-z]?)`) captured
+  `§5-8`, so the whole-provision add misfiled and the real `§5-8a` stayed missing. Quantified
+  first (`scratchpad`): **32 of 37 lettered-id misses had exactly this spaced-op form.**
+- **Fix (period-anchored, deterministic).** New `pipeline._heading_id` / `_HEAD_ID` accept a
+  spaced suffix ONLY when a period follows (`§ 5-8 a.`) — the period disambiguates a real suffix
+  from a following word or preposition ("§ 5 i loven", "§ 27 første ledd"), which have no period
+  and never match. Wired into `_leading_para` + `_split_block`; `replay._HEADING` strip widened
+  with the same period-guard alternation (a bare `\s*[a-z]?` would have eaten the 'f' of "første").
+- **Result: convergence 0.5621 → 0.5920 (489 → 515, +26), strict 0.499 → 0.524 (+22). No law
+  regressed** (aksjeloven 149→163, vphl 189→198, avtaleloven/foreldelse/rettsgebyr +1). Guards
+  G1/G2/G3 PASS. loss_breakdown: base-missing 84→63, total misses 381→355.
+- **Faithfulness spot-checked (lesson 8):** recovered provisions match VERBATIM — aksjeloven §1-5a
+  0.983, avtaleloven §38c 0.995, foreldelsesloven §15a 0.996 (heading stripped, body identical).
+  vphl §5-8a stays 0.0 and correctly so: added 2010, repealed (opphevet) 2024 → replay removes it,
+  while NLOD keeps an annotated "(Opphevet)" stub — we did NOT fabricate a stub to match.
+- Residual lettered misses need the ledd engine (sub-provision edits like "§ 5 a nr. 3 … skal
+  lyde") or are genuine capture gaps (3, e.g. mesterbrev). Next safe lever: base-extraction drops
+  (plain original ids absent from OCR bases, e.g. aksjeloven §1-1/§2-12, vphl §1-4) + omnibus.
+
 ## 2026-08-13 (cont.) — loss_breakdown diagnostic: attributed all 381 misses; 0.97 unreachable, capture is the lever
 
 - **Built `source/eval/loss_breakdown.py`** (harness-side; reuses the gate's exact scope +

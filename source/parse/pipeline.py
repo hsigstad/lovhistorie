@@ -25,6 +25,24 @@ from source.parse import amendments, replay
 _ENACTMENT = Path(__file__).resolve().parents[2] / "data" / "enactment"
 _PARA = re.compile(r"§\s*(\d+(?:-\d+)?[a-z]?)")
 
+# A provision-body HEADING at the start of a string: '§ 5-8 a.Opplysninger…' -> '§5-8a'.
+# The suffix letter is frequently rendered/OCR'd with a space before it ('§ 5-8 a.'), which
+# _PARA drops (it captures '§5-8'). The TRAILING PERIOD anchors the letter as a genuine
+# suffix, so a following word or Norwegian preposition ('§ 5 i loven', '§ 27 første ledd' —
+# no period) can never be mistaken for one. Digits, optional space+single letter, period.
+_HEAD_ID = re.compile(r"§\s*(\d+(?:-\d+)?)\s*([a-z])?\.")
+
+
+def _heading_id(s: str | None):
+    """Canonical id from a period-anchored provision heading at the START of `s`, with any
+    space before the suffix letter removed ('§ 5-8 a.' -> '§5-8a'). None if `s` does not
+    open with such a heading. This is the ONLY place a spaced suffix is accepted — and only
+    because the period makes it unambiguous."""
+    if not s:
+        return None
+    m = _HEAD_ID.match(s.lstrip())
+    return "§" + m.group(1) + (m.group(2) or "") if m else None
+
 
 def _clean_para(s: str | None):
     """First '§ N' anywhere in `s` -> '§N'. For target fields that NAME the provision
@@ -36,12 +54,14 @@ def _clean_para(s: str | None):
 
 
 def _leading_para(new_text: str | None):
-    """'§ N' ONLY if new_text opens with its own heading ('§ 4.Vedtak…' -> '§4').
-    Start-anchored so a body cross-reference ('Vedtak etter §§ 2, 3…') never matches."""
+    """'§ N' ONLY if new_text opens with its own heading ('§ 4.Vedtak…' -> '§4';
+    '§ 5-8 a.…' -> '§5-8a'). Start-anchored so a body cross-reference ('Vedtak etter
+    §§ 2, 3…') never matches. Prefers the period-anchored heading id (recovers a spaced
+    letter suffix); falls back to the bare '§ N' form for headings without a period."""
     if not new_text:
         return None
     m = _PARA.match(new_text.lstrip())
-    return "§" + m.group(1) if m else None
+    return _heading_id(new_text) or ("§" + m.group(1) if m else None)
 
 
 def _op_para(d: dict):
@@ -53,7 +73,8 @@ def _op_para(d: dict):
             or _leading_para(d.get("new_text")))
 
 
-_BLOCK = re.compile(r"(?m)(?=^\s*§\s*\d+(?:-\d+)?[a-z]?\.)")
+# Split points: line-start provision headings '§ N.' (spaced suffix tolerated: '§ 5-8 a.').
+_BLOCK = re.compile(r"(?m)(?=^\s*§\s*\d+(?:-\d+)?\s*[a-z]?\.)")
 
 
 def _split_block(new_text: str):
@@ -64,9 +85,9 @@ def _split_block(new_text: str):
     never split. Returns [] if there is no leading heading."""
     pieces = []
     for part in _BLOCK.split(new_text):
-        m = _PARA.match(part.lstrip())
-        if m:
-            pieces.append(("§" + m.group(1), part.strip()))
+        para = _heading_id(part)
+        if para:
+            pieces.append((para, part.strip()))
     return pieces
 
 
