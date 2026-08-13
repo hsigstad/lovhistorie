@@ -17,8 +17,9 @@
   provisions is REAL missing amendments (e.g. skifteretten→tingretten 2002 court reform,
   wording changes) whose amending acts our gazette parser didn't resolve. Three sub-levers:
   (a) **name→datokode map** — resolve "endr. i aksjeloven" style name citations;
-  (b) **omnibus acts** — "endr. i X, Y og enkelte andre lover" amend MANY laws but
-  `gazette.py` extracts only the first/none target — parse ALL targets per act;
+  (b) ~~**omnibus acts**~~ — MEASURED SMALL 2026-08-13 (see done.md): LTI stream already well-targeted
+  (1/304 header rows mis-file a dev law); pre-2001 `I lov <dev-cite>` secondary headers only 3/6/1 for
+  avtale/foreld/kjøp. Not worth a full-stream rebuild; the pre-2001 gap is (a)/(c), not omnibus;
   (c) **blanket terminology reforms** — sweeping renames (skifteretten→tingretten) applied
   across all laws; may need special handling.
   **Quantified (loss_breakdown, 381 misses):** the single biggest, SAFEST lever is amendment

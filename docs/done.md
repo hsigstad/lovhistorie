@@ -1,5 +1,23 @@
 # Done
 
+## 2026-08-13 (cont.) — omnibus multi-target lever MEASURED and deprioritised (measure-before-building)
+
+- **Question:** is the omnibus sub-lever (todo (b): `gazette.py`/streams attribute an omnibus act's
+  ops to a single first-cited target, losing secondary-law amendments) a big win? **Measured: no.**
+- **LTI stream (`amendments.jsonl.gz`) is already well-targeted:** of 304 rows whose instruction opens
+  with an `I lov <cite>` omnibus section header, exactly **1** mis-files a dev law (foreldelse §15 under
+  the 1976 aksjelov). Target resolution is upstream and essentially correct — nothing to fix here.
+- **Pre-2001 gazette signal is single-digit:** harvest scan for `I lov <dev-cite>` secondary-target
+  section headers found **3** (avtaleloven) / **6** (foreldelse) / **1** (kjøpsloven) occurrences — and
+  not all parse to a matching provision. Captured amendment rows per pre-2001 dev law (avtaleloven 9,
+  mesterbrev 4, kjøpsloven 4) are LOW, but the gap is **name-citation + parse/harvest coverage**, not
+  omnibus mis-targeting: e.g. avtaleloven §36 (the 1983 general clause) simply isn't present as a
+  parseable date-cited amendment. So the pre-2001 under-capture is the name→datokode / blanket-reform
+  problem (todo (a)/(c)), a harder low-yield tail — NOT the omnibus split.
+- **Decision:** do NOT rebuild the full pre-2001 stream for a ~single-digit omnibus gain (real
+  regression risk across 105k rows for <10 provisions). Consistent with the session's ceiling finding
+  and lesson 0. No code changed — a measurement that redirected effort away from a low-yield build.
+
 ## 2026-08-13 (cont.) — repealed-provision stubs scoped out (objective marker): 0.592 → 0.621
 
 - **Scope correction, same class as the convention-annex rule (needs Henrik confirm, like that one).**
