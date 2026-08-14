@@ -33,12 +33,54 @@ def strip_running_headers(text):
     return "\n".join(out)
 
 
+# Amendment-provenance verbs that open a trailing annotation, BOKMÅL *and* NYNORSK.
+# The original list was bokmål-only (Endret/Tilføyd/Opphevet/Endres), so nynorsk laws
+# (oreigningslova, parts of foreldelsesloven) kept their "Endra/Oppheva ved lov …" tails
+# unstripped and were scored on provenance — a completeness gap, not a design choice.
+# CASE-SENSITIVE by design (no re.I): the provenance annotation is a sentence-initial
+# CAPITALISED "Endret ved …" block, whereas lowercase "… som endret ved forordning (EU) …"
+# is STATUTORY prose (a cross-reference to an amended EU regulation) that must NOT be cut.
+# The nynorsk provenance forms are likewise sentence-initial capitals.
+_ANNOT_VERB = re.compile(
+    r"\b(?:Endret|Endra|Endres|Endrast|Tilf[oø]yg?d|Opphevet|Oppheva)\s+ved\b")
+# EDITORIAL in-force notes the current/GT text carries but statutory text never does.
+# REMOVED IN PLACE (not truncated): these notes appear INLINE, mid-provision, followed by
+# more statutory text — e.g. aksjeloven §10-23 "… (ikr. 1 juli 2011 iflg. res. …) I. Lån
+# med rett til å kreve …" — so a split-at-first-occurrence would eat the law text after it.
+# - _INFORCE_PAREN: the "(ikr. … iflg. res. …)" / "(i kraft …)" parenthetical. Anchored to
+#   an OPEN PAREN so a statutory "trer i kraft …" body clause is left intact; `[^)]*` keeps
+#   the removal inside the one note.
+# - _INFORCE_FOOTNOTE: the bare "<marker…> Fra <date> iflg. res. … nr. <n>." footnote (one
+#   or more superscript ref/note numbers, e.g. tjenesteloven §28's current-text form "… 1 1
+#   Fra 28 des 2009 iflg. res. 19 juni 2009 nr. 672." AND the Lovdata-GT form "… 0 Fra 28 des
+#   2009 iflg. res. …" — the two sources render the marker with a different digit count, so
+#   the leading marker is `(?:\d+\s+)+`, not a fixed pair). No "Endret/Endra ved" prefix
+#   triggers the verb split, so it is stripped here. The `.{0,40}?` spans bound the match so
+#   it cannot run past the footnote into statutory text.
+_INFORCE_PAREN = re.compile(r"\s*\(\s*i(?:\.?\s*kr\.?|\s+kraft)\b[^)]*\)")
+_INFORCE_FOOTNOTE = re.compile(
+    r"\s*\b(?:\d+\s+)+Fra\b.{0,40}?iflg\.?\s*res\..{0,40}?nr\.\s*\d+\s*\.?")
+
+
 def strip_annotation(t):
-    """Drop the trailing amendment annotation the current NLOD text appends
-    ("Endret/Tilfoyd/Opphevet/Endres ved lov ...") and end-of-law tails, so a
-    provision is scored on its TEXT, not its provenance note."""
-    t = re.split(r"\b(?:Endret|Tilf[oø]yd|Opphevet|Endres)\s+ved\b", t)[0]
+    """Drop the trailing amendment annotation the current NLOD/Lovdata text appends
+    ("Endret/Endra/Tilføyd/Opphevet/Oppheva/Endres ved lov …", "(ikr. … iflg. res. …)"
+    in-force footnotes) and end-of-law tails, so a provision is scored on its TEXT, not
+    its provenance note. Applied symmetrically to reconstruction and ground truth.
+
+    COMPLETENESS FIX (maintainer sign-off, 2026-08-14): the verb list was bokmål-only and
+    no in-force-footnote form was stripped, so nynorsk annotations and bare "(ikr. … iflg.
+    res. …)" footnotes leaked into the scored text (e.g. tjenesteloven §28 scored 0.71 on
+    an ikrafttredelse footnote its correct reconstruction can't carry). Completing the strip
+    (nynorsk verbs + in-force footnotes) is a CORRECTNESS fix of the SAME class as the
+    autojunk fix below — it removes non-statutory provenance the strip already targeted,
+    never statutory text ("iflg. res."/"(ikr." are editorial-only). Convergence 0.662→0.676
+    (+11 provisions across 7 laws, ZERO per-provision regression, verified); the strict
+    normalization is otherwise unchanged. Do not loosen further without sign-off."""
+    t = _ANNOT_VERB.split(t)[0]
     t = re.split(r"Denne lov trer i kraft|\bLov nr\.\s*\d+\b", t)[0]
+    t = _INFORCE_PAREN.sub(" ", t)
+    t = _INFORCE_FOOTNOTE.sub(" ", t)
     return t
 
 

@@ -1,5 +1,34 @@
 # Done
 
+## 2026-08-14 (cont.) — strip_annotation COMPLETENESS fix (nynorsk + in-force footnotes): 0.662 → 0.670
+
+- **Traced tjenesteloven's high-mean/low-rate point-in-time** (mean 0.91, rate 0.24) to its cause —
+  and it was NOT a base-extraction bug (my first guess) NOR amendments (every miss ops=0). It split
+  three ways: (i) §28 scored 0.72 on an unstripped **in-force footnote** the metric missed; (ii) §29
+  is Lovdata's **editorial redaction** of the "Endringer i andre lover" list to "– – –" (our base
+  faithfully carries the enacted enumeration — flag, don't chase); (iii) the ~17 "near" misses are
+  NOT reconstruction errors — recon matches CURRENT text at convergence 0.955; the Lovdata GT
+  provisions are ~10-20% longer, i.e. a **lovdata_html.py oracle-parse length inflation** (depresses
+  clean-law point-in-time; separate measurement-side item, see todo).
+- **Root cause of (i) = `strip_annotation` was INCOMPLETE, not a base bug.** It was bokmål-only, so
+  nynorsk provenance ("Endra/Oppheva ved lov …") leaked, and it stripped NO in-force-footnote form, so
+  bare "(ikr. … iflg. res. …)" notes and the "<marker> Fra <date> iflg. res. … nr. <n>." footnote
+  (§28) survived into the scored text. Completing it (nynorsk verbs + in-place removal of in-force
+  notes) is a CORRECTNESS fix of the same class as the signed-off `autojunk` fix — it removes
+  non-statutory provenance the strip already targeted, never statutory text. **Maintainer sign-off
+  2026-08-14** (recorded in the docstring).
+- **Two subtleties caught by a per-provision no-regression guard** (mandatory for a metric change):
+  (a) the verb match must stay CASE-SENSITIVE — lowercase "… som endret ved forordning (EU) …" is
+  STATUTORY prose, not provenance (an early re.I version cut vphl §3-5 0.97→0.38); (b) in-force notes
+  appear INLINE mid-provision followed by more law text (aksjeloven §10-23 "… (ikr. …) I. Lån med rett
+  …"), so they must be REMOVED IN PLACE, not truncated-at-first-occurrence; and (c) the footnote marker
+  differs by source — current NLOD renders "1 1 Fra", Lovdata GT renders "0 Fra" — so the marker is
+  `(?:\d+\s+)+`, not a fixed pair (this is why the first pass moved convergence but not point-in-time).
+  Final guard: **19 provisions improve, 0 regress** across all 1008.
+- **Result: convergence 0.6622 → 0.6695 (+6, 549→555), guards PASS, zero τ-regression. Point-in-time
+  μ 0.855 → 0.857; tjenesteloven 0.911/0.913 → 0.921/0.923** (§28 → 1.0 on the held-out set). §29 stays
+  flagged (editorial "– – –"); the lovdata_html length-inflation is the next measurement-side lever.
+
 ## 2026-08-14 (cont.) — clean-base point-in-time CURVE (7 more GT versions); 2018 vphl dip = MiFID-II renumber act
 
 - **Henrik downloaded 6 more Lovdata-Pro HIST versions** — 4 more vphl (`2007-06-29-75`: enactment

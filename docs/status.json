@@ -8,18 +8,18 @@
       "dates": [
         {
           "date": "2001-01-01",
-          "rate": 0.536,
-          "mean": 0.805
+          "rate": 0.539,
+          "mean": 0.806
         },
         {
           "date": "2003-01-01",
-          "rate": 0.519,
+          "rate": 0.522,
           "mean": 0.8
         },
         {
           "date": "2024-01-01",
-          "rate": 0.611,
-          "mean": 0.815
+          "rate": 0.621,
+          "mean": 0.816
         }
       ]
     },
@@ -47,7 +47,7 @@
         {
           "date": "2018-07-20",
           "rate": 0.327,
-          "mean": 0.529
+          "mean": 0.53
         },
         {
           "date": "2021-10-04",
@@ -64,27 +64,27 @@
       "dates": [
         {
           "date": "2009-12-28",
-          "rate": 0.241,
-          "mean": 0.911
+          "rate": 0.276,
+          "mean": 0.921
         },
         {
           "date": "2020-07-01",
-          "rate": 0.276,
-          "mean": 0.913
+          "rate": 0.31,
+          "mean": 0.923
         }
       ]
     }
   ],
   "point_in_time_summary": {
     "n_versions": 10,
-    "rate_mean": 0.5551,
-    "similarity_mean": 0.8551
+    "rate_mean": 0.5636,
+    "similarity_mean": 0.8574
   },
   "as_of": "2026-08-14",
-  "convergence": 0.6622,
-  "convergence_strict": 0.5826,
-  "matched": 549,
-  "matched_strict": 483,
+  "convergence": 0.6695,
+  "convergence_strict": 0.585,
+  "matched": 555,
+  "matched_strict": 485,
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -111,7 +111,7 @@
     {
       "datokode": "1959-10-23-3",
       "law": "oreigningslova",
-      "matched": 16,
+      "matched": 18,
       "total": 31,
       "tau": 0.9,
       "annex": 0
@@ -151,7 +151,7 @@
     {
       "datokode": "1997-06-13-44",
       "law": "aksjeloven",
-      "matched": 178,
+      "matched": 181,
       "total": 291,
       "tau": 0.9,
       "annex": 0
@@ -167,7 +167,7 @@
     {
       "datokode": "2009-06-19-103",
       "law": "tjenesteloven",
-      "matched": 26,
+      "matched": 27,
       "total": 29,
       "tau": 0.98,
       "annex": 0

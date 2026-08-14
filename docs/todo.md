@@ -116,6 +116,23 @@
     re-parse stream — resolve `date_in_force_resolved` by `act_refid` at load in `pipeline.load_ops` (or a
     one-off patch pass), so the whole point-in-time deliverable benefits, not only the omnibus-recovery rows.
 
+## Measurement side (point-in-time fairness)
+
+- [ ] **`lovdata_html.py` GT-parse length inflation — clean laws are scored PESSIMISTICALLY.**
+  Found 2026-08-14 tracing tjenesteloven: recon matches the CURRENT NLOD text at convergence 0.955,
+  but the Lovdata-Pro GT provisions parse ~10-20% LONGER (e.g. §2 recon≈327 ≈ current, GT=402), so the
+  point-in-time "near misses" (0.90-0.98) are an oracle-parse difference, not reconstruction error.
+  Likely `lovdata_html.py` includes inline notes / cross-ref nodes the NLOD dump omits. Investigate
+  whether the GT parser should drop the same editorial nodes (symmetric with the current-text reader)
+  — would lift clean-law point-in-time toward its true fidelity. Measurement-side; tread carefully (it
+  moves the deliverable number, so treat like a metric change — sign-off + no-regression guard).
+- [x] ~~**strip_annotation completeness (nynorsk + in-force footnotes)**~~ DONE 2026-08-14 (see done.md):
+  +6 convergence, point-in-time μ 0.855→0.857, tjenesteloven §28 → 1.0, zero regression, signed off.
+- [ ] **tjenesteloven §29 "Endringer i andre lover" — editorial redaction, FLAGGED not chased.** Lovdata
+  consolidates the consequential-amendment list to "– – –"; our base carries the enacted enumeration.
+  Reproducing "– – –" would overfit the oracle's editorial convention. If ever worth it, handle like a
+  convention annex (scope out "Endringer i andre lover"-type provisions), not by trimming the base.
+
 ## Follow-up — extend to forskrifter
 
 - [ ] **Extend the pipeline to sentrale forskrifter** (currently lover-only). Sources
