@@ -358,7 +358,12 @@ def build_booklet(datokode: str, loc: dict | None = None) -> dict:
 # segmenter wins end-to-end (docs/done.md 2026-08-14): default them to the LLM base. Clean
 # LTI bases are NOT here — they keep the deterministic path. Add a law only after its gate
 # convergence confirms the win; the substring assertion below guards fabrication either way.
-LLM_BASE_LAWS = {"1918-05-31-4"}  # avtaleloven (validated: 30->33/45); extend post-gate
+# The LLM base wins ONLY on heading-DETECTION failures: old period-less layouts (avtaleloven)
+# and garbled-§N-M booklets (aksjeloven-2001, 192 vs 153). The other OCR dev laws parse their §
+# headings fine with regex — their gaps are content/amendments, not segmentation — so migrating
+# them yields ~0 (measured 2026-08-14: oreigningslova 18→18, mesterbrev/rettsgebyr not
+# segmentation-limited). Add a law here only after the gate confirms a real win.
+LLM_BASE_LAWS = {"1918-05-31-4"}  # avtaleloven (validated: 30->33/45)
 
 
 def _segment_law(datokode: str, law_text: str, use_llm: bool):

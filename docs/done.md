@@ -1,5 +1,22 @@
 # Done
 
+## 2026-08-14 (cont.) — base-migration crank: LLM base helps ONLY heading-detection-failure laws (scoped)
+
+- **Cranked the next OCR laws behind the gate; the disciplined outcome is a scope finding, not a blanket
+  migration.** oreigningslova (nynorsk): LLM base built clean (36 provisions, 0 dropped, 100% substring) but
+  convergence **18 → 18** (no change) — its `§` headings parse fine with regex; the 15 misses are
+  content/amendments, not segmentation. REVERTED (per decisions.md: migrate only on a confirmed win).
+- **Diagnosed the other candidates — same story:** mesterbrev regex base is 10/10 correct ids (its 4/11 is
+  the later-added §1a + amendments, not segmentation); rettsgebyr is a 1992 SNAPSHOT base (base_as_of), so its
+  4/34 is snapshot+amendment confounding, not a clean segmentation gap.
+- **Scope conclusion (recorded in `build_enactment.LLM_BASE_LAWS` comment):** the LLM base wins specifically
+  on heading-DETECTION failures — old period-less layouts (avtaleloven ✓, 30→33) and garbled-`§N-M` booklets
+  (aksjeloven-2001 booklet ✓, 192 vs 153). The clean-heading gazette dev laws (foreldelse/oreigning/mesterbrev)
+  don't benefit. So on the DEV SET, avtaleloven is the base-segmentation win; the broader payoff is the full
+  pre-2001 corpus at scale (many old-layout/booklet statutes) + the booklet-GT path, not the remaining 9-law
+  dev set. `LLM_BASE_LAWS` stays {avtaleloven}; the gate-gated crank is the mechanism to add more when a real
+  win appears (e.g. if booklet bases are adopted).
+
 ## 2026-08-14 (cont.) — LLM base segmenter PRODUCTIONISED + wired into the gate (0.669 → 0.673)
 
 - **Built `source/llm/` (llmkit convention):** `schemas.py` (`BaseSegmentation` — boundaries-only,
