@@ -22,12 +22,25 @@
           "mean": 0.815
         }
       ]
+    },
+    {
+      "datokode": "2007-06-29-75",
+      "law": "verdipapirhandelloven",
+      "tau": 0.98,
+      "n_provisions": 300,
+      "dates": [
+        {
+          "date": "2014-01-01",
+          "rate": 0.69,
+          "mean": 0.968
+        }
+      ]
     }
   ],
   "point_in_time_summary": {
-    "n_versions": 3,
-    "rate_mean": 0.5553,
-    "similarity_mean": 0.8067
+    "n_versions": 4,
+    "rate_mean": 0.589,
+    "similarity_mean": 0.847
   },
   "as_of": "2026-08-14",
   "convergence": 0.6622,

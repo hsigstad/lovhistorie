@@ -1,5 +1,22 @@
 # Done
 
+## 2026-08-14 (cont.) — DECISIVE clean-base point-in-time result: vphl 2014 → 0.968
+
+- **Henrik downloaded the vphl (`2007-06-29-75`) 2014-01-01 Lovdata-Pro HIST version** — the clean-base
+  test CLAUDE.md/todo flagged as the highest-value step. Filed to `data/ground_truth/2007-06-29-75/`,
+  registered in `index.csv`, scored via `source.eval.status` (held-out discipline: filed + scored, not
+  inspected).
+- **Result: verdipapirhandelloven, point-in-time as of 2014-01-01, 300 provisions → mean similarity
+  0.968, rate 0.69 @ τ=0.98.** Versus the OCR-base aksjeloven (~0.80 mean, ~0.52-0.61 rate @ τ=0.90).
+  This CONFIRMS the central thesis: on a clean (born-digital-era) enactment base the reconstruction of a
+  PAST state is near-perfect (mean 0.968), and its rate (0.69) tracks its convergence (0.66) — so **the
+  deliverable is strong for clean laws; OCR bases are the measured drag**, not a date-specific failure.
+- **Aggregate point-in-time μ 0.807 → 0.847** (n_versions 3→4), rate_mean 0.555 → 0.589. The gitignored
+  html stays local; only `index.csv` is tracked.
+- NEXT (what to ask Henrik for): 2-3 MORE vphl dates across its life (turns one snapshot into a curve) +
+  1-2 tjenesteloven (`2009-06-19-103`, conv 0.90 — expect the highest point-in-time) + at least one date
+  bracketing a DEFERRED amendment to exercise the new in-force resolver on real GT.
+
 ## 2026-08-14 — in-force resolver WIRED (point-in-time deliverable): true ikrafttredelse dates replace the act-date approximation
 
 - **Built `source/parse/inforce.py`** — resolves an amending act's TRUE entry-into-force date
