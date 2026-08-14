@@ -40,9 +40,13 @@
   convention) incorporated by reference, un-reconstructable from Lovtidend. Fixed by scoping the
   convergence denominator to statutory provisions (see done.md). Real remaining tail is small:
   a few OCR base-drops (kjøpsloven §1/§50/§71, foreldelsesloven §15a) + ~35 renumber-targets.
-- [ ] **Renumber-target provisions (~35, the hard residual).** `nåværende § X blir § Y` structural
-  ops move a provision to a new id; we flag them, so the target id is absent from recon. Handling
-  needs tracking id remaps over time (a provision's id is version-dependent). Fiddly; modest yield.
+- [ ] **Renumber-target provisions (~35, the hard residual) — via TEXT-SIMILARITY MATCHING (prototyped
+  2026-08-14, see done.md).** Instead of parsing `nåværende §X blir §Y`, align consecutive versions by
+  `metrics.similarity` (bipartite mutual-best above threshold): a high text-match under a different id = a
+  renumber → recover the id-remap from content. Deterministic, fabrication-free (alignment only). Prototype
+  recovered vphl §20-1/§20-3 (renumbered from §16-x) and safely flagged genuine gaps. Productionise: a
+  `source/parse/align.py` matcher; use it to resolve flagged renumber/move ops and for ledd-level alignment
+  (the ledd engine's positional-address failures) and as a text-based validation matcher.
 - [ ] **OCR base-drops (small, safe).** A handful of real statutory provisions are dropped by base
   OCR extraction — kjøpsloven §1/§50 (l/1 confusion: "§ l."), §71; foreldelsesloven §15a. Fix the
   `_HEAD` regex / booklet page span. ~4 provisions, low risk.

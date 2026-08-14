@@ -1,5 +1,26 @@
 # Done
 
+## 2026-08-14 (cont.) — amendment payloads fixed (instruction-line slice) + similarity-matching for renumbers
+
+- **Amendment payload extraction (Calibration 4 gap) FIXED.** Free-form payload line-RANGES were 0/80
+  substring-verified (LLM-arithmetic weakness). Switched to the base's mechanism: LLM returns only the
+  INSTRUCTION line per op; payload sliced deterministically (instruction_i → next instruction). One catch:
+  the LTI XML flattened to plain text via `_xml_text` has almost NO newlines (tags → spaces), so line-
+  numbering was meaningless; re-extracted with a newline-preserving strip (block tags → `\n`, 547 real
+  lines). Result: **payloads 64/80 = 80% substring-verified** (was 0); remaining 20% are boundary edge-cases
+  (off-by-one / multi-line joins), flaggable, not fabrication. Amendment extractor now validated end-to-end:
+  structure (27 laws), ops (exact), payloads (source-verified). NB: LTI is the wrong long-term testbed (already
+  clean/structured — our parser handles it); the LLM's value is on pre-2001 GAZETTE amendments (OCR, real lines).
+- **Similarity-based identity matching over time (Henrik's idea) — PROTOTYPED, deterministic, fabrication-safe.**
+  Track a provision/ledd by TEXT not id, so renumbers (`nåværende §X blir §Y`) and restructures are recovered
+  from content. Pure alignment via `metrics.similarity` — links existing units, never generates, so
+  fabrication-free by construction. On vphl @2021 (the MiFID-restructure drag): recovered **2 real renumbers**
+  (GT §20-1↔recon §16-1 sim 0.92; §20-3↔§16-3 sim 0.96) that id-matching missed, and correctly **flagged 52 as
+  genuinely missing** (best match <0.90 → NOT force-matched — the safety property). Diagnostic bonus: it shows
+  vphl-2018's drag is mostly MISSING CONTENT (52), not renumbering (2) — so the amendment extractor is the
+  bigger vphl-2018 lever and similarity-matching is the complementary tool for the ~35-provision renumber tail
+  + ledd alignment + as a text-based validation matcher (catch LLM-mis-numbered-but-text-right cases).
+
 ## 2026-08-14 (cont.) — LLM boundaries-only segmentation: CALIBRATED (concept validated, safety proven)
 
 - **Direction written up in `docs/thinking.md`** and prototyped (scratchpad, not committed): an LLM reads
