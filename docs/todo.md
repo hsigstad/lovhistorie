@@ -137,9 +137,17 @@
   from there to the next instruction (mirror the base segmenter), or use verbatim anchors. Then substring-
   verify every payload (the fabrication guarantee must hold on the amendment side too). This could recover the
   omnibus sections our stream drops + the renumber/move ops (vphl-2018 MiFID drag).
-- [ ] **The real test:** does an LLM-segmented BASE + LLM-parsed amendments improve the held-out point-in-time
-  on a pre-2001 OCR law (foreldelse/avtale/oreigning) with ZERO per-version regression? Go/no-go for making the
-  LLM path the default for OCR-base laws, then retire `_HEAD`/`_repair_headings`/`_GARBLED_SECT` for them.
+- [x] ~~**The real test: does an LLM base improve the real reconstruction?**~~ DONE 2026-08-14 (see done.md):
+  END-TO-END base swap on avtaleloven → convergence 30/45 → 33/45 @≥0.90 (μ 0.764→0.809), 100% source-faithful,
+  same amendments; + aksjeloven-2001 booklet 192 vs 153. VERDICT: GO to default the LLM base on OCR-base laws.
+- [ ] **Productionise the base swap (the GO):** `source/parse/llm_segment.py` via llmkit (cached,
+  Pydantic-validated; monotonic/coverage/heading-matches-number invariants in the validator; audit). Wire
+  opt-in per-law into `enactment_base`/`build_enactment` for OCR-base laws (clean LTI keeps deterministic).
+  Run the gate; expect the OCR pre-2001 tail to lift. Then retire `_HEAD`/`_repair_headings`/`_GARBLED_SECT`
+  for those laws. Extend the base segmenter to the anchor mode for line-break-poor sources.
+- [ ] **Phase 2 — amendment-side LLM swap** (pre-2001 gazette endringslov): identify every amending act for a
+  law across the harvest, LLM-parse each into ops (line-labels or anchors), merge into the stream. Validated in
+  isolation (27/27 laws, ops exact, payloads source-verified); this wires it into the pipeline + gate.
 - [ ] **Phase 2 — ledd-level boundaries** (still boundaries-only) for the ledd engine, once provision-level lands.
 
 ## Measurement side (point-in-time fairness)

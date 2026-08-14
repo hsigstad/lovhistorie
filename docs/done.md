@@ -1,5 +1,26 @@
 # Done
 
+## 2026-08-14 (cont.) — END-TO-END base swap validated: LLM base beats regex base in the real pipeline (GO)
+
+- **Assembled the LLM base into the ACTUAL reconstruction** (same amendment stream, same replay) and scored
+  convergence-to-current — the go/no-go for defaulting the LLM path on OCR-base laws. avtaleloven (1918, the
+  documented hard case: old layout, period-less `§ N (tittel)` headings, 45 statutory provisions):
+  - LLM base 40 provisions, **substring 40/40 (100% source-faithful)**, vs regex base 39.
+  - base-only vs current: **LLM 30/45 μ0.766 vs regex 27/45 μ0.721**.
+  - base + amendments (full convergence): **LLM 33/45 μ0.809 vs regex 30/45 μ0.764** — **+3 provisions,
+    +0.045 μ, end-to-end, in the real pipeline, only the base swapped.**
+- **Two OCR laws now confirm the base swap wins:** aksjeloven-2001 booklet (LLM base 192 vs regex 153 @≥0.90
+  vs the 2001 oracle) + avtaleloven (33 vs 30 @≥0.90 convergence). **VERDICT: GO** to default the LLM-segmented
+  base for OCR-base laws (opt-in per law, clean LTI bases keep the deterministic path). The amendment-side LLM
+  swap (pre-2001 gazette endringslov) is phase 2 — bigger (identify + LLM-parse every amending act across the
+  harvest), and validated in isolation already (27/27 laws, ops exact, payloads source-verified via line-labels
+  or anchors).
+- **Production path:** `source/parse/llm_segment.py` via llmkit (cached, Pydantic-validated with the
+  monotonic/coverage/heading-matches-number invariants in the validator; audit trail), wired opt-in into
+  `enactment_base`/`build_enactment` for OCR-base laws. G1-safe: the model sees only public-domain OCR. Then
+  re-run the gate — expect the OCR pre-2001 tail (the biggest deterministic drag) to lift, and eventually
+  retire `_HEAD`/`_repair_headings`/`_GARBLED_SECT` for those laws.
+
 ## 2026-08-14 (cont.) — amendment payloads fixed (instruction-line slice) + similarity-matching for renumbers
 
 - **Amendment payload extraction (Calibration 4 gap) FIXED.** Free-form payload line-RANGES were 0/80
