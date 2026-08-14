@@ -1,5 +1,25 @@
 # Done
 
+## 2026-08-14 (cont.) — LLM amendment op-extractor BUILT (source/llm/amend.py); completeness needs iteration
+
+- **Built `source/llm/amend.py` + `AmendmentExtraction` schema + `prompts/amend_ops_system.txt`** (llmkit,
+  boundaries-only): parses an amending act into ops keyed to the amendment-stream schema, with payloads
+  located by verbatim head/tail ANCHORS and sliced from the source (so a sub-provision payload has a CORRECT
+  boundary, unlike the regex over-capture). Anchor not found → op FLAGGED + dropped (fabrication-safe).
+- **Anchor mechanism works:** on act `2021-04-23-22`, **11/11 payloads source-verified, 0 flagged**, reasonable
+  payload lengths.
+- **But extraction COMPLETENESS on hard omnibus acts needs prompt iteration.** On that act's vphl block the LLM
+  got §17-1 but MISSED the §21-15 punktum op — so I could not directly A/B the 1168-char over-capture. NB the
+  REGEX also fails on this block (4 vphl ops all `paragraph=None`, still over-capturing 1168/1488) — the act is
+  genuinely hard for both; it is not a clean validation case. The anchor PAYLOAD-boundary fix is sound; the gap
+  is op RECALL on dense multi-block acts (prompt/chunking iteration — mirror the base segmenter's per-block
+  approach; consider one call per target-law block).
+- **Status:** the module is the foundation for the `whole_only=False` unlock but is NOT yet wired in — that
+  needs (a) extraction-completeness iteration to match/beat regex op-recall, then (b) merge LLM sub-provision
+  ops over the regex ones in the stream, then (c) flip `whole_only=False` behind the per-provision no-regression
+  gate (idempotency + content-targeting from the prior entry are already in place). Prototype scripts +
+  collected amendment bodies in scratch.
+
 ## 2026-08-14 (cont.) — ledd idempotency + version-robust targeting: 0.673 → 0.685 (+10, zero regression)
 
 - **Wired `align` into `ledd.apply` (replace + insert branches):** (a) IDEMPOTENCY — skip when a ledd

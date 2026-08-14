@@ -49,3 +49,30 @@ class BaseSegmentation(ExtractionSchema):
     schema_name: ClassVar[str] = "lovhistorie_base_segment"
     schema_version: ClassVar[str] = "v1"
     provisions: list[ProvisionBoundary] = []
+
+
+class AmendOp(BaseModel):
+    """One amendment instruction, located not quoted: which law + provision + sub-unit it
+    changes, the op type, and (for replace/insert) the FIRST and LAST few tokens of the new
+    statutory text VERBATIM — locating anchors that source/llm/amend.py finds + slices, so the
+    payload is a verbatim source span with a correct boundary (not the regex over-capture)."""
+    target_law_cite: str            # "13. juni 1997 nr. 44" or a datokode
+    target_paragraf: str            # "§21-15"
+    subunit: str = ""               # "annet ledd annet punktum" / "" for whole-provision
+    op_type: str                    # replace | insert | repeal | renumber
+    payload_head: str = ""          # first ~6 tokens of the new text, VERBATIM ("" if none)
+    payload_tail: str = ""          # last ~6 tokens of the new text, VERBATIM
+
+
+class AmendmentBlock(BaseModel):
+    """One target law's block within an (omnibus) amending act."""
+    target_law_cite: str
+    ops: list[AmendOp] = []
+
+
+class AmendmentExtraction(ExtractionSchema):
+    """Structured ops for one amending act (blocks → target law → ops). Anchors are validated
+    by find() in the wrapper; a not-found anchor flags (fabrication-safe), never fabricates."""
+    schema_name: ClassVar[str] = "lovhistorie_amend_ops"
+    schema_version: ClassVar[str] = "v1"
+    blocks: list[AmendmentBlock] = []
