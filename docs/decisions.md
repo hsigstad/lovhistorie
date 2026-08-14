@@ -1,0 +1,61 @@
+# Decisions
+
+Committed design choices.
+
+## 2026-08-14 — Adopt LLM boundaries-only segmentation for OCR-base laws (base first, amendments phase-2)
+
+**Question (HS):** the deterministic convergence levers are exhausted (~0.62–0.67 ceiling) and the
+biggest remaining drag is the pre-2001 OCR tail. Almost every failure we diagnose is *segmentation*
+(where a provision/ledd/amendment starts and ends), not OCR characters and not content. Can an LLM
+help without risking fabrication in a corpus whose whole value is being an owned, faithful,
+publishable reconstruction?
+
+**Decision — yes, under a strict boundaries-only discipline.** The LLM locates STRUCTURE (provision
+heading line numbers, or — for line-break-poor sources — verbatim head/tail anchors) and labels units;
+deterministic code slices the source. The model emits only coordinates and labels, **never statutory
+text**, so every provision/payload string is a verbatim source slice.
+
+- **Content fabrication is structurally impossible** — asserted at build time (the substring guarantee);
+  the residual failure is a *mislocated boundary*, which is bounded and self-detecting.
+- **Deterministic invariants** (monotonic, non-overlapping, coverage, heading-matches-id) repair or FLAG
+  bad boundaries — `flag-don't-fabricate` applied to structure.
+- **G1 preserved** — the model sees only public-domain OCR, never the current/oracle text.
+- **Reproducible** — extraction is cached + Pydantic-validated + audited via llmkit
+  (`source/llm/`); the segmented base is a frozen build input, not a gate-time call.
+
+**Evidence (docs/done.md 2026-08-14):** base segmenter beats the hand-tuned regex on the hardest
+documented case (aksjeloven-2001 booklet **192 vs 153** @≥0.90, 100% source-faithful) and end-to-end in
+the real pipeline (avtaleloven convergence **30 → 33/45**, gate **0.6695 → 0.6731**, all guards PASS).
+Amendment structure validated in isolation (**27/27** target laws vs the regex parser's 6; ops exact;
+payloads source-verified via line-labels 80% or anchors 96%). Similarity-matching recovers renumbers
+deterministically as a complementary tool.
+
+**Alternatives rejected:**
+- *More regex tuning* — diminishing returns; a fragile per-law stack that generalises poorly.
+- *LLM generating statutory text* — reintroduces fabrication; defeats the corpus's purpose.
+- *LLM-as-judge for scoring* — that is loosening the anti-gaming bar; the char-identity metric stays
+  deterministic. The LLM is reconstruction-side only.
+
+**Scope + sequencing.** (1) Base segmenter is PRODUCTIONISED and wired opt-in per law via
+`build_enactment.LLM_BASE_LAWS` (avtaleloven live; extend to the other weak OCR laws one at a time, each
+gated). (2) Anchor mode for line-break-poor sources. (3) Phase-2: amendment-side op-extraction for
+pre-2001 gazette endringslov. (4) `source/parse/align.py` for similarity-based renumber/ledd matching.
+
+## 2026-08-14 — Retire the regex heading stack ONLY after full OCR-law migration (not yet)
+
+**Question (HS):** now that the LLM base wins, is the old regex heading code (`parse_provisions`
+heading-finding, `_HEAD`, `_repair_headings`, `_GARBLED_SECT`) dead — delete it?
+
+**Decision — not yet; it is still load-bearing.** As of 2026-08-14 only avtaleloven uses the LLM base.
+The regex stack remains the path for **8 of 9 base builds** — the 4 other gazette laws (oreigningslova,
+aksjeloven, foreldelsesloven, mesterbrevloven) via `build()`, the 2 booklets (rettsgebyr, kjøpsloven)
+via `build_booklet(repair_headings=True)` — plus `source/eval/booklet_gt.py`. Deleting now would break
+the pipeline. (Note: `gazette.py`'s amendment-stream regex is a *separate* concern, addressed by
+phase-2, not by this decision.)
+
+**Retirement condition (tracked, not forgotten).** Migrate laws into `LLM_BASE_LAWS` one at a time,
+each confirmed by the gate (convergence up, guards green, base 100% substring-verified). When
+`LLM_BASE_LAWS` covers every OCR-base law AND the booklet path is migrated (or its GT re-derived), the
+heading-finding regex (`_HEAD`/`_repair_headings`/`_GARBLED_SECT` and the heading branch of
+`parse_provisions`) becomes dead and is deleted then — git history preserves it, and this entry records
+what it was and why it went. Until then it stays.
