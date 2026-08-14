@@ -1,5 +1,26 @@
 # Done
 
+## 2026-08-14 (cont.) — ledd idempotency + version-robust targeting: 0.673 → 0.685 (+10, zero regression)
+
+- **Wired `align` into `ledd.apply` (replace + insert branches):** (a) IDEMPOTENCY — skip when a ledd
+  already equals the new text (`align.target_ledd(...).already_applied`), the double-application fix; (b)
+  VERSION-ROBUST TARGETING — address the ledd by CONTENT (argmax-similarity with a margin) not the
+  version-dependent ordinal, falling back to the ordinal when the content match is ambiguous.
+- **Clean +10 on the SHIPPED path:** convergence **0.6731 → 0.6852** (558 → 568), guards PASS, **per-provision
+  no-regression check: improved 10, REGRESSED 0** (verified my ledd.py vs committed, both whole_only=True). The
+  gain is on the EXTERNAL amendment stream's ledd ops (LTI whole_only=True emits only whole-provision + sub-unit
+  repeals, so the win comes from the external stream's sub-provision replaces now applying idempotently +
+  content-targeted).
+- **`whole_only=False` (full sub-provision replace/add) STILL deferred — but the blocker is now precisely
+  diagnosed and it is NOT idempotency.** Enabling it nets +9 gross but with 3 per-provision regressions
+  (§21-15 1.0→0.729, §5-27 0.981→0.659, §67 0.943→0.81). Traced §21-15: its op `§21-15 annet ledd annet
+  punktum skal lyde:` carries a **1168-char payload** (a punktum is one sentence) — the regex LTI parser
+  **OVER-CAPTURED the payload boundary** (the `applied-wrong`/block-truncation bucket), so a punktum-replace
+  blows the provision to 2752 chars. This is exactly what the **LLM amendment anchor extractor fixes (96%
+  payloads source-verified)** and the regex can't → `whole_only=False` is BLOCKED ON the LLM amendment payload
+  extractor, not the ledd engine. Idempotency + targeting (this entry) are the prerequisite; the LLM payloads
+  are the unlock. `lti_amendments.build(whole_only=...)` is now threaded (default True) for that future flip.
+
 ## 2026-08-14 (cont.) — ledd reconstruction design: LLM boundaries + similarity alignment (the 35% bucket)
 
 - **`loss_breakdown` reframed phase-2:** the biggest miss bucket is `engine-gap:ledd` (35%, 95 provisions)

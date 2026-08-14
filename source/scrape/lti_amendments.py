@@ -173,9 +173,11 @@ def _existing_pairs(data_path: Path):
     return seen
 
 
-def build(act_datokoder=None, only_missing=True):
+def build(act_datokoder=None, only_missing=True, whole_only=True):
     """Parse LTI acts and write the missing (act,target) sections to OUT. `act_datokoder`
-    limits to specific acts (fast measurement); None = every act in data/lti/."""
+    limits to specific acts (fast measurement); None = every act in data/lti/. `whole_only`
+    gates sub-provision replace/add ops (now safe: replay's ledd engine is idempotent via
+    source.parse.align — the double-application blocker is fixed)."""
     from source.parse import amendments
     existing = _existing_pairs(amendments.DATA) if only_missing else set()
     # Refresh the in-force index on a FULL rebuild so `date_in_force_resolved` can't go stale
@@ -195,7 +197,7 @@ def build(act_datokoder=None, only_missing=True):
     n_rows = kept = 0
     with gzip.open(OUT, "wt", encoding="utf-8") as out:
         for f in files:
-            for row in parse_act(f):
+            for row in parse_act(f, whole_only=whole_only):
                 n_rows += 1
                 if only_missing and (row["act_refid"], row["target_law"]) in existing:
                     continue

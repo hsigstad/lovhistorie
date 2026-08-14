@@ -212,16 +212,33 @@ def apply(provision_text, instruction, new_text):
         # empty new_text is a parse artifact, not a real "blank this ledd" -> flag
         if not new_text or not (1 <= n <= len(ledd)):
             return None                  # addressed ledd doesn't exist
+        # IDEMPOTENCY (align): if a ledd already equals new_text, the op is already applied
+        # (e.g. a whole-provision rebuild that baked it in, then this in-force sub-op) -> no-op.
+        # This is the double-application fix that blocked the deferred sub-provision +3.
+        from source.parse import align
+        tgt = align.target_ledd(ledd, new_text, ordinal=n)
+        if tgt["already_applied"]:
+            return provision_text        # SKIP, don't re-apply
+        # VERSION-ROBUST TARGETING: address the ledd by CONTENT when the match is confident
+        # (a clear margin over the second-best) — the ordinal is version-dependent and wrong
+        # after an earlier insert. Fall back to the ordinal `n` when the content match is
+        # ambiguous (no gap), staying conservative.
+        idx = tgt["index"] if (tgt["matched"] and tgt["index"] is not None) else n - 1
         ledd = list(ledd)
-        old = ledd[n - 1]
+        old = ledd[idx]
         pm = _NUM_MARK.match(old)
         keep = pm.group(0) if (pm and not _NUM_MARK.match(new_text)) else ""
-        ledd[n - 1] = keep + " ".join(new_text.split())
+        ledd[idx] = keep + " ".join(new_text.split())
         return _serialize(title, ledd, mode)
 
     if act == "insert":
         if not new_text or not (1 <= n <= len(ledd) + 1):
             return None
+        # IDEMPOTENCY (align): if a ledd already equals the inserted text, the insert is
+        # already applied (whole-provision rebuild baked it in) -> no-op, don't duplicate it.
+        from source.parse import align
+        if align.target_ledd(ledd, new_text)["already_applied"]:
+            return provision_text        # already inserted -> SKIP
         ledd = list(ledd)
         ledd.insert(n - 1, " ".join(new_text.split()))
         return _serialize(title, _renumber(ledd), mode)
