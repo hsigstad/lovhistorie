@@ -1,5 +1,35 @@
 # Done
 
+## 2026-08-14 (cont.) — LLM boundaries-only segmentation: CALIBRATED (concept validated, safety proven)
+
+- **Direction written up in `docs/thinking.md`** and prototyped (scratchpad, not committed): an LLM reads
+  line-numbered OCR and returns ONLY `{paragraf_id, heading_line}` per provision — never text; deterministic
+  code slices the source. Every provision string is a verbatim source slice → content fabrication is
+  structurally impossible (the substring guarantee); fabrication reduces to bounded, self-detecting
+  localization error.
+- **Calibration 1 — foreldelsesloven (easy, `§ N.` period-headings):** LLM found 32 provisions, monotonic,
+  **32/32 substring-verified**, and MATCHED the regex parse (sim 0.347 vs 0.342). Validates safety + no-harm;
+  no upside because the regex already segments period-headings fine (the 46 missing ids are the out-of-scope
+  limitation-convention annex, `§fik/aN`, which neither method can nor should recover).
+- **Calibration 2 — aksjeloven-2001 booklet (the documented 71-of-279 heading failure), truth = 2001 oracle,
+  265 statutory provisions:**
+  - strict `_HEAD` regex: **69** found, 17 @≥0.90, median 0.000 (the catastrophic segmentation failure).
+  - repaired regex (current best, hand-tuned `_repair_headings`/`_GARBLED_SECT`): 253 found, 153 @≥0.90,
+    median 0.921, substring 190/253 (75%).
+  - **LLM segmentation (gpt-4o-mini, ONE prompt, no repair stack): 253 found, 151 @≥0.90, median 0.915,
+    substring 251/251 (100%).**
+  - Takeaways: (a) the LLM reproduces the hand-tuned repaired-regex result generically, from one prompt,
+    turning 69→253 with no bespoke code; (b) it is MORE source-faithful (100% substring vs the regex's 75% —
+    the regex's OCR post-correction alters text); (c) it emitted one non-monotonic boundary, which the
+    deterministic monotonic invariant CAUGHT (flag-don't-fabricate working) — the invariant guards are
+    load-bearing, as `thinking.md` predicted.
+- **Honest read:** on a law the regex already handles well the LLM only ties it (151 vs 153 @≥0.90); the win
+  is generality + provable source-faithfulness + retiring the per-law regex stack, not a single-law score
+  jump. This was the cheap model with NO invariant-repair. NEXT (todo): add monotonic-repair + coverage
+  invariants; try a stronger model; then the real test — does an LLM-segmented BASE + amendments improve the
+  held-out point-in-time deliverable on a pre-2001 OCR law with zero per-version regression? Production impl
+  would use llmkit (cached, Pydantic-validated, audited) with the invariants in the validator.
+
 ## 2026-08-14 (cont.) — GT footnote-table drop: deliverable rate 0.564 → 0.782 (μ 0.857 → 0.879)
 
 - **`lovdata_html.py` now drops the Lovdata FOOTNOTE apparatus from the ground-truth parse.** The

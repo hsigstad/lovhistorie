@@ -116,6 +116,22 @@
     re-parse stream — resolve `date_in_force_resolved` by `act_refid` at load in `pipeline.load_ops` (or a
     one-off patch pass), so the whole point-in-time deliverable benefits, not only the omnibus-recovery rows.
 
+## LLM structural segmentation (boundaries-only) — see docs/thinking.md
+
+- [ ] **Productionise the boundaries-only segmenter** (concept CALIBRATED 2026-08-14, see done.md:
+  aksjeloven-2001 booklet 69→253 provisions from one prompt, 100% substring-verified, matched the hand-tuned
+  regex). Path: (a) add deterministic invariant guards to the extractor — monotonic + non-overlapping + coverage
+  + heading-matches-number — as the Pydantic validator (llmkit), flag/repair the residual out-of-order boundary
+  the prototype hit; (b) try a stronger model (gpt-4.1 / Claude) to close the 2-provision gap; (c) chunk long
+  laws by chapter with overlap; (d) wire as an OPT-IN per-law path in `parse_provisions` (like repair_headings,
+  OCR-base laws only — clean LTI bases keep the deterministic path). Cache + audit via llmkit (reproducible
+  build input, not a gate-time call). G1: the model sees only public-domain OCR, never current/oracle text.
+- [ ] **The real test:** does an LLM-segmented BASE + amendments improve the held-out point-in-time on a
+  pre-2001 OCR law (foreldelse/avtale/oreigning) with ZERO per-version regression? That is the go/no-go for
+  making the LLM path the default for OCR-base laws. Then consider retiring `_HEAD`/`_repair_headings`/
+  `_GARBLED_SECT` for those laws.
+- [ ] **Phase 2 — ledd-level boundaries** (still boundaries-only) for the ledd engine, once provision-level lands.
+
 ## Measurement side (point-in-time fairness)
 
 - [x] ~~**`lovdata_html.py` GT-parse length inflation**~~ DONE 2026-08-14 (see done.md): the inflation was
