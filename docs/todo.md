@@ -126,10 +126,16 @@
   laws by chapter with overlap; (d) wire as an OPT-IN per-law path in `parse_provisions` (like repair_headings,
   OCR-base laws only — clean LTI bases keep the deterministic path). Cache + audit via llmkit (reproducible
   build input, not a gate-time call). G1: the model sees only public-domain OCR, never current/oracle text.
-- [ ] **The real test:** does an LLM-segmented BASE + amendments improve the held-out point-in-time on a
-  pre-2001 OCR law (foreldelse/avtale/oreigning) with ZERO per-version regression? That is the go/no-go for
-  making the LLM path the default for OCR-base laws. Then consider retiring `_HEAD`/`_repair_headings`/
-  `_GARBLED_SECT` for those laws.
+- [ ] **Amendment op-extractor (boundaries-only) — CONCEPT VALIDATED 2026-08-14 (see done.md Calibration 4):**
+  gpt-4.1 resolved 27/27 target laws in an omnibus act (vs our parser's 6) and matched our aksjeloven ops
+  exactly. REMAINING: payload slicing — the free-form payload line-RANGE was 0/80 substring-verified (LLM
+  arithmetic weakness). Fix: LLM returns only the INSTRUCTION line per op; slice the payload deterministically
+  from there to the next instruction (mirror the base segmenter), or use verbatim anchors. Then substring-
+  verify every payload (the fabrication guarantee must hold on the amendment side too). This could recover the
+  omnibus sections our stream drops + the renumber/move ops (vphl-2018 MiFID drag).
+- [ ] **The real test:** does an LLM-segmented BASE + LLM-parsed amendments improve the held-out point-in-time
+  on a pre-2001 OCR law (foreldelse/avtale/oreigning) with ZERO per-version regression? Go/no-go for making the
+  LLM path the default for OCR-base laws, then retire `_HEAD`/`_repair_headings`/`_GARBLED_SECT` for them.
 - [ ] **Phase 2 — ledd-level boundaries** (still boundaries-only) for the ledd engine, once provision-level lands.
 
 ## Measurement side (point-in-time fairness)

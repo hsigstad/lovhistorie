@@ -23,12 +23,30 @@
     the regex's OCR post-correction alters text); (c) it emitted one non-monotonic boundary, which the
     deterministic monotonic invariant CAUGHT (flag-don't-fabricate working) — the invariant guards are
     load-bearing, as `thinking.md` predicted.
-- **Honest read:** on a law the regex already handles well the LLM only ties it (151 vs 153 @≥0.90); the win
-  is generality + provable source-faithfulness + retiring the per-law regex stack, not a single-law score
-  jump. This was the cheap model with NO invariant-repair. NEXT (todo): add monotonic-repair + coverage
-  invariants; try a stronger model; then the real test — does an LLM-segmented BASE + amendments improve the
-  held-out point-in-time deliverable on a pre-2001 OCR law with zero per-version regression? Production impl
-  would use llmkit (cached, Pydantic-validated, audited) with the invariants in the validator.
+- **Calibration 3 — base segmenter v2 (gpt-4.1 + invariant-repair) BEATS the regex.** Same aksjeloven-2001
+  booklet: gpt-4.1 found 264 provisions, **0 dropped by the monotonic/dedup guard** (clean), **264/265
+  truth-ids, 192 @≥0.90, median 0.938, substring 264/264 (100%)**. That is **+39 well-reconstructed
+  provisions over the hand-tuned repaired regex (153→192)** and +11 ids, 100% source-faithful, one prompt,
+  no per-law code. The stronger model + guard closed the gap and passed it — the LLM base segmenter is now
+  strictly better than the regex stack on the hardest documented case.
+- **Calibration 4 — amendment op-extractor (gpt-4.1), omnibus act lov 2019-03-15-6.** Same boundaries-only
+  discipline extended to amendments: LLM emits per-op `{target_law, target_paragraf, op_type, payload span}`,
+  deterministic code slices payloads. Two-level schema (block→law→ops). Results:
+  - **Target-law attribution: 27/27 resolved — the LLM found ALL 27 amended laws; our `lti_amendments`
+    parser catches only 6** (misses 21, incl. dev-law foreldelsesloven). Solves the documented "omnibus
+    multi-target" lever outright.
+  - **Op identification exact** on aksjeloven: LLM `[§4-4, §4-11]` = ours.
+  - **Gap: payload extraction 0/80 substring-verified** — free-form payload line-RANGES are unreliable (the
+    same LLM-arithmetic weakness as char offsets, now on end-lines). FIX = reuse the base mechanism: LLM
+    returns the INSTRUCTION line only; slice payload deterministically to the next instruction (or verbatim
+    anchors). Boundaries, not arithmetic. One more iteration.
+- **Honest read:** base segmentation is now a clear WIN over the regex (Calibration 3), and amendment
+  STRUCTURE/attribution is a clear win too (Calibration 4: 27 vs 6 laws, exact op match). The remaining piece
+  is amendment PAYLOAD slicing via the instruction-line method (safety-critical; the substring guarantee must
+  hold there too). NEXT: (a) the payload-line fix; (b) the end-to-end test — LLM base + LLM amendments vs the
+  held-out point-in-time on a pre-2001 OCR law, zero per-version regression = go/no-go to default the LLM path
+  for OCR-base laws. Production impl uses llmkit (cached, Pydantic-validated, audited); invariants in the
+  validator; G1-safe (model sees only public-domain source).
 
 ## 2026-08-14 (cont.) — GT footnote-table drop: deliverable rate 0.564 → 0.782 (μ 0.857 → 0.879)
 
