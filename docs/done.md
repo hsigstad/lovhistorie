@@ -1,5 +1,29 @@
 # Done
 
+## 2026-08-14 (cont.) — ledd reconstruction design: LLM boundaries + similarity alignment (the 35% bucket)
+
+- **`loss_breakdown` reframed phase-2:** the biggest miss bucket is `engine-gap:ledd` (35%, 95 provisions)
+  — sub-provision ops. Parsing is easy; safe APPLICATION is the hard part. Also quantified the fundamental
+  ceilings (answered "why not 100%"): OCR character noise 11% (irreducible — we slice source, never
+  LLM-correct chars → OCR bases cap ~0.90–0.94), amendment coverage 24% (data/harvest, not algorithm), ledd
+  application 35%, renumber/move 6%. Clean-base laws have no OCR floor (vphl enactment 0.997).
+- **Design + prototype: LLM + similarity solves ledd application (Henrik's insight), fabrication-safe.**
+  Three sub-problems, all solved (see docs/thinking.md): (1) ledd segmentation → the boundaries-only LLM one
+  level down; (2) WHICH ledd → target by TEXT SIMILARITY not the version-dependent ordinal; (3) idempotency
+  → skip if the target already equals the new text.
+- **Prototype on vphl §3-1 (6 ledds) — all three confirmed:**
+  - targeting: similarity discriminates cleanly (0.89 for the amended ledd vs 0.1–0.37 for the rest), agrees
+    with the ordinal on the un-shifted provision;
+  - **version-shift (the killer case): after a simulated earlier insert, the ORDINAL picks the WRONG ledd
+    (0.37) while SIMILARITY picks the RIGHT one (0.89)** — content-match is version-robust, ordinals aren't;
+  - **idempotency: after applying, sim(target, new_text)=1.000 → re-application SKIPS** — directly solves the
+    double-application bug that blocked the deferred sub-provision +3.
+- **Application is deterministic + verified:** REPLACE by argmax-similarity (skip if ≈1); INSERT by ordinal +
+  end-state alignment check; REPEAL by match + verify-absence; then align reconstructed ledds to the endpoint
+  1-1 by similarity and FLAG on mismatch. Content is always a source slice; no ledd text is generated.
+  NEXT: build `source/parse/align.py` (similarity matcher) + the ledd boundaries-only extractor, wire into
+  replay behind the gate.
+
 ## 2026-08-14 (cont.) — base-migration crank: LLM base helps ONLY heading-detection-failure laws (scoped)
 
 - **Cranked the next OCR laws behind the gate; the disciplined outcome is a scope finding, not a blanket

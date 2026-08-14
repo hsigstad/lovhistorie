@@ -134,6 +134,44 @@ needs, since the pre-2001 long tail is where deterministic parsing is weakest.
 - **The metric stays deterministic.** This is reconstruction-side only. No LLM-as-judge for
   scoring (that would loosen the bar); the char-identity metric is unchanged.
 
+## Ledd reconstruction = LLM boundaries + similarity alignment (2026-08-14)
+
+The biggest loss bucket is `engine-gap:ledd` (35% of misses) — sub-provision ops the engine
+can't safely apply. Parsing them is easy; safe APPLICATION is the hard part, and it has three
+sub-problems that LLM + similarity together solve:
+
+1. **Ledd segmentation** — splitting a provision into its ledds. OCR bases collapse whitespace
+   so ledd boundaries are lost. → the SAME boundaries-only LLM segmenter, one level down: locate
+   ledd starts (line/anchor), slice deterministically. Each ledd is a verbatim source slice.
+2. **Which ledd does the op target?** The instruction addresses by ORDINAL ("tredje ledd" = 3rd),
+   but the ordinal is VERSION-DEPENDENT: if an earlier amendment inserted/removed a ledd, "3rd"
+   at the op's date is not the 3rd in the base. → target by **text similarity**, not ordinal: for
+   a REPLACE, the op's new text is a *modified* version of the ledd it replaces, so `argmax
+   metrics.similarity(new_text, ledd)` finds it robustly. **Prototype (vphl §3-1, done.md
+   2026-08-14): similarity picks the right ledd (0.89 vs 0.1–0.37 for the others); under a
+   simulated earlier-insert the ORDINAL picks the WRONG ledd (0.37) while similarity still picks
+   the RIGHT one (0.89).** Content-match is version-robust where the ordinal is not — the same
+   lever as provision-renumber-by-text, one level down.
+3. **Idempotency (the blocker for the deferred +3).** The double-application bug: a whole-provision
+   rebuild + an in-force sub-op both touch a §, applying the ledd twice. → before applying a
+   REPLACE, check `similarity(target_ledd, new_text)`; if ≈1 the op is ALREADY applied → SKIP.
+   **Prototype: after applying, sim = 1.000 → re-application detects it and skips.** Idempotency
+   falls straight out of similarity.
+
+**Application rules (deterministic, fabrication-safe — content is always a source slice):**
+- REPLACE: target = argmax-similarity ledd above threshold; if best ≈1 skip (idempotent);
+  overwrite with the source-slice payload.
+- INSERT ("nytt tredje ledd"): the new ledd has no existing counterpart, so place by ordinal,
+  then VERIFY by end-state alignment (below); renumber following ledds deterministically.
+- REPEAL: target = the ledd matching the repealed ordinal/content; remove; verify absence.
+- **Verify (similarity):** after applying, align the reconstructed provision's ledds to the
+  endpoint (current text / GT) 1-1 by similarity; a clean alignment accepts, a mismatch FLAGS
+  (flag-don't-fabricate). The application is validated by alignment, never trusted blindly.
+
+Net: the LLM locates ledd boundaries + parses the op (source-slice payload); similarity targets
+the correct ledd (version-robust), gives idempotency for free, and verifies the result. No ledd
+text is ever generated. This is how the 35% ledd bucket becomes safe to turn on.
+
 ### First experiment (calibration before commitment)
 
 1. Prototype the line-label segmenter on **one clean law** (vphl or tjenesteloven): measure
