@@ -30,17 +30,55 @@
       "n_provisions": 300,
       "dates": [
         {
+          "date": "2007-06-29",
+          "rate": 0.997,
+          "mean": 0.997
+        },
+        {
+          "date": "2009-12-21",
+          "rate": 0.577,
+          "mean": 0.967
+        },
+        {
           "date": "2014-01-01",
           "rate": 0.69,
           "mean": 0.968
+        },
+        {
+          "date": "2018-07-20",
+          "rate": 0.327,
+          "mean": 0.529
+        },
+        {
+          "date": "2021-10-04",
+          "rate": 0.777,
+          "mean": 0.846
+        }
+      ]
+    },
+    {
+      "datokode": "2009-06-19-103",
+      "law": "tjenesteloven",
+      "tau": 0.98,
+      "n_provisions": 29,
+      "dates": [
+        {
+          "date": "2009-12-28",
+          "rate": 0.241,
+          "mean": 0.911
+        },
+        {
+          "date": "2020-07-01",
+          "rate": 0.276,
+          "mean": 0.913
         }
       ]
     }
   ],
   "point_in_time_summary": {
-    "n_versions": 4,
-    "rate_mean": 0.589,
-    "similarity_mean": 0.847
+    "n_versions": 10,
+    "rate_mean": 0.5551,
+    "similarity_mean": 0.8551
   },
   "as_of": "2026-08-14",
   "convergence": 0.6622,

@@ -52,8 +52,8 @@ date** and score against the held-out **Lovdata Pro** historical version — tex
 is scored on but never tuned on. Reported as the ≥τ rate **and** the mean character-similarity
 (the honest reading, since the score runs over the current provision set).
 
-**Point-in-time μ: 0.847 similarity** &nbsp;·&nbsp;
-58.9% at ≥τ &nbsp;·&nbsp; over 4
+**Point-in-time μ: 0.855 similarity** &nbsp;·&nbsp;
+55.5% at ≥τ &nbsp;·&nbsp; over 10
 held-out (law × date) versions. Point-in-time **tracks convergence** — the engine reconstructs
 past states about as well as the current one, so convergence is a validated proxy (no
 date-specific failure); the residual is the same ledd / OCR / capture tail.
@@ -63,7 +63,13 @@ date-specific failure); the residual is the same ledd / OCR / capture tail.
 | aksjeloven (`1997-06-13-44`) | 2001-01-01 | 53.6% | 0.805 |
 | aksjeloven (`1997-06-13-44`) | 2003-01-01 | 51.9% | 0.800 |
 | aksjeloven (`1997-06-13-44`) | 2024-01-01 | 61.1% | 0.815 |
+| verdipapirhandelloven (`2007-06-29-75`) | 2007-06-29 | 99.7% | 0.997 |
+| verdipapirhandelloven (`2007-06-29-75`) | 2009-12-21 | 57.7% | 0.967 |
 | verdipapirhandelloven (`2007-06-29-75`) | 2014-01-01 | 69.0% | 0.968 |
+| verdipapirhandelloven (`2007-06-29-75`) | 2018-07-20 | 32.7% | 0.529 |
+| verdipapirhandelloven (`2007-06-29-75`) | 2021-10-04 | 77.7% | 0.846 |
+| tjenesteloven (`2009-06-19-103`) | 2009-12-28 | 24.1% | 0.911 |
+| tjenesteloven (`2009-06-19-103`) | 2020-07-01 | 27.6% | 0.913 |
 
 ## Per-law breakdown
 

@@ -1,5 +1,31 @@
 # Done
 
+## 2026-08-14 (cont.) — clean-base point-in-time CURVE (7 more GT versions); 2018 vphl dip = MiFID-II renumber act
+
+- **Henrik downloaded 6 more Lovdata-Pro HIST versions** — 4 more vphl (`2007-06-29-75`: enactment
+  2007-06-29, 2009-12-21, 2018-07-20, 2021-10-04) + 2 tjenesteloven (`2009-06-19-103`: 2009-12-28,
+  2020-07-01). Filed to `data/ground_truth/<dk>/`, registered in `index.csv`, scored (held-out: filed +
+  scored, not inspected). Aggregate point-in-time now **n=10, μ=0.855, rate 0.555**.
+- **The clean-base curve (vphl, τ=0.98):** enactment **0.997** (our enactment base ≈ Lovdata's text —
+  validates the base build) · 2009-12-21 **0.967** · 2014-01-01 **0.968** · 2018-07-20 **0.529** ·
+  2021-10-04 **0.846**. **tjenesteloven** (clean, 29 prov): 2009 **0.911**, 2020 **0.913** (mean ~0.91
+  confirms clean laws ≈0.90+; low rate is n=29 granularity at τ=0.98). So OUTSIDE the 2018 dip, clean-base
+  point-in-time is 0.85–0.97 — strong, and far above OCR-base aksjeloven (~0.80).
+- **The 2018-07-20 dip to 0.529 is DIAGNOSED (from our own op stream, not the GT):** a single 186-op act,
+  **`lov 2018-06-15-35`** (MiFID II/MiFIR implementation), rewrites+renumbers vphl wholesale. At 2018-07-20
+  the reconstruction carries 55 flags (10 renumber + 7 unknown + move ops we FLAG-don't-fabricate), so the
+  mid-restructuring state diverges; by 2021 later whole-provision replacements (`lov 2019-06-21-41`, 73 ops)
+  overwrite those §§ with full new bodies we CAN apply, healing it back to 0.846. **Not a clean-base
+  failure — it's the renumber/move structural tail** (the known hard residual in todo.md), now with
+  concrete point-in-time cost. A big consolidating amendment is worst right after it lands and self-heals
+  as clean replacements supersede the renumbers.
+- **Observation (not acted on — would risk tuning on GT):** tjenesteloven shows high mean (~0.91) but low
+  rate (~0.25) — provisions cluster just BELOW τ=0.98, a systematic near-miss (formatting/whitespace?) on
+  an otherwise clean law. If real, a normalization could lift rate a lot; investigate structurally later.
+- **Takeaway for the deliverable:** clean-base reconstruction is publishable-strong (0.85–0.997 across
+  vphl/tjeneste dates, enactment near-perfect); the two drags are (i) OCR pre-2001 bases and (ii) the
+  renumber/move tail right after big consolidating acts — both already on the ledger, neither a surprise.
+
 ## 2026-08-14 (cont.) — DECISIVE clean-base point-in-time result: vphl 2014 → 0.968
 
 - **Henrik downloaded the vphl (`2007-06-29-75`) 2014-01-01 Lovdata-Pro HIST version** — the clean-base
