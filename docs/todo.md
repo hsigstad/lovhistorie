@@ -148,7 +148,14 @@
 - [ ] **Phase 2 — amendment-side LLM swap** (pre-2001 gazette endringslov): identify every amending act for a
   law across the harvest, LLM-parse each into ops (line-labels or anchors), merge into the stream. Validated in
   isolation (27/27 laws, ops exact, payloads source-verified); this wires it into the pipeline + gate.
-- [ ] **Phase 2 — ledd-level boundaries** (still boundaries-only) for the ledd engine, once provision-level lands.
+- [ ] **Phase 2 — ledd application (the 35% bucket): LLM boundaries + similarity alignment.** `source/parse/
+  align.py` BUILT 2026-08-14 (`target_ledd` content-targets the amended ledd with a margin criterion,
+  version-robust + idempotent — validated on vphl §3-1; `find_renumbers`/`mutual_best` for the renumber tail).
+  REMAINING: (a) LLM ledd-boundary extractor (segment a provision into ledds, boundaries-only) so OCR bases
+  can be split; (b) an idempotent `ledd.apply` that uses `align.target_ledd` (skip if already_applied, flag if
+  unmatched) + end-state alignment verification; (c) wire into replay behind the gate, then flip
+  `whole_only=False` cleanly (the double-application blocker is solved by idempotency). PERF: `find_renumbers`
+  is O(n²) — run it only over id-UNMATCHED provisions (prefilter), not the full set.
 
 ## Measurement side (point-in-time fairness)
 

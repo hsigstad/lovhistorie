@@ -2,6 +2,36 @@
 
 Committed design choices.
 
+## 2026-08-14 — The only fundamental barriers to ~100% are OCR errors and source genuinely absent from public-domain archives (no new excuses)
+
+**Principle (HS).** For POINT-IN-TIME reconstruction, only two things are fundamental limits on
+reaching ~100% fidelity:
+1. **OCR character errors** in the public-domain source text (Norsk Lovtidend / booklet OCR). We
+   slice the source verbatim and deliberately do NOT LLM-correct characters (that reintroduces
+   fabrication), so the reconstruction is only as clean as the OCR. This is a FLOOR, not a wall —
+   reducible by better/multimodal OCR or by anchoring never-amended provisions to a clean later
+   text — and it is ZERO for clean-base (born-digital LTI/NLOD, post-2001) laws (vphl enactment
+   scores 0.997).
+2. **Source documents genuinely absent** from the public-domain archives — the handful of NB
+   digitisation hole years (1891, 1976, 1980, 1982, 1984, 1987–1989). Even these often have a
+   fallback (booklets/særtrykk already rescue kjøpsloven/rettsgebyr), so the truly-unrecoverable
+   residual is tiny.
+
+**Everything else is a solvable engineering or data problem — a bug to fix, not an excuse.** Per
+`loss_breakdown`, the non-OCR misses are: name/omnibus/blanket citation resolution and harvest
+coverage of *available* issues (the LLM amendment extractor + more harvesting), ledd/sub-provision
+application (LLM boundaries + similarity alignment — validated 2026-08-14), and renumber/move
+id-remap (similarity matching). None is fundamental. We commit to treating each as fixable and NOT
+inventing a new "it's inherently hard" excuse. The project's signature trap is exactly that —
+mistaking a measurement/segmentation/coverage bug for a hard wall (`docs/notes/lessons_and_pitfalls.md`).
+
+**One honest measurement caveat (not an excuse).** Convergence is scored vs the current NLOD text and
+point-in-time vs the Lovdata oracle, both of which carry editorial apparatus (footnotes, "– – –"
+redactions, convention annexes). We strip/scope these symmetrically (annexes out of scope; footnote
+tables dropped; provenance stripped) so "100%" means clean STATUTORY content, not the oracle's
+editorial layer. Reaching ~100% requires the target to be clean too — which is a measurement-hygiene
+task we own, not a reconstruction limit.
+
 ## 2026-08-14 — Adopt LLM boundaries-only segmentation for OCR-base laws (base first, amendments phase-2)
 
 **Question (HS):** the deterministic convergence levers are exhausted (~0.62–0.67 ceiling) and the
