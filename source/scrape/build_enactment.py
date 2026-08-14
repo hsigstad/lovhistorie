@@ -354,16 +354,40 @@ def build_booklet(datokode: str, loc: dict | None = None) -> dict:
     return provs
 
 
-def build(datokode: str, loc: dict | None = None) -> dict:
+# OCR-base laws whose regex heading-parse is fragile and where the LLM boundaries-only
+# segmenter wins end-to-end (docs/done.md 2026-08-14): default them to the LLM base. Clean
+# LTI bases are NOT here — they keep the deterministic path. Add a law only after its gate
+# convergence confirms the win; the substring assertion below guards fabrication either way.
+LLM_BASE_LAWS = {"1918-05-31-4"}  # avtaleloven (validated: 30->33/45); extend post-gate
+
+
+def _segment_law(datokode: str, law_text: str, use_llm: bool):
+    """Parse a law's OCR into {para: text} via the regex heading parser or the LLM
+    boundaries-only segmenter. The LLM path asserts every provision is a verbatim source
+    slice (fabrication guard) and records its flags; a substring miss raises."""
+    if not use_llm:
+        return parse_provisions(law_text), {}
+    from source.llm.segment import segment_base
+    provs, rep = segment_base(datokode, law_text)
+    if rep.substring_ok < rep.substring_total:            # fabrication guard, build-time
+        raise AssertionError(
+            f"{datokode}: LLM base not source-faithful ({rep.substring_ok}/{rep.substring_total})")
+    return provs, {"llm": True, "llm_model": None if rep.cached else True,
+                   "dropped": len(rep.dropped), "id_mismatch": len(rep.id_mismatch)}
+
+
+def build(datokode: str, loc: dict | None = None, use_llm: bool | None = None) -> dict:
     loc = loc or LOCATIONS[datokode]
+    if use_llm is None:
+        use_llm = datokode in LLM_BASE_LAWS
     law = _law_text(loc["urn"], loc["page"], loc["title_needle"], loc.get("span", 4),
                     loc.get("end_needle"))
-    provs = parse_provisions(law)
+    provs, extra = _segment_law(datokode, law, use_llm)
     OUT.mkdir(parents=True, exist_ok=True)
     out = OUT / f"{datokode}.json"
     out.write_text(json.dumps({
         "datokode": datokode,
-        "source": {k: loc[k] for k in ("urn", "page")},
+        "source": {**{k: loc[k] for k in ("urn", "page")}, **extra},
         "provisions": provs,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
     return provs

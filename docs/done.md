@@ -1,5 +1,25 @@
 # Done
 
+## 2026-08-14 (cont.) — LLM base segmenter PRODUCTIONISED + wired into the gate (0.669 → 0.673)
+
+- **Built `source/llm/` (llmkit convention):** `schemas.py` (`BaseSegmentation` — boundaries-only,
+  ExtractionSchema), `prompts/segment_base_system.txt` (law-agnostic heading prompt), `segment.py`
+  (`segment_base()` — llmkit-cached + Pydantic-validated + structured-outputs extraction, gpt-4.1, with
+  deterministic invariant-repair (monotonic/dedup), a **build-time substring assertion** that RAISES if any
+  provision isn't a verbatim source slice, and a heading-matches-id cross-check). Cache at
+  `data/llm_cache/base_segment/` (gitignored). G1-safe: sees only public-domain OCR.
+- **Wired opt-in into `build_enactment`:** `LLM_BASE_LAWS = {avtaleloven}` (extend post-gate); `build(dk)`
+  routes those laws through `_segment_law` → the LLM base, tagging `source.llm=True`. Clean LTI bases keep the
+  deterministic path.
+- **Gate confirms it in production:** avtaleloven **30 → 33/45 @≥0.90**, overall convergence **0.6695 →
+  0.6731** (555 → 558 statutory provisions), **all guards PASS** (G1/G2/G3 — the LLM base clears the
+  anti-gaming base-integrity check), zero regression elsewhere. avtaleloven base is 40/40 substring-verified
+  (100% source-faithful), 0 dropped, 0 id-mismatch. Point-in-time μ unchanged (no held-out GT for avtaleloven).
+- **This is the productionisation milestone:** the validated LLM base is now a real, cached, audited,
+  fabrication-guarded build input in the pipeline. NEXT: extend `LLM_BASE_LAWS` to the other weak OCR laws
+  (oreigning/mesterbrev/kjøp/rettsgebyr) one at a time behind the gate; add the anchor mode for line-break-poor
+  sources; then phase-2 amendment-side swap. Migrate the cache to llmkit's schema-aware key when convenient.
+
 ## 2026-08-14 (cont.) — END-TO-END base swap validated: LLM base beats regex base in the real pipeline (GO)
 
 - **Assembled the LLM base into the ACTUAL reconstruction** (same amendment stream, same replay) and scored

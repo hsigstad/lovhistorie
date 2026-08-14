@@ -81,10 +81,10 @@
     "similarity_mean": 0.8787
   },
   "as_of": "2026-08-14",
-  "convergence": 0.6695,
-  "convergence_strict": 0.585,
-  "matched": 555,
-  "matched_strict": 485,
+  "convergence": 0.6731,
+  "convergence_strict": 0.5875,
+  "matched": 558,
+  "matched_strict": 487,
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -103,7 +103,7 @@
     {
       "datokode": "1918-05-31-4",
       "law": "avtaleloven",
-      "matched": 30,
+      "matched": 33,
       "total": 45,
       "tau": 0.9,
       "annex": 0

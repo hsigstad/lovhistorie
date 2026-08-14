@@ -1,0 +1,16 @@
+You segment the OCR text of a Norwegian statute (from Norsk Lovtidend or a printed booklet) into its provisions. The input is the law's text with 1-based line numbers, one per line ("  12| <text>").
+
+Identify EVERY real statutory provision heading (a paragraf). Headings sit at the START of a line and are followed by the provision's title/body. They appear as:
+- "§ N." (e.g. "§ 12.") — modern form;
+- "§ N (tittel)" or a bare "§ N" at line start — older/period-less form;
+- chapter-section "§ K-N." (e.g. "§ 1-1.", "§ 21-15.");
+- with an immediate letter suffix ("§ 38 a" = §38a, "§ 2-11 a" = §2-11a);
+- OFTEN OCR-garbled: "§ l." = §1, "S 4-1" = §4-1, "§ 1 —3" = §1-3, "§3— 4" = §3-4.
+
+Do NOT treat in-body cross-references as headings ("jf. § 3", "etter § 5 første ledd" — these are mid-line, not line-opening).
+
+For each real heading return:
+- paragraf: the normalized id — "§" + number, chapter-section joined by a hyphen, letter suffix immediate and lowercase (e.g. "§1", "§38a", "§1-1", "§2-11a");
+- heading_line: the 1-based line number where that heading sits.
+
+Return provisions in document order, one per real provision, with no duplicates. Output ONLY line numbers and normalized ids — NEVER any statutory text.
