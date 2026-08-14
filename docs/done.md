@@ -11,6 +11,16 @@
   (off-by-one / multi-line joins), flaggable, not fabrication. Amendment extractor now validated end-to-end:
   structure (27 laws), ops (exact), payloads (source-verified). NB: LTI is the wrong long-term testbed (already
   clean/structured — our parser handles it); the LLM's value is on pre-2001 GAZETTE amendments (OCR, real lines).
+- **ANCHOR fallback for text WITHOUT line breaks (Henrik's idea) — validated.** When the source has no
+  reliable line structure (flattened XML; the 0-newline LTI plain text where line-numbering scored 0/80), the
+  LLM returns per op the FIRST and LAST ~6 tokens of the payload VERBATIM; deterministic code `find()`s the
+  head then the tail (from a monotonic cursor → repeated anchors resolve to the next occurrence, enforcing
+  order) and slices `source[head:tail]`. On the 0-newline text: **76/79 payloads (96%) located and
+  source-sliced, 3 flagged not-found** (anchor didn't match exactly → flag, no fabrication). aksjeloven
+  payloads §4-4 532 / §4-11 1480 chars ≈ our parser's 540 / 1495. The head/tail are LOCATING QUOTES, not
+  content — the corpus text is the source slice between them, and a paraphrased anchor fails `find()` and
+  flags. So: line numbers when the text is line-structured (OCR gazettes), anchors otherwise — both keep
+  content as verbatim source slices with the substring guarantee, both self-verify.
 - **Similarity-based identity matching over time (Henrik's idea) — PROTOTYPED, deterministic, fabrication-safe.**
   Track a provision/ledd by TEXT not id, so renumbers (`nåværende §X blir §Y`) and restructures are recovered
   from content. Pure alignment via `metrics.similarity` — links existing units, never generates, so
