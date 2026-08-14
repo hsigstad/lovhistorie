@@ -38,7 +38,7 @@ import re
 import sys
 from pathlib import Path
 
-from source.parse import gazette
+from source.parse import gazette, inforce
 from source.scrape.build_enactment import _xml_text
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -129,13 +129,16 @@ def _parse_block(block_html: str, whole_only: bool = True):
 
 
 def parse_act(xml_path: Path, whole_only: bool = True):
-    """All amendment rows an LTI act carries, one per (target law × op). act date is the
-    first approximation of entry-into-force (true ikr. is resolved elsewhere)."""
+    """All amendment rows an LTI act carries, one per (target law × op). `date_in_force` is
+    the act (passage) date — a lower bound; `date_in_force_resolved` is the TRUE ikrafttredelse
+    date from `source.parse.inforce` (the act's own dateInForce, or the triggering resolution
+    for deferred acts), falling back to the act date when unresolved (flag-don't-fabricate)."""
     raw = xml_path.read_text(encoding="utf-8", errors="ignore")
     dk = xml_path.stem.replace("nl-", "")
     y, m, d, nr = dk[:4], dk[4:6], dk[6:8], int(dk[8:].lstrip("-") or 0)
     act_dk = f"{y}-{m}-{d}-{nr}"
     act_date = f"{y}-{m}-{d}"
+    resolved = inforce.resolved_date(act_dk) or act_date
     rows = []
     heads = [(hm.start(), hm.end(), gazette.datokode("lov " + hm.group(1)))
              for hm in _BLOCK_HEADER.finditer(raw)]
@@ -152,7 +155,7 @@ def parse_act(xml_path: Path, whole_only: bool = True):
                 "change_type": ct,
                 "instruction": instr,
                 "new_text": new_text,
-                "date_in_force_resolved": act_date,
+                "date_in_force_resolved": resolved,
                 "date_in_force": act_date,
                 "source": "lti_act_reparse",
             })
@@ -175,6 +178,11 @@ def build(act_datokoder=None, only_missing=True):
     limits to specific acts (fast measurement); None = every act in data/lti/."""
     from source.parse import amendments
     existing = _existing_pairs(amendments.DATA) if only_missing else set()
+    # Refresh the in-force index on a FULL rebuild so `date_in_force_resolved` can't go stale
+    # after a new LTI harvest (the lazy cache only builds when ABSENT, not when out of date).
+    # Per-act measurement runs (act_datokoder set) reuse the cache — 19s is not worth paying.
+    if act_datokoder is None:
+        inforce.build()
     if act_datokoder:
         files = []
         for a in act_datokoder:

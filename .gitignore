@@ -16,6 +16,7 @@ data/amendment_blocks.jsonl.gz
 data/amendments.patched.jsonl.gz
 data/pre2001_amendments.jsonl.gz
 data/lti_amendments.jsonl.gz
+data/inforce.jsonl.gz
 data/current/
 data/lti/
 data/lovtidend_text/

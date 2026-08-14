@@ -101,12 +101,20 @@
   that are DOUBLE-APPLICATION (a whole-provision rebuild + an in-force sub-op on one §; the ledd engine isn't
   idempotent). PROVEN not-in-force: all three acts are triggered/in force per the in-force index. Needs an
   idempotent `ledd.apply` (detect the change is already present, skip) before `whole_only=False` is clean.
-- [ ] **In-force resolver (built the index; wire for point-in-time).** The ikrafttredelsesresolusjoner are
-  `sf-` forskrifter ALREADY in `data/lti/` (title "Ikraftsetting av lov …"; 1,173 res → 1,007 triggered acts;
-  `<dd class="dateInForce">` = concrete ISO or "Kongen bestemmer"). NO res-harvest needed (corrects an earlier
-  same-day call). Convergence doesn't need it, but it gives TRUE `date_in_force_resolved` per act (replace the
-  act-date approximation) for correct point-in-time reconstruction — the deliverable side. Parse per-provision
-  scope from partial resolutions ("§§ X trer i kraft, resten senere") for full fidelity.
+- [x] ~~**In-force resolver (built the index; wire for point-in-time).**~~ DONE 2026-08-14 (see done.md):
+  `source/parse/inforce.py` resolves TRUE ikrafttredelse dates (act's own `dateInForce`, else the triggering
+  `sf-` "(Delt) ikraftsetting av lov …" resolution) — 2,322/2,882 acts resolved, 1,179 later than passage;
+  wired into `lti_amendments` (`date_in_force_resolved`), convergence unchanged 0.662 / guards PASS / zero
+  regression, point-in-time correctness demonstrated (kjøpsloven §7 repeal withheld until its true 2002-07-01).
+  REMAINING (the follow-ups below).
+  - [ ] **Per-provision partial scope for "delt ikraftsetting"** — act-level resolution assigns the earliest
+    trigger date to ALL of a split act's ops, so a provision in a LATER (or never-triggered) batch is
+    over-applied (e.g. aksjeloven `2019-03-15-6` §4-13 → resolved 2020-01-01 but that § came later). Parse the
+    "§§ X trer i kraft …, resten senere" scope from each resolution body for full fidelity. Refines the
+    point-in-time tail; not a convergence lever.
+  - [ ] **Extend the resolver to the EXTERNAL amendment stream** (`amendments.jsonl.gz`), not just the LTI
+    re-parse stream — resolve `date_in_force_resolved` by `act_refid` at load in `pipeline.load_ops` (or a
+    one-off patch pass), so the whole point-in-time deliverable benefits, not only the omnibus-recovery rows.
 
 ## Follow-up — extend to forskrifter
 

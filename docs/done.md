@@ -1,5 +1,42 @@
 # Done
 
+## 2026-08-14 — in-force resolver WIRED (point-in-time deliverable): true ikrafttredelse dates replace the act-date approximation
+
+- **Built `source/parse/inforce.py`** — resolves an amending act's TRUE entry-into-force date
+  from two public-domain, offline LTI signals (the follow-up the 2026-08-13 in-force-date entry
+  named; NO new harvest needed, the data was already in-corpus): (1) the act's own
+  `<dd class="dateInForce">` — a concrete ISO date, else "Kongen bestemmer/fastsetter" (deferred);
+  (2) for deferred acts, the triggering `sf-` ikrafttredelsesresolusjon ("(Delt) ikraftsetting av
+  lov <cite> …", ~1,189 of them) whose own `dateInForce` is concrete and whose title cites the
+  triggered act. Resolution = concrete act date, else earliest trigger date (act-level grain for
+  "delt ikraftsetting"), else None (flag-don't-fabricate). Writes a git-ignored, rebuildable cache
+  `data/inforce.jsonl.gz`.
+- **Coverage:** 2,882 acts → **2,322 resolved (80.6%)** — 1,279 concrete own-date, 1,043 deferred-
+  but-triggered, 560 deferred-untriggered (no trigger found → keep fallback). **1,179 acts have a
+  true in-force date LATER than their passage date** — precisely the states point-in-time was
+  getting wrong.
+- **Wired into `lti_amendments.parse_act`**: `date_in_force_resolved = inforce.resolved_date(act) or
+  act_date` (fallback preserves old behaviour where unresolved → no regression). `date_in_force`
+  stays the passage date. A full `lti_amendments` rebuild now refreshes the index first so it can't
+  go stale after a re-harvest (the lazy cache only builds when ABSENT). Rebuilt the stream: **606 of
+  1,502 ops (40%) now carry a corrected, later in-force date**, across many laws incl. dev-set
+  kjøpsloven.
+- **Convergence UNCHANGED at 0.6622, guards PASS, zero τ-regression** — as expected: the convergence
+  pass is `as_of=None`, which applies every op regardless of date, so op *dates* don't gate it (the
+  2026-08-13 diagnosis). The whole benefit is point-in-time.
+- **Point-in-time correctness DEMONSTRATED:** kjøpsloven §7's "fjerde ledd oppheves" (act
+  `2002-06-21-34`, passed 2002-06-21, in force 2002-07-01) is now correctly WITHHELD until 2002-07-01
+  (§7 keeps its fourth ledd at as_of=2002-06-21, drops it at 2002-07-01) — previously it applied 10
+  days early, at the act date. The measured deliverable μ is unchanged at **0.807** because all 3
+  held-out GT versions are aksjeloven at 2001/2003 and every deferred act the resolver corrects is
+  post-2003 (excluded at those dates either way) — the fix is correct but this GT set doesn't exercise
+  a passage-vs-in-force straddle. A clean-base HIST version (vphl/tjeneste, `docs/ground_truth.md`)
+  with a mid-life date would move the needle.
+- **Deferred (documented in todo):** per-provision partial scope for "delt ikraftsetting" (e.g.
+  aksjeloven `2019-03-15-6` §4-13 is act-resolved to 2020-01-01 but that specific § was in a later/
+  never batch — act-level over-applies it; still strictly less-early than the act date). Not a
+  convergence lever; refines the point-in-time tail.
+
 ## 2026-08-13 (cont.) — the −6 was a BLOCK-HEADER LEAK (not in-force); fixed + sub-unit repeals enabled: 0.655 → 0.662
 
 - **RESOLVED the sub-provision −6 — and the earlier same-session "blocked on a res-harvest" call was wrong.**
