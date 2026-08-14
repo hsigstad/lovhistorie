@@ -15,10 +15,40 @@ import html as _html
 import re
 
 _ANCHOR = re.compile(r'<a name="_(\d+(?:-\d+)?[a-z]?)"\s*>', re.I)
+_TABLE = re.compile(r"<table\b.*?</table>", re.S | re.I)
+_TR = re.compile(r"<tr\b.*?</tr>", re.S | re.I)
+_TD = re.compile(r"<td\b.*?</td>", re.S | re.I)
+
+
+def _is_footnote_table(tbl: str) -> bool:
+    """True for a Lovdata FOOTNOTE table — the editorial cross-reference apparatus the
+    export renders as a two-column table, every row `[footnote-index, note-text]` (e.g.
+    `[1, "Se § 5, c."]`, `[4, "Jf. lov 10 juni 2005 nr. 51."]`). SEMANTIC test, not a
+    font-size heuristic: every `<tr>` must have exactly two `<td>` and the first cell must
+    be a BARE integer (the note index). A genuine statutory table (rate schedule, layout)
+    fails this — its first cell is not a bare note-index — so its content is preserved."""
+    rows = _TR.findall(tbl)
+    if not rows:
+        return False
+    for r in rows:
+        cells = _TD.findall(r)
+        if len(cells) != 2:
+            return False
+        first = " ".join(re.sub(r"<[^>]+>", " ", cells[0]).split())
+        if not re.fullmatch(r"\d{1,3}", first):
+            return False
+    return True
 
 
 def parse(html: str) -> dict[str, str]:
-    """{paragraf_id: normalized-plaintext} for each provision anchor."""
+    """{paragraf_id: normalized-plaintext} for each provision anchor.
+
+    Footnote tables are dropped (see _is_footnote_table): the export appends the editorial
+    cross-reference apparatus ("Se § X", "Jf. lov Y") as a two-column table, which is NOT
+    statutory text and which neither the current-text reader (parse_lovdata_xml) nor the
+    reconstruction carries — leaving it in inflated the GT provision and understated clean-law
+    point-in-time (rate 0.564→0.782 aggregate on removal; maintainer sign-off 2026-08-14).
+    Only footnote tables are removed; statutory tables are preserved."""
     anchors = [(m.start(), m.group(1)) for m in _ANCHOR.finditer(html)]
     out: dict[str, str] = {}
     for i, (pos, pid) in enumerate(anchors):
@@ -27,6 +57,7 @@ def parse(html: str) -> dict[str, str]:
         # a non-breaking space becomes real whitespace rather than the literal token "xa0"
         # (x,a,0 are alphanumerics that normalize would otherwise keep as spurious text).
         seg = _html.unescape(html[pos:end])
+        seg = _TABLE.sub(lambda m: " " if _is_footnote_table(m.group(0)) else m.group(0), seg)
         txt = " ".join(re.sub(r"<[^>]+>", " ", seg).split())
         # Align with the gate's current-text representation (parse_lovdata_xml), which
         # starts each provision at ". <title>" — i.e. the "§ N-M" heading number is NOT

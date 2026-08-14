@@ -118,14 +118,16 @@
 
 ## Measurement side (point-in-time fairness)
 
-- [ ] **`lovdata_html.py` GT-parse length inflation — clean laws are scored PESSIMISTICALLY.**
-  Found 2026-08-14 tracing tjenesteloven: recon matches the CURRENT NLOD text at convergence 0.955,
-  but the Lovdata-Pro GT provisions parse ~10-20% LONGER (e.g. §2 recon≈327 ≈ current, GT=402), so the
-  point-in-time "near misses" (0.90-0.98) are an oracle-parse difference, not reconstruction error.
-  Likely `lovdata_html.py` includes inline notes / cross-ref nodes the NLOD dump omits. Investigate
-  whether the GT parser should drop the same editorial nodes (symmetric with the current-text reader)
-  — would lift clean-law point-in-time toward its true fidelity. Measurement-side; tread carefully (it
-  moves the deliverable number, so treat like a metric change — sign-off + no-regression guard).
+- [x] ~~**`lovdata_html.py` GT-parse length inflation**~~ DONE 2026-08-14 (see done.md): the inflation was
+  the editorial FOOTNOTE apparatus (two-column "[index, note]" tables, "Se §X"/"Jf. lov Y"). `lovdata_html`
+  now drops footnote tables (semantic discriminator, statutory tables preserved), signed off. Deliverable
+  rate 0.564→0.782, μ 0.857→0.879; convergence unchanged; guards PASS.
+- [ ] **Recon-side footnote entanglement (the follow-up the GT fix exposed).** On some vphl provisions the
+  RECONSTRUCTION carries footnote-ish cross-reference text (from LTI amendment bodies / current-text notes),
+  so once the GT footnotes are removed those provisions drop (vphl 2021 rate 0.777→0.713; §2-8/§9-35/§21-16
+  recon_has_footnoteish=True, plus others). Strip the same footnote apparatus on the recon/base side so both
+  sides are symmetric. Should recover the two wobble versions (vphl 2021, aksjeloven 2024) and lift clean-law
+  point-in-time further. Measurement/parse-side, deterministic; verify with the per-provision no-regression guard.
 - [x] ~~**strip_annotation completeness (nynorsk + in-force footnotes)**~~ DONE 2026-08-14 (see done.md):
   +6 convergence, point-in-time μ 0.855→0.857, tjenesteloven §28 → 1.0, zero regression, signed off.
 - [ ] **tjenesteloven §29 "Endringer i andre lover" — editorial redaction, FLAGGED not chased.** Lovdata

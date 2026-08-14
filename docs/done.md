@@ -1,5 +1,31 @@
 # Done
 
+## 2026-08-14 (cont.) — GT footnote-table drop: deliverable rate 0.564 → 0.782 (μ 0.857 → 0.879)
+
+- **`lovdata_html.py` now drops the Lovdata FOOTNOTE apparatus from the ground-truth parse.** The
+  export appends editorial cross-references ("Se § X", "Jf. lov Y") as a two-column table
+  `[footnote-index, note-text]` at the end of each provision; the old parser tag-stripped these INTO
+  the scored GT text, but neither the current-text reader (parse_lovdata_xml) nor the reconstruction
+  carries them, so clean-law provisions read ~10-20% longer on the GT side and were scored as
+  near-misses. Removing them is the symmetric, correct thing — the same class as the strip_annotation
+  provenance strip. **Maintainer sign-off 2026-08-14.**
+- **SEMANTIC discriminator, not a font-size heuristic:** `_is_footnote_table` = every `<tr>` has
+  exactly two `<td>` and the first is a BARE integer (the note index). A first cut on "table contains
+  9pt" over-removed vphl's STATUTORY tables (§9-16a/§10-15a) — the semantic test preserves them (identical
+  aggregate, no statutory-table loss).
+- **Result (deliverable / point-in-time): μ 0.857 → 0.879, rate 0.564 → 0.782.** Convergence UNCHANGED
+  at 0.6695 (the gate doesn't use lovdata_html), guards PASS. Clean laws now strong across dates:
+  vphl 2009 **0.990**/0.913, 2014 **0.977**/0.863, enactment **0.997**; tjenesteloven **0.964**/0.966 &
+  **0.963**/0.931. OCR aksjeloven 2001/2003 also up (rate 0.52→0.71 — footnotes hit OCR laws too).
+- **Two small wobbles, traced + honest:** vphl 2021 (rate 0.777→0.713) and aksjeloven 2024 (−0.01). NOT
+  over-removal (semantic test only touches footnote tables) — a SEPARATE recon-side entanglement: on some
+  vphl provisions the RECONSTRUCTION itself carries footnote-ish text (from LTI amendment bodies), so
+  removing the GT footnotes exposes that recon junk. Follow-up (strip footnote-ish text on the recon side
+  too), logged in todo — not a blocker; the net is strongly positive.
+- **Deliverable story now:** clean-base point-in-time reconstructs past states at ~0.96-0.99 (enactment
+  near-perfect); the two named drags are the OCR pre-2001 tail and the renumber/move structural tail
+  (vphl 2018 MiFID still 0.536). The recon-side footnote entanglement is the next fidelity lever.
+
 ## 2026-08-14 (cont.) — strip_annotation COMPLETENESS fix (nynorsk + in-force footnotes): 0.662 → 0.670
 
 - **Traced tjenesteloven's high-mean/low-rate point-in-time** (mean 0.91, rate 0.24) to its cause —

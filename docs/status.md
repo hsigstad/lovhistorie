@@ -52,24 +52,24 @@ date** and score against the held-out **Lovdata Pro** historical version — tex
 is scored on but never tuned on. Reported as the ≥τ rate **and** the mean character-similarity
 (the honest reading, since the score runs over the current provision set).
 
-**Point-in-time μ: 0.857 similarity** &nbsp;·&nbsp;
-56.4% at ≥τ &nbsp;·&nbsp; over 10
+**Point-in-time μ: 0.879 similarity** &nbsp;·&nbsp;
+78.2% at ≥τ &nbsp;·&nbsp; over 10
 held-out (law × date) versions. Point-in-time **tracks convergence** — the engine reconstructs
 past states about as well as the current one, so convergence is a validated proxy (no
 date-specific failure); the residual is the same ledd / OCR / capture tail.
 
 | Law | As of | ≥τ rate | mean similarity |
 |---|---|---|---|
-| aksjeloven (`1997-06-13-44`) | 2001-01-01 | 53.9% | 0.806 |
-| aksjeloven (`1997-06-13-44`) | 2003-01-01 | 52.2% | 0.800 |
-| aksjeloven (`1997-06-13-44`) | 2024-01-01 | 62.1% | 0.816 |
+| aksjeloven (`1997-06-13-44`) | 2001-01-01 | 71.3% | 0.853 |
+| aksjeloven (`1997-06-13-44`) | 2003-01-01 | 70.6% | 0.848 |
+| aksjeloven (`1997-06-13-44`) | 2024-01-01 | 61.1% | 0.815 |
 | verdipapirhandelloven (`2007-06-29-75`) | 2007-06-29 | 99.7% | 0.997 |
-| verdipapirhandelloven (`2007-06-29-75`) | 2009-12-21 | 57.7% | 0.967 |
-| verdipapirhandelloven (`2007-06-29-75`) | 2014-01-01 | 69.0% | 0.968 |
-| verdipapirhandelloven (`2007-06-29-75`) | 2018-07-20 | 32.7% | 0.530 |
-| verdipapirhandelloven (`2007-06-29-75`) | 2021-10-04 | 77.7% | 0.846 |
-| tjenesteloven (`2009-06-19-103`) | 2009-12-28 | 27.6% | 0.921 |
-| tjenesteloven (`2009-06-19-103`) | 2020-07-01 | 31.0% | 0.923 |
+| verdipapirhandelloven (`2007-06-29-75`) | 2009-12-21 | 91.3% | 0.990 |
+| verdipapirhandelloven (`2007-06-29-75`) | 2014-01-01 | 86.3% | 0.977 |
+| verdipapirhandelloven (`2007-06-29-75`) | 2018-07-20 | 40.7% | 0.536 |
+| verdipapirhandelloven (`2007-06-29-75`) | 2021-10-04 | 71.3% | 0.844 |
+| tjenesteloven (`2009-06-19-103`) | 2009-12-28 | 96.6% | 0.964 |
+| tjenesteloven (`2009-06-19-103`) | 2020-07-01 | 93.1% | 0.963 |
 
 ## Per-law breakdown
 
