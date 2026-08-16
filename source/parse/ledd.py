@@ -209,21 +209,23 @@ def apply(provision_text, instruction, new_text):
         n = len(ledd) if act != "insert" else len(ledd) + 1
 
     if act == "replace":
-        # empty new_text is a parse artifact, not a real "blank this ledd" -> flag
-        if not new_text or not (1 <= n <= len(ledd)):
-            return None                  # addressed ledd doesn't exist
-        # IDEMPOTENCY (align): if a ledd already equals new_text, the op is already applied
-        # (e.g. a whole-provision rebuild that baked it in, then this in-force sub-op) -> no-op.
-        # This is the double-application fix that blocked the deferred sub-provision +3.
+        if not new_text:                 # empty new_text is a parse artifact -> flag
+            return None
         from source.parse import align
         tgt = align.target_ledd(ledd, new_text, ordinal=n)
         if tgt["already_applied"]:
-            return provision_text        # SKIP, don't re-apply
-        # VERSION-ROBUST TARGETING: address the ledd by CONTENT when the match is confident
-        # (a clear margin over the second-best) — the ordinal is version-dependent and wrong
-        # after an earlier insert. Fall back to the ordinal `n` when the content match is
-        # ambiguous (no gap), staying conservative.
-        idx = tgt["index"] if (tgt["matched"] and tgt["index"] is not None) else n - 1
+            return provision_text        # IDEMPOTENCY: already applied -> SKIP (no double-apply)
+        # ADDRESS the ledd by CONTENT first (align), then the ordinal. Content-first is what
+        # makes the ordinal's version-dependence harmless: a "syvende ledd" op whose provision
+        # now has 3 ledds (an earlier repeal shortened it) is out of ordinal range, but its new
+        # wording still matches the right ledd. Only if the content match is ambiguous do we use
+        # the ordinal, which must then be in range; else flag (never guess).
+        if tgt["matched"] and tgt["index"] is not None:
+            idx = tgt["index"]
+        elif 1 <= n <= len(ledd):
+            idx = n - 1
+        else:
+            return None                  # neither a confident content match nor a valid ordinal
         ledd = list(ledd)
         old = ledd[idx]
         pm = _NUM_MARK.match(old)

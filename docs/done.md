@@ -1,5 +1,28 @@
 # Done
 
+## 2026-08-16 (cont.) — ledd content-first targeting; and the "35% ledd bucket" is OVER-ATTRIBUTED
+
+- **`ledd.apply` REPLACE now addresses by CONTENT first (align), ordinal as fallback** — restructured so an
+  out-of-ordinal-range op (e.g. "§9-15 syvende ledd" when the provision now has 3 ledds, an earlier repeal
+  having shortened it) is rescued by content match instead of flagged. Correct + version-robust; **no-regression
+  check improved 0 / REGRESSED 0** (the dev set doesn't exercise version-shift enough to cross τ, but it's the
+  right logic and helps the broader corpus / point-in-time).
+- **The decisive finding: the `loss_breakdown` `engine-gap:ledd` bucket (97, 37%) is OVER-ATTRIBUTED.** Making
+  the LLM sub-provision ops correct + applying them (this + prior entry) did NOT shrink it. Traced avtaleloven
+  §38 (0.34, "engine-gap:ledd"): its recon is the 1918 ENACTMENT spelling ("Har nogen gaat ind paa"), current
+  is MODERN ("Har noen på grunn av"), and §38 has **no op at all** — the nearby §38*b* ledd ops were
+  mis-associated. So its gap is **OCR-era spelling drift + an uncaptured blanket modernization reform**, not a
+  ledd-application failure. Many of the 97 are like this (OCR / blanket-reform / base), which correct
+  sub-provision ops cannot fix.
+- **Honest conclusion (dev set): the amendment/ledd thread has reached its productive end here.** The LLM
+  amendment parsing (correct attribution — fixed the §21-15-class corruption, applied-wrong 31→24) and align
+  ledd targeting are correct + safe, but the DEV-SET residual is dominated by the fundamental limits already
+  named in decisions.md — **OCR fidelity + uncaptured (blanket) reforms** — not ledd application. Further
+  dev-set convergence needs either OCR correction (fabrication-risky, declined) or a blanket-reform capture
+  parser ("uttrykket «A» endres til «B» i følgende bestemmelser: …"), not more ledd work. The ledd machinery
+  remains valuable for the broader corpus + point-in-time; TODO: refine `loss_breakdown` so `engine-gap:ledd`
+  doesn't absorb OCR/reform/base gaps (mis-attribution inflates the apparent lever).
+
 ## 2026-08-16 — LLM amendment ops WIRED (correct attribution + payloads); gain gated on the ledd ENGINE
 
 - **Refactored `amend.py` to PER-SECTION extraction** — split the act on `I lov <cite>` (not the fragile
