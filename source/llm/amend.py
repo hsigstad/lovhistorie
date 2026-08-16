@@ -33,9 +33,9 @@ except ModuleNotFoundError:  # pragma: no cover - sandbox bootstrap
     from llmkit import LLMCache, extract
 
 try:
-    from source.llm.schemas import AmendmentExtraction
+    from source.llm.schemas import AmendmentOps
 except ModuleNotFoundError:
-    from schemas import AmendmentExtraction  # type: ignore
+    from schemas import AmendmentOps  # type: ignore
 
 from source.parse import gazette
 
@@ -44,18 +44,29 @@ MODEL = "gpt-4.1"
 CACHE = LLMCache(_REPO / "data" / "llm_cache" / "amend_ops")
 
 _CHANGE = {"replace": "change", "insert": "add", "repeal": "repeal", "renumber": "renumber"}
+# Each target-law section starts at "I lov <cite>". Splitting here (not on the "gjøres
+# følgende endringer:" header, which many acts omit for the direct "I lov X skal § Y lyde:"
+# form) gives CORRECT per-law attribution — the regex block parser over-runs and mis-files
+# ops from one law onto another (finansforetaksloven §21-15 → vphl §21-15; docs/done.md).
+_SECTION = re.compile(r"\bI\s+lov\s+(\d{1,2}\.?\s*[a-zæøå]+\.?\s*\d{4}\s*nr\.?\s*\d+)", re.I)
 
 
 def _system_prompt() -> str:
-    return (PROMPT_DIR / "amend_ops_system.txt").read_text(encoding="utf-8")
+    return (PROMPT_DIR / "amend_section_system.txt").read_text(encoding="utf-8")
 
 
-def _resolve(cite: str) -> str | None:
-    """A block's target-law cite -> datokode (the model may return either form)."""
-    cite = cite.strip()
-    if re.fullmatch(r"\d{4}-\d{2}-\d+-\d+", cite):
-        return cite
-    return gazette.datokode("lov " + cite)
+def _split_sections(act_text: str):
+    """[(target_datokode, section_text)] — one per 'I lov <cite>' target-law section."""
+    heads = [(m.start(), gazette.datokode("lov " + m.group(1)))
+             for m in _SECTION.finditer(act_text)]
+    out = []
+    for i, (pos, dk) in enumerate(heads):
+        end = heads[i + 1][0] if i + 1 < len(heads) else len(act_text)
+        if dk:
+            out.append((dk, act_text[pos:end]))
+    return out
+
+
 
 
 def _instruction(para: str, subunit: str, op_type: str) -> str:
@@ -77,39 +88,53 @@ class AmendReport:
 
 
 def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = MODEL,
-                cache: LLMCache = CACHE, reextract: bool = False):
+                cache: LLMCache = CACHE, reextract: bool = False, only_targets=None):
     """Ops for one amending act, in the amendment-stream schema. Returns (ops, AmendReport).
-    Each replace/insert op's `new_text` is a verbatim source slice located by anchors; ops
-    whose anchor can't be found exactly are FLAGGED and dropped (no fabrication)."""
+    Splits the act on `I lov <cite>` and runs ONE call per target-law section (correct
+    attribution + recall). `only_targets` (a set of datokodes) restricts the LLM to those
+    laws' sections — a big saving on omnibus acts amending laws we do not score. Each
+    replace/insert op's `new_text` is a verbatim source slice located by anchors WITHIN its
+    section; a not-found anchor FLAGS + drops the op."""
     if client is None:
         from openai import OpenAI
         client = OpenAI()
-    res = extract(
-        doc_id=act_datokode, text=act_text,
-        system_prompt=_system_prompt(), user_prompt=act_text,
-        schema=AmendmentExtraction, model=model, cache=cache, client=client,
-        reextract=reextract, use_structured_outputs=True, schema_in_cache_key=True,
-        max_tokens=8000,
-    )
-    rep = AmendReport(valid=res.valid, cached=res.cached)
-    if not res.valid or res.parsed is None:
-        return [], rep
-
-    ops, cursor = [], 0
-    for block in res.parsed.blocks:
-        dk = _resolve(block.target_law_cite)
-        if not dk:
+    # entry-into-force date for op ordering + point-in-time (act date, resolved via inforce)
+    y, m, d = act_datokode[:4], act_datokode[5:7], act_datokode[8:10]
+    act_date = f"{y}-{m}-{d}"
+    from source.parse import inforce
+    resolved = inforce.resolved_date(act_datokode) or act_date
+    rep = AmendReport()
+    ops = []
+    for target_dk, sec in _split_sections(act_text):
+        if only_targets is not None and target_dk not in only_targets:
+            continue                                 # skip laws we don't score
+        try:
+            res = extract(
+                doc_id=f"{act_datokode}#{target_dk}", text=sec,
+                system_prompt=_system_prompt(), user_prompt=sec,
+                schema=AmendmentOps, model=model, cache=cache, client=client,
+                reextract=reextract, use_structured_outputs=True, schema_in_cache_key=True,
+                max_tokens=16000,
+            )
+        except Exception as e:                       # one section must not kill the run
+            rep.valid = False
+            rep.flagged.append((f"lov/{target_dk}", f"extract-error:{type(e).__name__}"))
             continue
-        for op in block.ops:
+        rep.cached = rep.cached or res.cached
+        if not res.valid or res.parsed is None:
+            rep.valid = False
+            continue
+        cursor = 0                                # anchors resolved within THIS section
+        for op in res.parsed.ops:
             rep.n_ops += 1
             new_text = None
             if op.op_type in ("replace", "insert"):
                 rep.payload_ops += 1
                 h, t = op.payload_head.strip(), op.payload_tail.strip()
-                hi = act_text.find(h, cursor) if h else -1
-                ti = act_text.find(t, hi) if (t and hi >= 0) else -1
+                hi = sec.find(h, cursor) if h else -1
+                ti = sec.find(t, hi) if (t and hi >= 0) else -1
                 if hi >= 0 and ti >= 0:
-                    new_text = " ".join(act_text[hi:ti + len(t)].split())
+                    new_text = " ".join(sec[hi:ti + len(t)].split())
                     cursor = ti + len(t)
                     rep.substring_ok += 1
                 else:
@@ -118,12 +143,14 @@ def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = M
             para = "§" + op.target_paragraf.lstrip("§").replace(" ", "")
             ops.append({
                 "act_refid": f"lov/{act_datokode}",
-                "target_law": f"lov/{dk}",
+                "target_law": f"lov/{target_dk}",
                 "target": op.subunit or para,
                 "paragraph": para,
                 "change_type": _CHANGE.get(op.op_type, "unknown"),
                 "instruction": _instruction(para, op.subunit, op.op_type),
                 "new_text": new_text,
+                "date_in_force_resolved": resolved,
+                "date_in_force": act_date,
                 "source": "llm_amend_ops",
             })
     return ops, rep

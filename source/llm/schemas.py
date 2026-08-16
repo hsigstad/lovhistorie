@@ -64,15 +64,12 @@ class AmendOp(BaseModel):
     payload_tail: str = ""          # last ~6 tokens of the new text, VERBATIM
 
 
-class AmendmentBlock(BaseModel):
-    """One target law's block within an (omnibus) amending act."""
-    target_law_cite: str
-    ops: list[AmendOp] = []
 
 
-class AmendmentExtraction(ExtractionSchema):
-    """Structured ops for one amending act (blocks → target law → ops). Anchors are validated
-    by find() in the wrapper; a not-found anchor flags (fabrication-safe), never fabricates."""
-    schema_name: ClassVar[str] = "lovhistorie_amend_ops"
+class AmendmentOps(ExtractionSchema):
+    """Ops for ONE target law's section (the wrapper splits the act on `I lov <cite>` first, so
+    each call is scoped to a single law → correct attribution + higher op recall). No
+    target_law_cite here — the caller sets it from the section header."""
+    schema_name: ClassVar[str] = "lovhistorie_amend_section"
     schema_version: ClassVar[str] = "v1"
-    blocks: list[AmendmentBlock] = []
+    ops: list[AmendOp] = []

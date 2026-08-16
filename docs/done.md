@@ -1,5 +1,29 @@
 # Done
 
+## 2026-08-16 — LLM amendment ops WIRED (correct attribution + payloads); gain gated on the ledd ENGINE
+
+- **Refactored `amend.py` to PER-SECTION extraction** — split the act on `I lov <cite>` (not the fragile
+  `_BLOCK_HEADER`, which required "gjøres følgende endringer" and over-ran), one LLM call per target-law
+  section (`AmendmentOps` schema), with `only_targets` to skip laws we don't score. This fixed the real
+  `whole_only=False` blocker, which was NOT payload over-capture alone but **block MIS-ATTRIBUTION**:
+  act 2021-04-23-22's `§21-15 annet ledd annet punktum` belongs to **finansforetaksloven** (which also has a
+  §21-15); the regex over-ran the block and filed it onto **vphl**, corrupting vphl §21-15. Per-section
+  attribution fixes it (§21-15 → finansforetaksloven, 137-char payload not the regex's 1168), verified.
+- **Built `data/llm_amendments.jsonl.gz` (456 sub-provision ops over the 88 dev-law delta-acts)** and wired it
+  into `pipeline.load_ops` as a third stream (gitignored, dated via inforce, per-section anchor payloads
+  source-verified). Robustness: per-section `try/except` (one section can't kill the build), 90s client
+  timeout, `only_targets` dev filter.
+- **Result: clean merge, NO regression** (guards PASS, §21-15 correctly NOT on vphl), but convergence barely
+  moves — **OCR-calib UNCHANGED 0.6852, strict τ +2 (493→495)**. Diagnosis: the LLM ops reach replay correctly
+  but the **ledd ENGINE flags ~90 of vphl's sub-provision ops** (can't resolve the address on the base). So
+  the ledd bucket is limited by APPLICATION, not parsing — as predicted. Correct parsing was necessary but not
+  sufficient.
+- **NEXT (the actual 35% unlock): ledd APPLICATION.** LLM ledd-segmentation (split a provision into ledds —
+  boundaries-only, so OCR bases become addressable) + `align.target_ledd` content-targeting inside the ledd
+  engine, so the ~90 flagged ops apply. The parsing foundation (this entry) + `align` idempotency/targeting
+  (shipped) + this stream are the prerequisites. Also cleaned up the dead single-call path (amend_ops prompt +
+  AmendmentExtraction/Block schemas).
+
 ## 2026-08-14 (cont.) — LLM amendment op-extractor BUILT (source/llm/amend.py); completeness needs iteration
 
 - **Built `source/llm/amend.py` + `AmendmentExtraction` schema + `prompts/amend_ops_system.txt`** (llmkit,

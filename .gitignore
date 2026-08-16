@@ -24,3 +24,4 @@ data/_backup/
 # Local restore archives (incl. encumbered ground truth) — never publish
 _dl/
 data/llm_cache/
+data/llm_amendments.jsonl.gz

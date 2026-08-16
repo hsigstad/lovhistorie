@@ -97,6 +97,11 @@ def _split_block(new_text: str):
 # the LTI XMLs themselves are only ever touched by the offline build script (anti-gaming
 # lesson #7). Absent → skipped.
 _LTI_AMEND = amendments.DATA.parent / "lti_amendments.jsonl.gz"
+# Derived LLM sub-provision op stream (source.llm.amend): the correctly-attributed +
+# correctly-bounded ledd/punktum replace/insert ops the regex parser over-captures or
+# mis-files. Boundaries-only (payloads are verbatim source slices), read exactly like the
+# other derived streams; the ledd engine is idempotent (align) so overlap is safe. Absent → skipped.
+_LLM_AMEND = amendments.DATA.parent / "llm_amendments.jsonl.gz"
 
 
 def load_ops(target_law: str):
@@ -109,7 +114,7 @@ def load_ops(target_law: str):
     sections the external stream dropped); dedup by (act, para, date, instruction) guards
     the boundary so a section present in both is not applied twice."""
     ops, seen = [], set()
-    for path in (amendments.DATA, _LTI_AMEND):
+    for path in (amendments.DATA, _LTI_AMEND, _LLM_AMEND):
         if not path.exists():
             continue
         with gzip.open(path, "rt", encoding="utf-8") as fh:

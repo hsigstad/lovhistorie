@@ -2,6 +2,27 @@
 
 Committed design choices.
 
+## 2026-08-16 — Prefer LLM over regex for any fragile STRUCTURAL judgment; keep two deterministic firewalls (HS)
+
+**Decision (HS).** Do NOT optimize for LLM cost — the corpus is a bounded, one-time, cached pass, so
+where an LLM makes life easier or more robust it wins. Concretely: any regex that makes a *structural
+judgment* that can be wrong — heading detection, block/section attribution, payload boundaries, op
+parsing — should move to the LLM (boundaries-only). The trigger to migrate a given regex is its
+*reliability*, not its cost: a simple regex that provably never mis-decides (e.g. `gazette.datokode`,
+the `I lov <cite>` section split IF verified) may stay because it is the reliable *mechanical* half;
+a complex one that mis-decides (e.g. `_BLOCK_HEADER`, which mis-attributed finansforetaksloven §21-15
+to vphl) goes to the LLM.
+
+**Two firewalls stay deterministic — NOT for cost, for correctness guarantees:**
+1. **Text slicing.** The LLM LOCATES (line/anchor); deterministic code SLICES the source. This is why
+   we can assert *"0% of corpus content is model-generated; every provision is a verbatim source
+   slice"* — the publishability guarantee. The LLM must never emit the statutory text itself.
+2. **The eval metric** (`metrics.similarity`, the gate). An LLM judge there is loosening the
+   anti-gaming bar. Scoring stays deterministic + fixed.
+
+So the shape is "LLM locates/parses, deterministic code executes (slice) and scores." Migrate fragile
+regexes freely; never move the two firewalls.
+
 ## 2026-08-14 — The only fundamental barriers to ~100% are OCR errors and source genuinely absent from public-domain archives (no new excuses)
 
 **Principle (HS).** For POINT-IN-TIME reconstruction, only two things are fundamental limits on
