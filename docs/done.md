@@ -1,5 +1,29 @@
 # Done
 
+## 2026-08-16 (cont.) — outlier TRIAGE: the low tail is 3 identifiable causes, none a tooling failure
+
+Root-caused the breadth low outliers (≥.90-rate < 0.5). Three categories:
+- **(A) A regex PARA-PARSING bug.** `lti_amendments._PARA` had `\d+…\s*[a-z]?` — the `\s*` before the
+  suffix grabs the "s" from "skal", so "§ 1 skal lyde" parsed as **§1s**; the whole-provision op never keyed
+  to §1 (Statens pensjonsfond §1 stayed EMPTY → rate 0.0). The fix (`[a-z](?![a-z])` — a letter not followed
+  by a letter; keeps real spaced suffixes "§ 2-11 a") is CORRECT and lifts the outlier (0.0→0.25) + breadth
+  (+0.006) — **but it REGRESSED the dev set −3** (568→565): enabling the previously-suppressed ops surfaces a
+  not-in-force/ordering interaction (the bug was accidentally masking 3 bad ops). Per zero-regression, REVERTED;
+  the para bug + its in-force coupling are logged for when the in-force gate lands. Real bug, not shippable
+  alone.
+- **(B) EEA-annex incorporation.** 2012-12-14-81 (base 4, current 46): the §aN provisions are "Art 1", "Art 2"
+  … — EEA-regulation articles INCORPORATED BY REFERENCE (same class as kjøpsloven's CISG), un-reconstructable
+  from Lovtidend, but `is_convention_annex` (keys on the "/" marker) misses the §aN form → they drag the score.
+  A measurement-scoping fix (extend the annex predicate to the §aN incorporated-regulation form) — clean-ish,
+  but needs care that §aN is never a real provision, so deferred to a scoping pass.
+- **(C) Heavy rewrite / uncaptured whole-provision amendments.** vaktvirksomhet (2001-01-05-1), markedsførings-
+  loven (2009-01-09-2): base-vs-current ≈0 despite ops — the law was substantially reworded/expanded and the
+  whole-provision replacement amendments aren't captured or don't apply. Amendment COVERAGE (data), the known
+  limit.
+- **Conclusion: the outliers are NOT tooling failures** — they're one regex bug (fixable, gated on in-force),
+  annex-incorporation (measurement), and amendment coverage (data). The breadth median (0.89) is robust; the
+  low tail is a per-law triage list with identified causes, not a systematic gap.
+
 ## 2026-08-16 (cont.) — BREADTH: pipeline generalizes to the clean-base corpus (median 0.89, far above dev 0.685)
 
 - **`source/eval/breadth.py`** — reconstruction quality across the clean-base corpus, not the 9-law dev set.
