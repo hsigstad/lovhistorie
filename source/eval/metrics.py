@@ -109,18 +109,24 @@ def similarity(a, b):
     return difflib.SequenceMatcher(None, a, b, autojunk=False).ratio()
 
 
+_ANNEX_ARTICLE = re.compile(r"§a\d+$")   # incorporated treaty/regulation ARTICLE (data-name "aN")
+
+
 def is_convention_annex(para: str) -> bool:
-    """True for a treaty/convention article bundled into the current NLOD text but
-    incorporated BY REFERENCE, not published as a Norsk Lovtidend amendment — e.g.
-    kjøpsloven's CISG (`§cisg/aN`) and foreldelsesloven's limitation convention
-    (`§fik/aN`). The NLOD dump namespaces these with a '/' (a convention id); ordinary
-    statutory ids (`§N`, `§N-M`, `§Na`) never contain one. Such articles are outside the
-    reconstruct contract (enactment + Lovtidend amendments — goal.md rule 2): no Lovtidend
-    act carries them, so they are un-reconstructable by construction, held out of scope
-    in BOTH the convergence gate and the point-in-time harness (never a silent failure).
-    The single source of truth for this scope rule; the criterion is objective and
-    structural (a marked namespace), never similarity-based or hand-picked."""
-    return "/" in para
+    """True for a treaty/convention/EEA-regulation article bundled into the current NLOD text
+    but incorporated BY REFERENCE, not published as a Norsk Lovtidend amendment — e.g.
+    kjøpsloven's CISG (`§cisg/aN`), foreldelsesloven's limitation convention (`§fik/aN`), and
+    laws that annex an EEA regulation or a convention as ARTICLES `§aN` (data-name "aN", body
+    "Art N …"). Two structural markers, both from the NLOD id: a '/' convention namespace, OR
+    the `§a<digit>` article form. Verified objective + safe: across all 755 current laws, EVERY
+    `§a<digit>` is an "Art N" incorporated article — 0 are real statutory provisions (an ordinary
+    suffix is `§Na`, e.g. `§1a`, never `§a1`). Such articles are outside the reconstruct contract
+    (enactment + Lovtidend amendments — goal.md rule 2): no Lovtidend act carries them, so they
+    are un-reconstructable by construction, held out of scope in BOTH the convergence gate and
+    the point-in-time harness (never a silent failure). The single source of truth for this
+    scope rule; the criterion is structural (a marked namespace / id form), never similarity-
+    based or hand-picked. §aN added 2026-08-16 (13 laws, e.g. the EEA-incorporation 2012-12-14-81)."""
+    return "/" in para or bool(_ANNEX_ARTICLE.match(para))
 
 
 # The repeal title is the closed parenthetical PAST PARTICIPLE '(Opphevet)' (bokmål) /

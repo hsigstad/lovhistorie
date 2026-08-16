@@ -1,5 +1,19 @@
 # Done
 
+## 2026-08-16 (cont.) — EEA-annex scope-out (triage category B): 2012-12-14-81 0.07 → 0.75
+
+- **`is_convention_annex` now also recognizes the `§a<digit>` article form** (data-name "aN", body "Art N …")
+  — EEA-regulation / treaty articles incorporated BY REFERENCE, the same un-reconstructable class as the CISG
+  "/" annexes, just a different NLOD id marker. Requested by HS; a structural scope-out, NOT a loosening.
+- **Verified safe:** across ALL 755 current laws, EVERY `§a<digit>` is an "Art N" incorporated article — 0 are
+  real statutory provisions (a real suffix is `§Na`/`§1a`, never `§a1`). So the id form is an objective,
+  hand-pick-free marker, exactly like the "/" namespace.
+- **Impact:** the target EEA-incorporation law 2012-12-14-81 goes **0.07 → 0.75** (42 of its 46 provisions are
+  §aN annex; the 4 real statutory provisions reconstruct fine — the 0.07 was an artifact of scoring
+  incorporated-regulation text). Dev gate UNCHANGED at 0.6852 (dev laws use the "/" CISG form, already scoped;
+  no dev §aN). 13 laws corpus-wide carry §aN annexes and benefit; the 62-law breadth sample happens to include
+  few, so its aggregate is flat, but the fix is correct corpus-wide. Guards PASS.
+
 ## 2026-08-16 (cont.) — outlier TRIAGE: the low tail is 3 identifiable causes, none a tooling failure
 
 Root-caused the breadth low outliers (≥.90-rate < 0.5). Three categories:
