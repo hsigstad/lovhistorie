@@ -1,5 +1,29 @@
 # Done
 
+## 2026-08-16 (cont.) — blanket-reform parser BUILT (correct); confirms the dev-set convergence CEILING
+
+- **`source/parse/blanket.py`** — captures terminology reforms "ordet/uttrykket «A» endres til «B»" /
+  "endres «A» til «B»" / "«A» erstattes med «B»", attributed to the target-law block (`I lov <cite>` split),
+  applied in `pipeline.reconstruct` as a deterministic `str.replace` over provisions containing term A. Uses a
+  RELIABLE regex (guillemets are unambiguous delimiters — the right tool per decisions.md, not a fragile
+  judgment) and DROPS the fragile "§§ 10 første ledd, …" scope list (term A is specific, so applying A→B
+  wherever A appears in the law reproduces the listed scope robustly). Skips `«§ 54» til «§ 70»` cross-ref
+  renumbers (structural, not terminology). Source-specified replace → no fabrication.
+- **Correct + safe, but +0 on the dev set: only 1 dev-law reform exists** (rettsgebyr
+  Rikstrygdeverket→Arbeids- og velferdsdirektoratet — applied cleanly, 0 old-term left, no regression). The
+  reforms that hit MANY laws (Aetat, vegkontoret, skifteretten→tingretten) target NON-dev laws, so the parser
+  is valuable at CORPUS scale but the 9-law dev set doesn't measure it. The dev-set modernization gaps
+  (avtaleloven §38 "nogen gaat ind paa"→"noen på grunn av") are PRE-2001 spelling drift + uncaptured
+  rewordings, NOT post-2001 «X»→«Y» term reforms, so the LTI parser can't reach them.
+- **CONCLUSION — the dev-set convergence (0.6852) is at its practical CEILING.** Three levers built this
+  session (LLM amendment parsing, align ledd targeting, blanket-reform parser) are each correct + safe + zero-
+  regression, and each is +0 on the dev set — because the dev-set residual is the fundamental limits already
+  named in decisions.md: OCR fidelity + pre-2001 coverage. Further dev-set convergence needs OCR correction
+  (fabrication-risky, declined) or more pre-2001 harvest, NOT more parsers. The value of these tools is (a)
+  CORPUS BREADTH (they help the ~750 non-dev statutes) and (b) the POINT-IN-TIME deliverable (μ 0.879,
+  clean-base ~0.96+ — the project's actual strength). The productive next work is breadth or the deliverable,
+  not the 9-law convergence gate.
+
 ## 2026-08-16 (cont.) — ledd content-first targeting; and the "35% ledd bucket" is OVER-ATTRIBUTED
 
 - **`ledd.apply` REPLACE now addresses by CONTENT first (align), ordinal as fallback** — restructured so an

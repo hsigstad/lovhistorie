@@ -25,3 +25,4 @@ data/_backup/
 _dl/
 data/llm_cache/
 data/llm_amendments.jsonl.gz
+data/blanket_amendments.jsonl.gz

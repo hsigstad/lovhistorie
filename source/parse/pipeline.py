@@ -205,4 +205,27 @@ def reconstruct(target_law: str, as_of: str | None = None):
     since = base_as_of(target_law)
     if since:
         ops = [o for o in ops if not o.get("date") or o["date"] >= since]
-    return replay.replay(base, ops, as_of=as_of)
+    provs, flags = replay.replay(base, ops, as_of=as_of)
+    # blanket terminology reforms ("ordet «A» endres til «B»") — applied AFTER the per-provision
+    # ops as a deterministic str.replace over provisions containing the term (source.parse.blanket).
+    reforms = _load_reforms(target_law)
+    if reforms:
+        from source.parse import blanket
+        blanket.apply_reforms(provs, reforms, as_of=as_of)
+    return provs, flags
+
+
+_BLANKET = amendments.DATA.parent / "blanket_amendments.jsonl.gz"
+
+
+def _load_reforms(target_law: str):
+    """Term-reform ops for a law, from the derived blanket stream (absent → none)."""
+    if not _BLANKET.exists():
+        return []
+    out = []
+    with gzip.open(_BLANKET, "rt", encoding="utf-8") as fh:
+        for line in fh:
+            d = json.loads(line)
+            if d.get("target_law") == target_law:
+                out.append(d)
+    return out
