@@ -129,5 +129,5 @@ generated text). The **runtime reconstruction** (`pipeline.reconstruct` → `loa
 `jsonl.gz`, uses no LLM and no answer key (G1/G2 enforce this). So rule 3's intent —
 no LLM can fabricate or "recall" the answer at eval time — holds; the LLM only helps
 *extract* public amendments offline, which a fully-deterministic (but brittle) parser
-could also do. This interpretation is load-bearing for the current direction and
-should be confirmed by HS.
+could also do. This interpretation is load-bearing for the current direction and was
+CONFIRMED by HS (2026-08-21).
