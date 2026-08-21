@@ -27,7 +27,7 @@ HERE = Path(__file__).resolve().parents[2]
 REGISTER = HERE / "data" / "amendment_register.jsonl.gz"
 STREAMS = ["amendments.jsonl.gz", "lti_amendments.jsonl.gz",
            "pre2001_amendments.jsonl.gz", "blanket_amendments.jsonl.gz",
-           "llm_amendments.jsonl.gz"]
+           "llm_amendments.jsonl.gz", "omnibus_recovered.jsonl.gz"]
 _ID = re.compile(r"([0-9]{4}-[0-9]{2}-[0-9]{2}-[0-9]+)")
 
 # a reference set of old, small codes to spotlight

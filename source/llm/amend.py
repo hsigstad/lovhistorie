@@ -88,13 +88,19 @@ class AmendReport:
 
 
 def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = MODEL,
-                cache: LLMCache = CACHE, reextract: bool = False, only_targets=None):
+                cache: LLMCache = CACHE, reextract: bool = False, only_targets=None,
+                sections=None):
     """Ops for one amending act, in the amendment-stream schema. Returns (ops, AmendReport).
     Splits the act on `I lov <cite>` and runs ONE call per target-law section (correct
     attribution + recall). `only_targets` (a set of datokodes) restricts the LLM to those
     laws' sections — a big saving on omnibus acts amending laws we do not score. Each
     replace/insert op's `new_text` is a verbatim source slice located by anchors WITHIN its
-    section; a not-found anchor FLAGS + drops the op."""
+    section; a not-found anchor FLAGS + drops the op.
+
+    `sections` (optional) = a pre-computed [(target_datokode, section_text)] list, e.g. from
+    source/llm/target_localize.localize — a format-agnostic replacement for the `_SECTION`
+    regex that recovers omnibus layouts the regex misses (flat correction lists, etc.). When
+    given, it is used verbatim instead of `_split_sections(act_text)`."""
     if client is None:
         from openai import OpenAI
         client = OpenAI()
@@ -105,7 +111,7 @@ def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = M
     resolved = inforce.resolved_date(act_datokode) or act_date
     rep = AmendReport()
     ops = []
-    for target_dk, sec in _split_sections(act_text):
+    for target_dk, sec in (sections if sections is not None else _split_sections(act_text)):
         if only_targets is not None and target_dk not in only_targets:
             continue                                 # skip laws we don't score
         try:

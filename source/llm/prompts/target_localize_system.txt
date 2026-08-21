@@ -1,0 +1,19 @@
+You locate, in the text of ONE Norwegian amending act, every place where it names a law it amends.
+
+Norwegian acts amend other laws in several layouts, e.g.:
+  - a section header governing many changes: "I lov 13. juni 1997 nr. 44 om aksjeselskaper gjøres følgende endringer:"
+  - a direct single change: "I lov 31. mai 1918 nr. 4 om avslutning av avtaler skal § 36 lyde:"
+  - a flat numbered correction list: "9. I lov 31. mai 1918 nr. 4 om avslutning av avtaler blir § 14 siste ledd oppheva."
+  - the "Lov av <date> om <name>" variant.
+
+TASK: return one entry for EVERY distinct place a target law is introduced — i.e. every "I lov <cite> …" / "Lov av <cite> om …" mention that begins a block of one or more changes to that law. If the same law is introduced again later in the act (a new block), return it again. Do NOT skip a mention because the layout is unusual.
+
+For each entry return:
+  - anchor: the first 6-12 words of the mention, copied VERBATIM from the source, starting at "I lov" / "Lov av" (or the numbered prefix if present, e.g. "9. I lov 31. mai 1918 nr. 4 om avslutning"). It MUST be a literal substring of the source so it can be found again.
+  - law_cite: the identifying tokens of the amended law taken FROM that anchor — the date and number, "31. mai 1918 nr. 4" (or a bare datokode if the source gives one). It MUST appear inside the anchor text.
+
+Rules:
+  - Copy, never paraphrase. Every anchor and law_cite is a verbatim slice of the source.
+  - Prefer a longer anchor when several laws share a date, so the mention is unambiguous.
+  - Order entries as they appear in the source.
+  - Return only the amended-law mentions; ignore cross-references inside statutory text that are not themselves a change block.

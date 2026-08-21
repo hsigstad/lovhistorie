@@ -102,6 +102,11 @@ _LTI_AMEND = amendments.DATA.parent / "lti_amendments.jsonl.gz"
 # mis-files. Boundaries-only (payloads are verbatim source slices), read exactly like the
 # other derived streams; the ledd engine is idempotent (align) so overlap is safe. Absent → skipped.
 _LLM_AMEND = amendments.DATA.parent / "llm_amendments.jsonl.gz"
+# Derived omnibus-recovery stream (source.scrape.build_omnibus): secondary-target sections the
+# external/LTI streams mono-collapsed onto an omnibus act's primary law, re-recovered via the
+# format-agnostic LLM localizer + verbatim-anchored op extractor. Same schema; dedup below
+# guards the boundary so an op present in another stream is not applied twice. Absent → skipped.
+_OMNIBUS = amendments.DATA.parent / "omnibus_recovered.jsonl.gz"
 
 
 def load_ops(target_law: str):
@@ -114,7 +119,7 @@ def load_ops(target_law: str):
     sections the external stream dropped); dedup by (act, para, date, instruction) guards
     the boundary so a section present in both is not applied twice."""
     ops, seen = [], set()
-    for path in (amendments.DATA, _LTI_AMEND, _LLM_AMEND):
+    for path in (amendments.DATA, _LTI_AMEND, _LLM_AMEND, _OMNIBUS):
         if not path.exists():
             continue
         with gzip.open(path, "rt", encoding="utf-8") as fh:

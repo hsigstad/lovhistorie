@@ -73,3 +73,23 @@ class AmendmentOps(ExtractionSchema):
     schema_name: ClassVar[str] = "lovhistorie_amend_section"
     schema_version: ClassVar[str] = "v1"
     ops: list[AmendOp] = []
+
+
+class TargetMention(BaseModel):
+    """One place an amending act names a law it changes — located, not quoted. `anchor` is a
+    verbatim source slice starting at 'I lov'/'Lov av'/its numbered prefix; `law_cite` is the
+    date+nr identifying tokens, verified to lie WITHIN the located anchor. The section that
+    amends this law runs from this anchor to the next one — so segmentation is model-localized
+    but every boundary is a verbatim source position, and the target is resolved + catalog-checked
+    deterministically (source/llm/target_localize.py). Replaces the brittle _SECTION regex."""
+    anchor: str                      # verbatim first ~6-12 words of the mention
+    law_cite: str                    # "31. mai 1918 nr. 4" — must be a substring of `anchor`
+
+
+class TargetMentions(ExtractionSchema):
+    """Every amended-law mention in one act, in source order. High-recall by design: the model
+    lists all mentions regardless of layout; the verifier drops only the unverifiable (to a
+    measured stream), so recall loss is visible, never silent."""
+    schema_name: ClassVar[str] = "lovhistorie_target_mentions"
+    schema_version: ClassVar[str] = "v1"
+    mentions: list[TargetMention] = []

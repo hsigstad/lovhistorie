@@ -1,5 +1,45 @@
 # Done
 
+## 2026-08-21 (cont.) — omnibus recovery via LLM localize-then-verify (format-agnostic)
+
+- **The fix for the mis-targeted 24% (prev entry), built to NOT be another regex.** Instead of
+  broadening `amend._SECTION` per act layout (whack-a-mole), `source/llm/target_localize.py` has the
+  model LIST every amended-law mention (verbatim `anchor` + `law_cite` tokens); the verifier then
+  (a) locates each anchor as a verbatim source position (whitespace-tolerant + shortened-prefix
+  fallback), (b) checks `law_cite ⊂ anchor` (hallucination gate), (c) resolves the cite to a datokode
+  (`gazette.datokode`, fails safe), and (d) slices the act between consecutive anchors. Drop-in
+  replacement for the `_SECTION` regex; new layouts need zero new code. Determinism moved from PARSING
+  to VERIFYING — same anti-fabrication guarantee as amend.py's payload anchors, now on the TARGET too.
+- **Recall-first by design:** the model localizes (high recall across layouts), the proven per-section
+  op extractor runs UNCHANGED (no truncation, ~96% payloads located), and every unresolvable mention is
+  streamed to `data/omnibus_unresolved.jsonl.gz` — recall loss is MEASURED, never silent.
+- **Validated on the archetype** — "Lov om retting av feil m.m. i lovverket" (2003-06-20-45, the
+  128-op act the external stream mono-collapsed onto straffeloven): localizer found **127 mentions →
+  123 resolved sections (96.8%)**, and **avtaleloven §14 siste ledd (repeal) is recovered** — the exact
+  op the mono-collapse lost. The 4 unresolved are all date-ONLY cites (old laws named without "nr. N");
+  correctly logged, and the next recall lever is a date→datokode catalog fallback.
+- **Wiring:** `source/scrape/build_omnibus.py` sweeps PUBLIC act text (candidate acts discovered by an
+  act citing a target's date+nr — NOT the register/answer key), writes `data/omnibus_recovered.jsonl.gz`
+  (same schema); `pipeline.load_ops` gains it as a 4th merged+deduped stream; `register_gaps` scores it.
+  amend.extract_ops gained an additive `sections=` param (use localized sections instead of `_split_sections`).
+  All G1-safe (public act + cached model anchors only).
+- **Bounded validation sweep (7 register-flagged old codes, 91 public-signal candidate acts) — LIFT,
+  register-scored:** avtaleloven **4→11** (recoverable misses **6→0** — everything left is pre-2001
+  harvest), panteloven **18→33**, foreldelsesloven **8→18**, skadeserstatningsloven **12→15**,
+  kjøpsloven **2→3**. **Precision 100%** (75 distinct (act,law) pairs, 0 not in the register oracle).
+- **One precision failure found + fixed:** an applicative cross-reference ("Lov … § 2-1 GJELDER FOR …",
+  making another law apply — not a change) was localized as a target. Added a public-source amendatory-verb
+  guard (`_AMENDATORY`, keyed on `\blyde\b` etc. — NOT "skal lyde" adjacent, since the provision sits
+  between "skal" and "lyde": "skal § 21 nr. 3 tredje punktum lyde:"); dropped sections are logged to
+  omnibus_unresolved (measured). First-cut guard over-dropped real amendments (avtaleloven 11→7) — the
+  `\blyde\b` fix restored full recall at 100% precision. Lesson: recall-guard regexes need the
+  provision-between-verb form.
+- **Remaining recall lever (measured, not silent):** date-ONLY citations of old laws ("Lov 17. mars 1916 om
+  …" with no "nr. N") don't resolve via gazette.datokode → logged as `cite-unresolved`. A date→datokode
+  catalog fallback (public: build from the LTI act corpus' own citations) is the next recall step.
+- **Next:** full-corpus sweep (all ~2882 acts, cached/resumable — recovers the ~1968 mis-targeted edges
+  corpus-wide, not just the 7 spotlight laws) + the date-only fallback. Then re-gate convergence/point-in-time.
+
 ## 2026-08-21 — amendment REGISTER built; reopens the "omnibus exhausted" call
 
 - **New eval artifact.** `source/eval/build_register.py` parses every `changesToParent` provenance
