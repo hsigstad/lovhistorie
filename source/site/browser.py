@@ -101,18 +101,20 @@ def extract_law(dk: str) -> dict:
         for d, provs in snaps:
             t = _clean(provs.get(p, ""))
             if not seq or seq[-1]["text"] != t:
-                labs = []
-                for o in op_index.get((d, p), []):
-                    lab = _act_label(o.get("act"))
-                    if lab not in labs:
-                        labs.append(lab)
-                seq.append({"date": d, "text": t, "acts": labs})
+                # src = the amending act(s) that produced this version, with the gazette
+                # instruction + the Norsk Lovtidend text the pipeline replayed (the source
+                # behind the diff). Empty for the enactment baseline.
+                src = [{"act": _act_label(o.get("act")),
+                        "ins": (o.get("instruction") or "").strip(),
+                        "txt": _clean(o.get("new_text") or "")}
+                       for o in op_index.get((d, p), [])]
+                seq.append({"date": d, "text": t, "src": src})
         seq = [v for v in seq if v["text"]] or seq
         # prepend enactment baseline only for provisions present at enactment
         b = _clean(base0.get(p, ""))
         if b:
             if not seq or seq[0]["text"] != b:
-                seq = [{"date": dk[:10], "text": b, "acts": []}] + seq
+                seq = [{"date": dk[:10], "text": b, "src": []}] + seq
             else:
                 seq[0]["date"] = dk[:10]
         curtext = _clean(cur.get(p, ""))

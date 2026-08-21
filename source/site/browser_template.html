@@ -137,6 +137,12 @@
   .fid-btn:disabled{opacity:.4;cursor:not-allowed;color:var(--muted);border-color:var(--hair-strong)}
   .fid-diff{margin-top:14px;font-family:var(--serif);font-size:1.04rem;line-height:1.7;background:var(--surface);border:1px solid var(--hair);border-radius:6px;padding:16px 18px}
   .fid-diff[hidden]{display:none}
+  .srcentry{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--hair)}
+  .srcentry:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+  .srcact{font-family:var(--sans);font-size:.76rem;font-weight:700;color:var(--accent);letter-spacing:.02em;text-transform:uppercase}
+  .srcins{font-family:var(--sans);font-size:.88rem;color:var(--muted);font-style:italic;margin:3px 0 9px}
+  .srctxt{white-space:pre-wrap}
+  .srcnote{font-family:var(--sans);font-size:.88rem;color:var(--muted);margin:0;line-height:1.55}
 
   .about{background:var(--surface);border-top:1px solid var(--hair)}
   .about-in{max-width:820px;margin:0 auto;padding:52px 24px 60px}
@@ -205,6 +211,13 @@
         </div>
       </div>
       <div class="statute" id="statute"></div>
+      <section class="fid" aria-label="Source in Norsk Lovtidend">
+        <div class="fid-top">
+          <span class="fid-title">Source — the amending act in Norsk Lovtidend</span>
+          <button class="fid-btn" id="srcBtn">Show source</button>
+        </div>
+        <div class="fid-diff" id="srcBox" hidden></div>
+      </section>
       <section class="fid" aria-label="Reconstruction fidelity">
         <div class="fid-top">
           <span class="fid-title">Our reconstruction vs. the official law</span>
@@ -311,10 +324,12 @@
   const el=id=>document.getElementById(id);
   const E={};["stats","lawSelect","search","picker","provId","provName","fidBadge","rail","railFill",
     "handle","scrub","asofDate","asofAct","redlineBtn","legend","legendVs","statute","fidBtn","fidSub",
-    "fidDiff","minYear","maxYear"].forEach(k=>E[k]=el(k));
+    "fidDiff","srcBtn","srcBox","minYear","maxYear"].forEach(k=>E[k]=el(k));
+  const MND=["","januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
+  const actLabel=dk=>{const m=/^(\d{4})-(\d{2})-(\d{2})-(\d+)$/.exec(dk||"");return m?("Lov "+(+m[3])+". "+MND[+m[2]]+" "+m[1]+" nr. "+m[4]):dk;};
   E.maxYear.textContent=new Date(RMAX).getUTCFullYear();
 
-  let INDEX=[], provs=[], cur=null, nodes=[], caps=[], redline=false, fidOpen=false, lastIdx=-99, pitems=[], jumpIdx=null;
+  let INDEX=[], provs=[], cur=null, nodes=[], caps=[], redline=false, fidOpen=false, lastIdx=-99, pitems=[], jumpIdx=null, srcOpen=false, curLaw=null, curIdx=0;
 
   function buildPicker(filter){
     E.picker.innerHTML="";pitems=[];
@@ -342,6 +357,7 @@
   function select(idx,scroll){
     cur=provs[idx];cur._idx=idx;jumpIdx=null;redline=false;E.redlineBtn.setAttribute("aria-pressed","false");
     fidOpen=false;E.fidDiff.hidden=true;E.fidBtn.textContent="Compare with official text";lastIdx=-99;
+    srcOpen=false;E.srcBox.hidden=true;E.srcBtn.textContent="Show source";
     E.rail.querySelectorAll(".node,.node-cap").forEach(n=>n.remove());nodes=[];caps=[];
     cur.versions.forEach((v)=>{const ts=Date.parse(v.date);
       const b=document.createElement("button");b.className="node";b.style.left=pct(ts)+"%";b.setAttribute("aria-label","Version from "+fmt(ts));
@@ -371,12 +387,13 @@
     const enactTs=Date.parse(cur.versions[0].date);
     if(idx<0){E.asofAct.innerHTML="Not yet in force — enters into force on <b>"+fmt(enactTs)+"</b>.";
       E.statute.innerHTML='<span class="empty">This section did not exist on this date. It first entered the law on '+fmt(enactTs)+'.</span>';
-      E.redlineBtn.disabled=true;maybeFlash(idx);return;}
-    E.redlineBtn.disabled=false;const v=cur.versions[idx];
-    const acts=v.acts&&v.acts.length?v.acts.join("; "):(idx===0?"Original enactment / first in force":"amended");
+      E.redlineBtn.disabled=true;E.srcBtn.disabled=true;E.srcBox.hidden=true;srcOpen=false;E.srcBtn.textContent="Show source";maybeFlash(idx);return;}
+    E.redlineBtn.disabled=false;E.srcBtn.disabled=false;const v=cur.versions[idx];
+    const acts=v.src&&v.src.length?[...new Set(v.src.map(s=>s.act))].join("; "):(idx===0?"Original enactment / first in force":"amended");
     E.asofAct.innerHTML="In force since <b>"+fmt(Date.parse(v.date))+"</b><br>"+esc(acts);
     if(redline&&idx>0){E.statute.innerHTML=redlineHTML(cur.versions[idx-1].text,v.text);E.legend.hidden=false;E.legendVs.textContent="vs. "+fmt(Date.parse(cur.versions[idx-1].date));}
     else{E.statute.innerHTML=plainHTML(v.text);E.legend.hidden=true;}
+    curIdx=idx;if(srcOpen)populateSrc(v);
     maybeFlash(idx);
   }
   function maybeFlash(idx){if(idx!==lastIdx){E.statute.classList.remove("changed");void E.statute.offsetWidth;E.statute.classList.add("changed");lastIdx=idx;}}
@@ -387,10 +404,18 @@
     if(fidOpen){const latest=cur.versions[cur.versions.length-1].text;
       E.fidDiff.innerHTML='<div class="legend" style="margin-bottom:10px"><span><i class="swatch sw-ins"></i> in the official text, missing from ours</span><span><i class="swatch sw-del"></i> in ours, not in the official text</span></div>'+redlineHTML(latest,cur.official||"");}});
 
+  function populateSrc(v){
+    if(!v.src||!v.src.length){
+      E.srcBox.innerHTML='<p class="srcnote">This is the section as originally enacted by <b>'+esc(actLabel(curLaw&&curLaw.datokode))+'</b>. From here on, each amendment shows the exact Norsk&nbsp;Lovtidend text the reconstruction replayed to build the diff.</p>';return;}
+    E.srcBox.innerHTML=v.src.map(s=>'<div class="srcentry"><div class="srcact">'+esc(s.act)+'</div>'+
+      (s.ins?'<div class="srcins">'+esc(s.ins)+'</div>':'')+'<div class="srctxt">'+esc(s.txt)+'</div></div>').join("");
+  }
+  E.srcBtn.addEventListener("click",()=>{srcOpen=!srcOpen;E.srcBox.hidden=!srcOpen;E.srcBtn.textContent=srcOpen?"Hide source":"Show source";if(srcOpen&&curIdx>=0)populateSrc(cur.versions[curIdx]);});
+
   async function loadLaw(dk){
     E.picker.innerHTML='<div class="loading">Loading…</div>';
     const data=await (await fetch("laws/"+dk+".json")).json();
-    provs=data.provisions;E.search.value="";
+    provs=data.provisions;curLaw=data;E.search.value="";
     // per-law timeline: start ~200 days before enactment, end at the corpus horizon
     RMIN=Date.parse(data.enacted)-200*864e5;
     E.minYear.textContent=new Date(RMIN).getUTCFullYear();
