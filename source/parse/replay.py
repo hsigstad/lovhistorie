@@ -1,7 +1,7 @@
 """Deterministic replay engine: apply amendment ops to a base to reconstruct
 point-in-time statutory text.
 
-INTENT: implement the `reconstruct` side of the pipeline (docs/goal.md) — apply the
+INTENT: implement the `reconstruct` side of the pipeline (docs/reference/goal.md) — apply the
     ordered ops to the enactment base, honouring `as_of`, using rules/regex only
     (no LLM), and FLAGGING any op it cannot apply rather than fabricating text.
 REASONING: full-provision ops (`§ X skal lyde`), `ny § X`, and `oppheves` are clean

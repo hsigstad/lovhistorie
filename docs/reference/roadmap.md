@@ -59,4 +59,4 @@ single-law robustness, then scale, then deep history.
 4. **Locate robustness** — date-based fallback for recurring titles.
 5. **OCR curve** — pre-~1900 fraktur is rougher; budget review by era.
 
-Full technical background: [notes/statutory_law_versioning.md](notes/statutory_law_versioning.md).
+Full technical background: [statutory law versioning](../notes/statutory_law_versioning.md).

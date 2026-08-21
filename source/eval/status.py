@@ -1,7 +1,7 @@
 """Emit the current evaluation numbers as a committed, site-readable snapshot.
 
 INTENT: `python -m source.eval.status` runs the SAME guards + convergence as the
-    completion gate and writes docs/status.json (machine-readable) + docs/status.md
+    completion gate and writes docs/reference/status.json (machine-readable) + docs/reference/status.md
     (human page). The site headlines status.json, so "the number everyone sees" is a
     versioned artifact refreshed by one command — never a hand-typed figure that rots.
 REASONING: the gate (source.eval.gate) is the source of truth for the metric; this
@@ -24,8 +24,8 @@ from source.eval import gate, ground_truth, harness
 from source.parse import pipeline
 
 ROOT = Path(__file__).resolve().parents[2]
-STATUS_JSON = ROOT / "docs" / "status.json"
-STATUS_MD = ROOT / "docs" / "status.md"
+STATUS_JSON = ROOT / "docs" / "reference" / "status.json"
+STATUS_MD = ROOT / "docs" / "reference" / "status.md"
 
 # datokode -> common law name, for readable per-law reporting (display only).
 LAW_NAMES = {
@@ -162,7 +162,7 @@ date-specific failure); the residual is the same ledd / OCR / capture tail.
         pit_md = ("## Point-in-time accuracy — the deliverable\n\n"
                   "The decisive metric (evaluation.md check 2) requires held-out Lovdata Pro "
                   "historical versions in `data/ground_truth/` (encumbered, local-only). None "
-                  "present on this machine — download per `docs/ground_truth.md` to populate "
+                  "present on this machine — download per `docs/reference/ground_truth.md` to populate "
                   "this section.\n\n")
 
     annex_note = ""

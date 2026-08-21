@@ -6,7 +6,7 @@ dumps). The law **as it read at any past date**, as a corpus we **own and can
 publish** (public-domain statutory text + NLOD; åndsverkloven §14).
 
 **Status:** Phase 0 — building the evaluation framework + ground-truth set. See
-`docs/goal.md`, `docs/evaluation.md`, `docs/roadmap.md`.
+`docs/reference/goal.md`, `docs/reference/evaluation.md`, `docs/reference/roadmap.md`.
 
 **Why not just use existing tools?** Lovdata's free API and the open reconstructions
 (`sondreskarsten/norwegian-laws`, `norgeslover.no`) seed their history with *today's*

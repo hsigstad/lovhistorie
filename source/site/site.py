@@ -3,9 +3,12 @@
 # REASONING: lovhistorie is a docs-only data-reconstruction PIPELINE with no
 # paper/ or talk/ — the sitekit "minimal" archetype fits exactly. The package
 # owns rendering, navigation, and link rewriting; this file only names the
-# inputs. docs/notes/ renders in folder-mode so the one cross-link
-# (roadmap.md -> notes/statutory_law_versioning.md) resolves against the
-# preserved subtree instead of the flattened docs/ root.
+# inputs. docs/notes/ renders in folder-mode so the cross-link from
+# docs/reference/roadmap.md -> ../notes/statutory_law_versioning.md resolves
+# against the preserved subtree instead of the flattened docs/ root. The
+# docs/reference/ pages are NOT folder-mode, so they flatten to docs/<stem>.html
+# (stable URLs the guide-brief hrefs point at) even though their source moved
+# under reference/ to satisfy the docs contract.
 # ASSUMES: every rel_path below exists under the project root; sitekit's
 # link/citation refs are no-ops here (this repo has no AN/cite/anec/hyp docs).
 from __future__ import annotations
@@ -23,7 +26,7 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 # Headlined at the top of the landing page so the latest number is the first thing
 # a visitor sees. Absent (fresh clone, never run) -> the card is simply omitted.
 def _load_status():
-    p = PROJECT_ROOT / "docs" / "status.json"
+    p = PROJECT_ROOT / "docs" / "reference" / "status.json"
     if not p.exists():
         return None
     try:
@@ -41,7 +44,7 @@ if _STATUS and _STATUS.get("total"):
     _strict_txt = (f" ({_strict * 100:.0f}% at the strict &ge;98% bar)"
                    if _strict is not None else "")
     _PERF_BRIEF = (
-        "docs/status.md", "docs/status.html",
+        "docs/reference/status.md", "docs/status.html",
         f"Performance: {_pct} convergence",
         (f"Latest reconstruction fidelity &mdash; {_STATUS['matched']}/{_STATUS['total']} "
          f"statutory dev-set provisions rebuilt from gazette history to today&rsquo;s "
@@ -56,14 +59,14 @@ if _STATUS and _STATUS.get("total"):
 # git-rm'd) and are intentionally left out of the site.
 DOC_REGISTRY = [
     # --- Status ---
-    ("docs/status.md",                            "Performance",               "Latest convergence number and what it means",         "Status"),
-    ("docs/examples.md",                          "Worked Examples",           "Provisions reconstructed vs. official current text",  "Status"),
+    ("docs/reference/status.md",                  "Performance",               "Latest convergence number and what it means",         "Status"),
+    ("docs/reference/examples.md",                "Worked Examples",           "Provisions reconstructed vs. official current text",  "Status"),
     # --- Reference ---
     ("README.md",                                 "Overview",                  "What the pipeline builds and why",                    "Reference"),
-    ("docs/goal.md",                              "Goal",                      "Autonomous goal + machine-checkable gate condition",  "Reference"),
-    ("docs/evaluation.md",                        "Evaluation",                "Success criteria and the convergence metric",         "Reference"),
-    ("docs/roadmap.md",                           "Roadmap",                   "Phased plan from gazette harvest to deliverable",     "Reference"),
-    ("docs/ground_truth.md",                      "Ground Truth",              "Lovdata-Pro validation oracle (eval-only)",           "Reference"),
+    ("docs/reference/goal.md",                    "Goal",                      "Autonomous goal + machine-checkable gate condition",  "Reference"),
+    ("docs/reference/evaluation.md",              "Evaluation",                "Success criteria and the convergence metric",         "Reference"),
+    ("docs/reference/roadmap.md",                 "Roadmap",                   "Phased plan from gazette harvest to deliverable",     "Reference"),
+    ("docs/reference/ground_truth.md",            "Ground Truth",              "Lovdata-Pro validation oracle (eval-only)",           "Reference"),
     ("docs/notes/statutory_law_versioning.md",    "Statutory Law Versioning",  "Technical background on point-in-time law",           "Reference"),
     # --- Working notes ---
     ("docs/notes/lessons_and_pitfalls.md",        "Lessons & Pitfalls",        "Measurement bugs mistaken for hard walls — read first", "Working notes"),
@@ -86,26 +89,26 @@ _BASE_GUIDE_BRIEFS = [
      "Lessons &amp; Pitfalls",
      "Read first &mdash; nearly every &ldquo;hard wall&rdquo; here turned out to be a measurement bug, not a reconstruction limit.",
      "Start here", "priority-start"),
-    ("docs/goal.md", "docs/goal.html",
+    ("docs/reference/goal.md", "docs/goal.html",
      "Goal",
      "The autonomous goal and the single machine-checkable gate (<code>source.eval.gate</code>).",
      "Then this", "priority-main"),
-    ("docs/evaluation.md", "docs/evaluation.html",
+    ("docs/reference/evaluation.md", "docs/evaluation.html",
      "Evaluation",
      "Success criteria and the convergence metric that scores the reconstruction.",
      "Then this", "priority-main"),
-    ("docs/roadmap.md", "docs/roadmap.html",
+    ("docs/reference/roadmap.md", "docs/roadmap.html",
      "Roadmap",
      "The phased plan from Norsk Lovtidend harvest to the point-in-time deliverable.",
      "Reference", "priority-ref"),
-    ("docs/ground_truth.md", "docs/ground_truth.html",
+    ("docs/reference/ground_truth.md", "docs/ground_truth.html",
      "Ground Truth",
      "The Lovdata-Pro validation oracle &mdash; eval-only, never redistributed.",
      "Reference", "priority-ref"),
 ]
 
 _EXAMPLES_BRIEF = (
-    "docs/examples.md", "docs/examples.html",
+    "docs/reference/examples.md", "docs/examples.html",
     "Worked Examples",
     "See the output: statute provisions reconstructed from gazette history, side by side "
     "with today&rsquo;s official text.",
@@ -124,8 +127,9 @@ config = SiteConfig(
     doc_registry=DOC_REGISTRY,
     guide_briefs=GUIDE_BRIEFS,
     # docs/notes/ pages keep their subfolder (build/site/docs/notes/<stem>.html)
-    # so roadmap.md's `notes/statutory_law_versioning.md` link resolves; the
-    # notes files are registered explicitly, so no auto-discovery.
+    # so roadmap.md's `../notes/statutory_law_versioning.md` link resolves; the
+    # notes files are registered explicitly, so no auto-discovery. docs/reference/
+    # is intentionally NOT folder-mode, so its pages flatten to docs/<stem>.html.
     folder_mode_subdirs=("notes",),
     folder_mode_auto_discover=False,
     # No paper — repurpose the forced hero placeholder to say so plainly.

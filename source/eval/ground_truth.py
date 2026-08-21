@@ -1,4 +1,4 @@
-"""Load the manually-downloaded Lovdata Pro ground-truth set (docs/ground_truth.md).
+"""Load the manually-downloaded Lovdata Pro ground-truth set (docs/reference/ground_truth.md).
 
 INTENT: give the harness a uniform view of the held-out gold-standard versions —
     per (law, date) the raw historical text — without ever mixing it into the

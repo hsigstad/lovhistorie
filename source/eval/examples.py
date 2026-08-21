@@ -1,6 +1,6 @@
 """Render worked reconstruction examples as a committed, site-readable page.
 
-INTENT: `python -m source.eval.examples` writes docs/examples.md — a handful of
+INTENT: `python -m source.eval.examples` writes docs/reference/examples.md — a handful of
     curated provisions shown three ways: (1) as originally ENACTED, (2) as our
     pipeline RECONSTRUCTS them by replaying every Norsk Lovtidend amendment, and
     (3) the OFFICIAL current NLOD text. The point of the page is to let a visitor
@@ -27,7 +27,7 @@ from source.eval import metrics
 from source.parse import pipeline
 
 ROOT = Path(__file__).resolve().parents[2]
-EXAMPLES_MD = ROOT / "docs" / "examples.md"
+EXAMPLES_MD = ROOT / "docs" / "reference" / "examples.md"
 
 # Curated showcase provisions. Each is a clean-base (2001+) law, so the displayed
 # text is machine-readable rather than OCR'd, and each was substantively AMENDED after

@@ -2,7 +2,7 @@
 
 INTENT: turn a manually-saved Lovdata Pro "Historisk versjon" HTML (the gold
     standard for a past date) into {paragraf_id: text}, so the harness can score
-    our reconstruction against it (docs/evaluation.md check 2).
+    our reconstruction against it (docs/reference/evaluation.md check 2).
 REASONING: these exports mark every provision with an `<a name="_X-Y">` anchor,
     which is a far cleaner boundary than the visible "§ X-Y." heading; split on the
     anchors and strip tags.

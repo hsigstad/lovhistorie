@@ -1,4 +1,4 @@
-"""Scoring primitives for the reconstruction eval (see docs/evaluation.md).
+"""Scoring primitives for the reconstruction eval (see docs/reference/evaluation.md).
 
 INTENT: fixed, documented normalization + similarity + provision splitting so the
     eval score is reproducible and can't be inflated by quietly loosening the

@@ -135,7 +135,7 @@ def _law_text(urn: str, page: int, title_needle: str, span: int = 4,
     return after[: nxt.start() if nxt else len(after)]
 
 
-# Deterministic OCR post-correction (docs/goal.md rule 3: OCR post-correction is allowed
+# Deterministic OCR post-correction (docs/reference/goal.md rule 3: OCR post-correction is allowed
 # with sign-off IF deterministic — 2026-08-12). Non-Norwegian diacritics never
 # occur in Norwegian statutory text, so every ö/ä/ü/ï/ë is an OCR misread of its base
 # letter — most damagingly o->ö, which the scorer's normalize() strips to a SPACE and so

@@ -27,7 +27,7 @@ build_site() {
     cd "$PROJECT_DIR"
     # Refresh the published performance number from the local answer-key data, if
     # present, so `deploy` always ships the latest figure. On a data-less clone this
-    # is skipped and the committed docs/status.json snapshot is used as-is.
+    # is skipped and the committed docs/reference/status.json snapshot is used as-is.
     if [ -d data/current ] || [ -n "${LOVHISTORIE_CURRENT_DIR:-}" ]; then
         echo "=== Refreshing performance snapshot (source.eval.status) ==="
         python3 -m source.eval.status || echo "  (status refresh skipped — keeping committed snapshot)"

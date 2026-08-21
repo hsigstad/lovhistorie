@@ -1,8 +1,8 @@
 """Eval harness: score any reconstruction pipeline against ground truth.
 
-INTENT: be the reward signal for autonomous work (docs/goal.md). Given a
+INTENT: be the reward signal for autonomous work (docs/reference/goal.md). Given a
     pipeline `reconstruct(datokode, as_of)`, produce the metrics in
-    docs/evaluation.md — convergence-to-current, point-in-time accuracy vs the
+    docs/reference/evaluation.md — convergence-to-current, point-in-time accuracy vs the
     held-out Lovdata Pro set, and OCR fidelity — with per-provision flags and the
     full distribution (not just the mean).
 REASONING: the pipeline is decoupled behind a small interface so the harness is
