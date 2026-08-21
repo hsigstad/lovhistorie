@@ -82,7 +82,12 @@ def _catalog_years() -> dict:
 
 
 def run(targets: set[str], years: set[int] | None = None, limit_issues: int | None = None,
-        reextract: bool = False, scoped: bool = False, model: str = segment_issue.MODEL):
+        reextract: bool = False, scoped: bool = False, model: str = segment_issue.MODEL,
+        extract_model: str | None = None):
+    # Model split (general, not per-law): segmentation + localization are LOCATION tasks mini handles
+    # well and are already cached from prior sweeps; OP EXTRACTION needs the stronger model (mini drops
+    # payload-carrying ops). extract_model defaults to gpt-4.1.
+    extract_model = extract_model or "gpt-4.1"
     import gzip as _gz
     import json as _json
     from openai import OpenAI
@@ -132,7 +137,7 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
             if not wanted:
                 continue
             ops, _ = amend.extract_ops(act_dk, body, client=client, sections=wanted,
-                                       model=model, reextract=reextract)
+                                       model=extract_model, reextract=reextract)
             for o in ops:
                 o["source"] = "gazette_recovered"
             recovered.extend(ops)
@@ -160,9 +165,12 @@ if __name__ == "__main__":
     ap.add_argument("--years", nargs="*", type=int, default=None,
                     help="restrict to these issue years (default: all pre-2001)")
     ap.add_argument("--limit-issues", type=int, default=None)
-    ap.add_argument("--model", default=target_localize.MODEL,
-                    help="LLM for localize+extract (e.g. gpt-4.1-mini for a cheap full sweep)")
+    ap.add_argument("--model", default=segment_issue.MODEL,
+                    help="LLM for segment+localize (cheap; mini default)")
+    ap.add_argument("--extract-model", default="gpt-4.1",
+                    help="LLM for op extraction (stronger; gpt-4.1 default)")
     ap.add_argument("--reextract", action="store_true")
     a = ap.parse_args()
     tgts = set(a.targets) if a.targets else public_universe()
-    run(tgts, set(a.years) if a.years else None, a.limit_issues, a.reextract, model=a.model)
+    run(tgts, set(a.years) if a.years else None, a.limit_issues, a.reextract,
+        model=a.model, extract_model=a.extract_model)
