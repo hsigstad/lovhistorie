@@ -248,7 +248,6 @@
         <a href="docs/goal.html">Goal</a>
         <a href="docs/evaluation.html">Evaluation</a>
         <a href="docs/status.html">Performance</a>
-        <a href="docs/examples.html">Worked examples</a>
         <a href="docs/roadmap.html">Roadmap</a>
         <a href="https://github.com/hsigstad/lovhistorie" target="_blank" rel="noopener">Source code</a>
       </div>
@@ -276,11 +275,29 @@
   const tokz=s=>s.replace(/\n/g," ").trim().split(/\s+/);
   function diff(a,b){const n=a.length,m=b.length,dp=Array.from({length:n+1},()=>new Int32Array(m+1));
     for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
-    const out=[];let i=0,j=0;while(i<n&&j<m){if(a[i]===b[j]){out.push(["s",a[i]]);i++;j++;}else if(dp[i+1][j]>=dp[i][j+1]){out.push(["d",a[i]]);i++;}else{out.push(["i",b[j]]);j++;}}
+    const out=[];let i=0,j=0;while(i<n&&j<m){if(a[i]===b[j]){out.push(["s",a[i]]);i++;j++;}else if(dp[i+1][j]>=dp[i][j+1]){out.push(["d",a[i++]]);}else{out.push(["i",b[j++]]);}}
     while(i<n)out.push(["d",a[i++]]);while(j<m)out.push(["i",b[j++]]);return out;}
-  function redlineHTML(f,t){const ops=diff(tokz(f),tokz(t));let h="",run=null,buf=[];
-    const fl=()=>{if(!buf.length)return;const x=esc(buf.join(" "));h+=run==="i"?'<ins class="tok">'+x+'</ins>':run==="d"?'<del class="tok">'+x+'</del>':x;h+=" ";buf=[];};
-    ops.forEach(([t,tk])=>{if(t!==run){fl();run=t;}buf.push(tk);});fl();return '<p>'+h.trim()+'</p>';}
+  const _tag=(ty,x)=>ty==="i"?'<ins class="tok">'+x+'</ins>':ty==="d"?'<del class="tok">'+x+'</del>':x;
+  function charRun(cops){let out="",run=null,buf="";const fl=()=>{if(!buf)return;out+=_tag(run,esc(buf));buf="";};
+    cops.forEach(([ty,ch])=>{if(ty!==run){fl();run=ty;}buf+=ch;});fl();return out;}
+  // Word-level diff, with CHARACTER-level refinement inside a genuine small edit — a del
+  // immediately followed by an ins whose texts are near-identical (Dice ≥ .75). So a one-
+  // character change shows as one character, not a whole-word swap; real word swaps and
+  // rewrites (low char-similarity) stay clean at word granularity.
+  function redlineHTML(f,t){
+    const wops=diff(tokz(f),tokz(t));const segs=[];let run=null,buf=[];
+    wops.forEach(([ty,tk])=>{if(ty!==run){if(buf.length)segs.push([run,buf.join(" ")]);buf=[];run=ty;}buf.push(tk);});
+    if(buf.length)segs.push([run,buf.join(" ")]);
+    let h="";
+    for(let k=0;k<segs.length;k++){const ty=segs[k][0],text=segs[k][1];
+      if(ty==="s"){h+=esc(text)+" ";continue;}
+      if(ty==="d"&&k+1<segs.length&&segs[k+1][0]==="i"){
+        const ins=segs[k+1][1],cops=diff([...text],[...ins]);
+        const same=cops.reduce((a,o)=>a+(o[0]==="s"?1:0),0),dice=2*same/(text.length+ins.length);
+        h+=(dice>=0.75?charRun(cops):_tag("d",esc(text))+" "+_tag("i",esc(ins)))+" ";k++;continue;}
+      h+=_tag(ty,esc(text))+" ";}
+    return '<p>'+h.trim()+'</p>';
+  }
   function plainHTML(text){const parts=text.split("\n");
     if(parts.length>1)return '<span class="marg">'+esc(parts[0])+'</span><p>'+esc(parts.slice(1).join(" "))+'</p>';
     return '<p>'+esc(text)+'</p>';}
