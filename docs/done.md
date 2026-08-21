@@ -1,5 +1,31 @@
 # Done
 
+## 2026-08-21 (cont.) — pre-2001 ROOT CAUSE: gazette segmenter fails 80% of issues
+
+- **Chasing avtaleloven's missing pre-2001 amendments (§36 etc.) to the bottom: they ARE in the OCR
+  we hold, but locked behind gazette ISSUE SEGMENTATION.** `gazette.parse_issue` returns **0 acts for
+  833/1033 harvested issues (80%, ~127k OCR pages)** — because `parse_toc` requires an "Innhold" TOC
+  header and `split_bodies` keys on `"Lov nr. N\n"`, but most issues have no "Innhold" and headings like
+  `"Lov nr. 3."` (period). Proof: the issue holding avtaleloven §36 ("En avtale kan … virke urimelig …
+  god forretningsskikk") has 34 "Lov nr." headings + 4 "gjøres følgende endringer" sections yet parses
+  to 0 acts (and is mis-tagged year 1969, so `--years 1983` skipped it too). So the pre-2001 recovery
+  can only see 20% of the OCR — THE pre-2001 bottleneck, far bigger than avtaleloven.
+- **This is a brittle-regex failure, exactly the class HS flagged.** The fix is an LLM-based (localize-
+  then-verify) act segmenter that finds "Lov nr. N" act boundaries WITHOUT depending on the Innhold TOC
+  or one heading format — unlocking ~127k pages. Highest-value pre-2001 lever by far.
+- **Removed the brittle cite pre-filter (HS directive: don't let a regex gate the LLM).** `build_gazette`
+  no longer uses a per-target `_cite_regex` to pick candidate acts (it silently killed avtaleloven recall:
+  OCR "nr. 4om", date-only and name cites all missed). It now localizes EVERY amending act (broad "I lov"
+  gate) and lets the LLM resolve targets, filtering resolved sections to the target set; `--model` allows
+  mini for a cheap full sweep. `_cite_regex` (still used by build_omnibus candidate discovery) hardened
+  for the OCR "nr. Nom" defect. NB: this is the correct method but currently yields 0 avtaleloven ops —
+  blocked DOWNSTREAM by the 80% segmentation failure above, not by the regex.
+- **Register-as-oracle decision (HS question):** the amendment register is the right GROUND TRUTH for
+  coverage (which acts should amend which law) and for harvest prioritization + cross-checking the LLM —
+  but NOT a reconstruction INPUT: it is answer-key-derived (using its amendment graph defeats convergence
+  integrity, G1) and only knows surviving provisions (useless for point-in-time's historical states). The
+  structure it states is re-derivable from public OCR, which is what keeps the corpus honestly public.
+
 ## 2026-08-21 (cont.) — avtaleloven deep-dive: TWO engine bugs fixed; recovery = gap-fill only
 
 - **The register "lift" didn't move the deliverable, so we opened the actual reconstruction.**

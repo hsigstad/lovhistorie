@@ -67,10 +67,13 @@ _MENT_SIGNAL = re.compile(
 
 
 def _cite_regex(dk: str) -> re.Pattern:
-    """Tolerant matcher for a datokode's citation in act prose: '31. mai 1918 nr. 4'."""
+    """Tolerant matcher for a datokode's citation in act prose: '31. mai 1918 nr. 4'. OCR-hardened:
+    the trailing `(?!\\d)` (not `\\b`) still matches when the space before the next word is lost
+    ('nr. 4om avslutning' — a very common OCR defect that `\\b4\\b` rejects, since digit→letter is
+    not a word boundary)."""
     y, m, d, n = dk.split("-")
     mons = "|".join(_NUM2MON.get(int(m), []))
-    return re.compile(rf"\b0?{int(d)}\.?\s*(?:{mons})[a-zæøå]*\.?\s*{y}\s*nr\.?\s*{int(n)}\b", re.I)
+    return re.compile(rf"\b0?{int(d)}\.?\s*(?:{mons})[a-zæøå]*\.?\s*{y}\s*nr\.?\s*0?{int(n)}(?!\d)", re.I)
 
 
 def candidate_acts(targets: list[str]) -> dict[str, list[str]]:

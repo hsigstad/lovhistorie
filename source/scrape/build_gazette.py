@@ -41,8 +41,12 @@ TEXT_DIR = _REPO / "data" / "lovtidend_text"
 OUT = _REPO / "data" / "gazette_recovered.jsonl.gz"
 UNRESOLVED = _REPO / "data" / "gazette_unresolved.jsonl.gz"
 
-# an amending act's body cites at least one OTHER law by date+nr; original enactments rarely do.
-_CITES_LAW = re.compile(r"\blov\b[^.\n]{0,40}\b\d{1,2}\.?\s*[a-zæøå]+\.?\s*\d{4}\s*nr\.?\s*\d+", re.I)
+# Broad, recall-SAFE gate for "this is an amending act": it contains an "I lov …" section marker —
+# the universal way a Norwegian act introduces a law it changes ("I lov av <cite> … gjøres følgende
+# endringer:", "I lov <cite> skal § N lyde:"). Deliberately NOT a per-target date+nr regex: the LLM
+# localizer resolves WHICH law each "I lov" section amends (OCR-, name- and date-only-tolerant), so no
+# brittle citation regex gates what the model sees. Its only job is to skip pure original enactments.
+_AMEND_ACT = re.compile(r"\bi\s+lov\b", re.I)
 # OCR body segmentation is imperfect: ~10% of amending-act bodies are oversized because the
 # split absorbed the issue tail (a following act's body bled in). Cap the localize window — an
 # amending act's own change-list sits near its start, and the bled tail is where mis-attributed
@@ -75,13 +79,10 @@ def _flush(recovered, unresolved):
 
 
 def run(targets: set[str], years: set[int] | None = None, limit_issues: int | None = None,
-        reextract: bool = False, scoped: bool = False):
+        reextract: bool = False, scoped: bool = False, model: str = target_localize.MODEL):
     from openai import OpenAI
     client = OpenAI()
     issues = sorted(glob.glob(str(TEXT_DIR / "*.jsonl.gz")))
-    # scoped run: only localize act bodies that CITE a target law (public-signal prefilter) — bounds
-    # a dev-law pre-2001 pass to a few dozen acts instead of every amending act in the OCR corpus.
-    tcites = {dk: _cite_regex(dk) for dk in targets} if scoped else None
     recovered, unresolved = [], []
     n_issues = n_acts = 0
     for ip, path in enumerate(issues, 1):
@@ -97,17 +98,17 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
         n_issues += 1
         for act in parsed["acts"]:
             body, date, nr = act.get("body") or "", act.get("date"), act.get("nr")
-            if not body or not date or not _CITES_LAW.search(body):
-                continue
-            if tcites is not None and not any(rx.search(body) for rx in tcites.values()):
-                continue                                 # scoped: body cites no target law
+            if not body or not date or not _AMEND_ACT.search(body):
+                continue                                 # not an amending act (no "I lov" marker)
             act_dk = f"{date}-{nr}"
             n_acts += 1
             body, truncated = _bound_body(body, nr)
             if truncated:
                 unresolved.append({"act": f"lov/{act_dk}", "reason": "body-capped",
                                    "cite": "", "anchor": f"len>{_MAX_BODY}", "year": yr})
-            secs, lrep = target_localize.localize(body, client=client, reextract=reextract)
+            # LLM localizes WHICH laws this act amends (targets resolved by the model, not a regex);
+            # we then keep only the sections resolving to our target set.
+            secs, lrep = target_localize.localize(body, client=client, model=model, reextract=reextract)
             for reason, anchor, cite in lrep.unresolved:
                 unresolved.append({"act": f"lov/{act_dk}", "reason": reason, "cite": cite,
                                    "anchor": anchor[:80], "year": yr})
@@ -123,7 +124,7 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
             if not wanted:
                 continue
             ops, _ = amend.extract_ops(act_dk, body, client=client, sections=wanted,
-                                       reextract=reextract)
+                                       model=model, reextract=reextract)
             for o in ops:
                 o["source"] = "gazette_recovered"
             recovered.extend(ops)
@@ -145,13 +146,15 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--targets", nargs="*", default=None,
-                    help="restrict to these target law datokodes + prefilter act bodies to those "
-                         "citing one (cheap dev-law pass); default = full public universe")
+                    help="keep only sections resolving to these target law datokodes; default = full "
+                         "public universe. NB: every amending act is localized regardless — targets "
+                         "filter the RESOLVED sections, they do NOT gate what the LLM sees.")
     ap.add_argument("--years", nargs="*", type=int, default=None,
                     help="restrict to these issue years (default: all pre-2001)")
     ap.add_argument("--limit-issues", type=int, default=None)
+    ap.add_argument("--model", default=target_localize.MODEL,
+                    help="LLM for localize+extract (e.g. gpt-4.1-mini for a cheap full sweep)")
     ap.add_argument("--reextract", action="store_true")
     a = ap.parse_args()
-    scoped = bool(a.targets)
-    tgts = set(a.targets) if scoped else public_universe()
-    run(tgts, set(a.years) if a.years else None, a.limit_issues, a.reextract, scoped=scoped)
+    tgts = set(a.targets) if a.targets else public_universe()
+    run(tgts, set(a.years) if a.years else None, a.limit_issues, a.reextract, model=a.model)
