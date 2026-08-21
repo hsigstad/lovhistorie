@@ -71,7 +71,7 @@
   .nomatch,.loading{padding:16px 12px;color:var(--muted);font-size:.85rem}
 
   .main{min-width:0}
-  .prov-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin:2px 0 4px}
+  .prov-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 14px;margin:2px 0 4px;scroll-margin-top:16px}
   .prov-id{font-family:var(--serif);font-weight:700;font-size:1.9rem;letter-spacing:-.01em}
   .prov-name{font-family:var(--serif);font-style:italic;color:var(--muted);font-size:1.15rem}
   .badge{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;border-radius:999px;padding:5px 11px}
@@ -326,7 +326,7 @@
       const b=document.createElement("button");b.className="pitem";b.dataset.idx=idx;
       const nv=p.versions.length;
       b.innerHTML='<span class="pid">'+esc(p.prov)+'</span><span class="pv">'+(nv>1?nv+" versions":"1 version")+'</span><span class="fdot f-'+fidClass(p.fidelity)+'"></span>';
-      b.addEventListener("click",()=>select(idx));E.picker.appendChild(b);pitems[idx]=b;
+      b.addEventListener("click",()=>select(idx,true));E.picker.appendChild(b);pitems[idx]=b;
     });
     if(!shown){const d=document.createElement("div");d.className="nomatch";d.textContent="No section matches “"+filter+"”.";E.picker.appendChild(d);}
     markActive();
@@ -334,7 +334,12 @@
   function markActive(){pitems.forEach((b,i)=>{if(b)b.classList.toggle("active",i===(cur?cur._idx:-1));});}
   E.search.addEventListener("input",()=>buildPicker(E.search.value));
 
-  function select(idx){
+  const provHead=document.querySelector(".prov-head");
+  function scrollToProv(){
+    const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    provHead.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+  }
+  function select(idx,scroll){
     cur=provs[idx];cur._idx=idx;redline=false;E.redlineBtn.setAttribute("aria-pressed","false");
     fidOpen=false;E.fidDiff.hidden=true;E.fidBtn.textContent="Compare with official text";lastIdx=-99;
     E.rail.querySelectorAll(".node,.node-cap").forEach(n=>n.remove());nodes=[];caps=[];
@@ -348,6 +353,7 @@
     if(cur.fidelity>=0.999){E.fidSub.textContent="Our reconstruction reproduces the official statutory text exactly (aside from Lovdata's editorial annotations).";E.fidBtn.disabled=true;}
     else{E.fidSub.innerHTML="Our reconstruction reaches <b>"+Math.round(cur.fidelity*100)+"%</b> character-identity with the official current text. Open the comparison to see exactly where it differs.";E.fidBtn.disabled=false;}
     markActive();render();
+    if(scroll)scrollToProv();
   }
   const curTs=()=>RMIN+(E.scrub.value/1000)*(RMAX-RMIN);
   function activeIndex(ts){let idx=-1;for(let i=0;i<cur.versions.length;i++){if(Date.parse(cur.versions[i].date)<=ts)idx=i;else break;}return idx;}
