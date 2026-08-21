@@ -84,10 +84,26 @@ def _system_prompt() -> str:
     return (PROMPT_DIR / "segment_issue_system.txt").read_text(encoding="utf-8")
 
 
+_RESULT_DIR = _REPO / "data" / "llm_cache" / "issue_acts_result"
+
+
 def segment(pages, *, client=None, model: str = MODEL, cache: LLMCache = CACHE,
-            reextract: bool = False):
+            reextract: bool = False, doc_key: str | None = None):
     """[{nr, date, klass, target, title, body}] — one per located act, in source order. Mirrors the
-    dict shape of gazette.parse_issue()['acts'] so build_gazette can use it as a drop-in."""
+    dict shape of gazette.parse_issue()['acts'] so build_gazette can use it as a drop-in.
+
+    `doc_key` (e.g. the issue id): persist the FINAL acts list to disk so a re-run skips not just the
+    LLM call (already cached) but the CPU-heavy post-processing (_build_norm + heading location over
+    a whole ~200-page issue, ~4s/issue). Without this, iterating over ~500 issues re-pays that CPU
+    every run — the loop's efficiency blocker. Returns (acts, SegReport)."""
+    if doc_key and not reextract:
+        import gzip as _gz
+        import json as _json
+        cf = _RESULT_DIR / f"{doc_key}.json.gz"
+        if cf.exists():
+            acts = _json.loads(_gz.open(cf, "rt", encoding="utf-8").read())
+            rep = SegReport(located=len(acts), cached_all=True)
+            return acts, rep
     if client is None:
         from openai import OpenAI
         client = OpenAI()
@@ -153,6 +169,12 @@ def segment(pages, *, client=None, model: str = MODEL, cache: LLMCache = CACHE,
             "body": body,
         })
         rep.located += 1
+    if doc_key:
+        import gzip as _gz
+        import json as _json
+        _RESULT_DIR.mkdir(parents=True, exist_ok=True)
+        with _gz.open(_RESULT_DIR / f"{doc_key}.json.gz", "wt", encoding="utf-8") as fh:
+            fh.write(_json.dumps(acts, ensure_ascii=False))
     return acts, rep
 
 

@@ -133,7 +133,8 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
         # LLM ACT-SEGMENTER (replaces gazette.parse_toc/split_bodies): locate every "Lov nr. N" act,
         # verified + sliced. Unlocks the ~80% of issues the TOC-regex segmenter returned 0 acts for.
         pages = [_json.loads(l) for l in _gz.open(path, "rt", encoding="utf-8")]
-        acts, _seg = segment_issue.segment(pages, client=client, model=model, reextract=reextract)
+        acts, _seg = segment_issue.segment(pages, client=client, model=model, reextract=reextract,
+                                           doc_key=Path(path).name.split(".")[0])
         for act in acts:
             body, date, nr = act.get("body") or "", act.get("date"), act.get("nr")
             if not body or not date or not _AMEND_ACT.search(body):
