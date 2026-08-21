@@ -125,7 +125,15 @@ def load_ops(target_law: str):
     sections the external stream dropped); dedup by (act, para, date, instruction) guards
     the boundary so a section present in both is not applied twice."""
     ops, seen = [], set()
-    for path in (amendments.DATA, _LTI_AMEND, _LLM_AMEND, _OMNIBUS, _GAZETTE):
+    # NB: _OMNIBUS / _GAZETTE (LLM omnibus + pre-2001 gazette recovery) are DELIBERATELY NOT in
+    # this tuple. Clean A/B (2026-08-21): merging them made the dev set WORSE (convergence 68.5→67.8,
+    # −4 aksjeloven / −2 vphl) and left point-in-time flat (0.8794→0.8801). Cause: the op extractor
+    # emits malformed STRUCTURAL ops (chapter/heading/renumber, e.g. "§kapittel3avsnittIVoverskrift")
+    # that corrupt previously-correct provisions; and the real captured amendments don't help because
+    # amendment CAPTURE is not the dev-set bottleneck (OCR base + ledd tail dominate — errors cluster,
+    # lesson #6). Re-enable only when recovered ops are filtered to clean provision-grade ops AND the
+    # A/B shows net-positive. The streams + register remain valid analysis/point-in-time tools.
+    for path in (amendments.DATA, _LTI_AMEND, _LLM_AMEND):
         if not path.exists():
             continue
         with gzip.open(path, "rt", encoding="utf-8") as fh:
