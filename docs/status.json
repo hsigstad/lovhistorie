@@ -18,8 +18,8 @@
         },
         {
           "date": "2024-01-01",
-          "rate": 0.611,
-          "mean": 0.815
+          "rate": 0.642,
+          "mean": 0.823
         }
       ]
     },
@@ -47,11 +47,11 @@
         {
           "date": "2018-07-20",
           "rate": 0.407,
-          "mean": 0.536
+          "mean": 0.535
         },
         {
           "date": "2021-10-04",
-          "rate": 0.713,
+          "rate": 0.707,
           "mean": 0.844
         }
       ]
@@ -77,14 +77,14 @@
   ],
   "point_in_time_summary": {
     "n_versions": 10,
-    "rate_mean": 0.782,
-    "similarity_mean": 0.8787
+    "rate_mean": 0.7845,
+    "similarity_mean": 0.8794
   },
-  "as_of": "2026-08-14",
-  "convergence": 0.6731,
-  "convergence_strict": 0.5875,
-  "matched": 558,
-  "matched_strict": 487,
+  "as_of": "2026-08-21",
+  "convergence": 0.6852,
+  "convergence_strict": 0.5971,
+  "matched": 568,
+  "matched_strict": 495,
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -151,7 +151,7 @@
     {
       "datokode": "1997-06-13-44",
       "law": "aksjeloven",
-      "matched": 181,
+      "matched": 190,
       "total": 291,
       "tau": 0.9,
       "annex": 0
@@ -159,7 +159,7 @@
     {
       "datokode": "2007-06-29-75",
       "law": "verdipapirhandelloven",
-      "matched": 211,
+      "matched": 212,
       "total": 268,
       "tau": 0.98,
       "annex": 0
