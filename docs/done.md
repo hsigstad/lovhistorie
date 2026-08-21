@@ -1,5 +1,34 @@
 # Done
 
+## 2026-08-21 (cont.) — ITERATION 1: pre-2001 recovery is FLAT on convergence (a real reason, not a bug)
+
+- **Dev-set A/B (with vs without the pre-2001 gazette_recovered stream): 571 → 571, +0 on EVERY
+  dev law**, despite recovering 34 ops. This is the honest iteration-1 result under the AIM (general
+  fixes, whole dev set). Segmentation cache complete (626/626 dev-year issues, disk-cached).
+- **Why flat — a GENERAL reason, and it re-confirms the standing OCR-base finding:**
+  1. **Convergence measures CURRENT text, which reflects the LATEST amendment per provision.**
+     Pre-2001 amendments are mostly SUPERSEDED: avtaleloven §38's current text needs the 2015 act
+     (post-2001), so the recovered 1983 §38 is the wrong version; §37 needs the 1995 act. Recovering
+     an OLD amendment doesn't move convergence-to-current. Pre-2001 recovery's real payoff is
+     **POINT-IN-TIME** (historical states), NOT convergence — it should be measured there.
+  2. **Act-finding recall is only 38/100** — the LLM segmenter produces a matching datokode for just
+     38 of the 100 register dev-amending acts (62% missed, mostly 1960s–70s: older OCR / date
+     resolution). So even the final-is-pre-2001 amendments (e.g. §37←1995) are often not recovered.
+  3. The one provision whose FINAL amendment is pre-2001 AND would help convergence — avtaleloven
+     **§36 (1983 general clause)** — is reached by the localizer but its op is dropped by tight-slice
+     extraction (recovered only §37/§38). Directed whole-act extraction gets §36, but that was
+     reverted as avtaleloven-tuning; the general version is a target-focused extraction prompt.
+- **Consequence for the AIM.** Pre-2001 recovery is **not a convergence lever** for the dev set (it is
+  a point-in-time lever). The convergence residual for the OCR-base dev laws is **OCR base quality +
+  ledd**, exactly as the docs concluded — now re-confirmed empirically (recovering real pre-2001
+  amendments moved convergence 0). Valid "very good reason" per the working method: *convergence
+  reflects the latest amendment; pre-2001 amendments are superseded or OCR-base-floored.*
+- **Next general levers (for CONVERGENCE, in priority):** (a) OCR base quality for the OCR-base laws
+  (the actual binding constraint — the enactment base text is noisy); (b) act-finding recall (general
+  segmentation/date fix) + target-focused extraction — but these only pay off on the small set of
+  pre-2001-FINAL provisions. To measure pre-2001 recovery's REAL value, run the POINT-IN-TIME metric
+  (needs held-out Lovdata-Pro versions), not convergence.
+
 ## 2026-08-21 (cont.) — segmenter WIRED into build_gazette: pre-2001 corpus unlocked
 
 - **HS approved the regex sweep (KILL brittle parsers; keep verify-gates + canonicalizers + the
