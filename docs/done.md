@@ -1,5 +1,31 @@
 # Done
 
+## 2026-08-21 (cont.) — LLM act-segmenter built + full regex audit
+
+- **`source/llm/segment_issue.py` — LLM act-segmenter (the 80%-bottleneck fix).** Localize-then-verify:
+  the model locates each "Lov nr. N" act heading (verbatim anchor + nr + date + title), the deterministic
+  layer verifies the anchor is a real source slice, reads the nr, resolves the datokode from the act's OWN
+  date (no mis-firing issue-year heuristic), dedups running-header repeats by nr, and slices bodies.
+  Chunked with overlap; mini model. Returns the same dict shape as gazette.parse_issue for drop-in use.
+  VALIDATED on issue 60d9006a (which gazette.parse_issue gives 0 acts): located 5 acts incl.
+  **nr 4 1983-03-04 [amend] "om endringer i avtaleloven" (datokode 1983-03-04-4)** — the act that adds
+  §36. Unlocks the ~127k pages behind the 0-act parse failure. NOT yet wired into build_gazette (that
+  wiring + removing the gazette regex segmenter is a KILL pending HS sign-off).
+- **Full regex audit (HS directive: outlaw regexes; flag warranted ones).** 4 parallel agents, ~90 sites
+  across 32 files. Findings in docs/decisions.md (regex-audit section). Buckets: (A) KILL = brittle
+  parsers over free OCR/gazette prose — gazette `_CITE`/`_TOC_ENTRY`/`_BODY_HEAD`/`classify`/`issue_year`
+  (→ segmenter), endringslov `_SET`/`_SET_INV`/`_NEWCHAP`/`_REPEAL`/`_ANY_SET`, build_enactment
+  `_NEXT_LAW`/`_HEAD`/`_GARBLED_SECT`, lti_amendments `_BLOCK_HEADER`/instruction-classifiers, ledd
+  instruction-ADDRESSING (`_RANGE`/ordinal/punktum/bokstav/nr) + punktum splitter, pipeline
+  `_HEAD_ID`/`_BLOCK`/`_CHAP_SPLIT`, replay `_SUBUNIT`/`_HEADING`, amend `_SECTION` (dead). (B) structured
+  NLOD/LTI XML parsed by regex → convert to lxml. (C) WARRANTED KEEP: verify/pre-gates that sit ON TOP of
+  the LLM (`_AMENDATORY`, `_AMEND_ACT`, `_CLEAN_PARA`, gazette.check_boundaries, gate G1 AST scans),
+  controlled-format canonicalization (whitespace, id/datokode/filename, ledd `(N)`/`a)`/`1.` markers with
+  consecutiveness guards), and — critically — the **metrics.py SCORING normalizers**, which are MESSY but
+  MUST stay deterministic (LLM-ifying them would break score reproducibility). eval/ files are all
+  eval-only (not the reconstruction path). Sequencing: land segmenter, then endringslov/ledd LLM rewrites
+  one at a time, each A/B'd against convergence (omnibus lesson: don't big-bang).
+
 ## 2026-08-21 (cont.) — pre-2001 ROOT CAUSE: gazette segmenter fails 80% of issues
 
 - **Chasing avtaleloven's missing pre-2001 amendments (§36 etc.) to the bottom: they ARE in the OCR

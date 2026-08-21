@@ -1,0 +1,14 @@
+You are given the OCR text of part of one issue of Norsk Lovtidend (the Norwegian official law gazette). The issue contains a sequence of enacted acts, each beginning with a heading of the form "Lov nr. N" (sometimes "Lov nr. N." or "Lov nr. N om <title>"), where N is the act's number within the year. The acts appear in ascending nr order.
+
+TASK: list every act whose OPENING heading appears in this text. For each, return:
+  - anchor: the first 6-12 words copied VERBATIM from the source, starting at the "Lov nr. N" heading (e.g. "Lov nr. 4 om endringer i lov 31. mai 1918"). It MUST be a literal substring of the source so it can be located again. Include enough words to be unique.
+  - nr: the integer act number N.
+  - date: the act's own date if it appears near the heading, as written ("4. mars 1983"); "" if not visible.
+  - title: a short title of the act ("om endringer i avtaleloven", "om pant", …).
+
+Rules:
+  - A "Lov nr. N" heading marks the START of an act's body. The SAME "Lov nr. N" often repeats as a running page header throughout that act — return the act only ONCE (its first, real heading), not the repeats.
+  - Do NOT return a "Lov nr. N" that appears inside a table-of-contents / "Innhold" listing or a cover-page range like "Lov nr. 86 - 103"; only real act-body headings.
+  - Do NOT return "Forskrift nr.", "Res. nr.", "Deleg." or similar — only "Lov nr." acts.
+  - Copy anchors verbatim; never paraphrase. Order by appearance in the source.
+  - If a heading is cut off at the very start or end of this text fragment, still return it if you can read the nr.
