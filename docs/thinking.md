@@ -6,6 +6,102 @@ direction is adopted it moves to `docs/decisions.md`, worked results to
 
 ---
 
+## Current open questions
+
+- **Does the boundaries-only LLM segmenter hold on the pre-2001 OCR tail?** Calibrated on
+  the aksjeloven-2001 booklet (69→253 provisions, 100% substring-verified, matched the
+  hand-tuned regex); the decisive test is a genuinely messy pre-2001 OCR law with the
+  held-out point-in-time deliverable as the guardrail (no per-version regression).
+- **Is amendment *capture* the real remaining lever?** `loss_breakdown` attributes 184 of
+  381 dev-set misses (48%) to provisions with *zero op* in our stream — the amending act
+  wasn't resolved from the gazette. Solving capture (omnibus multi-target + `ny §` adds) is
+  deterministic and flag-safe; how far does it move convergence in practice?
+- **Can the ledd engine be made idempotent enough to flip `whole_only=False`?** The deferred
+  +3 is blocked on double-application, not in-force; the similarity-skip prototype works on
+  vphl §3-1 but hasn't been productionised into `ledd.apply`.
+- **Is the point-in-time deliverable proven for clean-base laws?** It is validated on only 10
+  held-out (law × date) versions across three laws (aksjeloven OCR + vphl/tjenesteloven
+  clean). We need a couple of clean-base Lovdata-Pro HIST versions to show the deliverable is
+  *strong* where the base is clean (expect point-in-time ≈ the higher convergence).
+- **Which redrafted law anchors the downstream validation?** The arveloven case is waved off
+  (post-reform window too short — see Miscellaneous); the validation needs a different
+  substantially-redrafted statute.
+
+## Possible directions
+
+The two live technical bets are written up in detail below:
+
+- **LLM structural segmentation, boundaries-only** — locate structure (kapittel/paragraf/
+  ledd + noise), never generate text; deterministic slicing preserves the substring
+  guarantee. Highest value on the pre-2001 OCR tail and for scaling past the dev set.
+- **Ledd reconstruction = LLM boundaries + similarity alignment** — the 35% `engine-gap:ledd`
+  bucket; similarity targets the version-correct ledd, gives idempotency for free, and
+  verifies the applied result by end-state alignment.
+
+Beyond those: **extend the pipeline to sentrale forskrifter** (sources and structure are
+identical; the Lovtidend delta stream already carries `sf-…` acts — see `docs/todo.md`), and
+**scale the segmenter toward all ~756 statutes**, where the pre-2001 long tail is exactly
+where deterministic parsing is weakest.
+
+## Connections to literature
+
+This pipeline is the *data primitive* for downstream legal-economics work, so the literature
+connection is on the consumption side:
+
+- **Legal-complexity / ambiguity measures.** Point-in-time law versions enable the
+  legal-complexity and linguistic-ambiguity measures emerging in recent legal-economics work,
+  and a point-in-time citation knowledge graph (cases ↔ laws ↔ provisions ↔ regs ↔ forarbeider).
+  Our contribution is that these can be computed on *owned, public-domain* text back to 1877,
+  not a licensed corpus. (Specific references belong in the downstream research project, which
+  carries the bibliography — this pipeline has none.)
+- **Existing open reconstructions.** `sondreskarsten/norwegian-laws` and `norgeslover.no` seed
+  history with *today's* text as a 2001 baseline, so they are silently wrong for provisions
+  unamended by 2001. Building from the public-domain gazette instead is the methodological
+  point of difference (see `README.md`).
+
+## Methodological sketches
+
+- **Zero-fabrication by construction.** Every corpus character traces to a source character:
+  the LLM emits only coordinates/labels, so content fabrication collapses into (bounded, often
+  self-detecting) localization error. Enforced by an always-on *substring assertion* plus
+  deterministic invariants (monotonic, non-overlapping, covering, heading-matches-number).
+- **Calibrate on clean laws before the OCR tail.** Compare LLM boundaries to the known-true LTI
+  structure on vphl/tjenesteloven; only trust the messy tail once it matches there. Every
+  eval-touching change carries the held-out point-in-time no-regression guard.
+- **Similarity over ordinal for sub-provision targeting.** Ledd ordinals are version-dependent;
+  `argmax metrics.similarity(new_text, ledd)` finds the right target robustly and yields
+  idempotency (best ≈ 1 ⇒ already applied ⇒ skip). Detailed below.
+- **Per-source τ.** The OCR-calibrated τ (0.90) is *derived* from the never-amended OCR-fidelity
+  distribution, not chosen to flatter the number; clean-base laws keep the strict 0.98.
+
+## Ideas to explore later
+
+- **Ledd-level LLM boundaries** (phase 2) — the same segmenter one level down; harder than
+  provision-level, needed for the ledd engine on OCR bases.
+- **Amendment-side LLM op-extractor** across the pre-2001 gazette harvest — parse each amending
+  act into source-verified ops (validated in isolation: 27/27 omnibus targets, payloads
+  substring-verified).
+- **Targeted pre-2001 re-harvest / layout-aware OCR** for the residual base-drops (footnote-zone
+  detection lost in flattened ALTO).
+- **Downstream products** — the ambiguity/complexity measures and the case↔law citation graph
+  the point-in-time corpus unlocks.
+
+## Miscellaneous notes
+
+- **Validation-case pivot (arveloven → other laws).** The inheritance-law validation Sungho
+  scoped is unlikely to work — only ~40 appellate cites, the DA dump ends 2017 (all pre-reform),
+  and the new arveloven took force 2021, so the post-reform window is too short. Pivot the
+  validation toward the redrafting of *other* substantially-rewritten laws.
+- **Adjacent tooling.** Sungho has a *separate* Norwegian-laws parser (759 Lovdata-accessible
+  laws) with preliminary linguistic-trait extraction — distinct from the court-decision parser,
+  and a useful parallel corpus for the ambiguity measure.
+- **The gate threshold is provisional.** The 0.97 bar is not reachable on this dev set (real
+  ceiling ~0.90–0.94, `loss_breakdown`); the *real* bar is the held-out point-in-time metric.
+  Do **not** lower `gate.THRESHOLD` without Henrik sign-off — that is the anti-gaming "loosen
+  the bar" move.
+
+---
+
 ## LLM-assisted structural segmentation — boundaries only, never content (2026-08-14)
 
 ### The reframe

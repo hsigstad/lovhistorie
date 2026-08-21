@@ -35,11 +35,6 @@
 - [ ] **Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser** (external, 2026-08-12)
   for the omnibus-act / `§N-M`-heading structuring lift — deterministic parts only, no RAG/LLM.
   See `docs/notes/external_source_repos.md`.
-- [x] ~~**Missing/renumbered provisions — the large structural lever.**~~ MEASURED 2026-08-12: it
-  was mostly a DENOMINATOR artifact — 138/1008 "missing" were treaty annexes (CISG/limitation
-  convention) incorporated by reference, un-reconstructable from Lovtidend. Fixed by scoping the
-  convergence denominator to statutory provisions (see done.md). Real remaining tail is small:
-  a few OCR base-drops (kjøpsloven §1/§50/§71, foreldelsesloven §15a) + ~35 renumber-targets.
 - [ ] **Renumber-target provisions (~35, the hard residual) — via TEXT-SIMILARITY MATCHING (prototyped
   2026-08-14, see done.md).** Instead of parsing `nåværende §X blir §Y`, align consecutive versions by
   `metrics.similarity` (bipartite mutual-best above threshold): a high text-match under a different id = a
@@ -54,9 +49,6 @@
   (see done.md): true convergence ceiling is only ~56 provisions and they are the *riskiest*
   (INSERT `nytt … punktum` needs legal-sentence segmentation → fabrication risk). Not worth it vs
   the missing-provision lever. Keep flag-don't-fabricate.
-- [x] ~~**DECISION (Henrik): adopt a per-source τ?**~~ DONE 2026-08-12: τ_OCR=0.90 DERIVED from the
-  never-amended OCR-fidelity distribution (4:1 rescue-ratio floor), applied per-source, dual-reported
-  (OCR-calib + strict) in the gate. Convergence 0.499→0.562 (statutory). See done.md.
 - [ ] **Preserve nr/bokstav markers in whole-provision replacement bodies.** `endringslov`/
   `gazette` strip `1. 2.` / `a) b)` markers from `§X skal lyde` / `Kapittel N skal lyde`
   bodies, so a later `nr. 4 skal lyde` finds no list and flags (~77 flagged nr ops). The
@@ -64,11 +56,6 @@
 - [ ] **Unnumbered-ledd on OCR bases** — `parse_provisions` collapses whitespace, so
   pre-2001 laws (unnumbered ledd) lose ledd boundaries and the engine can't split them.
   Preserve line breaks in the OCR base to enable ledd editing there (LTI already does this).
-- [x] ~~**Fallback base source for hole-year laws** — kjøpsloven (1988) and rettsgebyrloven
-  (1982) enactments fell in NB digitisation holes.~~ DONE 2026-08-12: recovered from PD NB
-  *booklets* (særtrykk) as SNAPSHOT bases with `base_as_of` (see done.md). Not enactment —
-  they bake in early amendments and reconstruct dates ≥ their ajourført boundary; earlier
-  dates flagged. Remaining gap is post-snapshot add-ops/ledd edits (amendment coverage), not base.
 - [ ] **PD booklets as a public-domain point-in-time VALIDATION set — VIABLE; needs a
   heading-tolerant parser (NOT an OCR problem).** Corrected 2026-08-13 (I first mis-blamed OCR —
   the project's signature trap). Catalog sweep found unused PD snapshots: aksjeloven 2001
@@ -97,20 +84,13 @@
   - (c) re-test **aksjeloven-2001 as a cleaner BASE** now the parser lands (median 0.994 vs 2001 GT
     beats the noisy gazette base's 149/293 — build it with base_as_of=2001-01-01 and compare).
   - (Booklet-as-cleaner-BASE for foreldelse still unproven: 1993 base-only 14/33 @0.9 vs gazette 18/33.)
-- [x] ~~**Block-header leak + sub-unit repeals**~~ DONE 2026-08-13: `_BLOCK_HEADER` missed the "Lov [av] <cite>"
-  header form, leaking allmennaksjeloven ops into aksjeloven; fixed + enabled sub-unit repeals (safe subset).
-  Convergence 0.655 → 0.662 (+6, kjøpsloven), zero τ-regression, guards PASS (see done.md).
 - [ ] **Sub-provision REPLACE/ADD (ledd `… skal lyde`) — the deferred +3, blocked on ledd-engine idempotency,
   NOT in-force.** Enabling `whole_only=False` now nets +3 but with 3 replacement regressions (§21-15/§5-27/§16-9)
   that are DOUBLE-APPLICATION (a whole-provision rebuild + an in-force sub-op on one §; the ledd engine isn't
   idempotent). PROVEN not-in-force: all three acts are triggered/in force per the in-force index. Needs an
   idempotent `ledd.apply` (detect the change is already present, skip) before `whole_only=False` is clean.
-- [x] ~~**In-force resolver (built the index; wire for point-in-time).**~~ DONE 2026-08-14 (see done.md):
-  `source/parse/inforce.py` resolves TRUE ikrafttredelse dates (act's own `dateInForce`, else the triggering
-  `sf-` "(Delt) ikraftsetting av lov …" resolution) — 2,322/2,882 acts resolved, 1,179 later than passage;
-  wired into `lti_amendments` (`date_in_force_resolved`), convergence unchanged 0.662 / guards PASS / zero
-  regression, point-in-time correctness demonstrated (kjøpsloven §7 repeal withheld until its true 2002-07-01).
-  REMAINING (the follow-ups below).
+- [ ] **In-force resolver follow-ups** (the resolver itself is DONE 2026-08-14 — `source/parse/inforce.py`,
+  see done.md; these two refinements remain):
   - [ ] **Per-provision partial scope for "delt ikraftsetting"** — act-level resolution assigns the earliest
     trigger date to ALL of a split act's ops, so a provision in a LATER (or never-triggered) batch is
     over-applied (e.g. aksjeloven `2019-03-15-6` §4-13 → resolved 2020-01-01 but that § came later). Parse the
@@ -137,9 +117,6 @@
   from there to the next instruction (mirror the base segmenter), or use verbatim anchors. Then substring-
   verify every payload (the fabrication guarantee must hold on the amendment side too). This could recover the
   omnibus sections our stream drops + the renumber/move ops (vphl-2018 MiFID drag).
-- [x] ~~**The real test: does an LLM base improve the real reconstruction?**~~ DONE 2026-08-14 (see done.md):
-  END-TO-END base swap on avtaleloven → convergence 30/45 → 33/45 @≥0.90 (μ 0.764→0.809), 100% source-faithful,
-  same amendments; + aksjeloven-2001 booklet 192 vs 153. VERDICT: GO to default the LLM base on OCR-base laws.
 - [ ] **Productionise the base swap (the GO):** `source/parse/llm_segment.py` via llmkit (cached,
   Pydantic-validated; monotonic/coverage/heading-matches-number invariants in the validator; audit). Wire
   opt-in per-law into `enactment_base`/`build_enactment` for OCR-base laws (clean LTI keeps deterministic).
@@ -159,18 +136,12 @@
 
 ## Measurement side (point-in-time fairness)
 
-- [x] ~~**`lovdata_html.py` GT-parse length inflation**~~ DONE 2026-08-14 (see done.md): the inflation was
-  the editorial FOOTNOTE apparatus (two-column "[index, note]" tables, "Se §X"/"Jf. lov Y"). `lovdata_html`
-  now drops footnote tables (semantic discriminator, statutory tables preserved), signed off. Deliverable
-  rate 0.564→0.782, μ 0.857→0.879; convergence unchanged; guards PASS.
 - [ ] **Recon-side footnote entanglement (the follow-up the GT fix exposed).** On some vphl provisions the
   RECONSTRUCTION carries footnote-ish cross-reference text (from LTI amendment bodies / current-text notes),
   so once the GT footnotes are removed those provisions drop (vphl 2021 rate 0.777→0.713; §2-8/§9-35/§21-16
   recon_has_footnoteish=True, plus others). Strip the same footnote apparatus on the recon/base side so both
   sides are symmetric. Should recover the two wobble versions (vphl 2021, aksjeloven 2024) and lift clean-law
   point-in-time further. Measurement/parse-side, deterministic; verify with the per-provision no-regression guard.
-- [x] ~~**strip_annotation completeness (nynorsk + in-force footnotes)**~~ DONE 2026-08-14 (see done.md):
-  +6 convergence, point-in-time μ 0.855→0.857, tjenesteloven §28 → 1.0, zero regression, signed off.
 - [ ] **tjenesteloven §29 "Endringer i andre lover" — editorial redaction, FLAGGED not chased.** Lovdata
   consolidates the consequential-amendment list to "– – –"; our base carries the enacted enumeration.
   Reproducing "– – –" would overfit the oracle's editorial convention. If ever worth it, handle like a
