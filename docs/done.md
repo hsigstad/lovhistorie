@@ -1,5 +1,32 @@
 # Done
 
+## 2026-08-21 — amendment REGISTER built; reopens the "omnibus exhausted" call
+
+- **New eval artifact.** `source/eval/build_register.py` parses every `changesToParent` provenance
+  annotation in the NLOD current dump into `data/amendment_register.jsonl.gz` (one row per
+  amending-act × target-law × provision × op) + `data/register_index.json` (act → affected laws).
+  **32,759 edges, 3,079 amending acts (1,151 multi-law), 554 laws.** This is Lovdata's own amendment
+  graph — the ORACLE view. Eval-only (reads the answer key; gitignored, per lessons #7); content is
+  public-domain NLOD so it *can* be published as a deliverable, but deliberately, not via recon path.
+- **Validated:** register reproduces avtaleloven's amendment history exactly (17 acts, incl. §36 under
+  the 1983 general-clause act 1983-03-04-4) and correctly explodes the omnibus "Lov om retting av feil
+  m.m. i lovverket" (2003-06-20-45) into **72 laws / 108 ops** — with avtaleloven §14 among them.
+- **`source/eval/register_gaps.py` — corpus-wide capture audit vs the register:** of 7,975 amending-act
+  edges, we capture **3,975 (49%)**. Of the misses, **1,947 (24% of all edges) are MIS-TARGETED** — the
+  act IS in our streams amending some OTHER law, its section for this law dropped (omnibus mono-collapse),
+  **recoverable by re-parse, no new harvest** — and 2,053 (25%) are ABSENT (harvest/OCR gap).
+- **This partly REVISES the 2026-08-13 "omnibus multi-target lever is single-digit / deprioritised" call.**
+  That measurement counted *misfiled* rows inside the structured LTI stream; it missed the *dropped
+  secondary-target* failure mode in the gazette/merged stream, which a by-act provenance-anchored count
+  shows is the dominant recoverable gap — 24% of the whole amendment graph, worst for old/small codes that
+  are only ever secondary targets (avtaleloven 4/17, kjøpsloven 2/7, gjeldsbrevlova 0/13, forvaltningsloven
+  1967-02-10-0 **0/57 captured, 28 recoverable**). 66% of ≥10-op acts in the stream are mono-targeted.
+- **Next (not yet done):** wire the existing `source/llm/amend._split_sections` (`I lov <cite>` splitter,
+  already used by the LLM path + blanket.py) into the DETERMINISTIC gazette/LTI extractor so each op block
+  is re-headed to its own section's law. Targets resolve from the ACT text (public), NOT the register
+  (answer key). `register_gaps` top-20 = the payoff ranking. Coordinated w/ the live Lovhistorie session
+  (source_ref per register row = anchor for its "show source excerpt" button).
+
 ## 2026-08-16 (cont.) — EEA-annex scope-out (triage category B): 2012-12-14-81 0.07 → 0.75
 
 - **`is_convention_annex` now also recognizes the `§a<digit>` article form** (data-name "aN", body "Art N …")
