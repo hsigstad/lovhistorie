@@ -132,6 +132,14 @@ config = SiteConfig(
     # is intentionally NOT folder-mode, so its pages flatten to docs/<stem>.html.
     folder_mode_subdirs=("notes",),
     folder_mode_auto_discover=False,
+    # The Worked Examples page renders statute provisions inside code blocks; the
+    # default `.md-body pre { overflow-x: auto }` makes each provision one long
+    # horizontally-scrolling line. Override to soft-wrap while preserving the
+    # meaningful internal line breaks (pre-wrap keeps them). Appended after the base
+    # rule, so it wins on equal specificity.
+    extra_nav_css=(
+        ".md-body pre { white-space: pre-wrap; overflow-wrap: anywhere; }"
+    ),
     # No paper — repurpose the forced hero placeholder to say so plainly.
     paper_placeholder_msg=(
         "No paper &mdash; this is a data-reconstruction <b>pipeline</b>. "
