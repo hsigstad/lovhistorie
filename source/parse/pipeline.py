@@ -91,6 +91,26 @@ def _split_block(new_text: str):
     return pieces
 
 
+# A whole-CHAPTER add ("4de kapitel. <title> § 38 a. <title> <body> § 38 b. …") carries several
+# NEW provisions inline. The op extractor emits this as ONE op (para "§kapittelN"), burying §38a/
+# §38b; splitting it here recovers them. Boundary = an inline '§ N[letter]. <Capitalised title>'
+# — the period + capitalised title distinguishes a real heading from a cross-ref ('jf. § 2-2',
+# no trailing title), the same discipline as _BLOCK's period anchor.
+_CHAP_HEAD = re.compile(r"^\s*(?:\d+\s*(?:de|te|dje|ne|nde)?\.?\s+kapi(?:t|tt)el|"
+                        r"(?:nytt?\s+)?kapittel\s+\d+)", re.I)
+_CHAP_SPLIT = re.compile(r"(?=§\s*\d+\s*[a-zæøå]?\.\s+[A-ZÆØÅ])")
+
+
+def _split_chapter(new_text: str):
+    """[(para, piece_with_heading)] for the provisions inside a chapter-add block; [] if none."""
+    pieces = []
+    for part in _CHAP_SPLIT.split(new_text):
+        para = _heading_id(part)
+        if para:
+            pieces.append((para, part.strip()))
+    return pieces
+
+
 # Derived amendment stream re-parsed from the LTI acts (source.scrape.lti_amendments):
 # recovers omnibus sections the external amendments stream dropped. A DERIVED public-domain
 # jsonl.gz (NOT an LTI XML, NOT the answer key) — read here exactly like amendments.DATA;
@@ -125,17 +145,21 @@ def load_ops(target_law: str):
     sections the external stream dropped); dedup by (act, para, date, instruction) guards
     the boundary so a section present in both is not applied twice."""
     ops, seen = [], set()
-    # NB: _OMNIBUS / _GAZETTE (LLM omnibus + pre-2001 gazette recovery) are DELIBERATELY NOT in
-    # this tuple. Clean A/B (2026-08-21): merging them made the dev set WORSE (convergence 68.5→67.8,
-    # −4 aksjeloven / −2 vphl) and left point-in-time flat (0.8794→0.8801). Cause: the op extractor
-    # emits malformed STRUCTURAL ops (chapter/heading/renumber, e.g. "§kapittel3avsnittIVoverskrift")
-    # that corrupt previously-correct provisions; and the real captured amendments don't help because
-    # amendment CAPTURE is not the dev-set bottleneck (OCR base + ledd tail dominate — errors cluster,
-    # lesson #6). Re-enable only when recovered ops are filtered to clean provision-grade ops AND the
-    # A/B shows net-positive. The streams + register remain valid analysis/point-in-time tools.
-    for path in (amendments.DATA, _LTI_AMEND, _LLM_AMEND):
+    # PRIMARY streams (external + LTI-reparse + LLM sub-provision) vs RECOVERY streams (LLM omnibus +
+    # pre-2001 gazette). Recovery FILLS GAPS ONLY: a recovered op is applied only if the primary
+    # streams provide NO op for that provision. Rationale from the dev-set A/B: recovered op *content*
+    # is noisier (OCR/LLM extraction), so letting it OVERRIDE a provision the primary streams already
+    # handle CORRUPTED well-covered clean-base laws (−15 vphl / −10 foreld). Restricting recovery to
+    # untouched provisions keeps its real wins (new §s the primary streams miss — avtaleloven §9a/§38a)
+    # while it can no longer overwrite a correct provision. (The engine fixes — whole-provision insert
+    # + _split_chapter — are separate and safe on the primary streams alone.)
+    PRIMARY = (amendments.DATA, _LTI_AMEND, _LLM_AMEND)
+    RECOVERY = (_OMNIBUS, _GAZETTE)
+    primary_paras = set()
+    for path in PRIMARY + RECOVERY:
         if not path.exists():
             continue
+        is_recovery = path in RECOVERY
         with gzip.open(path, "rt", encoding="utf-8") as fh:
             for line in fh:
                 d = json.loads(line)
@@ -148,21 +172,23 @@ def load_ops(target_law: str):
                     "act": d.get("act_refid"),
                 }
                 new = d.get("new_text")
-                pieces = _split_block(new) if new and new.lstrip().startswith("§") else []
-                if pieces:                    # whole-provision block: one op per §
-                    for para, piece in pieces:
-                        key = (base["act"], para, base["date"], base["instruction"])
-                        if key in seen:
-                            continue
-                        seen.add(key)
-                        ops.append({**base, "para": para, "new_text": piece})
-                else:                         # sub-provision / repeal / structural
-                    para = _op_para(d)
+                if new and _CHAP_HEAD.match(new.lstrip()):        # whole-chapter add → per-§ pieces
+                    pieces = _split_chapter(new)
+                elif new and new.lstrip().startswith("§"):
+                    pieces = _split_block(new)
+                else:
+                    pieces = []
+                emit = pieces if pieces else [(_op_para(d), new)]
+                for para, payload in emit:
+                    if is_recovery and para in primary_paras:
+                        continue              # recovery fills gaps only — primary owns this §
                     key = (base["act"], para, base["date"], base["instruction"])
                     if key in seen:
                         continue
                     seen.add(key)
-                    ops.append({**base, "para": para, "new_text": new})
+                    if not is_recovery and para:
+                        primary_paras.add(para)
+                    ops.append({**base, "para": para, "new_text": payload})
     ops.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
     return ops
 

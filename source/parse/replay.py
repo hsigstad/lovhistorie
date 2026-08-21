@@ -62,6 +62,10 @@ def _flag(flags, op, why):
 # the entire §. (ledd.py's own docstring flags this exact hazard: "§4 pkt.b oppheves wrongly
 # deletes all of §4".)
 _SUBUNIT = re.compile(r"\b(?:ledd|punktum|bokstav|nr\.?)\b")
+# A CLEAN provision id: §9a, §38, §38b, §1-1, §2-11a — NOT §kapittel4 / §avsnittII / mashed
+# structural ids. Gate for the direct whole-provision set below so a malformed structural op
+# (chapter/heading) can never create a garbage provision (the class that corrupted aksjeloven).
+_CLEAN_PARA = re.compile(r"§\d+[a-zæøå]?(?:-\d+[a-zæøå]?)?$")
 
 
 def _apply_change_type(doc, op, flags):
@@ -100,6 +104,17 @@ def _apply_change_type(doc, op, flags):
         result = ledd.apply(doc.get(para, ""), instr, new)   # sub-provision -> ledd engine
         if result is not None:
             doc[para] = result
+            return
+        # Whole-provision "§ N skal lyde:" whose new_text lacks the '§ N.' heading (so the
+        # startswith('§') branch above missed it) and which has no sub-unit for ledd to address.
+        # INSERT-ONLY: set it only when the provision is ABSENT (a § ADDED by amendment, e.g.
+        # avtaleloven §9a). A bare-body op (no heading) is lower-confidence — often a partial/OCR-
+        # noisy extraction — so it must NEVER overwrite an existing correct provision (that caused
+        # −15 vphl / −10 foreld when it did). Guarded to clean ids so structural ops can't create
+        # garbage. A genuine whole-provision REWRITE carries its '§ N.' heading and lands on line 86.
+        if (not _SUBUNIT.search(instr) and _CLEAN_PARA.match(para or "")
+                and para not in doc):
+            doc[para] = _strip_heading(new)
             return
     _flag(flags, op, ct)                    # renumber / move / unknown / unhandled
 

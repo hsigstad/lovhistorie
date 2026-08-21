@@ -1,5 +1,33 @@
 # Done
 
+## 2026-08-21 (cont.) — avtaleloven deep-dive: TWO engine bugs fixed; recovery = gap-fill only
+
+- **The register "lift" didn't move the deliverable, so we opened the actual reconstruction.**
+  Per-provision diagnosis of avtaleloven's 12 failing provisions (recon vs current): **~9 are
+  amendment-related, only 2 OCR** — vindicating the "missing amendments" hypothesis. Breakdown:
+  6 need PRE-2001 acts absent from all streams (harvest gap: §36 needs 1983-03-04-4, §37 1983+1995,
+  §23 1984, §17 1962/1985, §27 1985); 3 are provisions ADDED by amendments we HAVE but never built
+  (§9a, §38a, §38b); 2 OCR (§3, §41); 1 base gap (§4).
+- **Engine bug 1 — replay never INSERTED new provisions.** A whole-provision "§ N skal lyde:" whose
+  new_text lacks the '§ N.' heading was routed to `ledd.apply` on an empty base → None → dropped, so
+  a § ADDED by amendment (avtaleloven §9a) was never created. Fix in `replay._apply_change_type`:
+  set the provision body directly, **INSERT-ONLY** (guarded by `_CLEAN_PARA` + `para not in doc`) —
+  a bare-body op must never overwrite an existing correct provision (that caused −15 vphl / −10 foreld
+  when first tried without the guard). §9a 0.00→0.98.
+- **Engine bug 2 — chapter-add blocks never split.** A whole-chapter add ("4de kapitel. … § 38 a. …
+  § 38 b. …") was emitted as ONE op (para "§kapittel4"), burying §38a/§38b. `pipeline._split_chapter`
+  splits on inline '§ N. <Capitalised title>' (period+title distinguishes a heading from a cross-ref).
+- **Recovery is now GAP-FILL ONLY.** Merging the recovery streams as OVERRIDES regressed the dev set
+  (−37) because recovered op *content* is noisier (OCR/LLM) and overwrote correct clean-base provisions.
+  `load_ops` now applies a recovered op only when the PRIMARY streams provide NO op for that provision
+  — recovery adds the §s the primary streams miss (avtaleloven §9a), never overrides. Net effect with
+  both engine fixes + gap-fill recovery: **convergence 568→571 (+3), 0.6828→0.6888, guards G1/G2/G3 PASS.**
+  Per-law: avtale +1, rettsg +2, vphl +1, aksje −1 (residual). Engine fixes ALONE (recovery off) = 570.
+- **avtaleloven now 33→34 shipped.** Its remaining upside is NOT free: (a) §38/§38a want recovery to
+  OVERRIDE a weak primary op — blocked by gap-fill until recovery op-quality improves; (b) §36/§37/§23
+  need the 5 specific pre-2001 acts HARVESTED (1962/1983/1984/1985/1995 — not in OCR, 0 hits). The
+  fixes are GENERAL (any law with amendment-added provisions / chapter adds benefits).
+
 ## 2026-08-21 (cont.) — pre-2001 tail triaged + Tier-1 gazette recovery built
 
 - **Pre-2001 tail quantified (register vs streams):** register has 811 pre-2001 amending acts /
