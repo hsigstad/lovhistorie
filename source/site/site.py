@@ -57,6 +57,7 @@ if _STATUS and _STATUS.get("total"):
 DOC_REGISTRY = [
     # --- Status ---
     ("docs/status.md",                            "Performance",               "Latest convergence number and what it means",         "Status"),
+    ("docs/examples.md",                          "Worked Examples",           "Provisions reconstructed vs. official current text",  "Status"),
     # --- Reference ---
     ("README.md",                                 "Overview",                  "What the pipeline builds and why",                    "Reference"),
     ("docs/goal.md",                              "Goal",                      "Autonomous goal + machine-checkable gate condition",  "Reference"),
@@ -103,7 +104,16 @@ _BASE_GUIDE_BRIEFS = [
      "Reference", "priority-ref"),
 ]
 
-GUIDE_BRIEFS = ([_PERF_BRIEF] if _PERF_BRIEF else []) + _BASE_GUIDE_BRIEFS
+_EXAMPLES_BRIEF = (
+    "docs/examples.md", "docs/examples.html",
+    "Worked Examples",
+    "See the output: statute provisions reconstructed from gazette history, side by side "
+    "with today&rsquo;s official text.",
+    "See it", "priority-main",
+)
+
+GUIDE_BRIEFS = (([_PERF_BRIEF] if _PERF_BRIEF else [])
+                + [_EXAMPLES_BRIEF] + _BASE_GUIDE_BRIEFS)
 
 
 config = SiteConfig(

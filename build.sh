@@ -31,6 +31,8 @@ build_site() {
     if [ -d data/current ] || [ -n "${LOVHISTORIE_CURRENT_DIR:-}" ]; then
         echo "=== Refreshing performance snapshot (source.eval.status) ==="
         python3 -m source.eval.status || echo "  (status refresh skipped — keeping committed snapshot)"
+        echo "=== Refreshing worked examples (source.eval.examples) ==="
+        python3 -m source.eval.examples || echo "  (examples refresh skipped — keeping committed page)"
     fi
     echo "=== Building static site ==="
     python3 -m source.site.build_all
