@@ -1,5 +1,34 @@
 # Done
 
+## 2026-08-21 (cont.) — pre-2001 tail triaged + Tier-1 gazette recovery built
+
+- **Pre-2001 tail quantified (register vs streams):** register has 811 pre-2001 amending acts /
+  1,716 edges, only **10% captured**; 582 acts absent. NONE of the absent are on disk in data/lti
+  (electronic LTI is 2001+) → it's a HARVEST-era gap, but with a large recoverable PARSE sub-layer.
+  By decade: **1990s absent 212 / captured 174 (45%)** — well-harvested, gap is parse; 1980s 197/13
+  (patchy harvest — index near-empty for 1980, 1984, 1987–89); pre-1980 145/0 (harvest 2–3 issues/yr).
+- **Three tiers:** (1) parse the OCR we already hold (1990s + harvested 1980s) — cheapest, no network;
+  (2) fill harvest holes 1980–2000 (targeted NB re-harvest of ~5 near-empty years); (3) pre-1980 broad
+  NB harvest+OCR (hardest, lowest yield). Proof for Tier-1: the 1994 sea-code act (sjøloven,
+  1994-06-24-39) names "Lov 31. mai 1918 nr. 4 om avslutning av avtaler" in a consequential-amendments
+  list sitting UNPARSED in our OCR.
+- **Tier-1 built — `source/scrape/build_gazette.py`:** the SAME localize-then-verify path fed each
+  amending act's OCR body (segmented by gazette.parse_issue) instead of LTI XML; writes a SEPARATE
+  `data/gazette_recovered.jsonl.gz` (no collision with a running LTI sweep). `_bound_body` trims the
+  ~10% oversized bodies (OCR mis-segmentation bleeds the issue tail) at the next differing "Lov nr. <m>"
+  heading, else caps at 60KB — logged, not silently trusted. Wired as a 5th load_ops stream + into
+  register_gaps. Validated end-to-end on one 1994 issue: **108 ops, 15 acts → 23 laws**, all verbatim-
+  anchored.
+- **IMPORTANT metric caveat — the register cannot cleanly score pre-2001 precision.** It records only
+  amendments to CURRENTLY-LIVE text, so 1994 amendments to since-repealed/renumbered provisions
+  (e.g. 1994-06-24-24 → 1991-07-04-47 §16 renumber) are absent from it and look like FPs though they
+  are REAL and exactly what POINT-IN-TIME reconstruction needs. Pre-2001 precision needs a Lovdata-Pro
+  HIST spot-check or hand audit, not the register. The ops remain verbatim-faithful (anchor + amendatory
+  guard + catalog resolve).
+- **Deliberately NOT run yet:** the full gazette sweep (all pre-2001 issues) — it would contend for the
+  API rate limit with the still-running 2001+ LTI full sweep. Ready to launch after that completes:
+  `python -m source.scrape.build_gazette` (optionally `--years 1990 …` to bound).
+
 ## 2026-08-21 (cont.) — omnibus recovery via LLM localize-then-verify (format-agnostic)
 
 - **The fix for the mis-targeted 24% (prev entry), built to NOT be another regex.** Instead of

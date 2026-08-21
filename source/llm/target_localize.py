@@ -130,7 +130,7 @@ def localize(act_text: str, *, client=None, model: str = MODEL, cache: LLMCache 
             system_prompt=(PROMPT_DIR / "target_localize_system.txt").read_text(encoding="utf-8"),
             user_prompt=act_text, schema=TargetMentions, model=model, cache=cache, client=client,
             reextract=reextract, use_structured_outputs=True, schema_in_cache_key=True,
-            max_tokens=8000,
+            max_tokens=16000,   # covers the ~5 outlier acts with 60-269 mentions (p99 is 27)
         )
     except Exception as e:
         rep.valid = False

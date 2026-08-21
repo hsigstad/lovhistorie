@@ -61,6 +61,11 @@ def plain_text(xml_path: str) -> str:
     return t
 
 
+# public-signal "act names another law" mention, for the multi-target prefilter (--all mode)
+_MENT_SIGNAL = re.compile(
+    r"\b(?:I\s+lov|Lov\s+av)\s+\d{1,2}\.?\s*[a-zæøå]+\.?\s*\d{4}\s*nr\.?\s*\d+", re.I)
+
+
 def _cite_regex(dk: str) -> re.Pattern:
     """Tolerant matcher for a datokode's citation in act prose: '31. mai 1918 nr. 4'."""
     y, m, d, n = dk.split("-")
@@ -141,9 +146,13 @@ def _flush(recovered, unresolved):
 def run(targets: list[str], limit_acts: int | None = None, reextract: bool = False,
         all_acts: bool = False):
     tset = set(targets)
-    if all_acts:                       # full sweep: every act; candidate discovery is moot
-        paths = sorted(glob.glob(str(LTI_DIR / "*" / "nl-*.xml")))
-        print(f"FULL SWEEP: targets={len(tset)}  acts={len(paths)}", flush=True)
+    if all_acts:                       # full sweep, but ONLY multi-target acts: single/zero-mention
+        # acts are already correctly attributed by the external stream, so re-extracting them is pure
+        # waste. The mis-collapse only happens when an act names >=2 laws. Public-signal prefilter.
+        allp = sorted(glob.glob(str(LTI_DIR / "*" / "nl-*.xml")))
+        paths = [p for p in allp if len(_MENT_SIGNAL.findall(plain_text(p))) >= 2]
+        print(f"FULL SWEEP (multi-target only): targets={len(tset)}  acts={len(paths)}/{len(allp)}",
+              flush=True)
     else:
         cands = candidate_acts(targets)
         paths = sorted(cands)

@@ -32,3 +32,5 @@ data/amendment_register.jsonl.gz
 data/register_index.json
 data/omnibus_recovered.jsonl.gz
 data/omnibus_unresolved.jsonl.gz
+data/gazette_recovered.jsonl.gz
+data/gazette_unresolved.jsonl.gz

@@ -107,6 +107,12 @@ _LLM_AMEND = amendments.DATA.parent / "llm_amendments.jsonl.gz"
 # format-agnostic LLM localizer + verbatim-anchored op extractor. Same schema; dedup below
 # guards the boundary so an op present in another stream is not applied twice. Absent → skipped.
 _OMNIBUS = amendments.DATA.parent / "omnibus_recovered.jsonl.gz"
+# Derived pre-2001 gazette-OCR recovery (source.scrape.build_gazette): the same localize-then-verify
+# path applied to amending-act bodies already on disk in data/lovtidend_text — recovers pre-2001
+# secondary-target/flat-omnibus amendments the regex gazette parser missed, no new harvest. NB: the
+# current-dump register undercounts these (many touch since-superseded text), so they help POINT-IN-
+# TIME more than convergence-to-current. Absent → skipped.
+_GAZETTE = amendments.DATA.parent / "gazette_recovered.jsonl.gz"
 
 
 def load_ops(target_law: str):
@@ -119,7 +125,7 @@ def load_ops(target_law: str):
     sections the external stream dropped); dedup by (act, para, date, instruction) guards
     the boundary so a section present in both is not applied twice."""
     ops, seen = [], set()
-    for path in (amendments.DATA, _LTI_AMEND, _LLM_AMEND, _OMNIBUS):
+    for path in (amendments.DATA, _LTI_AMEND, _LLM_AMEND, _OMNIBUS, _GAZETTE):
         if not path.exists():
             continue
         with gzip.open(path, "rt", encoding="utf-8") as fh:
