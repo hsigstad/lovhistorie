@@ -57,26 +57,19 @@ if _STATUS and _STATUS.get("total"):
 # (rel_path, title, description, category)
 # Handoff notes under docs/notes/handoffs/ are ephemeral (consumed and
 # git-rm'd) and are intentionally left out of the site.
+# Public reference pages, linked from the browser landing's About/Method section
+# (the interactive browser at source/site/browser.py is the site's index.html).
+# Deliberately OFF the public site — they stay in the repo as internal docs: the
+# retired Worked Examples page (superseded by the browser), the README overview
+# (duplicated by About/Method), the working notes (lessons/enactment/external/CD),
+# the Resolved Blocker, and the Active-Tasks / Work-Log docs.
 DOC_REGISTRY = [
-    # --- Status ---
-    ("docs/reference/status.md",                  "Performance",               "Latest convergence number and what it means",         "Status"),
-    ("docs/reference/examples.md",                "Worked Examples",           "Provisions reconstructed vs. official current text",  "Status"),
-    # --- Reference ---
-    ("README.md",                                 "Overview",                  "What the pipeline builds and why",                    "Reference"),
+    ("docs/reference/status.md",                  "Performance",               "Convergence number and what it means",                "Status"),
     ("docs/reference/goal.md",                    "Goal",                      "Autonomous goal + machine-checkable gate condition",  "Reference"),
     ("docs/reference/evaluation.md",              "Evaluation",                "Success criteria and the convergence metric",         "Reference"),
     ("docs/reference/roadmap.md",                 "Roadmap",                   "Phased plan from gazette harvest to deliverable",     "Reference"),
     ("docs/reference/ground_truth.md",            "Ground Truth",              "Lovdata-Pro validation oracle (eval-only)",           "Reference"),
     ("docs/notes/statutory_law_versioning.md",    "Statutory Law Versioning",  "Technical background on point-in-time law",           "Reference"),
-    # --- Working notes ---
-    ("docs/notes/lessons_and_pitfalls.md",        "Lessons & Pitfalls",        "Measurement bugs mistaken for hard walls — read first", "Working notes"),
-    ("docs/notes/enactment_base.md",              "Enactment Base",            "Original-enactment base construction",                "Working notes"),
-    ("docs/notes/external_source_repos.md",       "External Source Repos",     "Assessment of external corpora",                      "Working notes"),
-    ("docs/notes/lovdata_cd_2005.md",             "Lovdata CD 2005",           "The 2005 CD-ROM base",                                "Working notes"),
-    ("BLOCKER.md",                                "Resolved Blocker",          "Record of the resolved pre-2001 blocker",             "Working notes"),
-    # --- Tasks ---
-    ("docs/todo.md",                              "Active Tasks",              "Open items",                                          "Tasks"),
-    ("docs/done.md",                              "Work Log",                  "Completed work",                                      "Tasks"),
 ]
 
 
@@ -85,10 +78,6 @@ DOC_REGISTRY = [
 # The live Performance card (if a status snapshot exists) is prepended below so the
 # latest number leads the page.
 _BASE_GUIDE_BRIEFS = [
-    ("docs/notes/lessons_and_pitfalls.md", "docs/notes/lessons_and_pitfalls.html",
-     "Lessons &amp; Pitfalls",
-     "Read first &mdash; nearly every &ldquo;hard wall&rdquo; here turned out to be a measurement bug, not a reconstruction limit.",
-     "Start here", "priority-start"),
     ("docs/reference/goal.md", "docs/goal.html",
      "Goal",
      "The autonomous goal and the single machine-checkable gate (<code>source.eval.gate</code>).",
@@ -107,16 +96,7 @@ _BASE_GUIDE_BRIEFS = [
      "Reference", "priority-ref"),
 ]
 
-_EXAMPLES_BRIEF = (
-    "docs/reference/examples.md", "docs/examples.html",
-    "Worked Examples",
-    "See the output: statute provisions reconstructed from gazette history, side by side "
-    "with today&rsquo;s official text.",
-    "See it", "priority-main",
-)
-
-GUIDE_BRIEFS = (([_PERF_BRIEF] if _PERF_BRIEF else [])
-                + [_EXAMPLES_BRIEF] + _BASE_GUIDE_BRIEFS)
+GUIDE_BRIEFS = (([_PERF_BRIEF] if _PERF_BRIEF else []) + _BASE_GUIDE_BRIEFS)
 
 
 config = SiteConfig(
@@ -132,11 +112,10 @@ config = SiteConfig(
     # is intentionally NOT folder-mode, so its pages flatten to docs/<stem>.html.
     folder_mode_subdirs=("notes",),
     folder_mode_auto_discover=False,
-    # The Worked Examples page renders statute provisions inside code blocks; the
-    # default `.md-body pre { overflow-x: auto }` makes each provision one long
-    # horizontally-scrolling line. Override to soft-wrap while preserving the
-    # meaningful internal line breaks (pre-wrap keeps them). Appended after the base
-    # rule, so it wins on equal specificity.
+    # Soft-wrap code blocks on the reference doc pages: the default
+    # `.md-body pre { overflow-x: auto }` scrolls long lines horizontally; pre-wrap
+    # wraps them while preserving meaningful internal line breaks. Appended after the
+    # base rule, so it wins on equal specificity.
     extra_nav_css=(
         ".md-body pre { white-space: pre-wrap; overflow-wrap: anywhere; }"
     ),

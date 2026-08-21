@@ -28,15 +28,17 @@ Two metrics, both in [evaluation.md](reference/evaluation.md):
    never tuned on.
 
 The live numbers are the generated [Performance](reference/status.md) page; worked
-provision-level output is on the [Worked Examples](reference/examples.md) page. The
-machine-checkable completion condition compiles to `python -m source.eval.gate`.
+provision-level output — every statute scrubbed through time, with reconstruction-vs-
+official diffs — is the public site (https://hsigstad.github.io/lovhistorie/, generated
+by `source/site/browser.py`). The machine-checkable completion condition compiles to
+`python -m source.eval.gate`.
 
 ## Layout
 
 `source/` (scrape / parse / eval / llm / site), `docs/`, `build/`, `data/`. The
 reconstruction entrypoint is `source/parse/pipeline.py`; the reward signal is
 `source/eval/gate.py`. Reference material (goal, evaluation, roadmap, ground-truth,
-performance, examples) lives under [docs/reference/](reference/); working notes under
+performance) lives under [docs/reference/](reference/); working notes under
 [docs/notes/](notes/); data usage in [data.md](data.md).
 
 See [reference/goal.md](reference/goal.md) for the autonomous goal, and
