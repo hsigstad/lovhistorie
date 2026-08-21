@@ -101,6 +101,25 @@ def _is_amendatory(section_text: str) -> bool:
     return bool(_AMENDATORY.search(section_text))
 
 
+def public_universe() -> set[str]:
+    """The laws we already track, as datokodes — the union of target_law across the existing
+    PUBLIC-derived amendment streams + enactment bases. G1-safe: never reads data/current. Used as
+    the full-sweep target set so recovered ops are scoped to laws the pipeline reconstructs."""
+    import glob
+    uni = set()
+    for s in ("amendments.jsonl.gz", "lti_amendments.jsonl.gz", "llm_amendments.jsonl.gz"):
+        p = _REPO / "data" / s
+        if not p.exists():
+            continue
+        for line in gzip.open(p, "rt", encoding="utf-8"):
+            tl = json.loads(line).get("target_law") or ""
+            if tl.startswith("lov/"):
+                uni.add(tl.split("/", 1)[1])
+    for f in glob.glob(str(_REPO / "data" / "enactment" / "*.json")):
+        uni.add(Path(f).stem)
+    return uni
+
+
 def _norm_head(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip()[:80]
 
@@ -110,12 +129,27 @@ def _act_dk(path: str) -> str | None:
     return f"{m.group(1)}-{m.group(2)}-{m.group(3)}-{m.group(4)}" if m else None
 
 
-def run(targets: list[str], limit_acts: int | None = None, reextract: bool = False):
+def _flush(recovered, unresolved):
+    with gzip.open(OUT, "wt", encoding="utf-8") as fh:
+        for o in recovered:
+            fh.write(json.dumps(o, ensure_ascii=False) + "\n")
+    with gzip.open(UNRESOLVED, "wt", encoding="utf-8") as fh:
+        for u in unresolved:
+            fh.write(json.dumps(u, ensure_ascii=False) + "\n")
+
+
+def run(targets: list[str], limit_acts: int | None = None, reextract: bool = False,
+        all_acts: bool = False):
     tset = set(targets)
-    cands = candidate_acts(targets)
-    paths = sorted(cands)[: limit_acts] if limit_acts else sorted(cands)
-    print(f"targets={len(tset)}  candidate acts (public-signal)={len(cands)}"
-          f"{f' (capped {limit_acts})' if limit_acts else ''}")
+    if all_acts:                       # full sweep: every act; candidate discovery is moot
+        paths = sorted(glob.glob(str(LTI_DIR / "*" / "nl-*.xml")))
+        print(f"FULL SWEEP: targets={len(tset)}  acts={len(paths)}", flush=True)
+    else:
+        cands = candidate_acts(targets)
+        paths = sorted(cands)
+        print(f"targets={len(tset)}  candidate acts (public-signal)={len(cands)}", flush=True)
+    if limit_acts:
+        paths = paths[:limit_acts]
     from openai import OpenAI
     client = OpenAI()
     recovered, unresolved = [], []
@@ -143,14 +177,13 @@ def run(targets: list[str], limit_acts: int | None = None, reextract: bool = Fal
             o["source"] = "omnibus_recovered"
         recovered.extend(ops)
         print(f"  [{i}/{len(paths)}] {act_dk}: {len(wanted)} wanted sections -> {len(ops)} ops "
-              f"(mentions {lrep.n_mentions}, unresolved {len(lrep.unresolved)}, cached={lrep.cached})")
+              f"(mentions {lrep.n_mentions}, unresolved {len(lrep.unresolved)}, cached={lrep.cached})",
+              flush=True)
+        if all_acts and i % 200 == 0:            # checkpoint so a long sweep survives a crash
+            _flush(recovered, unresolved)
+            print(f"  ... checkpoint at act {i}: {len(recovered)} ops so far", flush=True)
 
-    with gzip.open(OUT, "wt", encoding="utf-8") as fh:
-        for o in recovered:
-            fh.write(json.dumps(o, ensure_ascii=False) + "\n")
-    with gzip.open(UNRESOLVED, "wt", encoding="utf-8") as fh:
-        for u in unresolved:
-            fh.write(json.dumps(u, ensure_ascii=False) + "\n")
+    _flush(recovered, unresolved)
     laws = {o["target_law"] for o in recovered}
     acts = {o["act_refid"] for o in recovered}
     print(f"\nrecovered {len(recovered)} ops | {len(acts)} acts x {len(laws)} target laws")
@@ -162,7 +195,10 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--targets", nargs="*", default=SPOTLIGHT,
                     help="target law datokodes (default: register-flagged old codes)")
+    ap.add_argument("--all", action="store_true",
+                    help="full sweep: every act, targets = public recon universe (744 laws)")
     ap.add_argument("--limit-acts", type=int, default=None)
     ap.add_argument("--reextract", action="store_true")
     a = ap.parse_args()
-    run(a.targets, a.limit_acts, a.reextract)
+    targets = sorted(public_universe()) if a.all else a.targets
+    run(targets, a.limit_acts, a.reextract, all_acts=a.all)
