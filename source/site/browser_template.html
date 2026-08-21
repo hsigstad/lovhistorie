@@ -314,7 +314,7 @@
     "fidDiff","minYear","maxYear"].forEach(k=>E[k]=el(k));
   E.maxYear.textContent=new Date(RMAX).getUTCFullYear();
 
-  let INDEX=[], provs=[], cur=null, nodes=[], caps=[], redline=false, fidOpen=false, lastIdx=-99, pitems=[];
+  let INDEX=[], provs=[], cur=null, nodes=[], caps=[], redline=false, fidOpen=false, lastIdx=-99, pitems=[], jumpIdx=null;
 
   function buildPicker(filter){
     E.picker.innerHTML="";pitems=[];
@@ -340,7 +340,7 @@
     provHead.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
   }
   function select(idx,scroll){
-    cur=provs[idx];cur._idx=idx;redline=false;E.redlineBtn.setAttribute("aria-pressed","false");
+    cur=provs[idx];cur._idx=idx;jumpIdx=null;redline=false;E.redlineBtn.setAttribute("aria-pressed","false");
     fidOpen=false;E.fidDiff.hidden=true;E.fidBtn.textContent="Compare with official text";lastIdx=-99;
     E.rail.querySelectorAll(".node,.node-cap").forEach(n=>n.remove());nodes=[];caps=[];
     cur.versions.forEach((v)=>{const ts=Date.parse(v.date);
@@ -358,7 +358,13 @@
   const curTs=()=>RMIN+(E.scrub.value/1000)*(RMAX-RMIN);
   function activeIndex(ts){let idx=-1;for(let i=0;i<cur.versions.length;i++){if(Date.parse(cur.versions[i].date)<=ts)idx=i;else break;}return idx;}
   function render(){
-    const ts=curTs(),idx=activeIndex(ts),p=pct(ts);
+    // jumpIdx (set by a node/changelog click) pins the exact clicked version, so slider
+    // quantization can't resolve us to the wrong (usually previous) version. Dragging the
+    // slider clears it and we fall back to the date-derived active version.
+    let ts,idx;
+    if(jumpIdx!=null){idx=jumpIdx;ts=Date.parse(cur.versions[jumpIdx].date);}
+    else{ts=curTs();idx=activeIndex(ts);}
+    const p=pct(ts);
     E.railFill.style.width=p+"%";E.handle.style.left=p+"%";E.asofDate.textContent=fmt(ts);
     nodes.forEach((n,i)=>{const vt=Date.parse(cur.versions[i].date);n.classList.toggle("reached",vt<=ts);n.classList.toggle("active",i===idx);});
     caps.forEach((c,i)=>c.classList.toggle("active",i===idx));
@@ -374,8 +380,8 @@
     maybeFlash(idx);
   }
   function maybeFlash(idx){if(idx!==lastIdx){E.statute.classList.remove("changed");void E.statute.offsetWidth;E.statute.classList.add("changed");lastIdx=idx;}}
-  function gotoV(i,turnOn){E.scrub.value=Math.round(pct(Date.parse(cur.versions[i].date))/100*1000);if(turnOn&&i>0){redline=true;E.redlineBtn.setAttribute("aria-pressed","true");}render();}
-  E.scrub.addEventListener("input",render);
+  function gotoV(i,turnOn){jumpIdx=i;E.scrub.value=Math.round(pct(Date.parse(cur.versions[i].date))/100*1000);if(turnOn&&i>0){redline=true;E.redlineBtn.setAttribute("aria-pressed","true");}render();}
+  E.scrub.addEventListener("input",()=>{jumpIdx=null;render();});
   E.redlineBtn.addEventListener("click",()=>{redline=!redline;E.redlineBtn.setAttribute("aria-pressed",String(redline));render();});
   E.fidBtn.addEventListener("click",()=>{if(cur.fidelity>=0.999)return;fidOpen=!fidOpen;E.fidDiff.hidden=!fidOpen;E.fidBtn.textContent=fidOpen?"Hide comparison":"Compare with official text";
     if(fidOpen){const latest=cur.versions[cur.versions.length-1].text;
