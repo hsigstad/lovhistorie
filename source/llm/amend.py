@@ -38,6 +38,22 @@ except ModuleNotFoundError:
     from schemas import AmendmentOps  # type: ignore
 
 from source.parse import gazette
+from source.llm.target_localize import _build_norm, _norm
+
+
+def _nfind(norm_sec, offs, anchor, ncur):
+    """Whitespace-tolerant locate of `anchor` in the section at/after normalized cursor `ncur`.
+    Returns (raw_start, raw_end, new_ncur) or None. OCR-robust: the model cleans OCR spacing so its
+    verbatim anchors don't byte-match the raw text (§36/§38 'skal lyde' payloads were dropped this
+    way); matching on whitespace-normalized text tolerates that, while the returned slice is still the
+    RAW source (no fabrication). Character-level OCR errors in the anchor still fail safe (drop)."""
+    a = _norm(anchor)
+    if not a:
+        return None
+    j = norm_sec.find(a, ncur)
+    if j < 0:
+        return None
+    return offs[j], offs[j + len(a) - 1] + 1, j + len(a)
 
 PROMPT_DIR = Path(__file__).parent / "prompts"
 MODEL = "gpt-4.1"
@@ -130,18 +146,19 @@ def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = M
         if not res.valid or res.parsed is None:
             rep.valid = False
             continue
-        cursor = 0                                # anchors resolved within THIS section
+        norm_sec, offs = _build_norm(sec)         # whitespace-normalized view for OCR-robust anchoring
+        cursor = 0                                # normalized cursor: anchors resolved within THIS section
         for op in res.parsed.ops:
             rep.n_ops += 1
             new_text = None
             if op.op_type in ("replace", "insert"):
                 rep.payload_ops += 1
                 h, t = op.payload_head.strip(), op.payload_tail.strip()
-                hi = sec.find(h, cursor) if h else -1
-                ti = sec.find(t, hi) if (t and hi >= 0) else -1
-                if hi >= 0 and ti >= 0:
-                    new_text = " ".join(sec[hi:ti + len(t)].split())
-                    cursor = ti + len(t)
+                rh = _nfind(norm_sec, offs, h, cursor) if h else None
+                rt = _nfind(norm_sec, offs, t, rh[2]) if (t and rh) else None
+                if rh and rt:
+                    new_text = " ".join(sec[rh[0]:rt[1]].split())
+                    cursor = rt[2]
                     rep.substring_ok += 1
                 else:
                     rep.flagged.append((op.target_paragraf, "anchor-not-found"))
