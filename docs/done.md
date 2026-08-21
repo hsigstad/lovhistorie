@@ -1,5 +1,24 @@
 # Done
 
+## 2026-08-21 (cont.) — segmenter WIRED into build_gazette: pre-2001 corpus unlocked
+
+- **HS approved the regex sweep (KILL brittle parsers; keep verify-gates + canonicalizers + the
+  deterministic scorer; XML→lxml). Started with the segmenter (highest-value KILL).** `build_gazette`
+  now segments each issue with `source.llm.segment_issue` instead of `gazette.parse_issue`
+  (parse_toc/split_bodies) — killing that regex dependency and the `_ANY_ACT_HEAD` body-trim (the
+  segmenter already slices bodies) and the `issue_year` heuristic (year comes from the NB catalog
+  index, id→year). Removed the `gazette` + `_cite_regex` imports from build_gazette.
+- **Validated end-to-end on 1983 (the year gazette.parse_issue gave 0 acts for its TOC-less issues):
+  27 issues / 28 acts scanned (was 0), and the fully-LLM path (segment→localize→extract) recovered
+  `lov/1983-03-04-4 §37 [repeal]` + `§38 [change]` for avtaleloven** — the first pre-2001 amendments
+  ever recovered for it. Fixed an id-mapping bug (Path.stem leaves ".jsonl" on ".jsonl.gz"; index ids
+  are the bare hash) that made the year filter match 0.
+- **Remaining: §36 (the general clause) still slips the OP EXTRACTOR** (even on gpt-4.1) though the
+  segmenter+localizer reach its section — a within-section extraction/slicing detail (the 1983 act names
+  avtaleloven in both a flat TOC-list and the real "gjøres følgende endringer: § 36 skal lyde:" block;
+  the section slice likely grabs the list mention). Next: full pre-2001 gazette sweep + re-measure
+  convergence (gap-fill), then the endringslov/ledd LLM rewrites (each A/B'd).
+
 ## 2026-08-21 (cont.) — LLM act-segmenter built + full regex audit
 
 - **`source/llm/segment_issue.py` — LLM act-segmenter (the 80%-bottleneck fix).** Localize-then-verify:

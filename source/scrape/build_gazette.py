@@ -9,7 +9,7 @@ INTENT: the pre-2001 amendment tail is mostly a HARVEST gap, BUT the 1990s (and 
     BODY (segmented by source/parse/gazette) instead of LTI XML — recovering those ops with NO new
     harvest. Writes to data/gazette_recovered.jsonl.gz (a SEPARATE stream, so it never collides with
     a concurrently-running LTI omnibus sweep).
-REASONING: gazette.parse_issue already segments an issue into acts with {nr,date,klass,body}; the
+REASONING: source.llm.segment_issue LLM-segments an issue into acts with {nr,date,klass,body}; the
     act datokode is f"{date}-{nr}". Feeding body → target_localize.localize is source-agnostic (it
     reads text), so the pre-2001 adapter is plumbing, not new logic. OCR noise is handled the same
     way as everywhere: unverifiable mentions/ops drop to a measured stream, never fabricate.
@@ -33,9 +33,8 @@ _REPO = Path(__file__).resolve().parents[2]
 if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
-from source.llm import amend, target_localize
-from source.parse import gazette
-from source.scrape.build_omnibus import _cite_regex, _is_amendatory, _norm_head, public_universe
+from source.llm import amend, segment_issue, target_localize
+from source.scrape.build_omnibus import _is_amendatory, _norm_head, public_universe
 
 TEXT_DIR = _REPO / "data" / "lovtidend_text"
 OUT = _REPO / "data" / "gazette_recovered.jsonl.gz"
@@ -47,26 +46,15 @@ UNRESOLVED = _REPO / "data" / "gazette_unresolved.jsonl.gz"
 # localizer resolves WHICH law each "I lov" section amends (OCR-, name- and date-only-tolerant), so no
 # brittle citation regex gates what the model sees. Its only job is to skip pure original enactments.
 _AMEND_ACT = re.compile(r"\bi\s+lov\b", re.I)
-# OCR body segmentation is imperfect: ~10% of amending-act bodies are oversized because the
-# split absorbed the issue tail (a following act's body bled in). Cap the localize window — an
-# amending act's own change-list sits near its start, and the bled tail is where mis-attributed
-# ops would come from. Oversize is LOGGED (measured), not silently trusted. A later refinement
-# is boundary-aware chunking; for now the cap bounds both cost and cross-act bleed.
+# The LLM segmenter (segment_issue) already slices each act's body between consecutive act headings,
+# so no regex tail-trim is needed here. Only cap the localize window for a genuinely huge act (a big
+# recodification with a long consequential-amendments chapter); oversize is LOGGED, not silently
+# trusted. The change-list sits near the act's start, so the head is what matters.
 _MAX_BODY = 60000
-_ANY_ACT_HEAD = re.compile(r"Lov\s+nr\.?\s*(\d+)\s*\n")
 
 
-def _bound_body(body: str, nr: int) -> tuple[str, bool]:
-    """Trim a body to THIS act only: cut at the next act heading 'Lov nr. <m>\\n' with m != nr
-    (this act's own heading repeats as a running page header, so we must skip same-nr matches),
-    else cap at _MAX_BODY. Returns (text, truncated)."""
-    end = len(body)
-    for m in _ANY_ACT_HEAD.finditer(body, 200):
-        if int(m.group(1)) != nr:
-            end = m.start()
-            break
-    truncated = end > _MAX_BODY
-    return body[: min(end, _MAX_BODY)], truncated
+def _bound_body(body: str) -> tuple[str, bool]:
+    return body[:_MAX_BODY], len(body) > _MAX_BODY
 
 
 def _flush(recovered, unresolved):
@@ -78,31 +66,51 @@ def _flush(recovered, unresolved):
             fh.write(json.dumps(u, ensure_ascii=False) + "\n")
 
 
+def _catalog_years() -> dict:
+    """{catalog_id: issue_year} from the NB census — a cheap, reliable year filter that needs no
+    per-issue LLM call or the (mis-firing) issue_year OCR heuristic."""
+    import json
+    idx_path = _REPO / "data" / "lovtidend_index.json"
+    if not idx_path.exists():
+        return {}
+    out = {}
+    for x in json.loads(idx_path.read_text(encoding="utf-8")):
+        y = str(x.get("issued", ""))[:4]
+        if y.isdigit():
+            out[x["id"]] = int(y)
+    return out
+
+
 def run(targets: set[str], years: set[int] | None = None, limit_issues: int | None = None,
-        reextract: bool = False, scoped: bool = False, model: str = target_localize.MODEL):
+        reextract: bool = False, scoped: bool = False, model: str = segment_issue.MODEL):
+    import gzip as _gz
+    import json as _json
     from openai import OpenAI
     client = OpenAI()
     issues = sorted(glob.glob(str(TEXT_DIR / "*.jsonl.gz")))
+    id2year = _catalog_years()
     recovered, unresolved = [], []
     n_issues = n_acts = 0
     for ip, path in enumerate(issues, 1):
-        try:
-            parsed = gazette.parse_issue(path)
-        except Exception:
-            continue
-        yr = parsed.get("year")
+        yr = id2year.get(Path(path).name.split(".")[0])
         if years and yr not in years:
             continue
         if yr and yr >= 2001:                       # LTI era is covered by build_omnibus
             continue
         n_issues += 1
-        for act in parsed["acts"]:
+        # LLM ACT-SEGMENTER (replaces gazette.parse_toc/split_bodies): locate every "Lov nr. N" act,
+        # verified + sliced. Unlocks the ~80% of issues the TOC-regex segmenter returned 0 acts for.
+        pages = [_json.loads(l) for l in _gz.open(path, "rt", encoding="utf-8")]
+        acts, _seg = segment_issue.segment(pages, client=client, model=model, reextract=reextract)
+        for act in acts:
             body, date, nr = act.get("body") or "", act.get("date"), act.get("nr")
             if not body or not date or not _AMEND_ACT.search(body):
                 continue                                 # not an amending act (no "I lov" marker)
-            act_dk = f"{date}-{nr}"
+            if int(date[:4]) >= 2001:
+                continue
+            act_dk = act.get("datokode") or f"{date}-{nr}"
             n_acts += 1
-            body, truncated = _bound_body(body, nr)
+            body, truncated = _bound_body(body)
             if truncated:
                 unresolved.append({"act": f"lov/{act_dk}", "reason": "body-capped",
                                    "cite": "", "anchor": f"len>{_MAX_BODY}", "year": yr})
