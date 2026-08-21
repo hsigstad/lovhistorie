@@ -35,7 +35,7 @@ if str(_REPO) not in sys.path:
 
 from source.llm import amend, target_localize
 from source.parse import gazette
-from source.scrape.build_omnibus import _is_amendatory, _norm_head, public_universe
+from source.scrape.build_omnibus import _cite_regex, _is_amendatory, _norm_head, public_universe
 
 TEXT_DIR = _REPO / "data" / "lovtidend_text"
 OUT = _REPO / "data" / "gazette_recovered.jsonl.gz"
@@ -75,10 +75,13 @@ def _flush(recovered, unresolved):
 
 
 def run(targets: set[str], years: set[int] | None = None, limit_issues: int | None = None,
-        reextract: bool = False):
+        reextract: bool = False, scoped: bool = False):
     from openai import OpenAI
     client = OpenAI()
     issues = sorted(glob.glob(str(TEXT_DIR / "*.jsonl.gz")))
+    # scoped run: only localize act bodies that CITE a target law (public-signal prefilter) — bounds
+    # a dev-law pre-2001 pass to a few dozen acts instead of every amending act in the OCR corpus.
+    tcites = {dk: _cite_regex(dk) for dk in targets} if scoped else None
     recovered, unresolved = [], []
     n_issues = n_acts = 0
     for ip, path in enumerate(issues, 1):
@@ -96,6 +99,8 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
             body, date, nr = act.get("body") or "", act.get("date"), act.get("nr")
             if not body or not date or not _CITES_LAW.search(body):
                 continue
+            if tcites is not None and not any(rx.search(body) for rx in tcites.values()):
+                continue                                 # scoped: body cites no target law
             act_dk = f"{date}-{nr}"
             n_acts += 1
             body, truncated = _bound_body(body, nr)
@@ -139,9 +144,14 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
+    ap.add_argument("--targets", nargs="*", default=None,
+                    help="restrict to these target law datokodes + prefilter act bodies to those "
+                         "citing one (cheap dev-law pass); default = full public universe")
     ap.add_argument("--years", nargs="*", type=int, default=None,
                     help="restrict to these issue years (default: all pre-2001)")
     ap.add_argument("--limit-issues", type=int, default=None)
     ap.add_argument("--reextract", action="store_true")
     a = ap.parse_args()
-    run(public_universe(), set(a.years) if a.years else None, a.limit_issues, a.reextract)
+    scoped = bool(a.targets)
+    tgts = set(a.targets) if scoped else public_universe()
+    run(tgts, set(a.years) if a.years else None, a.limit_issues, a.reextract, scoped=scoped)
