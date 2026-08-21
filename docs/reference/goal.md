@@ -97,3 +97,37 @@ and the guard in one. Prerequisites (roadmap Phase 0): the eval harness runs (do
 the gate) and the held-out Lovdata-Pro set exists (for the final point-in-time
 metric). Iterate on **convergence with inputs restricted**; do not report the
 *deliverable* done without the point-in-time metric, even when the gate exits 0.
+
+## Working method — how we pursue the goal (added 2026-08-21)
+
+**Aim, precisely:** iteratively improve the reconstruction metric on the **dev set**
+using **general fixes only**, and continue until there is a **very good, specific
+reason** a law cannot be improved further.
+
+- The metric is dev-set convergence (and point-in-time), measured across **all 9 dev
+  laws together** — never a single provision. One provision (e.g. avtaleloven §36) is
+  a **diagnostic**, never the target: a fix that only helps one provision/law is the
+  same trap as the brittle regexes we are removing.
+- Every fix must be a **mechanism that generalizes**, validated on the dev set as a
+  whole with an **A/B** showing it doesn't regress other laws — not a per-case patch.
+- **"Very good reason we cannot improve"** = a documented external/structural limit,
+  e.g. a NB digitisation hole (1984 is undigitised), a bundled-treaty annex
+  incorporated by reference (un-reconstructable by construction), a genuine
+  OCR-fidelity floor, or a harvest gap with no public source. **"The LLM missed it"
+  is NOT such a reason** — that is a general-quality lever (better prompt, model,
+  anchoring) to improve.
+- **Loop:** run → per-law delta → diagnose the *general* cause of the largest
+  residual → general fix → re-run. Stop only when the residual is all documented
+  structural limits (then `BLOCKER.md`).
+
+**Reconciling with Hard rule 3 (no LLM at runtime).** The LLM lives ONLY in the
+**offline build** that produces the amendment/base streams (the same status as
+OCR/harvest data prep), is **cached** (reproducible run-to-run), and is
+**verbatim-anchored + flag-don't-fabricate** (it emits located source slices, never
+generated text). The **runtime reconstruction** (`pipeline.reconstruct` → `load_ops`
+→ `replay` → `ledd`) stays **deterministic**: it reads pre-built public-domain
+`jsonl.gz`, uses no LLM and no answer key (G1/G2 enforce this). So rule 3's intent —
+no LLM can fabricate or "recall" the answer at eval time — holds; the LLM only helps
+*extract* public amendments offline, which a fully-deterministic (but brittle) parser
+could also do. This interpretation is load-bearing for the current direction and
+should be confirmed by HS.
