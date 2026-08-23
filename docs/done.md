@@ -1,5 +1,26 @@
 # Done
 
+## 2026-08-23 (cont. 5) — lever hunt: 3 levers piloted+rejected; LLM reconstruction proven but answer-free-capped
+
+Pushed hard on "71% isn't the ceiling" (HS). Full detail in decisions.md; arc:
+- **Re-OCR: piloted + REFUTED.** Re-OCR'd all of oreign from page images (vision LLM, source-only); char
+  quality improved but convergence 17->17 — misses are missing AMENDMENT CONTENT, not base OCR.
+- **Blanket terminology reforms: piloted, LOW** (converts 1 dev provision).
+- **Pre-2001 gazette capture: unblocked (date-only citation resolver + name-based selection + segment/
+  localize model split + hang-hardening: HTTP timeout, per-issue SIGALRM, --resume) so the sweep
+  COMPLETES; but the recovered fragmentary sub-ops are net-NEGATIVE applied (oreign 17->16). Not baked.**
+- **LLM holistic/pointer amendment application: PROVEN + cheap, but answer-free deployment capped.**
+  Deterministic ledd engine mangles sub-ops on unmarked OCR bases (rettsg §14: 24 ops -> 0.09). LLM
+  reconstructs it: §14 -> 0.72 (gpt-4.1) / 0.82 (o3). Cost solved by POINTER output (source.llm.
+  pointer_apply: model emits references, deterministic assembles verbatim -> 0% fabrication automatic,
+  output ~30-100x smaller, ~$100 corpus vs $1000+). WITH the answer (fix current-misses): gates to
+  628/829 (75.75%, +41, no regression). ANSWER-FREE: only +1..+5 with regressions, because "det dropped
+  real amendments" vs "base already correct (no-op/mis-captured amendments)" are indistinguishable
+  without the answer. => 71% is not a fundamental INFORMATION limit but is near the answer-free
+  DEPLOYMENT ceiling given current CAPTURE PRECISION. Real lever now: corroboration-filtered capture.
+- Committed infra: pointer_apply / holistic_apply / build_pointer + pipeline.load_ops pointer_ops wiring
+  (pointer_ops NOT baked). Also landed: para-parse spaced-suffix fix. Gate steady at 587/829, guards PASS.
+
 ## 2026-08-23 (cont. 4) — para-parse fix (+ §36 fully diagnosed: capture solvable, application blocked)
 
 **Para-parse fix (landed, ff3fc0e).** `_PARA` required a suffix letter IMMEDIATELY after the digits,
