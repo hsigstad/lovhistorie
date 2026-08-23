@@ -104,17 +104,46 @@ def _register_selected_acts(targets: set[str]) -> set:
     return out
 
 
+def _target_name_tokens(targets: set[str]) -> set:
+    """Distinctive lowercase NAME token per target law — the first word after 'om ' in its enactment
+    title_needle ('Lov om oreigning av fast eigedom' -> 'oreigning', 'Lov om rettsgebyr' ->
+    'rettsgebyr'). Used as a source-text prefilter that selects the issues/acts naming a target.
+    Robust to segment_issue's frequent date=None on old acts (which breaks datokode matching and
+    dropped most pre-2001 amendments — oreign §2's petroleum op was segmented as act 'None-3'), and
+    cuts the sweep from ~1033 issues to the few dozen that name a target (oreigning: 91)."""
+    from source.scrape.build_enactment import LOCATIONS, BOOKLETS
+    toks = set()
+    for dk in targets:
+        loc = LOCATIONS.get(dk) or BOOKLETS.get(dk)
+        if not loc:
+            continue
+        tn = loc.get("title_needle", "").lower()
+        m = re.search(r"\bom\s+([a-zæøå]+)", tn)
+        if m:
+            toks.add(m.group(1))
+    return toks
+
+
 def run(targets: set[str], years: set[int] | None = None, limit_issues: int | None = None,
         reextract: bool = False, scoped: bool = False, model: str = segment_issue.MODEL,
-        extract_model: str | None = None, register_guided: bool = False, whole_act: bool = False):
+        extract_model: str | None = None, localize_model: str | None = None,
+        register_guided: bool = False, whole_act: bool = False):
     # Model split (general, not per-law): segmentation + localization are LOCATION tasks mini handles
     # well and are already cached from prior sweeps; OP EXTRACTION needs the stronger model (mini drops
     # payload-carrying ops). extract_model defaults to gpt-4.1.
     extract_model = extract_model or "gpt-4.1"
+    # SEGMENTATION stays on `model` (mini) so the doc_key result cache + per-chunk cache HIT (they were
+    # built with mini; forcing 4.1 re-segments every uncached issue and hangs). LOCALIZE needs the
+    # stronger model on old acts — mini misses the nr-less date+name citation entirely (n_mentions=0).
+    localize_model = localize_model or model
     # register_guided: localize/extract ONLY the acts the register flags as amending a target
     # (prioritization → ~10-45x fewer LLM calls, identical dev-law result). Segmentation still runs
     # (cheap/cached) so we can find each act; the general localize→verify→extract path is unchanged.
-    sel_acts = _register_selected_acts(targets) if register_guided else None
+    # register_guided now selects by target-law NAME (see _target_name_tokens) rather than the
+    # register's act datokodes: segment_issue leaves date=None on many old acts, so datokode matching
+    # dropped most pre-2001 amendments. Name selection is a source-text prefilter (no answer key) that
+    # is date-independent and cuts the sweep to the ~dozens of issues/acts that name a target.
+    name_toks = _target_name_tokens(targets) if register_guided else None
     import gzip as _gz
     import json as _json
     from openai import OpenAI
@@ -129,10 +158,14 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
             continue
         if yr and yr >= 2001:                       # LTI era is covered by build_omnibus
             continue
+        pages = [_json.loads(l) for l in _gz.open(path, "rt", encoding="utf-8")]
+        if name_toks is not None:                       # name prefilter: skip issues naming no target
+            issue_txt = " ".join(p.get("text", "") for p in pages).lower()
+            if not any(t in issue_txt for t in name_toks):
+                continue
         n_issues += 1
         # LLM ACT-SEGMENTER (replaces gazette.parse_toc/split_bodies): locate every "Lov nr. N" act,
         # verified + sliced. Unlocks the ~80% of issues the TOC-regex segmenter returned 0 acts for.
-        pages = [_json.loads(l) for l in _gz.open(path, "rt", encoding="utf-8")]
         acts, _seg = segment_issue.segment(pages, client=client, model=model, reextract=reextract,
                                            doc_key=Path(path).name.split(".")[0])
         for act in acts:
@@ -142,8 +175,8 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
             if int(date[:4]) >= 2001:
                 continue
             act_dk = act.get("datokode") or f"{date}-{nr}"
-            if sel_acts is not None and act_dk not in sel_acts:
-                continue                                 # register-guided: not a flagged target-amending act
+            if name_toks is not None and not any(t in body.lower() for t in name_toks):
+                continue                                 # register-guided: act names no target law
             n_acts += 1
             body, truncated = _bound_body(body)
             if truncated:
@@ -151,7 +184,7 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
                                    "cite": "", "anchor": f"len>{_MAX_BODY}", "year": yr})
             # LLM localizes WHICH laws this act amends (targets resolved by the model, not a regex);
             # we then keep only the sections resolving to our target set.
-            secs, lrep = target_localize.localize(body, client=client, model=model, reextract=reextract)
+            secs, lrep = target_localize.localize(body, client=client, model=localize_model, reextract=reextract)
             for reason, anchor, cite in lrep.unresolved:
                 unresolved.append({"act": f"lov/{act_dk}", "reason": reason, "cite": cite,
                                    "anchor": anchor[:80], "year": yr})
@@ -201,7 +234,10 @@ if __name__ == "__main__":
                     help="restrict to these issue years (default: all pre-2001)")
     ap.add_argument("--limit-issues", type=int, default=None)
     ap.add_argument("--model", default=segment_issue.MODEL,
-                    help="LLM for segment+localize (cheap; mini default)")
+                    help="LLM for SEGMENTATION (cheap; mini default — keep mini so the cache hits)")
+    ap.add_argument("--localize-model", default=None,
+                    help="LLM for which-law localization (defaults to --model; use gpt-4.1 for "
+                         "pre-2001 acts — mini misses the nr-less date+name citation)")
     ap.add_argument("--extract-model", default="gpt-4.1",
                     help="LLM for op extraction (stronger; gpt-4.1 default)")
     ap.add_argument("--whole-act", action="store_true",
@@ -213,5 +249,5 @@ if __name__ == "__main__":
     a = ap.parse_args()
     tgts = set(a.targets) if a.targets else public_universe()
     run(tgts, set(a.years) if a.years else None, a.limit_issues, a.reextract,
-        model=a.model, extract_model=a.extract_model, register_guided=a.register_guided,
-        whole_act=a.whole_act)
+        model=a.model, extract_model=a.extract_model, localize_model=a.localize_model,
+        register_guided=a.register_guided, whole_act=a.whole_act)
