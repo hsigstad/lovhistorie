@@ -182,6 +182,7 @@ _GAZETTE = amendments.DATA.parent / "gazette_recovered.jsonl.gz"
 # the startswith('§') path, high-confidence). Dated at the provision's last op so it applies last.
 # Runtime just reads it (no LLM at runtime — rule 3). Absent → skipped.
 _APPLIED = amendments.DATA.parent / "applied_ops.jsonl.gz"
+_POINTER = amendments.DATA.parent / "pointer_ops.jsonl.gz"
 
 
 # Streams in application order, each tagged (rank, is_recovery). rank preserves the original
@@ -259,6 +260,23 @@ def load_ops(target_law: str, include_applied: bool = True):
     # Excluded when building the applied stream itself (include_applied=False) to avoid a cycle.
     if include_applied and _APPLIED.exists():
         with gzip.open(_APPLIED, "rt", encoding="utf-8") as fh:
+            for line in fh:
+                d = json.loads(line)
+                if d.get("target_law") != target_law:
+                    continue
+                ops.append({
+                    "change_type": d.get("change_type", "change"),
+                    "instruction": d.get("instruction"),
+                    "date": d.get("date_in_force_resolved") or d.get("date_in_force"),
+                    "act": d.get("act_refid"), "para": d.get("paragraph"),
+                    "new_text": d.get("new_text"),
+                })
+    # POINTER-consolidated provisions (source.scrape.build_pointer): the LLM-holistic reconstruction of
+    # provisions the ledd engine mangles. Appended AFTER applied so a same-date tie resolves in their
+    # favour (stable sort) — pointer_apply supersedes the per-op apply_op fallback. Each carries its
+    # '§ N.' heading → replay overwrites deterministically. Same include_applied gate (offline-baked).
+    if include_applied and _POINTER.exists():
+        with gzip.open(_POINTER, "rt", encoding="utf-8") as fh:
             for line in fh:
                 d = json.loads(line)
                 if d.get("target_law") != target_law:

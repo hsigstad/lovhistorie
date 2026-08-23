@@ -2,6 +2,38 @@
 
 Committed design choices.
 
+## 2026-08-23 — LLM holistic/pointer apply reconstructs mangled provisions, but ANSWER-FREE deployment is capture-precision-limited (piloted end-to-end)
+
+**What works.** The deterministic ledd engine mangles sub-provision ops on unmarked OCR bases
+(rettsgebyr §14: 24 captured amendments -> 0.09, a garbled splice). An LLM given base + ALL ordered
+amendments reconstructs it: §14 -> 0.72 (gpt-4.1), 0.82 (o3). The cost problem (HS: no >$1000 corpus)
+is solved by POINTER output (source.llm.pointer_apply): the model emits only references
+({"amendment":N} / base anchors), deterministic code assembles VERBATIM source. That makes the "0%
+fabricated" guarantee AUTOMATIC, collapses verification to a substring check, and cuts output ~30-100x
+so mini/gpt-4.1 suffice — dev ~$0.5, extrapolated corpus ~$100 (vs ~$1000+ for free-text generation).
+
+**The wall is SELECTION, and it is fundamental to answer-free operation.** Deploying this to raise
+convergence requires deciding, PER PROVISION, whether to replace the deterministic result with the
+pointer result. WITH the current text (select provisions that miss): +41 -> 628/829 (75.75%), zero
+regression — but this READS THE ANSWER to choose WHERE, so a published corpus (no answer) cannot
+reproduce it. It is gaming, not a deployable number. Every ANSWER-FREE selector tried nets only +1..+5
+WITH regressions (vphl -4..-13, oreign/foreld -1): flags (ledd dropped an op), unmarked-base gate,
+op-coverage comparison, and coverage(det)==0 all fail the same way. Root cause: a provision whose
+deterministic recon incorporated NONE of its ops is EITHER "real amendments were dropped -> applying
+helps" OR "base is already correct; the amendments were no-ops / mis-captured -> applying corrupts",
+and these are INDISTINGUISHABLE without the answer. Overriding the second class regresses converged
+provisions, offsetting the gains. The only thing the miss-based selector does that answer-free can't
+is AVOID touching already-correct provisions — and "is it already correct?" IS the answer (convergence).
+
+**Consequence.** 71% is NOT a fundamental INFORMATION limit (provisions reconstruct in isolation), but
+it is near the answer-free DEPLOYMENT ceiling GIVEN CURRENT CAPTURE PRECISION. The binding blocker is
+CAPTURE PRECISION — mis-attributed / no-op amendments that, when applied, corrupt already-correct
+provisions — plus the arbitration problem, NOT the application method (which is solved) and NOT OCR
+(refuted earlier). The real lever now is rigorous corroboration-filtered capture (remove
+mis-attributions so applying-all-captured-ops is safe), which would let pointer_apply run answer-free
+without regressions. `pointer_apply` / `holistic_apply` / `build_pointer` are committed as validated
+infrastructure (pointer_ops NOT baked into the stream — answer-free net gain is not yet clean).
+
 ## 2026-08-23 — Re-OCR is NOT a convergence lever; the misses are AMENDMENT-bound, not OCR-bound (piloted)
 
 **Finding.** A hypothesis that ~130 of the 242 dev misses were "enactment-base OCR-quality limited"
