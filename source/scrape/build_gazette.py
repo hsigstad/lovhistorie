@@ -106,7 +106,7 @@ def _register_selected_acts(targets: set[str]) -> set:
 
 def run(targets: set[str], years: set[int] | None = None, limit_issues: int | None = None,
         reextract: bool = False, scoped: bool = False, model: str = segment_issue.MODEL,
-        extract_model: str | None = None, register_guided: bool = False):
+        extract_model: str | None = None, register_guided: bool = False, whole_act: bool = False):
     # Model split (general, not per-law): segmentation + localization are LOCATION tasks mini handles
     # well and are already cached from prior sweeps; OP EXTRACTION needs the stronger model (mini drops
     # payload-carrying ops). extract_model defaults to gpt-4.1.
@@ -155,15 +155,20 @@ def run(targets: set[str], years: set[int] | None = None, limit_issues: int | No
             for reason, anchor, cite in lrep.unresolved:
                 unresolved.append({"act": f"lov/{act_dk}", "reason": reason, "cite": cite,
                                    "anchor": anchor[:80], "year": yr})
-            wanted = []
+            wanted, seen_dk = [], set()
             for dk, s in secs:
-                if dk not in targets or dk == act_dk:
+                if dk not in targets or dk == act_dk or dk in seen_dk:
                     continue
                 if not _is_amendatory(s):
                     unresolved.append({"act": f"lov/{act_dk}", "reason": "no-amendatory-cue",
                                        "cite": f"lov/{dk}", "anchor": _norm_head(s), "year": yr})
                     continue
-                wanted.append((dk, s))
+                seen_dk.add(dk)
+                # whole_act: extract the whole act for this target (not the localizer's tight slice) —
+                # the slice drops leading ops the model needs the act's framing to catch (avtaleloven
+                # §36). Pass the localizer section head as a FOCUS hint so the model extracts only THIS
+                # law's ops on the multi-law body (prevents whole-act mis-attribution).
+                wanted.append((dk, body, _norm_head(s)) if whole_act else (dk, s))
             if not wanted:
                 continue
             ops, _ = amend.extract_ops(act_dk, body, client=client, sections=wanted,
@@ -199,6 +204,8 @@ if __name__ == "__main__":
                     help="LLM for segment+localize (cheap; mini default)")
     ap.add_argument("--extract-model", default="gpt-4.1",
                     help="LLM for op extraction (stronger; gpt-4.1 default)")
+    ap.add_argument("--whole-act", action="store_true",
+                    help="extract the whole act per target (not the localizer slice) — recovers leading ops")
     ap.add_argument("--register-guided", action="store_true",
                     help="localize/extract ONLY acts the register flags as amending a target "
                          "(prioritization; ~10-45x fewer calls, identical dev-law result)")
@@ -206,4 +213,5 @@ if __name__ == "__main__":
     a = ap.parse_args()
     tgts = set(a.targets) if a.targets else public_universe()
     run(tgts, set(a.years) if a.years else None, a.limit_issues, a.reextract,
-        model=a.model, extract_model=a.extract_model, register_guided=a.register_guided)
+        model=a.model, extract_model=a.extract_model, register_guided=a.register_guided,
+        whole_act=a.whole_act)

@@ -127,13 +127,22 @@ def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = M
     resolved = inforce.resolved_date(act_datokode) or act_date
     rep = AmendReport()
     ops = []
-    for target_dk, sec in (sections if sections is not None else _split_sections(act_text)):
+    for item in (sections if sections is not None else _split_sections(act_text)):
+        target_dk, sec = item[0], item[1]
+        # optional 3rd element = a focus hint (the target law's cite): used when `sec` is a WHOLE
+        # multi-law act (whole-act extraction) so the model extracts ONLY this law's ops and does not
+        # mis-attribute another law's inline ops (the whole-act mis-attribution that regressed aksje/
+        # foreld). For a single-law section (2-tuple) there's no hint and the prompt is unchanged.
+        focus = item[2] if len(item) > 2 else None
         if only_targets is not None and target_dk not in only_targets:
             continue                                 # skip laws we don't score
+        up = (f"Extract ONLY the amendments this act makes to the law introduced as:\n"
+              f"«{focus}»\nThis act amends several laws — IGNORE amendments to every other law.\n\n{sec}"
+              if focus else sec)
         try:
             res = extract(
-                doc_id=f"{act_datokode}#{target_dk}", text=sec,
-                system_prompt=_system_prompt(), user_prompt=sec,
+                doc_id=f"{act_datokode}#{target_dk}#{'F' if focus else ''}", text=sec,
+                system_prompt=_system_prompt(), user_prompt=up,
                 schema=AmendmentOps, model=model, cache=cache, client=client,
                 reextract=reextract, use_structured_outputs=True, schema_in_cache_key=True,
                 max_tokens=16000,

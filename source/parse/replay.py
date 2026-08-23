@@ -106,14 +106,16 @@ def _apply_change_type(doc, op, flags):
             doc[para] = result
             return
         # Whole-provision "§ N skal lyde:" whose new_text lacks the '§ N.' heading (so the
-        # startswith('§') branch above missed it) and which has no sub-unit for ledd to address.
-        # INSERT-ONLY: set it only when the provision is ABSENT (a § ADDED by amendment, e.g.
-        # avtaleloven §9a). A bare-body op (no heading) is lower-confidence — often a partial/OCR-
-        # noisy extraction — so it must NEVER overwrite an existing correct provision (that caused
-        # −15 vphl / −10 foreld when it did). Guarded to clean ids so structural ops can't create
-        # garbage. A genuine whole-provision REWRITE carries its '§ N.' heading and lands on line 86.
-        if (not _SUBUNIT.search(instr) and _CLEAN_PARA.match(para or "")
-                and para not in doc):
+        # startswith('§') branch above missed it) and which has no sub-unit for ledd to address:
+        # set the provision body directly — INSERT-ONLY (para absent), e.g. a § ADDED by amendment
+        # (avtaleloven §9a). We do NOT overwrite an existing provision from a bare-body op: tried it
+        # (even recovery-only, gap-fill-gated) and it netted NEGATIVE — it converts §36 (whose 1983
+        # text is complete) but corrupts foreld provisions that converge from the enactment base yet
+        # are register-"amended", where the recovered OCR text is worse (−9 foreld). Without a
+        # point-in-time oracle we can't tell a good overwrite from a bad one, so bare-body overwrite
+        # is off. (A whole-provision REWRITE that carries its '§ N.' heading still overwrites via the
+        # startswith('§') branch above — that path is high-confidence.)
+        if not _SUBUNIT.search(instr) and _CLEAN_PARA.match(para or "") and para not in doc:
             doc[para] = _strip_heading(new)
             return
     _flag(flags, op, ct)                    # renumber / move / unknown / unhandled
