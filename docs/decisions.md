@@ -31,6 +31,30 @@ re-processing infrastructure — it was empirically shown not to move the metric
 OCR-heavy AND lightly-amended could differ, but the most OCR-damaged dev law showed no gain, so the
 burden of proof is on any future OCR claim: pilot one law end-to-end first.)
 
+## 2026-08-23 — Pre-2001 gazette capture: UNBLOCKED + completable, but net-negative convergence (piloted end-to-end)
+
+**Finding.** The pre-2001 amendment-capture lever (the one the OCR/terminology pilots pointed to) was
+unblocked and run to completion on oreigningslova. Fixed the real capture bugs — date-only citation
+resolution (7ad2cc4), name-based issue/act selection (segment_issue leaves date=None so datokode
+matching failed), segment/localize model split (mini misses old-act mentions), and hang-hardening
+(HTTP client timeout + per-issue SIGALRM + resume) so the sweep COMPLETES instead of hanging. Capture
+yield rose ~7x (1 op/700 issues → the full oreign sweep captured 7 ops incl. real §2 list-additions).
+
+**But convergence went 17/31 → 16/31 (−1).** The recovered pre-2001 ops are partial/fragmentary
+sub-provision ops (list-item / ledd changes) that, gap-filled onto unmarked OCR bases, CORRUPT
+provisions rather than converge them: §30 0.31, §1 emptied by an op with blank new_text. And the
+heavily-amended provisions need ALL their amendments to converge (§2's list grew 42→54 across ~12
+acts; a few captured fragments make it worse, not better). Residual capture failures also remain:
+14 cite-unresolved (name-only / ambiguous-date cites) + 11 body-capped (huge omnibus acts truncated).
+
+**Consequence.** Pre-2001 gazette capture is NOT a viable general convergence lever as-is — the ops
+are too fragmentary and their partial application is net-negative. Three levers are now piloted and
+rejected on the dev set (re-OCR, terminology reforms, pre-2001 capture); the dev set is at its
+practical general-fix ceiling (consistent with the ~0.90-0.94 real-ceiling estimate). The capture
+hardening is committed as reusable infrastructure (it correctly completes now), but the gazette ops
+are NOT baked into the stream (they regress). Reviving this lever needs op-QUALITY work (whole-
+provision capture, precise sub-op application, all-amendments-or-none gating), not more capture volume.
+
 ## 2026-08-23 — Blanket terminology reforms are LOW-payoff on the dev set (piloted)
 
 **Finding.** Hypothesis: uncaptured blanket terminology reforms ("ordet «X» endrast til «Y»", e.g. the
