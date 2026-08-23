@@ -164,10 +164,17 @@ def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = M
                 rep.payload_ops += 1
                 h, t = op.payload_head.strip(), op.payload_tail.strip()
                 rh = _nfind(norm_sec, offs, h, cursor) if h else None
-                rt = _nfind(norm_sec, offs, t, rh[2]) if (t and rh) else None
+                # Search the tail from the head's START, not its end: the model sometimes returns a
+                # payload_head that already spans most/all of the payload, so the tail (a suffix)
+                # lies INSIDE the head span and a search after head-end silently fails
+                # (anchor-not-found dropped a valid §17 punktum op on avtaleloven). Anchoring the
+                # tail from the head's start and taking the later end covers head-contains-tail,
+                # tail-after-head, and head==tail alike.
+                h_start = rh[2] - len(_norm(h)) if rh else 0     # normalized start of the head match
+                rt = _nfind(norm_sec, offs, t, h_start) if (t and rh) else None
                 if rh and rt:
-                    new_text = " ".join(sec[rh[0]:rt[1]].split())
-                    cursor = rt[2]
+                    new_text = " ".join(sec[rh[0]:max(rh[1], rt[1])].split())
+                    cursor = max(rh[2], rt[2])
                     rep.substring_ok += 1
                 else:
                     rep.flagged.append((op.target_paragraf, "anchor-not-found"))

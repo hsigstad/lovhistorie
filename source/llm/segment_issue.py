@@ -36,7 +36,7 @@ except ModuleNotFoundError:  # pragma: no cover
 
 from pydantic import BaseModel
 
-from source.llm.target_localize import _build_norm, _locate, _norm
+from source.llm.target_localize import _build_norm, _hh, _locate, _norm
 from source.parse import gazette
 
 PROMPT_DIR = Path(__file__).parent / "prompts"
@@ -115,7 +115,7 @@ def segment(pages, *, client=None, model: str = MODEL, cache: LLMCache = CACHE,
     for ci, (base, chunk) in enumerate(_chunks(full)):
         try:
             res = extract(
-                doc_id=f"issueacts#{len(full)}#{ci}#{hash(chunk) & 0xffffffff:x}", text=chunk,
+                doc_id=f"issueacts#{len(full)}#{ci}#{_hh(chunk)}", text=chunk,
                 system_prompt=_system_prompt(), user_prompt=chunk, schema=IssueActs,
                 model=model, cache=cache, client=client, reextract=reextract,
                 use_structured_outputs=True, schema_in_cache_key=True, max_tokens=8000,

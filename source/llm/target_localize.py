@@ -23,6 +23,7 @@ ANTI-GAMING: reads only the public act + the model's anchors/cites (cached). No 
 """
 from __future__ import annotations
 
+import hashlib
 import re
 import sys
 from dataclasses import dataclass, field
@@ -49,6 +50,30 @@ MODEL = "gpt-4.1"
 CACHE = LLMCache(_REPO / "data" / "llm_cache" / "target_mentions")
 
 _WS = re.compile(r"\s+")
+
+
+def _hh(*parts: str) -> str:
+    """Deterministic short content hash for cache doc_ids. Builtin hash() is randomized per
+    process (PYTHONHASHSEED), so using it in a doc_id defeats the on-disk LLM cache ACROSS runs
+    — every fresh process re-paid the call. sha256 is stable, so the cache now hits run-to-run."""
+    return hashlib.sha256("\x00".join(parts).encode()).hexdigest()[:8]
+
+
+# A NEW target-law amendment block inside an omnibus act opens with a law citation immediately
+# followed by an amendatory intro. This is the DETERMINISTIC block grid used to bound each
+# localized section at the next block — even when the LLM mention list MISSED that law (a recall
+# gap on many-law acts): without it, one law's section over-extends and swallows the FOLLOWING
+# law's ops (grannegjerde's §5/§8 leaked into oreign in lov/2013-06-21-100, because the model
+# didn't list grannegjerde). It generalizes lti_amendments._BLOCK_HEADER beyond the Bokmål
+# "gjøres følgende endringer:" to the Nynorsk "skal det gjerast slike endringar:" and the direct
+# single-op form ("... skal § 22 f oppheves"), with an optional leading item number ("2." / "II.").
+# Source-signal only (matches the header, never the answer text); when NO block matches (a
+# format the grid can't see) the old anchor-to-anchor slicing is kept, so recall never drops.
+_NEXT_BLOCK = re.compile(
+    r"(?:\b(?:\d{1,2}\.|[IVX]+\.)\s+)?"                                          # optional item no.
+    r"(?:\bI\s+)?\blov\s+\d{1,2}\.?\s*[a-zæøå]+\.?\s*\d{4}(?:\s*nr\.?\s*\d+)?"   # law citation
+    r"(?:\s+(?:um|om)\s+[^§]{0,90}?)?"                                           # optional "om <name>"
+    r"\s+skal\s+(?:det\s+gj|gj[øo]res|§|f[øo]lg)", re.I)
 
 
 def _norm(s: str) -> str:
@@ -126,7 +151,7 @@ def localize(act_text: str, *, client=None, model: str = MODEL, cache: LLMCache 
     rep = LocalizeReport()
     try:
         res = extract(
-            doc_id=f"mentions#{len(act_text)}#{hash(act_text) & 0xffffffff:x}", text=act_text,
+            doc_id=f"mentions#{len(act_text)}#{_hh(act_text)}", text=act_text,
             system_prompt=(PROMPT_DIR / "target_localize_system.txt").read_text(encoding="utf-8"),
             user_prompt=act_text, schema=TargetMentions, model=model, cache=cache, client=client,
             reextract=reextract, use_structured_outputs=True, schema_in_cache_key=True,
@@ -165,9 +190,18 @@ def localize(act_text: str, *, client=None, model: str = MODEL, cache: LLMCache 
         cursor = pos + 1
 
     located.sort()
+    # deterministic block grid: bound each section at the end of the block CONTAINING its anchor,
+    # so a missed mention can't let a section swallow the next law's ops (see _NEXT_BLOCK). bisect
+    # the anchor into the grid; end at the next block boundary. No block info -> keep anchor-to-anchor.
+    import bisect
+    grid = sorted(m.start() for m in _NEXT_BLOCK.finditer(act_text))
     sections = []
     for i, (pos, dk) in enumerate(located):
         end = located[i + 1][0] if i + 1 < len(located) else len(act_text)
+        if grid:
+            bi = bisect.bisect_right(grid, pos) - 1        # block whose header starts at/<= anchor
+            if bi + 1 < len(grid) and grid[bi + 1] < end:  # next block boundary bounds this section
+                end = grid[bi + 1]
         sections.append((dk, act_text[pos:end]))
         rep.resolved += 1
     return sections, rep

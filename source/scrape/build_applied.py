@@ -34,6 +34,44 @@ DEV = ["lov/1918-05-31-4", "lov/1959-10-23-3", "lov/1979-05-18-18", "lov/1982-12
        "lov/2009-06-19-103"]
 
 
+def _corroboration_filter(law: str, ops: list) -> tuple[list, int]:
+    """Drop ops the applicator must NOT force-apply because our own localize-then-verify pipeline
+    CONTRADICTS their attribution. For any amending act our omnibus/gazette localizer processed for
+    this law (found >=1 provision), we trust OUR verified provision-list for that act: an op naming a
+    provision our localization of the SAME act did not find is a mis-attribution the external stream
+    made (rettsgebyrloven §11 was mis-filed onto oreign §11 — skjønnsloven/rettsgebyr content; the
+    ledd engine harmlessly dropped it, but the applicator would force it onto oreign §11 and corrupt a
+    converging provision). This is source-only (our localizer vs the external stream, never the answer
+    key) and scoped to the APPLICATOR: the deterministic runtime path is untouched, so no recall risk.
+    """
+    import gzip as _gz
+    import json as _json
+    our_acts, our_pairs = set(), set()          # acts we localized; (act, para) we verified
+    for fn in ("omnibus_recovered.jsonl.gz", "gazette_recovered.jsonl.gz"):
+        p = _REPO / "data" / fn
+        if not p.exists():
+            continue
+        with _gz.open(p, "rt", encoding="utf-8") as fh:
+            for line in fh:
+                d = _json.loads(line)
+                if d.get("target_law") != law:
+                    continue
+                act = d.get("act_refid")
+                para = (d.get("paragraph") or "").replace(" ", "")
+                if act:
+                    our_acts.add(act)
+                    if para:
+                        our_pairs.add((act, para))
+    kept, dropped = [], 0
+    for o in ops:
+        act, para = o.get("act"), o.get("para")
+        if act in our_acts and para and (act, para) not in our_pairs:
+            dropped += 1                          # our verified localization of this act omits `para`
+            continue
+        kept.append(o)
+    return kept, dropped
+
+
 def run(laws, model=apply_op.MODEL, reextract=False):
     from openai import OpenAI
     client = OpenAI()
@@ -44,6 +82,10 @@ def run(laws, model=apply_op.MODEL, reextract=False):
         if not base or not ops:
             print(f"{law}: no base/ops, skip", flush=True)
             continue
+        ops, n_dropped = _corroboration_filter(law, ops)
+        if n_dropped:
+            print(f"{law}: corroboration-filter dropped {n_dropped} localizer-contradicted ops",
+                  flush=True)
 
         def fb(prov, instr, new, ct, _law=law):
             return apply_op.apply_op(prov, instr, new, ct, client=client, model=model,

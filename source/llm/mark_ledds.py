@@ -32,7 +32,7 @@ except ModuleNotFoundError:  # pragma: no cover
 
 from pydantic import BaseModel
 
-from source.llm.target_localize import _build_norm, _locate, _norm
+from source.llm.target_localize import _build_norm, _hh, _locate, _norm
 
 MODEL = "gpt-4.1-mini"
 CACHE = LLMCache(_REPO / "data" / "llm_cache" / "ledd_marks")
@@ -69,7 +69,7 @@ def mark_ledds(text: str, *, client=None, model: str = MODEL, cache: LLMCache = 
         from openai import OpenAI
         client = OpenAI()
     try:
-        res = extract(doc_id=f"ledd#{doc_id}#{hash(text) & 0xffffffff:x}", text=text,
+        res = extract(doc_id=f"ledd#{doc_id}#{_hh(text)}", text=text,
                       system_prompt=PROMPT, user_prompt=text, schema=LeddStarts, model=model,
                       cache=cache, client=client, reextract=reextract,
                       use_structured_outputs=True, schema_in_cache_key=True, max_tokens=2000)

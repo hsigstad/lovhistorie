@@ -35,7 +35,7 @@ from pydantic import BaseModel
 
 import re
 
-from source.llm.target_localize import _build_norm, _norm
+from source.llm.target_localize import _build_norm, _hh, _norm
 
 # Sub-unit ops (ledd/punktum/nr/bokstav) target only PART of a provision; a whole-provision "§ N skal
 # lyde:" (no sub-unit) replaces everything and is exempt from the oversize-span guard below.
@@ -95,7 +95,7 @@ def apply_op(provision: str, instruction: str, new_text: str, op_type: str, *,
         from openai import OpenAI
         client = OpenAI()
     try:
-        res = extract(doc_id=f"applyop#{doc_id}#{hash((provision, instruction)) & 0xffffffff:x}",
+        res = extract(doc_id=f"applyop#{doc_id}#{_hh(provision, instruction)}",
                       text=provision, system_prompt=PROMPT,
                       user_prompt=f"INSTRUCTION: {instruction}\n\nPROVISION:\n{provision}",
                       schema=OpSpan, model=model, cache=cache, client=client, reextract=reextract,
