@@ -181,8 +181,10 @@ def localize(act_text: str, *, client=None, model: str = MODEL, cache: LLMCache 
         if pos < 0:
             rep.unresolved.append(("anchor-not-found", anchor, cite))
             continue
-        # (c) resolve datokode: date-phrase route, then bare-datokode route
-        dk = gazette.datokode("lov " + cite) or _bare_datokode(cite) or gazette.datokode("lov " + anchor)
+        # (c) resolve datokode: date+nr phrase route, bare-datokode route, then the date-only route
+        # (nr-less 'lov av <date>' cites in old acts, matched to a tracked law by enactment date)
+        dk = (gazette.datokode("lov " + cite) or _bare_datokode(cite)
+              or gazette.datokode("lov " + anchor) or _date_only_datokode(anchor))
         if not dk:
             rep.unresolved.append(("cite-unresolved", anchor, cite))
             continue
@@ -213,6 +215,60 @@ _BARE = re.compile(r"\b(\d{4})-(\d{2})-(\d{2})-(\d+)\b")
 def _bare_datokode(cite: str):
     m = _BARE.search(cite)
     return f"{m.group(1)}-{m.group(2)}-{m.group(3)}-{m.group(4)}" if m else None
+
+
+# Date-only citation fallback. OLD amending acts cite the target by DATE + NAME without the "nr."
+# ("I lov av 23. oktober 1959 om oreigning …"), which the nr-anchored gazette.datokode cannot resolve
+# — the dominant reason pre-2001 amendments were dropped (probe 2026-08-23: oreign captured ~0/41).
+# Resolve such a cite by matching its DATE against the laws we TRACK (enactment bases + the public
+# amendment streams' target laws): if exactly ONE tracked law was enacted on that date, use it.
+# Source-only (public act date vs our tracked universe, never the answer key) and conservative (a date
+# with >1 tracked law is left unresolved, not guessed). Only tracked laws matter — an amendment to an
+# untracked law is out of scope anyway.
+_LAW_DATES = None
+_DATE_RX = re.compile(r"\b0?(\d{1,2})\.?\s*([a-zæøå]{3,})\.?\s*(\d{4})\b", re.I)
+
+
+def _tracked_law_dates():
+    global _LAW_DATES
+    if _LAW_DATES is not None:
+        return _LAW_DATES
+    import glob
+    import gzip as _gz
+    import json as _json
+    data = _REPO / "data"
+    m: dict[str, set] = {}
+    for f in glob.glob(str(data / "enactment" / "*.json")):
+        dk = Path(f).name.split(".")[0]
+        if re.match(r"\d{4}-\d{2}-\d{2}-\d+$", dk):
+            m.setdefault(dk[:10], set()).add(dk)
+    for s in ("amendments.jsonl.gz", "lti_amendments.jsonl.gz", "llm_amendments.jsonl.gz"):
+        p = data / s
+        if not p.exists():
+            continue
+        for line in _gz.open(p, "rt", encoding="utf-8"):
+            tl = (_json.loads(line).get("target_law") or "")
+            dk = tl.split("/", 1)[1] if tl.startswith("lov/") else ""
+            if re.match(r"\d{4}-\d{2}-\d{2}-\d+$", dk):
+                m.setdefault(dk[:10], set()).add(dk)
+    _LAW_DATES = m
+    return m
+
+
+def _date_only_datokode(text: str):
+    """A tracked law's full datokode from a nr-less 'DD. month YYYY' date in `text`, iff that date
+    maps to exactly one tracked law. None if no date, no tracked match, or an ambiguous date."""
+    for mt in _DATE_RX.finditer(text):
+        d, mon, y = mt.group(1), mt.group(2).lower(), mt.group(3)
+        num = gazette._MONTHS.get(mon)
+        if not num:                                   # OCR-tolerant prefix match
+            num = next((n for name, n in gazette._MONTHS.items() if name[:3] == mon[:3]), None)
+        if not num:
+            continue
+        hits = _tracked_law_dates().get(f"{y}-{int(num):02d}-{int(d):02d}")
+        if hits and len(hits) == 1:
+            return next(iter(hits))
+    return None
 
 
 if __name__ == "__main__":

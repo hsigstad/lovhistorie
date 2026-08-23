@@ -53,6 +53,24 @@ def _nfind(norm_sec, offs, anchor, ncur):
         return None
     return offs[j], offs[j + len(a) - 1] + 1, j + len(a)
 
+
+def _nfind_tail_end(norm_sec, offs, anchor, ncur):
+    """Locate the END (raw index) of a payload TAIL anchor, tolerant to OCR damage in its LEADING
+    words. Only the tail's END bounds the span, so try the full anchor first, then progressively
+    DROP leading words (keep the suffix), taking the longest suffix that matches at/after `ncur`.
+    Returns (raw_end, norm_ncur) or None. This recovers whole-provision payloads whose tail contains
+    an OCR-garbled word the model silently cleaned (avtaleloven §36 'kontraktsrettslig sedvane.' —
+    the OCR mangles 'kontraktsrettslig' so the full tail never byte-matches, but 'sedvane.' does)."""
+    words = _norm(anchor).split()
+    for i in range(len(words)):
+        cand = " ".join(words[i:])
+        if len(cand) < 8:            # too short to be safe -> stop (flag-don't-fabricate)
+            break
+        j = norm_sec.find(cand, ncur)
+        if j >= 0:
+            return offs[j + len(cand) - 1] + 1, j + len(cand)
+    return None
+
 PROMPT_DIR = Path(__file__).parent / "prompts"
 MODEL = "gpt-4.1"
 CACHE = LLMCache(_REPO / "data" / "llm_cache" / "amend_ops")
@@ -156,9 +174,15 @@ def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = M
                 # tail-after-head, and head==tail alike.
                 h_start = rh[2] - len(_norm(h)) if rh else 0     # normalized start of the head match
                 rt = _nfind(norm_sec, offs, t, h_start) if (t and rh) else None
-                if rh and rt:
-                    new_text = " ".join(sec[rh[0]:max(rh[1], rt[1])].split())
-                    cursor = max(rh[2], rt[2])
+                # tail exact-match failed (OCR damage in the tail's leading words) -> locate its END
+                # by longest matching suffix, so an OCR-garbled word mid-tail can't drop the whole op.
+                tail = None
+                if rh and t:
+                    tail = (rt[1], rt[2]) if rt else _nfind_tail_end(norm_sec, offs, t, h_start)
+                if rh and tail is not None:
+                    tail_end, tail_ncur = tail
+                    new_text = " ".join(sec[rh[0]:max(rh[1], tail_end)].split())
+                    cursor = max(rh[2], tail_ncur)
                     rep.substring_ok += 1
                 else:
                     rep.flagged.append((op.target_paragraf, "anchor-not-found"))
