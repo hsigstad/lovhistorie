@@ -1,5 +1,34 @@
 # Done
 
+## 2026-08-23 — the ledd engine works; OCR-base laws are ledd-STRUCTURE-then-QUALITY floored
+
+- **HS pushback ("we can't only apply 2 amendments") was RIGHT and led to the real diagnosis.**
+  avtaleloven captures 19 ops across 13 provisions but APPLIES only 6 (2 changed + 4 inserted). The
+  other sub-provision ops (§14/§17/§21/§27/§38) are DROPPED. Decisive contrast:
+  - **aksjeloven (clean/XML base): 94/131 sub-provision amendments applied** — the ledd engine WORKS.
+  - **avtaleloven (OCR base): 0/6** — because the OCR base has **0/40 `(N)` ledd markers** (flattened
+    prose), so "annet ledd skal lyde:" can't address the 2nd ledd → ledd.apply returns None → drop.
+- **Built `source/llm/mark_ledds.py`** (LLM localize-then-verify: mark ledd boundaries in an OCR
+  provision, insert `(N)` markers; offline base-prep, rule-3-clean). PROVEN: with §21 ledd-marked,
+  its amendment applies and §21 **0.30→0.99 (converges)**; §14 also applies.
+- **BUT aggregate ledd-marking nets FLAT/−1 on avtaleloven** — same as the pre-2001-overwrite and
+  whole-act levers. Gains (§21, §14) are offset by regressions: mis-marked ledds (§38 0.34→0.16) and
+  provisions that converged *coincidentally from the enactment base* whose (OCR-noisy) amendment,
+  once applied, no longer matches current. THREE independent application levers now net ~0 on the
+  OCR-base dev laws.
+- **Conclusion (the "very good reason", triangulated):** the ledd engine + amendment machinery WORK
+  (aksje 94 applied; §21/§36 individually recoverable). The OCR-base dev laws
+  (avtale/oreign/foreld/rettsg/mester/kjøp) are floored FIRST by missing ledd structure and THEN by
+  OCR TEXT quality (base + amendment text): applying more amendments trades a clean gain for a noisy
+  regression, netting flat. The dev set holds at **571**. The genuine unlocks are (a) higher-fidelity
+  OCR of the bases, or (b) a point-in-time oracle to gate which applications actually improve — NOT
+  more application machinery (overwrite/whole-act/ledd-marking are all built + net-flat, kept as
+  opt-in infra behind that gate).
+- Regex sweep status: biggest KILL done (gazette seg → LLM segmenter). Lingering OFFLINE KILL targets:
+  endringslov (legacy pre2001), build_enactment OCR base segmenter (non-avtaleloven), amend._SECTION
+  fallback. RUNTIME parsers (ledd engine, pipeline block-splits, replay, metrics scorer) stay
+  DETERMINISTIC by rule 3 — reclassified keep-and-improve, not kill.
+
 ## 2026-08-21 (cont.) — ITERATION 1: pre-2001 recovery is FLAT on convergence (a real reason, not a bug)
 
 - **Dev-set A/B (with vs without the pre-2001 gazette_recovered stream): 571 → 571, +0 on EVERY
