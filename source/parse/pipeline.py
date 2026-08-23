@@ -95,21 +95,43 @@ def _split_block(new_text: str):
 
 # A whole-CHAPTER add ("4de kapitel. <title> § 38 a. <title> <body> § 38 b. …") carries several
 # NEW provisions inline. The op extractor emits this as ONE op (para "§kapittelN"), burying §38a/
-# §38b; splitting it here recovers them. Boundary = an inline '§ N[letter]. <Capitalised title>'
-# — the period + capitalised title distinguishes a real heading from a cross-ref ('jf. § 2-2',
-# no trailing title), the same discipline as _BLOCK's period anchor.
+# §38b; splitting it here recovers them.
 _CHAP_HEAD = re.compile(r"^\s*(?:\d+\s*(?:de|te|dje|ne|nde)?\.?\s+kapi(?:t|tt)el|"
                         r"(?:nytt?\s+)?kapittel\s+\d+)", re.I)
-_CHAP_SPLIT = re.compile(r"(?=§\s*\d+\s*[a-zæøå]?\.\s+[A-ZÆØÅ])")
+# Provision-heading candidate inside a chapter block: '§ N[-M][letter].' — NB no space/capital
+# required after the period (OCR renders it both "§ 38 a. Virkeområde" and "§ 38 a.Virkeområde").
+_CHAP_HEADING = re.compile(r"§\s*(\d+)(?:-(\d+))?\s*([a-zæøå])?\s*\.")
+
+
+def _prov_sortkey(pid: str):
+    """(chapter, section, suffix) order key for a provision id like §38a / §5-8a."""
+    m = re.match(r"§(\d+)(?:-(\d+))?([a-zæøå])?$", pid)
+    if not m:
+        return None
+    return (int(m.group(1)), int(m.group(2) or 0), m.group(3) or "")
 
 
 def _split_chapter(new_text: str):
-    """[(para, piece_with_heading)] for the provisions inside a chapter-add block; [] if none."""
+    """[(para, piece_with_heading)] for the provisions inside a chapter-add block; [] if none.
+
+    Splits on '§ N[letter].' headings, but keeps ONLY the strictly-ASCENDING run of them (chapter
+    provisions ascend: §38a→§38b; body cross-references like 'jf. § 2-2' are lower/out-of-order and
+    are skipped). This is robust to OCR spacing after the period — where the old capital-after-space
+    boundary silently failed on the authoritative external stream ("§ 38 a.Virkeområde")."""
+    cands = []
+    for m in _CHAP_HEADING.finditer(new_text):
+        pid = _heading_id(new_text[m.start():])
+        k = _prov_sortkey(pid) if pid else None
+        if k:
+            cands.append((m.start(), pid, k))
+    kept, last = [], None
+    for pos, pid, k in cands:
+        if last is None or k > last:          # strictly ascending → real chapter provision
+            kept.append((pos, pid)); last = k
     pieces = []
-    for part in _CHAP_SPLIT.split(new_text):
-        para = _heading_id(part)
-        if para:
-            pieces.append((para, part.strip()))
+    for i, (pos, pid) in enumerate(kept):
+        end = kept[i + 1][0] if i + 1 < len(kept) else len(new_text)
+        pieces.append((pid, new_text[pos:end].strip()))
     return pieces
 
 
