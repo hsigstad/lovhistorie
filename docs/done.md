@@ -1,5 +1,23 @@
 # Done
 
+## 2026-08-23 (cont. 3) — LLM base for OCR-digit-confusion booklets: +9 dev (578->587)
+
+Last OCR-brittle spot on the convergence path: the regex heading parser (`_HEAD`, digit-anchored)
+silently dropped provisions whose OCR heading suffered **digit-confusion**. rettsgebyr and kjøp
+booklets render `§ 1.` as `§ l.` (letter ell), so §1 was dropped ENTIRELY; similar 1->l/0->O
+confusions dropped kjøp §50/§71. All were LIVE convergence misses (sim 0.0, absent from recon).
+Patching `_HEAD` per-glyph (l->1, O->0, S->5, …) is the endless-regex trap — so instead routed these
+two booklet bases through the LLM boundaries-only segmenter (`segment_base`), which reads the heading
+from context, source-faithful (38/38, 99/99 verbatim, 0 dropped, fabrication-guarded).
+- `build_booklet` gains `use_llm` (default = datokode in LLM_BASE_LAWS), mirroring `build()`.
+- LLM_BASE_LAWS += rettsgebyr + kjøp. **Dev A/B, guards PASS: rettsgebyr 7->10/34 (+3), kjøp
+  62->68/87 (+6). Total 578->587 (0.7081).**
+- oreigningslova/mesterbrev/foreldelsesloven confirmed NOT segmentation-limited (stay on regex —
+  their missing provisions are convention annexes + amendment-added §s, not dropped headings).
+- Enactment-base segmenter was the "other remaining regex kill" (see the 2026-08-16 decision "move
+  fragile heading-DETECTION to LLM"). It stays a HYBRID by design: LLM where OCR defeats the regex,
+  regex for clean-heading bases (not brittle there). endringslov KEPT (see decisions.md).
+
 ## 2026-08-23 (cont. 2) — omnibus mis-attribution + payload anchoring + deterministic cache: +2 dev (576->578)
 
 Chased the oreign -3 regression from the applicator to its root, plus advanced the regex-kill sweep.

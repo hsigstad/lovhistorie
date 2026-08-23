@@ -81,10 +81,10 @@
     "similarity_mean": 0.8795
   },
   "as_of": "2026-08-23",
-  "convergence": 0.6972,
-  "convergence_strict": 0.6043,
-  "matched": 578,
-  "matched_strict": 501,
+  "convergence": 0.7081,
+  "convergence_strict": 0.6092,
+  "matched": 587,
+  "matched_strict": 505,
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -127,7 +127,7 @@
     {
       "datokode": "1982-12-17-86",
       "law": "rettsgebyrloven",
-      "matched": 7,
+      "matched": 10,
       "total": 34,
       "tau": 0.9,
       "annex": 0
@@ -143,7 +143,7 @@
     {
       "datokode": "1988-05-13-27",
       "law": "kjøpsloven",
-      "matched": 62,
+      "matched": 68,
       "total": 87,
       "tau": 0.9,
       "annex": 92
