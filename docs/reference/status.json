@@ -18,8 +18,8 @@
         },
         {
           "date": "2024-01-01",
-          "rate": 0.642,
-          "mean": 0.823
+          "rate": 0.648,
+          "mean": 0.827
         }
       ]
     },
@@ -77,14 +77,14 @@
   ],
   "point_in_time_summary": {
     "n_versions": 10,
-    "rate_mean": 0.7845,
-    "similarity_mean": 0.8794
+    "rate_mean": 0.7851,
+    "similarity_mean": 0.8798
   },
   "as_of": "2026-08-23",
-  "convergence": 0.6888,
-  "convergence_strict": 0.6031,
-  "matched": 571,
-  "matched_strict": 500,
+  "convergence": 0.6948,
+  "convergence_strict": 0.6019,
+  "matched": 576,
+  "matched_strict": 499,
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -103,7 +103,7 @@
     {
       "datokode": "1918-05-31-4",
       "law": "avtaleloven",
-      "matched": 34,
+      "matched": 35,
       "total": 45,
       "tau": 0.9,
       "annex": 0
@@ -111,7 +111,7 @@
     {
       "datokode": "1959-10-23-3",
       "law": "oreigningslova",
-      "matched": 18,
+      "matched": 15,
       "total": 31,
       "tau": 0.9,
       "annex": 0
@@ -119,7 +119,7 @@
     {
       "datokode": "1979-05-18-18",
       "law": "foreldelsesloven",
-      "matched": 19,
+      "matched": 20,
       "total": 33,
       "tau": 0.9,
       "annex": 46
@@ -127,7 +127,7 @@
     {
       "datokode": "1982-12-17-86",
       "law": "rettsgebyrloven",
-      "matched": 4,
+      "matched": 7,
       "total": 34,
       "tau": 0.9,
       "annex": 0
@@ -135,7 +135,7 @@
     {
       "datokode": "1986-06-20-35",
       "law": "mesterbrevloven",
-      "matched": 4,
+      "matched": 5,
       "total": 11,
       "tau": 0.9,
       "annex": 0
@@ -151,7 +151,7 @@
     {
       "datokode": "1997-06-13-44",
       "law": "aksjeloven",
-      "matched": 190,
+      "matched": 192,
       "total": 291,
       "tau": 0.9,
       "annex": 0
