@@ -331,6 +331,38 @@ and the guard in one. Prerequisites (roadmap Phase 0): the eval harness runs (do
 the gate) and the held-out Lovdata-Pro set exists (for the final point-in-time
 metric). Iterate on <strong>convergence with inputs restricted</strong>; do not report the
 <em>deliverable</em> done without the point-in-time metric, even when the gate exits 0.</p>
+<h2 id="working-method-how-we-pursue-the-goal-added-2026-08-21">Working method — how we pursue the goal (added 2026-08-21)</h2>
+<p><strong>Aim, precisely:</strong> iteratively improve the reconstruction metric on the <strong>dev set</strong>
+using <strong>general fixes only</strong>, and continue until there is a <strong>very good, specific
+reason</strong> a law cannot be improved further.</p>
+<ul>
+<li>The metric is dev-set convergence (and point-in-time), measured across <strong>all 9 dev
+laws together</strong> — never a single provision. One provision (e.g. avtaleloven §36) is
+a <strong>diagnostic</strong>, never the target: a fix that only helps one provision/law is the
+same trap as the brittle regexes we are removing.</li>
+<li>Every fix must be a <strong>mechanism that generalizes</strong>, validated on the dev set as a
+whole with an <strong>A/B</strong> showing it doesn't regress other laws — not a per-case patch.</li>
+<li><strong>&quot;Very good reason we cannot improve&quot;</strong> = a documented external/structural limit,
+e.g. a NB digitisation hole (1984 is undigitised), a bundled-treaty annex
+incorporated by reference (un-reconstructable by construction), a genuine
+OCR-fidelity floor, or a harvest gap with no public source. <strong>&quot;The LLM missed it&quot;
+is NOT such a reason</strong> — that is a general-quality lever (better prompt, model,
+anchoring) to improve.</li>
+<li><strong>Loop:</strong> run → per-law delta → diagnose the <em>general</em> cause of the largest
+residual → general fix → re-run. Stop only when the residual is all documented
+structural limits (then <code>BLOCKER.md</code>).</li>
+</ul>
+<p><strong>Reconciling with Hard rule 3 (no LLM at runtime).</strong> The LLM lives ONLY in the
+<strong>offline build</strong> that produces the amendment/base streams (the same status as
+OCR/harvest data prep), is <strong>cached</strong> (reproducible run-to-run), and is
+<strong>verbatim-anchored + flag-don't-fabricate</strong> (it emits located source slices, never
+generated text). The <strong>runtime reconstruction</strong> (<code>pipeline.reconstruct</code> → <code>load_ops</code>
+→ <code>replay</code> → <code>ledd</code>) stays <strong>deterministic</strong>: it reads pre-built public-domain
+<code>jsonl.gz</code>, uses no LLM and no answer key (G1/G2 enforce this). So rule 3's intent —
+no LLM can fabricate or &quot;recall&quot; the answer at eval time — holds; the LLM only helps
+<em>extract</em> public amendments offline, which a fully-deterministic (but brittle) parser
+could also do. This interpretation is load-bearing for the current direction and was
+CONFIRMED by HS (2026-08-21).</p>
 
 </div>
 </main>
