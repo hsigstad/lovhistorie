@@ -157,6 +157,13 @@ _OMNIBUS = amendments.DATA.parent / "omnibus_recovered.jsonl.gz"
 # current-dump register undercounts these (many touch since-superseded text), so they help POINT-IN-
 # TIME more than convergence-to-current. Absent → skipped.
 _GAZETTE = amendments.DATA.parent / "gazette_recovered.jsonl.gz"
+# Derived PRE-APPLIED stream (source.scrape.build_applied): for provisions whose sub-provision ops
+# the deterministic ledd engine can't apply (OCR base lacks ledd markers), an OFFLINE pass replays
+# them with the LLM applicator (source.llm.apply_op — localize span + splice, span-guarded) and bakes
+# the FINAL provision text as a whole-provision op (carries its '§ N.' heading → replay overwrites via
+# the startswith('§') path, high-confidence). Dated at the provision's last op so it applies last.
+# Runtime just reads it (no LLM at runtime — rule 3). Absent → skipped.
+_APPLIED = amendments.DATA.parent / "applied_ops.jsonl.gz"
 
 
 # Streams in application order, each tagged (rank, is_recovery). rank preserves the original
@@ -193,7 +200,7 @@ def _grouped(_sig):
     return groups
 
 
-def load_ops(target_law: str):
+def load_ops(target_law: str, include_applied: bool = True):
     """Ordered ops for a law WITH change_type + clean para. change_type ∈ {change, add, repeal,
     renumber, move, unknown}; renumber/move/unknown are left for replay to flag, not fabricate.
     Multi-provision new_text blocks are expanded to one op per provision.
@@ -229,6 +236,22 @@ def load_ops(target_law: str):
             if not is_recovery and para:
                 primary_paras.add(para)
             ops.append({**base, "para": para, "new_text": payload})
+    # PRE-APPLIED whole-provision results (offline LLM applicator). Appended last so a same-date tie
+    # resolves in their favour (stable sort); each carries its '§ N.' heading → replay overwrites.
+    # Excluded when building the applied stream itself (include_applied=False) to avoid a cycle.
+    if include_applied and _APPLIED.exists():
+        with gzip.open(_APPLIED, "rt", encoding="utf-8") as fh:
+            for line in fh:
+                d = json.loads(line)
+                if d.get("target_law") != target_law:
+                    continue
+                ops.append({
+                    "change_type": d.get("change_type", "change"),
+                    "instruction": d.get("instruction"),
+                    "date": d.get("date_in_force_resolved") or d.get("date_in_force"),
+                    "act": d.get("act_refid"), "para": d.get("paragraph"),
+                    "new_text": d.get("new_text"),
+                })
     ops.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
     return ops
 

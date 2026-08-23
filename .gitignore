@@ -34,3 +34,4 @@ data/omnibus_recovered.jsonl.gz
 data/omnibus_unresolved.jsonl.gz
 data/gazette_recovered.jsonl.gz
 data/gazette_unresolved.jsonl.gz
+data/applied_ops.jsonl.gz

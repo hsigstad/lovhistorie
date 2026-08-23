@@ -33,8 +33,13 @@ except ModuleNotFoundError:  # pragma: no cover
 
 from pydantic import BaseModel
 
+import re
+
 from source.llm.target_localize import _build_norm, _norm
 
+# Sub-unit ops (ledd/punktum/nr/bokstav) target only PART of a provision; a whole-provision "§ N skal
+# lyde:" (no sub-unit) replaces everything and is exempt from the oversize-span guard below.
+_SUBUNIT_INSTR = re.compile(r"\b(ledd|punktum|bokstav|nr\.?)\b", re.I)
 MODEL = "gpt-4.1"
 CACHE = LLMCache(_REPO / "data" / "llm_cache" / "apply_op")
 PROMPT = """You apply ONE amendment instruction to ONE Norwegian statutory provision.
@@ -109,6 +114,12 @@ def apply_op(provision: str, instruction: str, new_text: str, op_type: str, *,
         return None
     span_start = offsets[si]
     span_end = offsets[min(ei + len(_norm(ea)) - 1, len(offsets) - 1)] + 1
+    # span-sanity guard: a SUB-UNIT op (ledd/punktum/nr/bokstav) targets PART of the provision, not
+    # almost all of it. An oversized span there means the LLM mis-located the boundary (caused §21
+    # 0.99→0.26) — reject and leave the op unapplied (flag-don't-fabricate). A whole-provision "skal
+    # lyde:" with no sub-unit legitimately replaces everything, so it is exempt.
+    if _SUBUNIT_INSTR.search(instruction) and (span_end - span_start) > 0.75 * len(provision):
+        return None
     repl = "" if op_type == "repeal" else (new_text or "")
     out = provision[:span_start] + repl + provision[span_end:]
     return " ".join(out.split())

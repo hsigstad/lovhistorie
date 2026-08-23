@@ -32,12 +32,17 @@ def _strip_heading(new_text: str) -> str:
     return " ".join(_HEADING.sub("", new_text).split())
 
 
-def replay(base: dict, ops: list, as_of: str | None = None):
+def replay(base: dict, ops: list, as_of: str | None = None, ledd_fallback=None):
     """Apply ops (up to as_of) to base. Returns (provisions, flags).
 
     Ops carry `change_type` (from load_ops) or the legacy `kind` (amendments.load_for).
     flags: ops we could not apply (renumber/move/unknown/sub-provision the ledd engine
     can't do) — their provisions are left as-is, never filled with invented text.
+
+    `ledd_fallback(provision, instruction, new_text, op_type) -> str | None`: OPTIONAL applicator
+    tried when the deterministic ledd engine returns None on a sub-provision op (the LLM applicator
+    source.llm.apply_op). OFFLINE ONLY — runtime reconstruction passes None and stays deterministic
+    (rule 3); an offline pre-apply pass passes apply_op to bake the result into a derived stream.
     """
     doc = dict(base)
     flags = []
@@ -45,7 +50,7 @@ def replay(base: dict, ops: list, as_of: str | None = None):
         if as_of and op.get("date") and op["date"] > as_of:
             continue
         if "change_type" in op:
-            _apply_change_type(doc, op, flags)
+            _apply_change_type(doc, op, flags, ledd_fallback)
         else:
             _apply_kind(doc, op, flags)   # legacy path (run_convergence)
     return doc, flags
@@ -68,7 +73,7 @@ _SUBUNIT = re.compile(r"\b(?:ledd|punktum|bokstav|nr\.?)\b")
 _CLEAN_PARA = re.compile(r"§\d+[a-zæøå]?(?:-\d+[a-zæøå]?)?$")
 
 
-def _apply_change_type(doc, op, flags):
+def _apply_change_type(doc, op, flags, ledd_fallback=None):
     para = op.get("para")
     ct = op.get("change_type")
     new = op.get("new_text")
@@ -80,6 +85,8 @@ def _apply_change_type(doc, op, flags):
             # sub-unit repeal — flag-don't-fabricate, and keeping it is far closer to current
             # than an empty provision).
             result = ledd.apply(doc.get(para, ""), instr, new)
+            if result is None and ledd_fallback:         # offline LLM applicator (apply_op)
+                result = ledd_fallback(doc.get(para, ""), instr, new, "repeal")
             if result is not None:
                 doc[para] = result
             else:
@@ -102,6 +109,8 @@ def _apply_change_type(doc, op, flags):
         if "overskrift" in instr:          # heading-only change: provision body unchanged
             return
         result = ledd.apply(doc.get(para, ""), instr, new)   # sub-provision -> ledd engine
+        if result is None and ledd_fallback and _SUBUNIT.search(instr):  # offline LLM applicator
+            result = ledd_fallback(doc.get(para, ""), instr, new, ct)
         if result is not None:
             doc[para] = result
             return
