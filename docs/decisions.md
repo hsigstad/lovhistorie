@@ -2,6 +2,31 @@
 
 Committed design choices.
 
+## 2026-08-23 — KEEP endringslov's regex parser (it is OFF the convergence path; retiring it is a guard-redesign task, not a mechanical delete)
+
+**Decision.** `source/parse/endringslov.py` (the legacy pre-2001 amendment-body regex parser) and
+`gazette.build_amendment_ops` STAY. This is a deliberate keep, not a pending "to-kill".
+
+**Why keeping it costs nothing on convergence.** The reconstruction path (`pipeline.load_ops` →
+`replay`) does NOT read endringslov's output (`pre2001_amendments.jsonl.gz`). Pre-2001 amendments that
+DRIVE convergence come from `gazette_recovered` — the LLM localize-then-verify stream. endringslov's
+output is consumed only by `amendments.load_for()` → the **G3 base-integrity guard** and legacy eval.
+So its regex is already retired from reconstruction; its own (non-)robustness on pre-2001 OCR is now
+irrelevant to convergence. It only has to supply G3 a coarse *set* of amended provisions, which does
+not need perfect parsing. Convergence will therefore NOT require endless tuning of this regex — it is
+frozen and off-path.
+
+**Why we don't just delete it.** Deleting it forces G3 to source its "provisions that should differ"
+set elsewhere. The intended swap (G3 `amendments.load_for` → `load_ops`) BREAKS G3: it introduces
+false-positive contamination flags on provisions unchanged since enactment (foreldelsesloven §2/§20:
+base==current, they converge, yet a harmless recovery op marks them "amended"). G3 tests text alone
+and cannot distinguish "never substantively changed" from "base copied from the answer"; the external
+amended-set happened to be the right should-differ proxy precisely because it excludes unchanged
+provisions, and `load_ops` (carrying recovery ops on those provisions) pollutes it. Retiring
+endringslov thus requires REDESIGNING G3's contamination test (e.g. gate on the op's own new_text
+differing from base, or curate an explicit should-differ set) — a correctness task, not a cleanup.
+Until that is designed + validated, endringslov stays. See `docs/done.md` 2026-08-23.
+
 ## 2026-08-16 — Prefer LLM over regex for any fragile STRUCTURAL judgment; keep two deterministic firewalls (HS)
 
 **Decision (HS).** Do NOT optimize for LLM cost — the corpus is a bounded, one-time, cached pass, so
