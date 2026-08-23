@@ -19,7 +19,7 @@
         {
           "date": "2024-01-01",
           "rate": 0.648,
-          "mean": 0.827
+          "mean": 0.826
         }
       ]
     },
@@ -42,12 +42,12 @@
         {
           "date": "2014-01-01",
           "rate": 0.863,
-          "mean": 0.977
+          "mean": 0.976
         },
         {
           "date": "2018-07-20",
           "rate": 0.407,
-          "mean": 0.535
+          "mean": 0.534
         },
         {
           "date": "2021-10-04",
@@ -78,13 +78,13 @@
   "point_in_time_summary": {
     "n_versions": 10,
     "rate_mean": 0.7851,
-    "similarity_mean": 0.8798
+    "similarity_mean": 0.8795
   },
   "as_of": "2026-08-23",
-  "convergence": 0.6948,
-  "convergence_strict": 0.6019,
-  "matched": 576,
-  "matched_strict": 499,
+  "convergence": 0.6972,
+  "convergence_strict": 0.6043,
+  "matched": 578,
+  "matched_strict": 501,
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -111,7 +111,7 @@
     {
       "datokode": "1959-10-23-3",
       "law": "oreigningslova",
-      "matched": 15,
+      "matched": 17,
       "total": 31,
       "tau": 0.9,
       "annex": 0
