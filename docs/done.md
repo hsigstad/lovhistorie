@@ -1,5 +1,25 @@
 # Done
 
+## 2026-08-23 (cont.) — LLM amendment APPLICATION lands: +5 dev (571->576)
+
+HS pushed to apply amendments via LLM, not just capture them. Delivered:
+- `source/llm/apply_op.py`: localize-then-verify APPLICATION — the LLM returns the span an op
+  targets; we splice the op's verbatim new_text (span-guarded against over-replace). No fabrication.
+  Robust to unstructured OCR bases where the deterministic ledd engine returns None.
+- `replay.replay(ledd_fallback=)` (offline only) + `source/scrape/build_applied.py`: replay each law
+  with apply_op as the ledd fallback, bake changed provisions into data/applied_ops.jsonl.gz;
+  `load_ops` reads it -> runtime stays deterministic (rule 3).
+- **Per-provision unmarked gate** (general): keep the LLM-applied result ONLY where the base provision
+  has no (N) ledd markers (deterministic engine structurally can't work there); trust the
+  deterministic engine where markers exist (its errors regressed aksje/vphl ungated).
+- **Dev A/B 571->576 (+5):** avtale 34->35 (§17, a punktum op the ledd engine DROPPED, now converges),
+  foreld/mester +1, rettsg +3, aksje +2; vphl/kjøp gated-out (0); oreign -3 (one 0%-marker law where
+  the applicator still errs on converging provisions — TODO). First convergence gain from amendment
+  APPLICATION on OCR-base laws; refutes the earlier "OCR floor" read — it was a structure+application
+  problem, LLM-solvable, exactly as HS argued.
+
+# Done
+
 ## 2026-08-23 — the ledd engine works; OCR-base laws are ledd-STRUCTURE-then-QUALITY floored
 
 - **HS pushback ("we can't only apply 2 amendments") was RIGHT and led to the real diagnosis.**
