@@ -25,7 +25,23 @@ from pathlib import Path
 from source.parse import amendments, replay
 
 _ENACTMENT = Path(__file__).resolve().parents[2] / "data" / "enactment"
-_PARA = re.compile(r"§\s*(\d+(?:-\d+)?[a-z]?)")
+_PARA = re.compile(r"§\s*(\d+(?:-\d+)?)([a-z])?")
+# Recover a SPACED single-letter suffix ('§ 38 b første ledd', 'Ny § 15 a skal lyde') that the
+# no-space _PARA drops. A genuine suffix is a lone letter FLANKED by a space and FOLLOWED by a
+# real word — which excludes (a) the ordinal ABBREVIATIONS the `target` field uses ('§ 11 f' =
+# første, '§ 11 t' = tredje — a bare trailing letter with no following word) and (b) the
+# preposition 'i' ('§ 5 i loven'; Norwegian statutes skip 'i' as a suffix letter anyway).
+_SPACED_SUFFIX = re.compile(r"§\s*\d+(?:-\d+)?\s+([a-hj-z])(?=\s+[a-zæøå])")
+
+
+def _para_at(s: str, m: "re.Match") -> str:
+    """Build '§N' / '§Nx' from a _PARA match `m` in `s`, recovering a spaced suffix at m.start()."""
+    suf = m.group(2)
+    if not suf:
+        sm = _SPACED_SUFFIX.match(s, m.start())
+        if sm:
+            suf = sm.group(1)
+    return "§" + m.group(1) + (suf or "")
 
 # A provision-body HEADING at the start of a string: '§ 5-8 a.Opplysninger…' -> '§5-8a'.
 # The suffix letter is frequently rendered/OCR'd with a space before it ('§ 5-8 a.'), which
@@ -47,12 +63,13 @@ def _heading_id(s: str | None):
 
 
 def _clean_para(s: str | None):
-    """First '§ N' anywhere in `s` -> '§N'. For target fields that NAME the provision
-    ('§ 1-9', '§ 6 n'). NOT for new_text bodies — their first § is often a cross-ref."""
+    """First '§ N' anywhere in `s` -> '§N' (or '§Nx' for a genuine spaced suffix — '§ 38 b
+    første ledd' -> '§38b'). For target fields that NAME the provision ('§ 1-9', '§ 6 n').
+    NOT for new_text bodies — their first § is often a cross-ref."""
     if not s:
         return None
     m = _PARA.search(s)
-    return "§" + m.group(1) if m else None
+    return _para_at(s, m) if m else None
 
 
 def _leading_para(new_text: str | None):
@@ -62,8 +79,9 @@ def _leading_para(new_text: str | None):
     letter suffix); falls back to the bare '§ N' form for headings without a period."""
     if not new_text:
         return None
-    m = _PARA.match(new_text.lstrip())
-    return _heading_id(new_text) or ("§" + m.group(1) if m else None)
+    st = new_text.lstrip()
+    m = _PARA.match(st)
+    return _heading_id(new_text) or (_para_at(st, m) if m else None)
 
 
 def _op_para(d: dict):
