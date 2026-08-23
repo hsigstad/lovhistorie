@@ -1,5 +1,48 @@
 # Done
 
+## 2026-08-23 (cont. 2) — omnibus mis-attribution + payload anchoring + deterministic cache: +2 dev (576->578)
+
+Chased the oreign -3 regression from the applicator to its root, plus advanced the regex-kill sweep.
+Dev convergence **576->578 (0.6972)**, guards PASS. Four GENERAL fixes (never per-law), committed
+641b9d5 + f981486:
+
+1. **target_localize block-grid section boundaries (`_NEXT_BLOCK`).** An omnibus act's per-law
+   section was sliced anchor-to-next-LOCATED-anchor, so a MISSED LLM mention let one law's section
+   swallow the FOLLOWING law's ops. Root cause of oreign's corruption: in lov/2013-06-21-100 (the new
+   jordskiftelova) the localizer missed grannegjerde (1961-05-05), so grannegjerde's §5/§8/§10 leaked
+   onto oreign §8/§10/§11. Now each section is bounded at the next amendment-block header, generalized
+   beyond Bokmål "gjøres følgende endringer:" to Nynorsk "skal det gjerast slike endringar:" and the
+   direct "skal § X …" form (optional item-number prefix). Source-signal only; falls back to
+   anchor-to-anchor when no grid is visible (no recall loss). Restores oreign §8/§10 to convergence.
+2. **amend.extract_ops payload anchoring** when the model returns a `payload_head` spanning most of
+   the payload — the tail (a suffix) then sits INSIDE the head span and "search tail after head-end"
+   silently dropped the op (lost avtaleloven §17 after boundaries tightened). Search the tail from the
+   head's START, take the later end. Rescued **154 omnibus ops** (1002->1156).
+3. **build_applied corroboration filter.** For an act our localize-then-verify pipeline processed,
+   trust OUR verified provision-list: skip force-applying an op naming a provision our localization of
+   the SAME act did not find. The EXTERNAL amendments.jsonl.gz mis-filed rettsgebyrloven §11 (skjønn/
+   rettsgebyr content, "jf. skjønnsloven § 31 … betales rettsgebyr") onto oreign §11; the ledd engine
+   dropped it but the applicator forced it onto a converging provision. Source-only (our localizer vs
+   external stream, never the answer key), scoped to the applicator (runtime untouched, no recall
+   risk). oreign §11 0.19->0.884 (now correct oreign text; residual is enactment-base OCR typography:
+   "styrings organ" vs "styringsorgan", em-dash vs en-dash — an OCR-base lever, not amendments).
+4. **Deterministic LLM cache doc_ids.** localize/apply_op/segment_issue/mark_ledds embedded builtin
+   `hash()` (randomized per process via PYTHONHASHSEED) in their cache doc_id, so the on-disk LLM
+   cache MISSED across runs and every fresh process re-paid the calls (why each omnibus rebuild re-ran
+   ~20 min of localizer calls). Switched to a stable sha256 helper (`_hh`); caches now hit run-to-run.
+
+**Regex kill: `amend._SECTION` retired** (f981486). The brittle `I lov <cite>` section regex + its
+`_split_sections` are gone; both consumers (amend.extract_ops fallback, blanket.extract_reforms) use
+`target_localize.localize`. Dev gate unchanged (578), no stream rebuild needed.
+
+**Regex kill: endringslov retirement DEFERRED** (design blocker found). Migrating the G3
+base-integrity guard from `amendments.load_for` to `load_ops` (retirement step 1) introduces 2
+FALSE-POSITIVE contamination flags — foreldelsesloven §2/§20, unchanged since 1979 (base==current,
+converge) but marked "amended" by a harmless recovery op the external stream lacks. G3's text-only
+test can't tell "unchanged since enactment" from "base copied from answer"; the external amended-set
+is the right should-differ proxy. Needs a smarter contamination test before endringslov can go. See
+handoff note `2026-08-21T15-11-02_regex-kill-endringslov-retirement.md`.
+
 ## 2026-08-23 (cont.) — LLM amendment APPLICATION lands: +5 dev (571->576)
 
 HS pushed to apply amendments via LLM, not just capture them. Delivered:
