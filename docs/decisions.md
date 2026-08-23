@@ -2,6 +2,35 @@
 
 Committed design choices.
 
+## 2026-08-23 — Re-OCR is NOT a convergence lever; the misses are AMENDMENT-bound, not OCR-bound (piloted)
+
+**Finding.** A hypothesis that ~130 of the 242 dev misses were "enactment-base OCR-quality limited"
+(word-splits, dropped letters, header-bleed) was PILOTED and REFUTED. Re-OCR'd all of oreigningslova
+(1959-10-23-3) from the public page images with a vision LLM (source-only — it read only the images,
+never the answer; G1-safe). Character quality improved exactly as predicted ("yt tola"→"lyt tola",
+running-header garbage removed) — but **convergence did not move: 17/31 → 17/31, zero provisions
+crossed threshold.**
+
+**Why.** The misses are dominated by missing AMENDMENT CONTENT, not OCR:
+- §4 (0.47): current has two ledd the enactment lacks (forvaltningslova §15 ref + tvangsfullbyrdelses-
+  loven clause, added 1969 & 2015) + a terminology reform. Clean OCR moves it ~0.47→~0.48.
+- §2 (0.70): the expropriation-purpose list grew 42→~54 items across 12 amendments.
+- near-misses §22/§23 (0.86/0.88): re-OCR left them flat/slightly worse — small spelling/terminology
+  gaps, not OCR noise.
+- §11: its enactment base already scores 1.000 vs current — its miss was a BAD OP APPLICATION.
+
+**Correction.** The earlier "~130 OCR-limited" estimate over-attributed to OCR from surface errors
+(e.g. "yt tola") without checking that the DOMINANT difference in those provisions was amendment
+content. Lesson: measure the dominant delta, don't infer a cause from a visible-but-minor defect.
+
+**Consequence — priority order (OCR de-prioritised).** The binding levers are, in order: (1) amendment
+CAPTURE completeness (missing added-ledd / list-expansion content — the tail-anchor extractor fix is
+part of this); (2) amendment APPLICATION (sub-op ledd application; bad ops that corrupt a good base,
+e.g. §11); (3) blanket TERMINOLOGY reforms (fan out across many provisions). Do NOT build the OCR
+re-processing infrastructure — it was empirically shown not to move the metric. (A law that is
+OCR-heavy AND lightly-amended could differ, but the most OCR-damaged dev law showed no gain, so the
+burden of proof is on any future OCR claim: pilot one law end-to-end first.)
+
 ## 2026-08-23 — Oracles are VALIDATION-ONLY, never a build input (current text, register, AND point-in-time HIST snapshots) (HS)
 
 **Decision (HS).** No oracle may drive a RECONSTRUCTION decision. This covers the current/answer text
