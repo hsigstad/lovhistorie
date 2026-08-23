@@ -31,6 +31,20 @@ re-processing infrastructure — it was empirically shown not to move the metric
 OCR-heavy AND lightly-amended could differ, but the most OCR-damaged dev law showed no gain, so the
 burden of proof is on any future OCR claim: pilot one law end-to-end first.)
 
+## 2026-08-23 — Blanket terminology reforms are LOW-payoff on the dev set (piloted)
+
+**Finding.** Hypothesis: uncaptured blanket terminology reforms ("ordet «X» endrast til «Y»", e.g. the
+2005 tvistelov "kjæremål»→«anke") fan out across many provisions and are a cheap high-yield lever
+(the blanket stream holds only 1 op). PILOTED by scanning dev misses for recon carrying a superseded
+term the current text dropped, then applying the swaps and re-scoring: only **5 candidate miss
+provisions** (all rettsgebyrloven), and applying the swaps converts exactly **1** (§27a 0.89→0.94).
+The rest (§5a 0.64, §23a 0.65, §27 0.81, §10 0.74) have larger amendment gaps a term swap can't close.
+
+**Consequence.** Do not build a general blanket-reform capture/apply system for the dev set — the
+payoff is ~1 provision. (Terminology changes here mostly arrive INSIDE full-provision rewrites, not as
+standalone blanket-reform acts.) Together with the re-OCR pilot above, both "surface" levers are
+ruled out; the binding constraint is amendment CAPTURE completeness + sub-provision APPLICATION.
+
 ## 2026-08-23 — Oracles are VALIDATION-ONLY, never a build input (current text, register, AND point-in-time HIST snapshots) (HS)
 
 **Decision (HS).** No oracle may drive a RECONSTRUCTION decision. This covers the current/answer text
