@@ -120,7 +120,10 @@ def _apply_change_type(doc, op, flags, ledd_fallback=None):
         # (avtaleloven §9a). We do NOT overwrite an existing provision from a bare-body op: tried it
         # (even recovery-only, gap-fill-gated) and it netted NEGATIVE — it converts §36 (whose 1983
         # text is complete) but corrupts foreld provisions that converge from the enactment base yet
-        # are register-"amended", where the recovered OCR text is worse (−9 foreld). Without a
+        # are register-"amended", where the recovered OCR text is worse (−9 foreld). A "substantially
+        # different" difflib gate to separate the good §36 overwrite from the bad foreld ones was
+        # tried (2026-08-23) and ALSO netted −7: foreld's bad ops are substantially-different WRONG
+        # text (mis-capture), not re-OCR, so text-difference can't tell them apart. Without a
         # point-in-time oracle we can't tell a good overwrite from a bad one, so bare-body overwrite
         # is off. (A whole-provision REWRITE that carries its '§ N.' heading still overwrites via the
         # startswith('§') branch above — that path is high-confidence.)

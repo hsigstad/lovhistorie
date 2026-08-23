@@ -1,5 +1,30 @@
 # Done
 
+## 2026-08-23 (cont. 4) — para-parse fix (+ §36 fully diagnosed: capture solvable, application blocked)
+
+**Para-parse fix (landed, ff3fc0e).** `_PARA` required a suffix letter IMMEDIATELY after the digits,
+so a spaced suffix ('§ 38 b', 'Ny § 15 a') captured only the number and mis-keyed the op onto the
+BASE provision (§15a's op landed on §15; external '§ 38 b …' ops became phantom §38 ops). Now a
+spaced single letter is a suffix ONLY when FLANKED by a space and FOLLOWED by a real word — which
+safely excludes the `target` field's ordinal ABBREVIATIONS ('§ 11 f'=første, '§ 11 t'=tredje) and the
+preposition 'i'. Verified vs all dev ops: 4 genuine re-keys, 0 false positives. Gate unchanged (587).
+
+**§36 (avtaleloven generalklausul) — fully diagnosed; NOT landed.** Two-layer failure:
+1. CAPTURE (solvable): the 1983-03-04-4 act's §36 op IS emitted by the extractor but dropped
+   `anchor-not-found`. Root cause: the payload TAIL 'kontraktsrettslig sedvane.' is OCR-split in the
+   gazette ('kontrakt rettslig'), so the exact tail never byte-matches. Prototyped `_nfind_tail_end`
+   (locate the tail's END by longest-matching suffix, tolerant to OCR damage in its leading words) —
+   VERIFIED §36 then extracts at 0.998 vs current, verbatim-anchored, no fabrication. Held back
+   because realizing it needs a slow gazette rebuild AND the application below is blocked, so it can't
+   be A/B'd cleanly this session.
+2. APPLICATION (blocked): even captured, §36's op is a bare-body 'skal lyde:' and §36 already exists
+   in the base (the 1918 penalty-clause text), so replay's INSERT-ONLY guard won't overwrite. Enabling
+   a "substantially-different" difflib overwrite gate (§36 scores 0.02 vs old base → overwrite; re-OCR
+   ~0.95 → keep) netted **−7** (foreld −9): foreld's bad overwrites are substantially-different WRONG
+   text (mis-capture), NOT re-OCR, so text-difference can't separate them from a genuine rewrite.
+   Reverted. The clean unblock is a point-in-time oracle (Lovdata HIST) to validate overwrites, or
+   fixing foreld's mis-captured ops first. Recorded in replay.py's insert-only comment.
+
 ## 2026-08-23 (cont. 3) — LLM base for OCR-digit-confusion booklets: +9 dev (578->587)
 
 Last OCR-brittle spot on the convergence path: the regex heading parser (`_HEAD`, digit-anchored)
