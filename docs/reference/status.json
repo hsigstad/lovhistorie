@@ -80,11 +80,11 @@
     "rate_mean": 0.7845,
     "similarity_mean": 0.8794
   },
-  "as_of": "2026-08-21",
-  "convergence": 0.6852,
-  "convergence_strict": 0.5971,
-  "matched": 568,
-  "matched_strict": 495,
+  "as_of": "2026-08-23",
+  "convergence": 0.6888,
+  "convergence_strict": 0.6031,
+  "matched": 571,
+  "matched_strict": 500,
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -103,7 +103,7 @@
     {
       "datokode": "1918-05-31-4",
       "law": "avtaleloven",
-      "matched": 33,
+      "matched": 34,
       "total": 45,
       "tau": 0.9,
       "annex": 0
@@ -143,7 +143,7 @@
     {
       "datokode": "1988-05-13-27",
       "law": "kjøpsloven",
-      "matched": 61,
+      "matched": 62,
       "total": 87,
       "tau": 0.9,
       "annex": 92
@@ -159,7 +159,7 @@
     {
       "datokode": "2007-06-29-75",
       "law": "verdipapirhandelloven",
-      "matched": 212,
+      "matched": 213,
       "total": 268,
       "tau": 0.98,
       "annex": 0
