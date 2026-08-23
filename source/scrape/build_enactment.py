@@ -334,20 +334,31 @@ def _resilient_pages(urn: str, page: int, span: int) -> str:
     return "\n".join(out)
 
 
-def build_booklet(datokode: str, loc: dict | None = None) -> dict:
+def build_booklet(datokode: str, loc: dict | None = None, use_llm: bool | None = None) -> dict:
     """Build a SNAPSHOT base from a PD standalone-law booklet (see BOOKLETS). Writes
     the same enactment JSON plus `base_as_of` (the booklet's ajourført version boundary)
-    so the recon path replays only post-snapshot amendments and G3 only checks those."""
+    so the recon path replays only post-snapshot amendments and G3 only checks those.
+
+    `use_llm` (default = datokode in LLM_BASE_LAWS) routes segmentation through the LLM
+    boundaries-only segmenter instead of the regex heading parser — needed where OCR
+    digit-confusion defeats the regex (rettsgebyr/kjøp render '§ 1.' as '§ l.', so the
+    digit-anchored _HEAD drops §1 entirely). The regex path is kept for clean-heading bases."""
     loc = loc or BOOKLETS[datokode]
+    if use_llm is None:
+        use_llm = datokode in LLM_BASE_LAWS
     txt = _resilient_pages(loc["urn"], loc["page"], loc["span"])
     start = re.search(re.escape(loc["title_needle"]), txt)
     if not start:
         raise ValueError(f"title needle {loc['title_needle']!r} not found in booklet")
-    provs = parse_provisions(txt[start.start():], repair_headings=True)
+    body = txt[start.start():]
+    if use_llm:
+        provs, extra = _segment_law(datokode, body, True)
+    else:
+        provs, extra = parse_provisions(body, repair_headings=True), {}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f"{datokode}.json").write_text(json.dumps({
         "datokode": datokode,
-        "source": {"urn": loc["urn"], "page": loc["page"], "booklet": True},
+        "source": {"urn": loc["urn"], "page": loc["page"], "booklet": True, **extra},
         "base_as_of": loc["base_as_of"],
         "provisions": provs,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -355,15 +366,22 @@ def build_booklet(datokode: str, loc: dict | None = None) -> dict:
 
 
 # OCR-base laws whose regex heading-parse is fragile and where the LLM boundaries-only
-# segmenter wins end-to-end (docs/done.md 2026-08-14): default them to the LLM base. Clean
-# LTI bases are NOT here — they keep the deterministic path. Add a law only after its gate
-# convergence confirms the win; the substring assertion below guards fabrication either way.
-# The LLM base wins ONLY on heading-DETECTION failures: old period-less layouts (avtaleloven)
-# and garbled-§N-M booklets (aksjeloven-2001, 192 vs 153). The other OCR dev laws parse their §
-# headings fine with regex — their gaps are content/amendments, not segmentation — so migrating
-# them yields ~0 (measured 2026-08-14: oreigningslova 18→18, mesterbrev/rettsgebyr not
-# segmentation-limited). Add a law here only after the gate confirms a real win.
-LLM_BASE_LAWS = {"1918-05-31-4"}  # avtaleloven (validated: 30->33/45)
+# segmenter wins end-to-end: default them to the LLM base. Clean LTI bases are NOT here — they
+# keep the deterministic path. Add a law only after its gate convergence confirms the win; the
+# substring assertion below guards fabrication either way.
+# The LLM base wins on heading-DETECTION failures the digit-anchored _HEAD regex can't recover:
+#   - old period-less layouts (avtaleloven);
+#   - OCR digit-confusion in booklet headings — rettsgebyr/kjøp render '§ 1.' as '§ l.' (letter
+#     ell) so _HEAD drops §1 entirely, and similar 1->l / 0->O confusions dropped kjøp §50/§71.
+#     Patching _HEAD per-glyph is the endless-regex trap; the LLM reads the heading from context.
+# NOT segmentation-limited (measured — leave on the regex path): oreigningslova (base 37, 0
+# provisions missing), mesterbrev, foreldelsesloven (missing are convention annexes + amendment-
+# added §s, not dropped headings).
+LLM_BASE_LAWS = {
+    "1918-05-31-4",   # avtaleloven — period-less headings (validated 30->33/45)
+    "1982-12-17-86",  # rettsgebyrloven — '§ l.' OCR digit-confusion (validated 7->10/34)
+    "1988-05-13-27",  # kjøpsloven — '§ l.' + dropped §50/§71 (validated 62->68/87)
+}
 
 
 def _segment_law(datokode: str, law_text: str, use_llm: bool):
