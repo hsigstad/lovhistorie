@@ -15,9 +15,11 @@ ASSUMES: amendments.load_for gives ordered ops; replay applies them; enactment_b
 """
 from __future__ import annotations
 
+import functools
 import gzip
 import json
 import re
+from collections import defaultdict
 from pathlib import Path
 
 from source.parse import amendments, replay
@@ -135,60 +137,76 @@ _OMNIBUS = amendments.DATA.parent / "omnibus_recovered.jsonl.gz"
 _GAZETTE = amendments.DATA.parent / "gazette_recovered.jsonl.gz"
 
 
-def load_ops(target_law: str):
-    """Ordered ops for a law WITH change_type + clean para (richer than
-    amendments.load_for). change_type ∈ {change, add, repeal, renumber, move,
-    unknown}; renumber/move/unknown are left for replay to flag, not fabricate.
-    Multi-provision new_text blocks are expanded to one op per provision.
+# Streams in application order, each tagged (rank, is_recovery). rank preserves the original
+# per-stream precedence for dedup (first-wins); is_recovery drives the gap-fill gate. PRIMARY =
+# external + LTI-reparse + LLM sub-provision; RECOVERY = LLM omnibus + pre-2001 gazette.
+def _ranked_streams():
+    return [(amendments.DATA, 0, False), (_LTI_AMEND, 1, False), (_LLM_AMEND, 2, False),
+            (_OMNIBUS, 3, True), (_GAZETTE, 4, True)]
 
-    Merges the external amendment stream with the LTI-reparse stream (the omnibus
-    sections the external stream dropped); dedup by (act, para, date, instruction) guards
-    the boundary so a section present in both is not applied twice."""
-    ops, seen = [], set()
-    # PRIMARY streams (external + LTI-reparse + LLM sub-provision) vs RECOVERY streams (LLM omnibus +
-    # pre-2001 gazette). Recovery FILLS GAPS ONLY: a recovered op is applied only if the primary
-    # streams provide NO op for that provision. Rationale from the dev-set A/B: recovered op *content*
-    # is noisier (OCR/LLM extraction), so letting it OVERRIDE a provision the primary streams already
-    # handle CORRUPTED well-covered clean-base laws (−15 vphl / −10 foreld). Restricting recovery to
-    # untouched provisions keeps its real wins (new §s the primary streams miss — avtaleloven §9a/§38a)
-    # while it can no longer overwrite a correct provision. (The engine fixes — whole-provision insert
-    # + _split_chapter — are separate and safe on the primary streams alone.)
-    PRIMARY = (amendments.DATA, _LTI_AMEND, _LLM_AMEND)
-    RECOVERY = (_OMNIBUS, _GAZETTE)
-    primary_paras = set()
-    for path in PRIMARY + RECOVERY:
+
+def _stream_sig():
+    """(path, exists+mtime) per stream — the cache key, so _grouped re-reads whenever a stream file
+    changes or is toggled aside (the with/without-recovery A/B relies on this auto-invalidation)."""
+    return tuple((str(p), p.stat().st_mtime if p.exists() else None) for p, _, _ in _ranked_streams())
+
+
+@functools.lru_cache(maxsize=4)
+def _grouped(_sig):
+    """{target_law: [(rank, is_recovery, row), …]} — read each stream ONCE and group by law, so
+    load_ops(law) is a dict lookup instead of a full rescan of the 99k-row national stream PER law
+    (the build/A/B O(laws×streams) blowup). Rows sorted by rank to preserve stream precedence."""
+    groups = defaultdict(list)
+    for path, rank, is_recovery in _ranked_streams():
         if not path.exists():
             continue
-        is_recovery = path in RECOVERY
         with gzip.open(path, "rt", encoding="utf-8") as fh:
             for line in fh:
                 d = json.loads(line)
-                if d.get("target_law") != target_law:
-                    continue
-                base = {
-                    "change_type": d.get("change_type"),
-                    "instruction": d.get("instruction"),
-                    "date": d.get("date_in_force_resolved") or d.get("date_in_force"),
-                    "act": d.get("act_refid"),
-                }
-                new = d.get("new_text")
-                if new and _CHAP_HEAD.match(new.lstrip()):        # whole-chapter add → per-§ pieces
-                    pieces = _split_chapter(new)
-                elif new and new.lstrip().startswith("§"):
-                    pieces = _split_block(new)
-                else:
-                    pieces = []
-                emit = pieces if pieces else [(_op_para(d), new)]
-                for para, payload in emit:
-                    if is_recovery and para in primary_paras:
-                        continue              # recovery fills gaps only — primary owns this §
-                    key = (base["act"], para, base["date"], base["instruction"])
-                    if key in seen:
-                        continue
-                    seen.add(key)
-                    if not is_recovery and para:
-                        primary_paras.add(para)
-                    ops.append({**base, "para": para, "new_text": payload})
+                tl = d.get("target_law")
+                if tl:
+                    groups[tl].append((rank, is_recovery, d))
+    for tl in groups:
+        groups[tl].sort(key=lambda x: x[0])
+    return groups
+
+
+def load_ops(target_law: str):
+    """Ordered ops for a law WITH change_type + clean para. change_type ∈ {change, add, repeal,
+    renumber, move, unknown}; renumber/move/unknown are left for replay to flag, not fabricate.
+    Multi-provision new_text blocks are expanded to one op per provision.
+
+    RECOVERY streams FILL GAPS ONLY: a recovered op is applied only if the PRIMARY streams provide
+    no op for that provision — recovered content is noisier (OCR/LLM), so overriding a primary-owned
+    provision CORRUPTED clean-base laws (−15 vphl / −10 foreld in the A/B); gap-fill keeps the real
+    wins (new §s primary misses, e.g. avtaleloven §9a) without overwriting. dedup by
+    (act, para, date, instruction). Rows come pre-grouped by law (see _grouped) for speed."""
+    ops, seen, primary_paras = [], set(), set()
+    for rank, is_recovery, d in _grouped(_stream_sig()).get(target_law, []):
+        base = {
+            "change_type": d.get("change_type"),
+            "instruction": d.get("instruction"),
+            "date": d.get("date_in_force_resolved") or d.get("date_in_force"),
+            "act": d.get("act_refid"),
+        }
+        new = d.get("new_text")
+        if new and _CHAP_HEAD.match(new.lstrip()):        # whole-chapter add → per-§ pieces
+            pieces = _split_chapter(new)
+        elif new and new.lstrip().startswith("§"):
+            pieces = _split_block(new)
+        else:
+            pieces = []
+        emit = pieces if pieces else [(_op_para(d), new)]
+        for para, payload in emit:
+            if is_recovery and para in primary_paras:
+                continue              # recovery fills gaps only — primary owns this §
+            key = (base["act"], para, base["date"], base["instruction"])
+            if key in seen:
+                continue
+            seen.add(key)
+            if not is_recovery and para:
+                primary_paras.add(para)
+            ops.append({**base, "para": para, "new_text": payload})
     ops.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
     return ops
 
