@@ -22,8 +22,15 @@ preposition 'i'. Verified vs all dev ops: 4 genuine re-keys, 0 false positives. 
    a "substantially-different" difflib overwrite gate (§36 scores 0.02 vs old base → overwrite; re-OCR
    ~0.95 → keep) netted **−7** (foreld −9): foreld's bad overwrites are substantially-different WRONG
    text (mis-capture), NOT re-OCR, so text-difference can't separate them from a genuine rewrite.
-   Reverted. The clean unblock is a point-in-time oracle (Lovdata HIST) to validate overwrites, or
-   fixing foreld's mis-captured ops first. Recorded in replay.py's insert-only comment.
+   Reverted. NB: the unblock is NOT an oracle — using a point-in-time snapshot / current text /
+   register to DECIDE an overwrite is a build input, which is circular (if we had the snapshot we'd
+   just publish it) and voids convergence as an honest proxy (oracles are validation-only, per the
+   register ruling). The oracle-free lever is SOURCE-ONLY overwrite confidence — e.g. gate the
+   overwrite on whether our localize-then-verify pipeline corroborates the op's attribution (the same
+   signal as build_applied's corroboration filter), so §36's genuine gazette op overwrites but
+   foreld's uncorroborated mis-captures don't. Untested for the overwrite path; a real future
+   direction. If no source-only signal can separate them, §36 stays an honest structural limit.
+   Recorded in replay.py's insert-only comment.
 
 ## 2026-08-23 (cont. 3) — LLM base for OCR-digit-confusion booklets: +9 dev (578->587)
 

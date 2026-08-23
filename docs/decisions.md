@@ -2,6 +2,29 @@
 
 Committed design choices.
 
+## 2026-08-23 — Oracles are VALIDATION-ONLY, never a build input (current text, register, AND point-in-time HIST snapshots) (HS)
+
+**Decision (HS).** No oracle may drive a RECONSTRUCTION decision. This covers the current/answer text
+(G1 already), the amendment register (prior ruling), AND point-in-time Lovdata HIST snapshots. An
+oracle may only MEASURE the deliverable (score convergence, score a held-out past state, audit
+coverage) — never decide what the pipeline outputs (e.g. whether a bare-body op should overwrite a
+provision).
+
+**Why.** Two independent reasons:
+1. **Circular / self-defeating.** If we had the point-in-time snapshot to validate an overwrite, we'd
+   already possess the answer for that provision — nothing to reconstruct. We'd just publish the
+   snapshot. The deliverable exists precisely because the snapshots aren't ours to redistribute.
+2. **Voids the metric.** Convergence is an honest proxy ONLY while the build is source-only. The moment
+   a reconstruction decision reads the answer, convergence measures "we peeked," not "the pipeline
+   reconstructs."
+
+**Consequence.** When a reconstruction step needs a judgment (e.g. §36's overwrite: is this a genuine
+rewrite or a mis-capture?), the ONLY admissible signals are SOURCE-ONLY — the public enactment +
+amendments and our own localize-then-verify confidence (corroboration across streams, verbatim
+anchoring, dated amending act). If no source-only signal can make the call safely, the provision stays
+an honest structural limit — reaching for the oracle is not an option. See replay.py's insert-only
+comment (§36/foreld overwrite) and [[project_lovhistorie]] register ruling.
+
 ## 2026-08-23 — KEEP endringslov's regex parser (it is OFF the convergence path; retiring it is a guard-redesign task, not a mechanical delete)
 
 **Decision.** `source/parse/endringslov.py` (the legacy pre-2001 amendment-body regex parser) and

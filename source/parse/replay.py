@@ -123,10 +123,13 @@ def _apply_change_type(doc, op, flags, ledd_fallback=None):
         # are register-"amended", where the recovered OCR text is worse (−9 foreld). A "substantially
         # different" difflib gate to separate the good §36 overwrite from the bad foreld ones was
         # tried (2026-08-23) and ALSO netted −7: foreld's bad ops are substantially-different WRONG
-        # text (mis-capture), not re-OCR, so text-difference can't tell them apart. Without a
-        # point-in-time oracle we can't tell a good overwrite from a bad one, so bare-body overwrite
-        # is off. (A whole-provision REWRITE that carries its '§ N.' heading still overwrites via the
-        # startswith('§') branch above — that path is high-confidence.)
+        # text (mis-capture), not re-OCR, so text-difference can't tell them apart. The honest lever
+        # is SOURCE-ONLY overwrite confidence (does our localize-then-verify pipeline corroborate the
+        # op's attribution?), NOT the answer key: an oracle/current-text/register check here would be a
+        # BUILD input (circular — if we had the snapshot we'd just publish it — and it voids
+        # convergence as an honest proxy; oracles are validation-only). Until a source-only confidence
+        # signal separates them, bare-body overwrite stays off. (A whole-provision REWRITE that carries
+        # its '§ N.' heading still overwrites via the startswith('§') branch above — high-confidence.)
         if not _SUBUNIT.search(instr) and _CLEAN_PARA.match(para or "") and para not in doc:
             doc[para] = _strip_heading(new)
             return
