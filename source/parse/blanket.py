@@ -31,13 +31,14 @@ def extract_reforms(act_datokode: str, act_text: str):
     """[{target_law, term_old, term_new, change_type, date_*}] — one law-level term-reform op
     per (target-law block × term pair). Applied in pipeline.reconstruct as a str.replace over
     the law's provisions that contain term_old. Deduped on (target_law, old, new)."""
-    from source.llm.amend import _split_sections   # reuse the `I lov <cite>` section split
+    from source.llm import target_localize        # format-agnostic per-law section localizer
     y, m, d = act_datokode[:4], act_datokode[5:7], act_datokode[8:10]
     act_date = f"{y}-{m}-{d}"
     from source.parse import inforce
     resolved = inforce.resolved_date(act_datokode) or act_date
     out, seen = [], set()
-    for target_dk, sec in _split_sections(act_text):
+    sections, _ = target_localize.localize(act_text)
+    for target_dk, sec in sections:
         for rx in _FORMS:
             for mm in rx.finditer(sec):
                 old, new = mm.group(1).strip(), mm.group(2).strip()

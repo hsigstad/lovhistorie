@@ -18,7 +18,6 @@ ANTI-GAMING: reads only the public-domain amending act; the cache holds that tex
 """
 from __future__ import annotations
 
-import re
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -37,7 +36,6 @@ try:
 except ModuleNotFoundError:
     from schemas import AmendmentOps  # type: ignore
 
-from source.parse import gazette
 from source.llm.target_localize import _build_norm, _norm
 
 
@@ -60,29 +58,10 @@ MODEL = "gpt-4.1"
 CACHE = LLMCache(_REPO / "data" / "llm_cache" / "amend_ops")
 
 _CHANGE = {"replace": "change", "insert": "add", "repeal": "repeal", "renumber": "renumber"}
-# Each target-law section starts at "I lov <cite>". Splitting here (not on the "gjøres
-# følgende endringer:" header, which many acts omit for the direct "I lov X skal § Y lyde:"
-# form) gives CORRECT per-law attribution — the regex block parser over-runs and mis-files
-# ops from one law onto another (finansforetaksloven §21-15 → vphl §21-15; docs/done.md).
-_SECTION = re.compile(r"\bI\s+lov\s+(\d{1,2}\.?\s*[a-zæøå]+\.?\s*\d{4}\s*nr\.?\s*\d+)", re.I)
 
 
 def _system_prompt() -> str:
     return (PROMPT_DIR / "amend_section_system.txt").read_text(encoding="utf-8")
-
-
-def _split_sections(act_text: str):
-    """[(target_datokode, section_text)] — one per 'I lov <cite>' target-law section."""
-    heads = [(m.start(), gazette.datokode("lov " + m.group(1)))
-             for m in _SECTION.finditer(act_text)]
-    out = []
-    for i, (pos, dk) in enumerate(heads):
-        end = heads[i + 1][0] if i + 1 < len(heads) else len(act_text)
-        if dk:
-            out.append((dk, act_text[pos:end]))
-    return out
-
-
 
 
 def _instruction(para: str, subunit: str, op_type: str) -> str:
@@ -114,12 +93,17 @@ def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = M
     section; a not-found anchor FLAGS + drops the op.
 
     `sections` (optional) = a pre-computed [(target_datokode, section_text)] list, e.g. from
-    source/llm/target_localize.localize — a format-agnostic replacement for the `_SECTION`
-    regex that recovers omnibus layouts the regex misses (flat correction lists, etc.). When
-    given, it is used verbatim instead of `_split_sections(act_text)`."""
+    source/llm/target_localize.localize — the format-agnostic localizer that replaced the old
+    brittle `I lov <cite>` section regex (it recovers omnibus layouts the regex missed: flat
+    correction lists, Nynorsk block headers, etc.). When omitted, this falls back to running that
+    same localizer on `act_text` (no regex splitter remains)."""
     if client is None:
         from openai import OpenAI
         client = OpenAI()
+    if sections is None:                              # localize-then-verify replaces the _SECTION regex
+        from source.llm import target_localize
+        sections, _ = target_localize.localize(act_text, client=client, model=model,
+                                               reextract=reextract)
     # entry-into-force date for op ordering + point-in-time (act date, resolved via inforce)
     y, m, d = act_datokode[:4], act_datokode[5:7], act_datokode[8:10]
     act_date = f"{y}-{m}-{d}"
@@ -127,7 +111,7 @@ def extract_ops(act_datokode: str, act_text: str, *, client=None, model: str = M
     resolved = inforce.resolved_date(act_datokode) or act_date
     rep = AmendReport()
     ops = []
-    for item in (sections if sections is not None else _split_sections(act_text)):
+    for item in sections:
         target_dk, sec = item[0], item[1]
         # optional 3rd element = a focus hint (the target law's cite): used when `sec` is a WHOLE
         # multi-law act (whole-act extraction) so the model extracts ONLY this law's ops and does not
