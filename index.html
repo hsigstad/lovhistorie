@@ -156,6 +156,17 @@
   .doclinks a{font-size:.85rem;font-weight:600;border:1px solid var(--hair-strong);border-radius:999px;padding:7px 14px;border-bottom:1px solid var(--hair-strong)}
   .doclinks a:hover{border-color:var(--accent)}
 
+  .distfig{margin:16px 0 2px}
+  .distbar{display:flex;height:24px;border-radius:6px;overflow:hidden;border:1px solid var(--hair-strong)}
+  .distbar span{display:block;height:100%}
+  .distbar span+span{box-shadow:-1px 0 0 var(--surface)}
+  .d-b1{background:var(--good)} .d-b2{background:var(--good);opacity:.5}
+  .d-b3{background:var(--warn)} .d-b4{background:var(--warn);opacity:.52}
+  .d-b5{background:var(--bad);opacity:.45} .d-b6{background:var(--bad);opacity:.7} .d-b7{background:var(--bad)}
+  .distlegend{display:flex;flex-wrap:wrap;gap:6px 15px;margin:11px 0 0;font-size:.76rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  .distlegend span{display:inline-flex;align-items:center;gap:6px}
+  .distlegend i{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+  .distlegend b{color:var(--ink);font-weight:700}
   .foot{max-width:820px;margin:0 auto;padding:0 24px 60px;font-size:.77rem;color:var(--muted);line-height:1.6}
   .foot code{font-family:var(--mono);font-size:.9em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--ink)}
 
@@ -251,11 +262,14 @@
       gazette instead — owned, and correct back to 1877.</p>
 
       <h3>How good is it, honestly</h3>
-      <p><b>71% of provisions on the 9-law development set reconstruct to today's official text</b> (convergence 70.8%, as of 2026-08-23). The rest don't — and this site shows you
-      exactly which, and how far off, via the fidelity badge and the reconstruction-vs-official comparison
-      on every section. Reproducing a past date is scored against held-out Lovdata Pro versions internally,
+      <p><b>72% of provisions on the 9-law development set reconstruct to today's official text</b> (convergence 72.3%, as of 2026-08-24) — but that headline is a single strict
+      bar, and "reconstructs or doesn't" hides how close the rest land. Across all 829 provisions, 618 (75%) reconstruct to within 90% character-identity and 509 to within 98%; most of the gap is near-misses (an OCR character, an editorial note), with the genuine failures a 92-provision tail below 50%. This site shows you
+      exactly where each provision falls — and how far off — via the fidelity badge and the
+      reconstruction-vs-official comparison on every section. Reproducing a past date is scored against
+      held-out Lovdata Pro versions internally,
       but that licensed text is never shown here — which is the whole reason the corpus is built from the
       gazette.</p>
+      <figure class="distfig"><div class="distbar" role="img" aria-label="character-similarity distribution of 829 provisions"><span class="d-b1" style="width:31.85%" title="= 1.000: 264 (32%)"></span><span class="d-b2" style="width:29.55%" title="0.98–1.0: 245 (30%)"></span><span class="d-b3" style="width:7.00%" title="0.95–0.98: 58 (7%)"></span><span class="d-b4" style="width:6.15%" title="0.90–0.95: 51 (6%)"></span><span class="d-b5" style="width:7.00%" title="0.80–0.90: 58 (7%)"></span><span class="d-b6" style="width:7.36%" title="0.50–0.80: 61 (7%)"></span><span class="d-b7" style="width:11.10%" title="< 0.50: 92 (11%)"></span></div><figcaption class="distlegend"><span><i class="d-b1"></i>= 1.000 <b>264</b></span><span><i class="d-b2"></i>0.98–1.0 <b>245</b></span><span><i class="d-b3"></i>0.95–0.98 <b>58</b></span><span><i class="d-b4"></i>0.90–0.95 <b>51</b></span><span><i class="d-b5"></i>0.80–0.90 <b>58</b></span><span><i class="d-b6"></i>0.50–0.80 <b>61</b></span><span><i class="d-b7"></i>< 0.50 <b>92</b></span></figcaption></figure>
 
       <div class="doclinks">
         <a href="docs/goal.html">Goal</a>
