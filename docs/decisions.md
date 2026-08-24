@@ -288,3 +288,37 @@ each confirmed by the gate (convergence up, guards green, base 100% substring-ve
 heading-finding regex (`_HEAD`/`_repair_headings`/`_GARBLED_SECT` and the heading branch of
 `parse_provisions`) becomes dead and is deleted then — git history preserves it, and this entry records
 what it was and why it went. Until then it stays.
+
+## 2026-08-24 — The residual tail is NOT idiosyncratic — but every general fix hits ONE wall: answer-free overwrite-safety
+
+**Question (HS):** "let's not conclude a general-fix does not exist yet. I find it hard to believe the
+remaining 28% are so idiosyncratic they can only be solved case by case."
+
+**HS was right that it is not idiosyncratic — and that reframes the ceiling.** Decomposing the misses
+surfaced a clean STRUCTURAL pattern, not a scatter of one-offs: **block amendments.** An amendment that
+inserts/replaces a whole subsection ("Nytt avsnitt II skal lyde: II. <heading> § 11-10. … § 11-11. …")
+is captured as ONE op keyed to a single paragraf, BURYING the other provisions inside its `new_text`.
+`_CHAP_HEAD` split only "Kapittel"/"§"-opening blocks, never "avsnitt"/roman-heading blocks. A diagnostic
+(`scratchpad/buried.py`) found **27 dev provisions** whose current text literally appears inside a
+captured-but-unsplit block op (vphl 14, aksje 9, rettsg 2, kjøp 2). Real, general, quantified.
+
+**The general fix was built and A/B-gated — and it revealed the actual wall.** Extending the splitter to
+block amendments (instruction names `avsnitt|kapittel|del` AND ≥2 strictly-ascending `§ N.` headings, so
+cross-references don't false-split):
+- **Overwrite variant** (split pieces carry their heading → replay overwrites via the heading path):
+  aksje **+3**, but vphl **−6** → **net −3**. Splitting introduces the block's (often stale) version and
+  OVERWRITES provisions that had already converged via other ops.
+- **Insert-only variant** (pieces stripped to bare bodies → replay's INSERT-ONLY path, adds new
+  provisions but never overwrites): **net 0** (587, no regression, no gain). The aksje +3 came entirely
+  from the overwrite cases (replacing an existing §); the genuinely-new inserted provisions don't cross
+  τ (superseded/heading-mismatched). Reverted (net-0 code, not worth the surface).
+
+**Why this matters — the single general wall.** Every lever explored this arc (content-aware pointer,
+block-split, gazette capture) recovers some provisions ONLY by OVERWRITING an existing reconstruction,
+and regresses others the same way. Deciding *which* overwrites help requires knowing whether the current
+reconstruction is already right — **which is the answer.** So the tail is not a pile of idiosyncratic
+cases; it is one general phenomenon — **answer-free overwrite-safety** — that is fundamentally
+answer-limited. The content-aware pointer (+12) is the best answer-free *approximation* of that decision
+we found (content-mismatch self-skip + op-coverage gate + OCR-base scope), which is exactly why it is the
+only lever that netted positive. **Conclusion: ~72% (599/829) is the honest answer-free ceiling on this
+dev set, and the barrier is a single well-characterised wall, not irreducible idiosyncrasy.**

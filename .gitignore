@@ -35,3 +35,5 @@ data/omnibus_unresolved.jsonl.gz
 data/gazette_recovered.jsonl.gz
 data/gazette_unresolved.jsonl.gz
 data/applied_ops.jsonl.gz
+# pointer-consolidated provisions: derived offline (build_pointer + LLM cache), regenerated locally
+data/pointer_ops.jsonl.gz
