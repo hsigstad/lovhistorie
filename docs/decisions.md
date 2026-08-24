@@ -2,6 +2,29 @@
 
 Committed design choices.
 
+## 2026-08-24 — Capture-precision solved via CONTENT-AWARE application (+12 answer-free); the residual is RENUMBERING, not application
+
+**Phase 0/1 (done).** The answer-free pointer regressions are MIS-ATTRIBUTED ops (content from another
+law: oreign §11 skjønn, foreld §2/§20 forvaltningsloven), not no-ops. A standalone lexical/
+corroboration precision filter FAILED (precision 0.03 — dev laws share generic legal vocabulary). The
+fix is to move the precision judgment INTO application: `pointer_apply` is now CONTENT-AWARE (skips an
+amendment whose NEW text is about a clearly different subject than the provision, judged from the
+enactment). No separate filter, no extra cost. With answer-free scope (OCR-base laws only; ledd-dropped
+candidates; op-coverage gate) this gives **587 -> 599/829 (72.3%), guards PASS** — a legit ~4x over
+the prior +1..5, vs the gamed +41. Gains: oreign +4, rettsg +6, mester +3, kjøp +2, foreld +1.
+
+**Phase 2 (reasoning escalation) REFUTED for the residual.** The remaining gap (aksje net-0 — the big
+one) is NOT mis-reasoning: o3 == gpt-4.1 on aksje low-scorers (both 0.26, only 1-2 ops). Cause: aksje
+1997 was RENUMBERED/restructured — enactment §11-10 is about "lån", current §11-10 is about
+"tegningsrettsaksjer" (a different provision). The enactment §N-M id does not map to the current §N-M,
+so base+amendments cannot reconstruct it regardless of model. This is the renumber/move class replay
+already flags and cannot handle — a DISTINCT, hard lever (id remapping), not application/precision/OCR.
+
+**Consequence.** Capture precision is DONE (content-aware application, +12). The answer-free ceiling for
+the current enactment+amendments machinery is ~72-73%; the next barrier is STRUCTURAL RENUMBERING
+(aksje-class), which needs an enactment-id -> current-id remap, not more LLM application. `pointer_apply`
+content-aware + `build_pointer` (OCR-base/flags/coverage) committed; pointer_ops local (gitignored).
+
 ## 2026-08-23 — LLM holistic/pointer apply reconstructs mangled provisions, but ANSWER-FREE deployment is capture-precision-limited (piloted end-to-end)
 
 **What works.** The deterministic ledd engine mangles sub-provision ops on unmarked OCR bases
