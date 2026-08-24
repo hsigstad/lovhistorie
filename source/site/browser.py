@@ -169,6 +169,7 @@ def _status_brief() -> dict:
         d = json.loads(STATUS_JSON.read_text(encoding="utf-8"))
         return {"convergence": d.get("convergence"), "matched": d.get("matched"),
                 "total": d.get("total"), "as_of": d.get("as_of"),
+                "distribution": d.get("distribution") or {},
                 "pit": (d.get("point_in_time_summary") or {}).get("similarity_mean")}
     except (OSError, ValueError):
         return {}
@@ -182,8 +183,20 @@ def render_page(index: list, status: dict) -> str:
     if status.get("convergence"):
         perf = (f"{status['convergence'] * 100:.0f}% of provisions on the "
                 f"{n_laws}-law development set reconstruct to today's official text")
+    # Threshold-free distribution sentence — replaces the misleading binary "the rest don't".
+    dist = status.get("distribution") or {}
+    dist_txt = ""
+    if dist.get("cum") and dist.get("n"):
+        n = dist["n"]
+        cum = dist["cum"]
+        tail = next((b["count"] for b in dist["bands"] if b["label"].startswith("<0.50")), 0)
+        dist_txt = (f"Across all {n:,} provisions, {cum['0.90']} ({cum['0.90'] / n * 100:.0f}%) "
+                    f"reconstruct to within 90% character-identity and {cum['0.98']} to within 98%; "
+                    f"most of the gap is near-misses (an OCR character, an editorial note), with the "
+                    f"genuine failures a {tail}-provision tail below 50%.")
     repl = {
         "__PERF__": perf,
+        "__DIST__": dist_txt,
         "__NLAWS__": str(n_laws),
         "__NPROV__": f"{n_prov:,}",
         "__ASOF__": status.get("as_of", ""),

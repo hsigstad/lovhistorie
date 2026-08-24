@@ -9,7 +9,7 @@
         {
           "date": "2001-01-01",
           "rate": 0.713,
-          "mean": 0.853
+          "mean": 0.854
         },
         {
           "date": "2003-01-01",
@@ -18,8 +18,8 @@
         },
         {
           "date": "2024-01-01",
-          "rate": 0.648,
-          "mean": 0.826
+          "rate": 0.642,
+          "mean": 0.823
         }
       ]
     },
@@ -77,14 +77,63 @@
   ],
   "point_in_time_summary": {
     "n_versions": 10,
-    "rate_mean": 0.7851,
-    "similarity_mean": 0.8795
+    "rate_mean": 0.7845,
+    "similarity_mean": 0.8793
   },
-  "as_of": "2026-08-23",
-  "convergence": 0.7081,
-  "convergence_strict": 0.6092,
-  "matched": 587,
-  "matched_strict": 505,
+  "as_of": "2026-08-24",
+  "convergence": 0.7226,
+  "convergence_strict": 0.614,
+  "matched": 599,
+  "matched_strict": 509,
+  "distribution": {
+    "n": 829,
+    "bands": [
+      {
+        "label": "exact (=1.000)",
+        "lo": 1.0,
+        "count": 264
+      },
+      {
+        "label": "0.98–<1.00",
+        "lo": 0.98,
+        "count": 245
+      },
+      {
+        "label": "0.95–<0.98",
+        "lo": 0.95,
+        "count": 58
+      },
+      {
+        "label": "0.90–<0.95",
+        "lo": 0.9,
+        "count": 51
+      },
+      {
+        "label": "0.80–<0.90",
+        "lo": 0.8,
+        "count": 58
+      },
+      {
+        "label": "0.50–<0.80",
+        "lo": 0.5,
+        "count": 61
+      },
+      {
+        "label": "<0.50",
+        "lo": 0.0,
+        "count": 92
+      }
+    ],
+    "cum": {
+      "0.98": 509,
+      "0.95": 567,
+      "0.90": 618,
+      "0.80": 676,
+      "0.50": 737
+    },
+    "median": 0.9944,
+    "mean": 0.8675
+  },
   "total": 829,
   "annex_out_of_scope": 138,
   "repealed_out_of_scope": 41,
@@ -103,7 +152,7 @@
     {
       "datokode": "1918-05-31-4",
       "law": "avtaleloven",
-      "matched": 35,
+      "matched": 34,
       "total": 45,
       "tau": 0.9,
       "annex": 0
@@ -111,7 +160,7 @@
     {
       "datokode": "1959-10-23-3",
       "law": "oreigningslova",
-      "matched": 17,
+      "matched": 21,
       "total": 31,
       "tau": 0.9,
       "annex": 0
@@ -119,7 +168,7 @@
     {
       "datokode": "1979-05-18-18",
       "law": "foreldelsesloven",
-      "matched": 20,
+      "matched": 21,
       "total": 33,
       "tau": 0.9,
       "annex": 46
@@ -127,7 +176,7 @@
     {
       "datokode": "1982-12-17-86",
       "law": "rettsgebyrloven",
-      "matched": 10,
+      "matched": 16,
       "total": 34,
       "tau": 0.9,
       "annex": 0
@@ -135,7 +184,7 @@
     {
       "datokode": "1986-06-20-35",
       "law": "mesterbrevloven",
-      "matched": 5,
+      "matched": 8,
       "total": 11,
       "tau": 0.9,
       "annex": 0
@@ -143,7 +192,7 @@
     {
       "datokode": "1988-05-13-27",
       "law": "kjøpsloven",
-      "matched": 68,
+      "matched": 70,
       "total": 87,
       "tau": 0.9,
       "annex": 92
@@ -151,7 +200,7 @@
     {
       "datokode": "1997-06-13-44",
       "law": "aksjeloven",
-      "matched": 192,
+      "matched": 189,
       "total": 291,
       "tau": 0.9,
       "annex": 0

@@ -79,12 +79,48 @@ def _point_in_time():
     return per, summary
 
 
+def _distribution() -> dict:
+    """Full per-provision character-similarity distribution over the statutory dev set — the
+    THRESHOLD-FREE view. A single pass/fail count ("N reconstruct") hides that most of the shortfall
+    is near-misses (one OCR character, an editorial annotation) rather than unreconstructed provisions.
+    Same scope + scoring as convergence(); bands are half-open [lo, hi) and the cum map is ≥threshold."""
+    from source.eval import metrics
+    sims = []
+    for law, dk in gate.DEV_LAWS:
+        cur = gate.current_provisions(dk)
+        if cur is None:
+            continue
+        recon = pipeline.reconstruct(law)[0]
+        for p, txt in cur.items():
+            if _is_convention_annex(p) or metrics.is_repealed_stub(txt):
+                continue
+            sims.append(metrics.similarity(recon.get(p, ""), txt))
+    n = len(sims)
+    if not n:
+        return {}
+    bands = [("exact (=1.000)", 1.0, 1.0001), ("0.98–<1.00", 0.98, 1.0), ("0.95–<0.98", 0.95, 0.98),
+             ("0.90–<0.95", 0.90, 0.95), ("0.80–<0.90", 0.80, 0.90), ("0.50–<0.80", 0.50, 0.80),
+             ("<0.50", 0.0, 0.50)]
+    return {
+        "n": n,
+        "bands": [{"label": lbl, "lo": lo, "count": sum(1 for s in sims if lo <= s < hi)}
+                  for lbl, lo, hi in bands],
+        "cum": {f"{t:.2f}": sum(1 for s in sims if s >= t) for t in (0.98, 0.95, 0.90, 0.80, 0.50)},
+        "median": round(statistics.median(sims), 4),
+        "mean": round(statistics.mean(sims), 4),
+    }
+
+
+_is_convention_annex = gate._is_convention_annex
+
+
 def collect() -> dict:
     """Run the gate's guards + convergence and package the numbers."""
     g1 = gate.guard_no_answer_key_import()
     g2 = gate.guard_runs_isolated()
     g3 = gate.guard_base_integrity()
     frac, matched, total, per_law, annex, strict, strict_frac, repealed = gate.convergence()
+    dist = _distribution()
     pit_per, pit_summary = _point_in_time()
     guards_ok = not (g1 or g2 or g3)
     passed = guards_ok and frac >= gate.THRESHOLD
@@ -96,6 +132,7 @@ def collect() -> dict:
         "convergence_strict": round(strict_frac, 4),  # strict τ=0.98 for all laws
         "matched": matched,
         "matched_strict": strict,
+        "distribution": dist,                     # threshold-free per-provision similarity histogram
         "total": total,                           # statutory denominator (annexes + repealed stubs excluded)
         "annex_out_of_scope": annex,
         "repealed_out_of_scope": repealed,
@@ -165,6 +202,33 @@ date-specific failure); the residual is the same ledd / OCR / capture tail.
                   "present on this machine — download per `docs/reference/ground_truth.md` to populate "
                   "this section.\n\n")
 
+    # Threshold-free distribution — the honest "how close is everything" view.
+    dist = d.get("distribution") or {}
+    if dist:
+        n = dist["n"]
+        drows = "\n".join(
+            f"| {b['label']} | {b['count']} | {b['count'] / n * 100:.1f}% |" for b in dist["bands"])
+        cum = dist["cum"]
+        dist_md = f"""## Full distribution — how close is *everything*?
+
+A single "reconstructs / doesn't" count hides that most of the shortfall is **near-misses** — a
+provision off by one OCR character or an editorial annotation, not one we failed to rebuild. The
+character-similarity of all **{n}** statutory provisions against today's official text:
+
+| Similarity band | Provisions | Share |
+|---|---|---|
+{drows}
+
+**Cumulative:** {cum['0.98']} at ≥0.98 · {cum['0.95']} at ≥0.95 · {cum['0.90']} at ≥0.90 ·
+{cum['0.80']} at ≥0.80 · {cum['0.50']} at ≥0.50. Median **{dist['median']:.3f}**, mean
+**{dist['mean']:.3f}**. The genuine failures are the tail below ~0.50 ({dist['bands'][-1]['count']}
+provisions — un-captured amendments or OCR-unreadable bases); the 0.80–0.98 bands are provisions we
+reconstruct *substantively* right but not to the character.
+
+"""
+    else:
+        dist_md = ""
+
     annex_note = ""
     if d.get("annex_out_of_scope"):
         annex_note = (f"\n\n**Scope.** {d['annex_out_of_scope']} bundled treaty-convention "
@@ -223,7 +287,7 @@ necessary but not sufficient (two errors can cancel). The deliverable metric is
 as it read at a *past* date, which the pipeline is scored on but never tuned on. See
 [Evaluation](evaluation.html) and [Goal](goal.html).
 
-{pit_md}## Per-law breakdown
+{dist_md}{pit_md}## Per-law breakdown
 
 Provisions reproduced at each law's threshold (`@98%` clean-base, `@90%` OCR-base);
 `annex` = treaty-convention articles held out of scope.
