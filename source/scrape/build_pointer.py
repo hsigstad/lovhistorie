@@ -29,7 +29,7 @@ if str(_REPO) not in sys.path:
     sys.path.insert(0, str(_REPO))
 
 from source.llm import pointer_apply
-from source.parse import pipeline
+from source.parse import pipeline, replay
 
 
 def _coverage(text: str, ops: list) -> float:
@@ -65,6 +65,13 @@ def run(laws, model="gpt-4.1", reextract=False):
         if not base:
             print(f"{law}: no base, skip", flush=True)
             continue
+        # ANSWER-FREE scope: pointer only on OCR-base laws, where the deterministic ledd engine
+        # structurally fails. On CLEAN/born-digital bases (is_ocr_base False, e.g. vphl/tjeneste) the
+        # ledd engine works and pointer is WORSE — baking it there regressed vphl -22. is_ocr_base is a
+        # public property of the base, not the answer.
+        if not pipeline.is_ocr_base(law):
+            print(f"{law}: clean base — deterministic reliable, skip pointer", flush=True)
+            continue
         det, _ = pipeline.reconstruct(law)              # deterministic recon (pointer_ops deleted) to
         #                                                 compare op-coverage against — answer-free
         raw = pipeline.load_ops(law, include_applied=False)     # RAW captured amendments to consolidate
@@ -72,15 +79,14 @@ def run(laws, model="gpt-4.1", reextract=False):
         for o in raw:
             if o.get("para"):
                 ops[o["para"]].append(o)
-        # ANSWER-FREE selection (reproducible without the current text): a provision whose base has NO
-        # (N) ledd markers AND has captured ops. That is exactly where the deterministic ledd engine
-        # structurally fails (it can't address "annet ledd" in unmarked prose) — so pointer_apply is
-        # strictly the better method there. MARKED (clean/born-digital) provisions keep the reliable
-        # deterministic result — overriding them with pointer REGRESSED clean-base laws (vphl -12). Same
-        # gate as build_applied; general, no per-law tuning, no answer key.
-        import re as _re
-        cand = sorted(p for p in base
-                      if ops.get(p) and not _re.search(r"\(\s*[12]\s*\)", base.get(p, "")))
+        # ANSWER-FREE selection (reproducible without the current text): provisions where the
+        # deterministic ledd engine actually DROPPED >=1 op (replay flags). This is finer than an
+        # "unmarked base" gate: within an OCR-base law many provisions still converge deterministically
+        # (ledd applied their ops), and overriding THOSE regressed (aksje net-0, unmarked gate). A
+        # dropped-op flag marks exactly where the fast path failed -> pointer is the better method there.
+        _, flags = replay.replay(dict(base), raw)
+        cand = sorted({f["para"] for f in flags
+                       if f.get("para") and f["para"] in base and ops.get(f["para"])})
         n = 0
         for p in cand:
             used = [o for o in ops[p] if (o.get("date") or "0000") <= "2025-12-31"]
@@ -89,16 +95,11 @@ def run(laws, model="gpt-4.1", reextract=False):
                                            reextract=reextract)
             if not out:
                 continue
-            # Bake pointer ONLY if it incorporates MORE amendment content than the deterministic recon
-            # (answer-free). This is the regression guard: converged clean-base provisions (deterministic
-            # already covers their ops) are NOT overridden; only genuinely-mangled ones (§14: garbled
-            # splice covers few ops) get replaced. No answer key, no per-law tuning.
-            cov_det = _coverage(det.get(p, ""), ops[p])
-            # Bake ONLY where the deterministic recon incorporated NONE of the ops (they were fully
-            # dropped -> the provision is stuck at its enactment text, a definite miss). There pointer
-            # can only help or leave a miss — it CANNOT regress. Anywhere the deterministic engine got
-            # ANY op in, we don't override (that's where blind overriding regressed clean-base laws).
-            if cov_det > 0.0 or _coverage(out, ops[p]) <= 0.0:
+            # Two answer-free guards: content-aware pointer self-skips MIS-FILED amendments, and this
+            # coverage gate rejects a consolidation that incorporates FEWER amendments than the
+            # deterministic recon (pointer mis-reasoned / over-skipped) — catches the residual
+            # non-mis-attribution regressions. Neither reads the answer.
+            if _coverage(out, ops[p]) < _coverage(det.get(p, ""), ops[p]):
                 continue
             lastdate = max((o.get("date") or "" for o in used), default="")
             rows.append({

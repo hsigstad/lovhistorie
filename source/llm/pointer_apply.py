@@ -46,10 +46,15 @@ _SYS = (
     'Return JSON {"segments":[...]} where each segment is EITHER\n'
     '  {"amendment": N}  -> use amendment N\'s whole NEW text, or\n'
     '  {"original_from":"<first ~5 words, verbatim>","original_to":"<last ~5 words, verbatim>"} '
-    '-> a span copied from the ENACTMENT.\n'
+    '-> a span copied from the ENACTMENT (ALWAYS give BOTH short anchors, never the whole text).\n'
     'Apply amendments in chronological order; a later "skal lyde" on the SAME part overrides earlier '
     'ones; drop repealed parts; insert "nytt/ny" parts. The concatenation of the segments must equal '
-    'the provision\'s current consolidated text.')
+    'the provision\'s current consolidated text.\n'
+    'CRITICAL — MIS-FILED AMENDMENTS: an amendment in the list may have been wrongly attributed to '
+    'this provision. If an amendment\'s NEW text is about a clearly DIFFERENT legal subject than this '
+    'provision (judged from the enactment text), it does NOT belong here — SKIP it entirely. Apply '
+    'only amendments whose content fits this provision; if ALL amendments are mis-filed, return the '
+    'enactment text unchanged.')
 
 
 @dataclass
@@ -71,7 +76,18 @@ def _ordered(ops, as_of):
 
 def _slice_base(base_text, a, b):
     """Verbatim base span from anchor `a` (start) to anchor `b` (end), whitespace-tolerant. None if
-    either anchor is not located — flag-don't-fabricate."""
+    either anchor is not located — flag-don't-fabricate. If `b` is empty, the model gave the whole
+    span as `a` (a "keep the original" segment); accept it iff it is a verbatim (ws-tolerant) slice of
+    the base — still 0% fabrication, just a coarser pointer."""
+    a = str(a or "").strip()
+    b = str(b or "").strip()
+    if not a:
+        return None
+    if not b:
+        nt, off = _build_norm(base_text)
+        na = _norm(a)
+        pos = nt.find(na)
+        return base_text[off[pos]:(off[pos + len(na) - 1] + 1)] if pos >= 0 else None
     nt, off = _build_norm(base_text)
     i = _locate(a, base_text, nt, off, 0)
     if i < 0:
@@ -97,7 +113,7 @@ def apply(para, base_text, ops, *, client=None, model="gpt-4.1-mini", cache=CACH
         + (" (REPEAL)" if o.get("change_type") == "repeal" else "")
         for i, o in enumerate(used, 1))
     up = f"ENACTMENT:\n{base_text}\n\nAMENDMENTS:\n{block}"
-    key = cache.key(f"ptr#{para}#{model}", _hh(up), model)
+    key = cache.key(f"ptr#{para}#{model}", _hh(_SYS, up), model)   # _SYS in key: prompt change busts cache
     hit = cache.get(key) if not reextract else None
     if hit is not None:
         content = hit.extraction.get("content", "")
