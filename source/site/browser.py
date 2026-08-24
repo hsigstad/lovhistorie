@@ -175,6 +175,26 @@ def _status_brief() -> dict:
         return {}
 
 
+def _dist_bar_html(dist: dict) -> str:
+    """Stacked horizontal bar of the per-provision similarity distribution, graded green→amber→red
+    to match the per-provision fidelity dots (good ≥0.98, warn ≥0.90, bad <0.90). Server-rendered
+    (no JS), theme-aware via CSS vars. Empty string when no distribution is present."""
+    bands = (dist or {}).get("bands")
+    n = (dist or {}).get("n")
+    if not bands or not n:
+        return ""
+    labels = ["= 1.000", "0.98–1.0", "0.95–0.98", "0.90–0.95", "0.80–0.90", "0.50–0.80", "< 0.50"]
+    segs, leg = [], []
+    for i, (b, lab) in enumerate(zip(bands, labels), 1):
+        pct = b["count"] / n * 100
+        segs.append(f'<span class="d-b{i}" style="width:{pct:.2f}%" '
+                    f'title="{lab}: {b["count"]} ({pct:.0f}%)"></span>')
+        leg.append(f'<span><i class="d-b{i}"></i>{lab} <b>{b["count"]}</b></span>')
+    return (f'<figure class="distfig"><div class="distbar" role="img" '
+            f'aria-label="character-similarity distribution of {n} provisions">'
+            f'{"".join(segs)}</div><figcaption class="distlegend">{"".join(leg)}</figcaption></figure>')
+
+
 def render_page(index: list, status: dict) -> str:
     tpl = TEMPLATE.read_text(encoding="utf-8")
     n_laws = len(index)
@@ -197,6 +217,7 @@ def render_page(index: list, status: dict) -> str:
     repl = {
         "__PERF__": perf,
         "__DIST__": dist_txt,
+        "__DISTBAR__": _dist_bar_html(dist),
         "__NLAWS__": str(n_laws),
         "__NPROV__": f"{n_prov:,}",
         "__ASOF__": status.get("as_of", ""),
