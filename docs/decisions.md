@@ -13,17 +13,25 @@ enactment). No separate filter, no extra cost. With answer-free scope (OCR-base 
 candidates; op-coverage gate) this gives **587 -> 599/829 (72.3%), guards PASS** — a legit ~4x over
 the prior +1..5, vs the gamed +41. Gains: oreign +4, rettsg +6, mester +3, kjøp +2, foreld +1.
 
-**Phase 2 (reasoning escalation) REFUTED for the residual.** The remaining gap (aksje net-0 — the big
-one) is NOT mis-reasoning: o3 == gpt-4.1 on aksje low-scorers (both 0.26, only 1-2 ops). Cause: aksje
-1997 was RENUMBERED/restructured — enactment §11-10 is about "lån", current §11-10 is about
-"tegningsrettsaksjer" (a different provision). The enactment §N-M id does not map to the current §N-M,
-so base+amendments cannot reconstruct it regardless of model. This is the renumber/move class replay
-already flags and cannot handle — a DISTINCT, hard lever (id remapping), not application/precision/OCR.
+**Phase 2 (reasoning escalation) REFUTED.** o3 == gpt-4.1 on aksje low-scorers (both 0.26, 1-2 ops) —
+the residual is NOT mis-reasoning.
 
-**Consequence.** Capture precision is DONE (content-aware application, +12). The answer-free ceiling for
-the current enactment+amendments machinery is ~72-73%; the next barrier is STRUCTURAL RENUMBERING
-(aksje-class), which needs an enactment-id -> current-id remap, not more LLM application. `pointer_apply`
-content-aware + `build_pointer` (OCR-base/flags/coverage) committed; pointer_ops local (gitignored).
+**Renumbering lever investigated and REJECTED as the big one.** Decomposed aksje's ~99 statutory misses:
+only **3 are renumbering** (enactment content at a different current id, e.g. §11-10 lån -> current
+§11-14); §11-10 was a misleading single example. The real breakdown: ~41 provisions with NO captured
+ops (missing "ny §" inserts + provisions absent from our OCR base, e.g. §2-11), ~45 with partial/wrong
+captures, ~16 in-base-same-id (OCR/terminology), ~11 captured-but-not-applied, 3 renumbered. §1-6 (added
+by lov 2017-06-16-71) has 0 captured ops — a CAPTURE gap, not an application bug (0 aksje new-provisions
+are captured-but-unapplied). So aksje is a HETEROGENEOUS CAPTURE-COMPLETENESS tail (missing amendment
+ops + enactment-base gaps), NOT a single structural lever. Renumbering handling would recover ~3.
+
+**Consequence.** Capture precision is DONE (content-aware application, +12 -> 599/829, 72.3% answer-free,
+guards PASS). There is NO single clean "next lever": the remaining ~28% is a long heterogeneous tail
+(missing amendment ops, enactment-base gaps, OCR, a few renumbers), each worth a handful of provisions —
+capture/harvest/parse-quality grinding, which the "general fixes only" mandate rules out and which has
+diminishing returns. The reconstruction MACHINERY is mature (application + precision solved). Recommend
+consolidating the +12 (bake pointer_ops, refresh status/site) rather than chasing the tail.
+`pointer_apply` content-aware + `build_pointer` committed; pointer_ops local (gitignored).
 
 ## 2026-08-23 — LLM holistic/pointer apply reconstructs mangled provisions, but ANSWER-FREE deployment is capture-precision-limited (piloted end-to-end)
 
