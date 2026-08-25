@@ -292,64 +292,78 @@ def load_ops(target_law: str, include_applied: bool = True):
     return ops
 
 
-def enactment_base(target_law: str) -> dict:
-    """{paragraf_id: text} of the law AS ORIGINALLY ENACTED, from the gazette.
+# Parallel snapshot-base directory for the SEPARATE 2005-baseline pipeline (2005 -> today). A law's
+# 2005 file (data/enactment_2005/<dk>.json) carries base_as_of="2005-12-31" + the Lovdata-CD-2005
+# provisions; laws with no 2005 file (e.g. post-2005-enacted vphl/tjeneste) fall back to the enactment
+# base. This never touches the from-enactment pipeline (base="enactment", the default).
+# See docs/notes/reconstruction_2005_baseline.md.
+_ENACTMENT_2005 = _ENACTMENT.parent / "enactment_2005"
 
-    Reads the cached, public-domain enactment built OFFLINE by
-    source.scrape.build_enactment (data/enactment/<datokode>.json). No network, no
-    OCR, no current text at runtime — deterministic (hard rule 3).
 
-    HARD RULE: the cache must come from Norsk Lovtidend, NEVER from the current
-    consolidated text (the gate's base-integrity guard enforces this). Laws not yet
-    built return {} — their never-amended provisions can't be reconstructed and
-    score 0 against the current text, which is the honest state convergence exposes.
-    """
+def _base_path(target_law: str, base: str = "enactment") -> Path:
+    """Resolve the base-json path for `base` ∈ {"enactment","2005"}. base="2005" prefers the 2005
+    snapshot file, falling back to the enactment base when a law has no 2005 snapshot."""
     dk = target_law.split("/")[-1]
-    f = _ENACTMENT / f"{dk}.json"
+    if base == "2005":
+        p = _ENACTMENT_2005 / f"{dk}.json"
+        if p.exists():
+            return p
+    return _ENACTMENT / f"{dk}.json"
+
+
+def enactment_base(target_law: str, base: str = "enactment") -> dict:
+    """{paragraf_id: text} of the law's base — AS ORIGINALLY ENACTED (base="enactment") or the
+    Lovdata-CD-2005 snapshot (base="2005").
+
+    Reads the cached, public-domain base built OFFLINE (data/enactment/<dk>.json or
+    data/enactment_2005/<dk>.json). No network, no OCR, no current text at runtime — rule 3.
+
+    HARD RULE: the cache must come from Norsk Lovtidend (enactment) or the out-of-DB-protection
+    Lovdata CD (2005), NEVER from the current consolidated text. Laws not yet built return {}.
+    """
+    f = _base_path(target_law, base)
     if not f.exists():
         return {}
     return json.loads(f.read_text(encoding="utf-8")).get("provisions", {})
 
 
-def is_ocr_base(target_law: str) -> bool:
-    """True if the enactment base was OCR'd from a gazette/booklet (its `source` has no
-    clean-LTI-XML `lti` key). OCR bases carry irreducible character noise, so the eval
-    applies an OCR-calibrated τ to them (gate.TAU_OCR); clean LTI bases keep the strict
-    τ. Objective + structural (the source provenance recorded at build time), so it can't
-    be used to hand-pick which provisions get the looser bar."""
-    dk = target_law.split("/")[-1]
-    f = _ENACTMENT / f"{dk}.json"
+def is_ocr_base(target_law: str, base: str = "enactment") -> bool:
+    """True if the base was OCR'd from a gazette/booklet (its `source` has no clean-LTI-XML `lti`
+    key). OCR bases carry irreducible character noise, so the eval applies an OCR-calibrated τ to
+    them (gate.TAU_OCR); clean LTI bases keep the strict τ. Objective + structural (the source
+    provenance recorded at build time), so it can't be used to hand-pick the looser bar."""
+    f = _base_path(target_law, base)
     if not f.exists():
         return False
     src = json.loads(f.read_text(encoding="utf-8")).get("source", {})
     return "lti" not in src
 
 
-def base_as_of(target_law: str) -> str | None:
-    """The version boundary a SNAPSHOT base was captured at (booklet 'ajourført' date),
-    or None for a pure enactment base. When set, the base already incorporates every
-    amendment dated <= this, so reconstruction must replay ONLY later amendments."""
-    dk = target_law.split("/")[-1]
-    f = _ENACTMENT / f"{dk}.json"
+def base_as_of(target_law: str, base: str = "enactment") -> str | None:
+    """The version boundary a SNAPSHOT base was captured at (booklet 'ajourført' / the 2005 CD date),
+    or None for a pure enactment base. When set, the base already incorporates every amendment dated
+    <= this, so reconstruction replays ONLY later amendments."""
+    f = _base_path(target_law, base)
     if not f.exists():
         return None
     return json.loads(f.read_text(encoding="utf-8")).get("base_as_of")
 
 
-def reconstruct(target_law: str, as_of: str | None = None):
+def reconstruct(target_law: str, as_of: str | None = None, base: str = "enactment"):
     """Rebuild {paragraf_id: text} for `target_law` as of `as_of` (or latest).
 
-    Returns (provisions, flags). Inputs are enactment base + amendment ops ONLY.
-    For a snapshot base (base_as_of set), amendments already baked into the snapshot
-    (date <= base_as_of) are skipped so they are not double-applied; dates before the
-    snapshot are not reconstructable from it and are the honest floor of its reach.
+    Returns (provisions, flags). Inputs are the base + amendment ops ONLY. `base` selects the
+    pipeline: "enactment" (default; from-enactment, all ops) or "2005" (the separate 2005-baseline
+    pipeline — Lovdata-CD-2005 snapshot + post-2005 amendments only, offline-baked consolidations
+    skipped since those are from-enactment artifacts). For a snapshot base (base_as_of set),
+    amendments dated <= base_as_of are skipped (already baked in); earlier dates are the honest floor.
     """
-    base = enactment_base(target_law)
-    ops = load_ops(target_law)
-    since = base_as_of(target_law)
+    b = enactment_base(target_law, base)
+    ops = load_ops(target_law, include_applied=(base != "2005"))
+    since = base_as_of(target_law, base)
     if since:
         ops = [o for o in ops if not o.get("date") or o["date"] >= since]
-    provs, flags = replay.replay(base, ops, as_of=as_of)
+    provs, flags = replay.replay(b, ops, as_of=as_of)
     # blanket terminology reforms ("ordet «A» endres til «B»") — applied AFTER the per-provision
     # ops as a deterministic str.replace over provisions containing the term (source.parse.blanket).
     reforms = _load_reforms(target_law)

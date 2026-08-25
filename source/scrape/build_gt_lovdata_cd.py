@@ -112,12 +112,19 @@ def build():
         tag = "TRUSTED->eval" if dk in TRUSTED else "held back (parse-limited)"
         print(f"{law}: {len(blk)} chars, {len(provs)} provisions [{tag}]", flush=True)
         if dk in TRUSTED:
-            # wire into the eval ground-truth (source.eval.ground_truth reads <dk>/<date>.json + index.csv)
+            # (a) eval ground-truth (source.eval.ground_truth reads <dk>/<date>.json + index.csv)
             (GT_ROOT / dk).mkdir(parents=True, exist_ok=True)
             json.dump(provs, open(GT_ROOT / dk / "2005-12-31.json", "w"), ensure_ascii=False)
             index_rows.append({"datokode": dk, "valid_from_date": "2005-12-31",
                                "filename": "2005-12-31.json", "source": "lovdata_cd_2005",
                                "era": year[:3] + "0s", "size_class": "", "amendment_intensity": ""})
+            # (b) reconstruction base for the SEPARATE 2005-baseline pipeline (pipeline.reconstruct
+            #     base="2005"): base_as_of=2005-12-31 so replay applies ONLY post-2005 amendments.
+            B2005 = _REPO / "data" / "enactment_2005"
+            B2005.mkdir(parents=True, exist_ok=True)
+            json.dump({"provisions": provs, "base_as_of": "2005-12-31",
+                       "source": {"lovdata_cd": "2005"}},
+                      open(B2005 / f"{dk}.json", "w"), ensure_ascii=False)
     if index_rows:
         _update_index(index_rows)
 

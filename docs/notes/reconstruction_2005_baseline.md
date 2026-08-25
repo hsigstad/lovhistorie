@@ -63,10 +63,33 @@ corpus (well beyond the dev set).
 ## Phasing
 
 - **Phase 0 (STARTED 2026-08-25):** LLM segmenter on the 4 present dev laws. Findings below.
-- **Phase 1:** `base_2005()` + `reconstruct(base="2005")` + date-floored replay; 2005-gate; report
-  changed-provision accuracy (expected high).
+- **Phase 1 (DONE 2026-08-25, scoped):** `reconstruct(law, as_of, base="enactment"|"2005")` +
+  `data/enactment_2005/<dk>.json` (base_as_of=2005-12-31). Findings below.
 - **Phase 2:** site dropdown (default Since-2005); both histories viewable per law.
 - **Phase 3 (later):** segment all 248 CD laws → a 2005 baseline for the full national corpus.
+
+## Phase 1 findings (2026-08-25) — architecture works; dev-set benefit is law-dependent
+
+Implemented with **zero overwrite**: `reconstruct`/`enactment_base`/`is_ocr_base`/`base_as_of` gained a
+`base=` arg (default `"enactment"` → byte-identical old behaviour; the enactment gate still 599/829,
+guards PASS). `base="2005"` reads `data/enactment_2005/<dk>.json` (the Lovdata-CD-2005 snapshot,
+base_as_of=2005-12-31) and replays only post-2005 ops with offline consolidations skipped; laws without a
+2005 file (post-2005-enacted vphl/tjeneste, or not-in-selection foreld/rettsg) fall back to enactment.
+
+A/B (convergence vs current, τ per base):
+| law | enactment | 2005 | note |
+|---|---|---|---|
+| oreigningslova | 68% | **77%** | 2005 base cleaner (static μ0.96) — clear win |
+| avtaleloven | 76% | 60% | 2005 base μ0.85 static, 7 provisions in the 0.80–0.90 band — a **CD-format offset** (correct text, different orthography/§-spacing than NLOD), not a recon error |
+| vphl / tjeneste | = | = | fall back to enactment (no CD base needed) — identical, as designed |
+
+**Honest read.** The pipeline works end-to-end. But there's a dev-set catch-22: the laws whose CD base
+extracts cleanly (avtale/oreign, small) are ones the enactment pipeline ALREADY handles; the laws where a
+clean 2005 base would help most (kjøp/aksje — bad OCR enactment bases, heavy amendment) are exactly the
+ones blocked on the Phase-0 segmenter. So the dev-set win is modest today; the real payoff is latent,
+unlocked by (a) the large-law segmenter and (b) **normalising the CD base to NLOD orthography/§-spacing**
+(would recover avtale's near-miss band). The architecture is the durable deliverable — it's ready for
+both.
 
 ## Phase 0 findings (2026-08-25) — small laws done, large laws hit the messy-CD-OCR wall
 
