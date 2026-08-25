@@ -35,3 +35,47 @@ lovdata block is in the last shard(s). `curl -Ls <resolve-url> | grep -m1
 lovdata_cd_norgeslover_2005` works (the resolve URL redirects — need `-L`). The
 datasets-server /rows stops serving ~row 1.32M, so the lovdata block isn't
 API-reachable.
+
+---
+
+## 2026-08-25 — REVISITED: verdict upgraded. Access solved; extraction works; FIRST independent point-in-time numbers.
+
+The 2026-08 verdict ("not plug-and-play, uncertain fidelity") is **too pessimistic given today's access.**
+
+**Access is now trivial.** The lovdata_cd_2005 content is a dedicated HF dataset **`norkart/lovdata`** — a
+248 MB parquet, `doc_type`-labelled, no 30 GB NCC shard-wrangling, no 1.32M-row API limit. The 1,386
+`lovdata_cd_norgeslover_2005` docs are a **contiguous, id-ordered block** (id 32965–34488). Concatenating
+in id-order rebuilds the full 2005 law corpus (~11 M chars). Builder: `source/scrape/build_gt_lovdata_cd.py`.
+
+**Per-law extraction is SOLID.** The old note's fear ("titles indistinguishable from cross-refs") was
+wrong: the CD marks each law with a clean header **`<enactment-year> <Name> - <abbrev>.`** (e.g.
+`1997 Aksjeloven - asl.`, `1918 Avtaleloven - avtl.`; small laws just `<year> <Name>.`). Splitting on it
+gives 248 correctly-bounded per-law blocks with Lovdata's own amendment-provenance notes intact.
+
+**Scope: only 4 of 9 dev laws are in 'Norges Lover'** (it's a curated selection): avtaleloven(1918),
+oreigningslova(1959), kjøpsloven(1988), aksjeloven(1997). foreldelses-/rettsgebyrloven are NOT in the
+selection; vphl(2007)/tjeneste(2009) postdate the 2005 edition.
+
+**FIRST independent point-in-time numbers** (our `reconstruct(law, as_of=2005-12-31)` vs the Lovdata-CD-2005
+gold, per-provision char-similarity; `cur_μ` = 2005-gold-vs-today, a parse-quality check):
+
+| law | §matched | ≥τ | pit_μ | cur_μ | status |
+|---|---|---|---|---|---|
+| avtaleloven | 40 | 45% | **0.788** | 0.853 | TRUSTWORTHY |
+| oreigningslova | 33 | 52% | **0.809** | 0.926 | TRUSTWORTHY |
+| kjøpsloven | 86 | 10% | 0.428 | 0.424 | parse-limited (not real) |
+| aksjeloven | 266 | 12% | 0.445 | 0.440 | parse-limited (not real) |
+
+For avtale/oreign the numbers are internally consistent (`cur_μ` high → clean gold parse) and match a key
+claim: **our 2005 reconstruction scores ≈ our CURRENT convergence** for these laws (avtale current 35/45,
+oreign 17/31) — the first *independent* evidence that convergence-vs-current is a valid proxy for the
+point-in-time deliverable (previously only checkable via encumbered Lovdata Pro or the contaminated
+Skarsten replay). kjøp/aksje are dragged by a first-cut provision **segmenter** that drops ~half of
+large-law provisions (empty gold bodies for e.g. aksje §16-6, while §1-1/§5-3/§10-7 parse perfectly at
+0.99) — `cur_μ 0.42` proves the low score is a parse artifact, not a reconstruction failure.
+
+**Remaining work (bounded):** replace `build_gt_lovdata_cd.parse_provs` (a period-anchored regex) with the
+pipeline's `target_localize` segmenter (heading-vs-cross-reference on noisy prose) so aksje/kjøp gold parses
+cleanly; then wire all 4 laws into `source/eval/status._point_in_time` as a public, on-disk point-in-time
+oracle (unlike Lovdata Pro, this is NLOD 2.0 / publishable). Output lives in `data/ground_truth/2005/`
+(gitignored like the rest of ground_truth; regenerate with `python -m source.scrape.build_gt_lovdata_cd`).
