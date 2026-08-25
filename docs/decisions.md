@@ -395,3 +395,29 @@ historically-amended §Y) plus the block-add/renumber cases that hit the same ov
 number further requires either (a) more SOURCE harvest (expensive, network, diminishing, sometimes the
 issue isn't digitised) or (b) an independent point-in-time oracle to safely arbitrate overwrites (the
 Lovdata CD editions). Both are deferred. 599/829 (72.3%) stands as the honest answer-free ceiling.
+
+## 2026-08-25b — Harvest-coverage lever investigated: post-2001 complete; pre-2001 gap years are NB digitisation HOLES (not fetchable). Lever closed.
+
+Audited whether we've missed *available* Lovtidend issues (`coverage.py`/`pre2001.py`/`gapyears.py`).
+Result: **post-2001 is 100% harvested** — every register-listed amending act for every dev law that
+post-dates 2001 is in the LTI bulk (the ~17 unparsed ones are parse gaps: block/renumber/sub-unit forms,
+already characterised). **Pre-2001**: our OCR holds ~1 Avd. I content volume/year for 1910–2000 EXCEPT
+seven years entirely absent — 1976, 1980, 1982, 1984, 1987, 1988, 1989 — which carry ~18 dev-law amending
+acts (oreign 8, rettsg 7, foreld 2, avtale 1).
+
+**But those years are NB DIGITISATION HOLES, not harvest oversights.** Verified against the census
+(`data/lovtidend_index.json`) that drove the 144k-page harvest: years we hold (1983/1985/1986) each have
+~27 items titled *"Norsk lovtidend (trykt utg.). Avd. I. Lover og sentrale forskrifter"* (the content);
+the gap years have **0** Avd. I content items — NB digitised only the *register/index* volumes
+(*"register … : Avd. I, Avd. II. 1984 Vol. A"* — act titles + page numbers, NO law text) and Avd. II
+regional regs. The harvester's own docstring already flagged these exact years as holes; a catalog search
+`q="Norsk lovtidend 1984"` returns the register volumes and is easy to MISTAKE for content (I did, twice
+— corrected here). So the ~18 missing pre-2001 dev-law acts are **not fetchable free**: the source text
+was never scanned, and the free public alternatives don't cover pre-2001 (LTI starts 2001; sondreskarsten
+2001; Lovdata CDs would, but encumbered/unacquired). **Harvest lever closed for the dev set.** 72.3%
+stands; the only paths left are the (deferred, encumbered) Lovdata CDs or a bespoke re-OCR of physical
+1980s gazettes NB never scanned.
+
+METHOD LESSON (again): NB catalog `q=` ranks register/index and Avd. II volumes alongside content; never
+infer "issue available" from a title match — check `_is_avdi` + `isDigital` + `pageCount` in the census,
+or fetch a page and confirm it's law text, not an index.
