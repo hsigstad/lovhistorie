@@ -67,9 +67,6 @@ corpus (well beyond the dev set).
   changed-provision accuracy (expected high).
 - **Phase 2:** site dropdown (default Since-2005); both histories viewable per law.
 - **Phase 3 (later):** segment all 248 CD laws → a 2005 baseline for the full national corpus.
-- **Phase 1:** `base_2005()` + `reconstruct(base="2005")` + date-floored replay; 2005-gate.
-- **Phase 2:** site dropdown (default Since-2005); both histories viewable per law.
-- **Phase 3 (later):** segment all 248 CD laws → a 2005 baseline for the full national corpus.
 
 ## Phase 0 findings (2026-08-25) — small laws done, large laws hit the messy-CD-OCR wall
 
