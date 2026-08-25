@@ -142,3 +142,27 @@ more than a thin wrapper: candidate options for the next pass —
 
 NOT yet productionised (prototype in scratchpad). Small-law point-in-time is already live; large-law
 gold + base stays held back in `build_gt_lovdata_cd.TRUSTED` until one of the above lands.
+
+## 2026-08-25 — The 2005 ceiling is now SOURCE-limited (NCC incompleteness), not extraction
+
+Diagnosing avtaleloven's residual `base=2005` misses: they are NOT extraction or reconstruction errors.
+The `norkart/lovdata` corpus is the **NCC-derived** 2005 CD, and NCC's training-chunk processing DROPPED
+content — verified: avtale §7 (whole provision), §30 ledd 2, §32 middle ledd, §36 ledd 2 are absent from
+EVERY norgeslover doc (not a chunk-boundary loss), and the doc-id sequence has gaps (e.g. 33161 missing).
+So the LLM extraction (now μ0.89) and replay are not the cap — the SOURCE is.
+
+Corpus-wide: the doc-id gaps mean NCC dropped content for every law, not just avtale (a naive 5-gram
+"missing" measure reads avtale 51% / oreign 33% / kjøp 89% / aksje 97%, but that OVERSTATES — it counts
+OCR/orthography differences as "missing", which is why aksje reads 97% yet extracts to μ0.84; a clean
+OCR-tolerant measure timed out). Net: **the 2005-baseline quality ceiling is a COMPLETE 2005 source**, and
+that lever helps every law, so it dominates further per-law extraction polish.
+
+**Extraction feasibility is PROVEN, not speculative.** NB AI Lab already opened the 2005 Lovdata CD and
+extracted its full text — that IS the NCC `lovdata_cd_*_2005` block. So the disc format is readable (not
+encrypted/opaque); the only defect is NCC's chunking. Decision path:
+1. **Ask NB AI Lab for the PRE-CHUNKING extraction** (complete, structured, already done) — an email, zero
+   disc/format work. Lowest risk, highest value (fixes every law). This is the standing action item.
+2. Only if (1) fails: acquire the native disc (BI interlibrary loan / NB legal deposit) + re-extract.
+   Lovdata was an early SGML adopter, so the disc text layer is likely structured/extractable — and NB's
+   success confirms the format is crackable — but the specific container is unconfirmed until in hand.
+Recommendation: do (1) before spending on physical disks.
