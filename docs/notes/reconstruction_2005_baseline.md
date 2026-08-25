@@ -91,6 +91,22 @@ unlocked by (a) the large-law segmenter and (b) **normalising the CD base to NLO
 (would recover avtale's near-miss band). The architecture is the durable deliverable — it's ready for
 both.
 
+## Phase 0 RESOLVED for small laws (2026-08-25) — proper LLM clean-text extraction
+
+`source/llm/extract_cd.py` (cached, trace-verified) has the LLM return each provision's clean statutory
+text, apparatus removed. Piloted ceiling: small laws static-μ≈0.95 (vs 0.85 regex); large laws reach
+~0.84 (aksje) but need boundary-clean chunking + CISG/annex handling (deferred — still a scoped build).
+Productionised for the TRUSTED small laws (avtale/oreign) in `build_gt_lovdata_cd`. Result: **both now
+tie the enactment pipeline on rate AND beat it on μ** — avtale base=2005 60→76% (μ0.854→0.892), oreign
+68% (μ0.864→0.908); point-in-time gold μ up (avtale 0.789→0.826, oreign 0.809→0.818). Enactment gate
+untouched (599, guards PASS).
+
+KEY FINDING that unblocked oreign: the current NLOD text **retains in-force/ikrafttredelse footnotes**
+(e.g. "1 Frå 1 juli 1960 iflg. res. …"), so aggressively cleaning them makes the 2005 text match NLOD
+*less*. The extractor prompt now KEEPS in-force footnotes while stripping cross-references and
+change-history — the principled fix (not metric-tuning). Large-law productionisation (kjøp/aksje) stays
+the scoped next build; the small-law recipe de-risks it.
+
 ## Phase 0 findings (2026-08-25) — small laws done, large laws hit the messy-CD-OCR wall
 
 **Validation metric corrected.** `cur_μ` (2005-gold vs today) conflates a bad parse with a *legitimate*

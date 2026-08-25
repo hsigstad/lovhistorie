@@ -8,8 +8,8 @@
       "dates": [
         {
           "date": "2005-12-31",
-          "rate": 0.489,
-          "mean": 0.789
+          "rate": 0.667,
+          "mean": 0.826
         }
       ]
     },
@@ -22,7 +22,7 @@
         {
           "date": "2005-12-31",
           "rate": 0.515,
-          "mean": 0.809
+          "mean": 0.818
         }
       ]
     },
@@ -103,8 +103,8 @@
   ],
   "point_in_time_summary": {
     "n_versions": 12,
-    "rate_mean": 0.7374,
-    "similarity_mean": 0.8659
+    "rate_mean": 0.7522,
+    "similarity_mean": 0.8698
   },
   "as_of": "2026-08-25",
   "convergence": 0.7226,

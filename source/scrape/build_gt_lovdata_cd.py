@@ -107,10 +107,18 @@ def build():
             continue
         dk = law.split("/")[1]
         (OUT / f"{dk}.txt").write_text(blk, encoding="utf-8")
-        provs = parse_provs(blk)
+        # TRUSTED (small, clean) laws use the cached LLM CLEAN-TEXT extractor (piloted to static-μ≈0.95,
+        # vs 0.85 regex); held-back large laws keep the regex parse until the large-law extractor lands.
+        if dk in TRUSTED:
+            from source.llm import extract_cd
+            provs, rep = extract_cd.extract_law(dk, blk)
+            note = f"LLM extract: trace μ={rep.trace_mean:.2f}, low-trace {len(rep.low_trace)}"
+        else:
+            provs = parse_provs(blk)
+            note = "regex"
         json.dump(provs, open(OUT / f"{dk}.json", "w"), ensure_ascii=False)
         tag = "TRUSTED->eval" if dk in TRUSTED else "held back (parse-limited)"
-        print(f"{law}: {len(blk)} chars, {len(provs)} provisions [{tag}]", flush=True)
+        print(f"{law}: {len(blk)} chars, {len(provs)} provisions [{tag}; {note}]", flush=True)
         if dk in TRUSTED:
             # (a) eval ground-truth (source.eval.ground_truth reads <dk>/<date>.json + index.csv)
             (GT_ROOT / dk).mkdir(parents=True, exist_ok=True)
