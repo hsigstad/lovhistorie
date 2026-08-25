@@ -62,9 +62,47 @@ corpus (well beyond the dev set).
 
 ## Phasing
 
-- **Phase 0 (next):** LLM segmenter on the 4 present dev laws (avtale/oreign/kjøp/aksje); validate
-  `cur_μ`; fix the kjøp/aksje point-in-time numbers held back in `build_gt_lovdata_cd.TRUSTED`.
+- **Phase 0 (STARTED 2026-08-25):** LLM segmenter on the 4 present dev laws. Findings below.
 - **Phase 1:** `base_2005()` + `reconstruct(base="2005")` + date-floored replay; 2005-gate; report
   changed-provision accuracy (expected high).
 - **Phase 2:** site dropdown (default Since-2005); both histories viewable per law.
 - **Phase 3 (later):** segment all 248 CD laws → a 2005 baseline for the full national corpus.
+- **Phase 1:** `base_2005()` + `reconstruct(base="2005")` + date-floored replay; 2005-gate.
+- **Phase 2:** site dropdown (default Since-2005); both histories viewable per law.
+- **Phase 3 (later):** segment all 248 CD laws → a 2005 baseline for the full national corpus.
+
+## Phase 0 findings (2026-08-25) — small laws done, large laws hit the messy-CD-OCR wall
+
+**Validation metric corrected.** `cur_μ` (2005-gold vs today) conflates a bad parse with a *legitimate*
+2005→today change. The right parse-quality gauge is **`cur_μ` on STATIC provisions only** (no post-2005
+op) — those should match today.
+
+**Approach validated + reused `source/llm/segment.segment_base`** (LLM locates heading *lines*, we slice
+verbatim → 0% fabrication). Pipeline: line-structure the reflowed CD block (newline before each `§N`/note)
+→ `segment_base` → deterministic clean (strip `0 Endret…`, `N Jfr…` footnote defs, `Art N` CISG-annex,
+inline footnote digits).
+
+**Results.** avtaleloven/oreigningslova (small, clean CD text): already at μ0.79/0.86 with the regex
+parser and validate cleanly — DONE, wired into the eval. kjøpsloven/aksjeloven (large, messy CD OCR):
+segmenter lifted kjøp static μ 0.42(regex)→0.59(LLM), but NOT to the ≥0.95 target. Remaining blockers,
+all law-specific CD-layout OCR artifacts:
+- **cross-ref-as-heading truncation:** the LLM sometimes labels a citation (`§55` inside §61) as a
+  heading; `segment_base._repair` enforces only line-monotonicity, so a backward-id boundary truncates
+  the real provision to just its title. Adding id-monotonic repair helped aksje not at all and *broke*
+  kjøp (17 provisions — the CISG "Art" annex numbering poisons the monotonic chain).
+- **allmennaksjelov parallels** (`asal. §5-23`) interleaved through aksjeloven, and **footnote
+  definitions** interspersed between ledd, contaminate bodies.
+- **ledd-(1) drop:** a provision's first ledd occasionally splits to the wrong slice.
+
+**Assessment.** The 2005 CD text for the LARGE laws is genuinely messy (the original note's "real parsing
+project of uncertain fidelity" keeps proving right). Boundary-location by LLM is the right tool but needs
+more than a thin wrapper: candidate options for the next pass —
+1. **Per-provision anchor extraction** (pointer_apply-style: LLM returns clean start+end verbatim anchors
+   per provision, excluding notes/annex/parallels) instead of boundaries-only + regex cleaning.
+2. **Prompt-harden** `segment_base` for the CD format (reject `asal.`/`Art`/citations explicitly) + a
+   chapter-aware id-monotonic repair that resets at the CISG-annex boundary.
+3. **Scope down:** ship the 2005 baseline for the laws that extract cleanly (avtale/oreign + the
+   post-2005-enacted vphl/tjeneste that need no CD base) and treat kjøp/aksje as a known hard tail.
+
+NOT yet productionised (prototype in scratchpad). Small-law point-in-time is already live; large-law
+gold + base stays held back in `build_gt_lovdata_cd.TRUSTED` until one of the above lands.
