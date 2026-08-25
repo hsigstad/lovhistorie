@@ -372,20 +372,26 @@ constraint to recover generalisable op-structure, validated on held-out past sna
 the CD oracle. (`exploit.py`/`cover.py`: only ~15% of provisions are ≥95% verbatim-present in the inputs,
 so the guard does bound pure lookup — but that doesn't rescue the overfit-to-today problem.)
 
-**5. THE ONE LIVE LEVER — LTI parser drops harvested restatement blocks (`probe.py`/`probe2.py`).**
-Of the 60 clean-base (2001+) capture gaps, a real subset are **not harvest gaps but parser drops**:
-the amendment is in the raw LTI XML yet produced 0 attributed ops. Verified: `aksje §2-10` has
-`nl-20150410-017 "Ny § 2-10 skal lyde:"` (full restatement) + a 2014 ledd-add + 2019 sub-edit in the raw
-XML, but `lti_amendments` extracted **zero** aksje ops from that act — the whole block was dropped (the
-restatement sits in a `futureLegalArticle`, i.e. future-dated at harvest). This is the honest, safe lever
-the other buckets lack: **deterministic, verbatim, and insert-like** (these provisions are currently
-empty/base, so applying a restatement overwrites nothing → no overwrite-wall regression risk). Bounded —
-of the ~34 dev "in-raw-not-parsed" gaps, minus the block-add/renumber cases (which hit the walls above),
-realistically low-tens of provisions → maybe +1–2%. Not yet done. **Next step if we resume optimising:
-fix the LTI op-extractor's handling of `futureLegalArticle` / `"Ny § X skal lyde:"` restatement blocks,
-then A/B via the gate.**
+**5. A hypothesised "LTI parser drops harvested restatements" lever — INVESTIGATED AND REFUTED.**
+An initial loose probe (`probe2.py`: "provision id near 'skal lyde' in any act whose text mentions the
+law's datokode") suggested ~17/26 absent aksje provisions had restatements in the raw LTI that the parser
+dropped — e.g. `aksje §2-10` seemingly restated by `nl-20150410-017 "Ny § 2-10 skal lyde:"`. **That was a
+cross-law FALSE POSITIVE.** `nl-20150410-017` is *finansforetaksloven* (a NEW law being enacted); its
+§2-10 is "Gjenforsikring/pensjonskasse" and has nothing to do with aksjeloven — the act only mentions
+aksjeloven in a repeal-list and a cross-reference. Re-run PROPERLY (`parsemiss.py`/`sanity.py`/`final.py`)
+by bounding to GENUINE aksjeloven amendment blocks via the parser's own `_BLOCK_HEADER`: 30 real aksje
+blocks / 32 whole-provision instructions are detected (block detection works), and **0** target an absent
+provision. **All 27 absent aksje provisions appear in NO genuine aksjeloven-headed block at all** — not
+whole, not sub-unit, not chapter/avsnitt. So the parser is not dropping harvested aksje restatements; the
+amending text simply isn't in an aksjeloven block in our LTI harvest. The lever does not exist.
+LESSON: a datokode/`§ X`-proximity probe over multi-law acts is worthless — every big act mentions dozens
+of laws and every law has a §2-10. Bound to the parser's real block header before claiming a parse-miss.
 
-**Bottom line.** For answer-free convergence we are at a principled ceiling: assembly is answer-limited,
-oracle is gaming, and capture is mostly harvest + the same block/renumber walls — EXCEPT the LTI
-restatement-drop lever (#5), which is the one remaining honest, regression-safe path and is worth a
-bounded pass. Everything else requires an independent point-in-time oracle (the Lovdata CDs).
+**Bottom line (corrected).** For answer-free convergence we are at a principled ceiling with **no clean
+lever left**. Assembly (62%) is answer-limited (overwrite-safety). Oracle (3%) is gaming by definition.
+Capture (36%) is NOT parse-misses — it is genuine harvest/coverage gaps (the amending act isn't in our
+inputs, or amends via a reform-act header form we don't detect, or via renumbering where current §X ≠ the
+historically-amended §Y) plus the block-add/renumber cases that hit the same overwrite wall. Raising the
+number further requires either (a) more SOURCE harvest (expensive, network, diminishing, sometimes the
+issue isn't digitised) or (b) an independent point-in-time oracle to safely arbitrate overwrites (the
+Lovdata CD editions). Both are deferred. 599/829 (72.3%) stands as the honest answer-free ceiling.
