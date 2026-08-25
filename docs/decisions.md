@@ -322,3 +322,70 @@ answer-limited. The content-aware pointer (+12) is the best answer-free *approxi
 we found (content-mismatch self-skip + op-coverage gate + OCR-base scope), which is exactly why it is the
 only lever that netted positive. **Conclusion: ~72% (599/829) is the honest answer-free ceiling on this
 dev set, and the barrier is a single well-characterised wall, not irreducible idiosyncrasy.**
+
+## 2026-08-25 — Why ~72% is the ceiling: the miss decomposition, what's ruled out, and the ONE live lever
+
+Session spent characterising the 230 misses (below per-source τ) rather than chasing the number, plus
+probing whether any honest lever remains. Diagnostics in `scratchpad/{why,drill,quant,break,exploit,
+cover,probe,probe2}.py`. Findings, so we don't re-litigate them:
+
+**1. The 230 misses split three ways (`quant.py`):**
+- **Assembly — 142 (62%):** we captured the pieces but deterministic replay can't reassemble them.
+  Flagship: `rettsgebyr §14`, 23 correct captured amendments → 0.09, because the ledd engine can't
+  locate "første ledd tredje punktum" in an unmarked OCR base. This is the *answer-free overwrite-safety*
+  bucket (above).
+- **Capture — 82 (36%):** the needed amendment isn't in our parsed ops (e.g. `aksje §1-6`, 0 ops).
+- **Oracle — 6+ (3%):** the *target* isn't reconstructable. `oreigningslova §36`: enactment lists ~40
+  repealed laws; current NLOD collapses the whole list to "– – –" (108 chars vs our faithful 13,636).
+  No amendment produces that — it's a Lovdata editorial convention. We're *more* faithful than the answer
+  key and score ~0. Closed by definition (fixing = importing the oracle = gaming).
+
+**2. The overwrite wall, demonstrated on ONE provision (`break.py`).** `vphl §13-1` reconstructs
+**perfectly (1.000)** deterministically. Running the LLM pointer on it gives **0.284** — it rebuilds the
+provision as *"sentral motpart"* (the 2014 restatement) when today's §13-1 is *"børs"* (a 2018 block
+restatement phrased as "Etter kapittel 10 skal del 4 til 6 lyde", change_type `unknown`). Blind
+date-ordering gets it right *because* it doesn't reason; the LLM's content judgment — the very feature
+that earns +12 on OCR bases — mis-resolves supersession here. Both outputs are verbatim, well-formed
+statute; **answer-free nothing distinguishes them.** Ungated, this is the vphl −22. The gate is what
+converts a net-negative tool into +12 and is simultaneously the ceiling.
+
+**3. Public point-in-time snapshots investigated and REJECTED as oracle (this session):**
+- *Wayback of lovdata.no* — the free site is a JS app; archived pages carry the index + chapter-1 only
+  (~20 KB of ~200 KB). Unusable.
+- *`sondreskarsten/norwegian-laws` `law-history`* — full consolidated text per law, backdated commits,
+  public/NLOD. BUT its 2001 grunnlinje is **byte-identical to current** (verified) and it's forward-only,
+  so any provision without a ≤D restatement shows *today's* text at date D. Its default-to-current is the
+  exact failure mode we're validating against → actively misleading as an oracle (false-penalises correct
+  reconstructions, false-rewards our characteristic bug). Fine only as an amendment-*stream* cross-check.
+- The only independent public oracle left is the **Lovdata CD editions (~1995/2000/2005)**, now out of
+  15-yr DB protection (2005 content is in NB's NCC but fragmented; native structured discs held by NB).
+  Acquisition deferred by HS for now.
+
+**4. "Relax G1 — use the final text to SELECT among verbatim-only assemblies" (HS) — analysed, rejected.**
+The verbatim rule guards *fabrication*, but the binding risk is *selection/overfitting-to-today*. Two
+reasons it fails: (a) it turns convergence from a blind measurement into a fit, moving all honesty onto
+the point-in-time oracle we lack; (b) selecting by the *current* endpoint recreates the Skarsten bug —
+`vphl §13-1` again: matching current picks 2018 "børs" even for a 2015 query where "sentral motpart" is
+right → today's text at all past dates. The current text can only certify *today* (which NLOD gives free);
+it cannot certify past states, which are the product. Salvageable *only* as a global consistency
+constraint to recover generalisable op-structure, validated on held-out past snapshots — i.e. still needs
+the CD oracle. (`exploit.py`/`cover.py`: only ~15% of provisions are ≥95% verbatim-present in the inputs,
+so the guard does bound pure lookup — but that doesn't rescue the overfit-to-today problem.)
+
+**5. THE ONE LIVE LEVER — LTI parser drops harvested restatement blocks (`probe.py`/`probe2.py`).**
+Of the 60 clean-base (2001+) capture gaps, a real subset are **not harvest gaps but parser drops**:
+the amendment is in the raw LTI XML yet produced 0 attributed ops. Verified: `aksje §2-10` has
+`nl-20150410-017 "Ny § 2-10 skal lyde:"` (full restatement) + a 2014 ledd-add + 2019 sub-edit in the raw
+XML, but `lti_amendments` extracted **zero** aksje ops from that act — the whole block was dropped (the
+restatement sits in a `futureLegalArticle`, i.e. future-dated at harvest). This is the honest, safe lever
+the other buckets lack: **deterministic, verbatim, and insert-like** (these provisions are currently
+empty/base, so applying a restatement overwrites nothing → no overwrite-wall regression risk). Bounded —
+of the ~34 dev "in-raw-not-parsed" gaps, minus the block-add/renumber cases (which hit the walls above),
+realistically low-tens of provisions → maybe +1–2%. Not yet done. **Next step if we resume optimising:
+fix the LTI op-extractor's handling of `futureLegalArticle` / `"Ny § X skal lyde:"` restatement blocks,
+then A/B via the gate.**
+
+**Bottom line.** For answer-free convergence we are at a principled ceiling: assembly is answer-limited,
+oracle is gaming, and capture is mostly harvest + the same block/renumber walls — EXCEPT the LTI
+restatement-drop lever (#5), which is the one remaining honest, regression-safe path and is worth a
+bounded pass. Everything else requires an independent point-in-time oracle (the Lovdata CDs).
