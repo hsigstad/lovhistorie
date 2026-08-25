@@ -9,3 +9,5 @@ datokode,valid_from_date,filename,source,era,size_class,amendment_intensity
 2007-06-29-75,2021-10-04,2021-10-04.html,lovdata-pro,2007,L,heavy
 2009-06-19-103,2009-12-28,2009-12-28.html,lovdata-pro,2009,M,light
 2009-06-19-103,2020-07-01,2020-07-01.html,lovdata-pro,2009,M,light
+1918-05-31-4,2005-12-31,2005-12-31.json,lovdata_cd_2005,1910s,,
+1959-10-23-3,2005-12-31,2005-12-31.json,lovdata_cd_2005,1950s,,

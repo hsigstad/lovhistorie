@@ -83,10 +83,19 @@ def load_corpus(cache_dir: Path) -> str:
     return "\n".join(laws.sort_values("n").text.tolist())
 
 
+# Laws whose per-provision parse is validated clean (gold≈today for unchanged §s -> trustworthy
+# point-in-time score). kjøp/aksje are held back: their CD OCR interleaves CISG-annex articles /
+# allmennaksjelov parallels / footnote definitions that the regex segmenter can't split cleanly yet
+# (needs an LLM-assisted segmenter) — see docs/notes/lovdata_cd_2005.md.
+TRUSTED = {"1918-05-31-4", "1959-10-23-3"}
+GT_ROOT = _REPO / "data" / "ground_truth"
+
+
 def build():
     OUT.mkdir(parents=True, exist_ok=True)
     full = load_corpus(OUT)
     heads = [(m.start(), m.group(1), m.group(2).strip()) for m in HEADER.finditer(full)]
+    index_rows = []
     for year, namesub, law in DEV:
         blk = None
         for i, (pos, y, name) in enumerate(heads):
@@ -98,8 +107,36 @@ def build():
             continue
         dk = law.split("/")[1]
         (OUT / f"{dk}.txt").write_text(blk, encoding="utf-8")
-        json.dump(parse_provs(blk), open(OUT / f"{dk}.json", "w"), ensure_ascii=False)
-        print(f"{law}: {len(blk)} chars, {len(parse_provs(blk))} provisions -> {dk}.{{txt,json}}", flush=True)
+        provs = parse_provs(blk)
+        json.dump(provs, open(OUT / f"{dk}.json", "w"), ensure_ascii=False)
+        tag = "TRUSTED->eval" if dk in TRUSTED else "held back (parse-limited)"
+        print(f"{law}: {len(blk)} chars, {len(provs)} provisions [{tag}]", flush=True)
+        if dk in TRUSTED:
+            # wire into the eval ground-truth (source.eval.ground_truth reads <dk>/<date>.json + index.csv)
+            (GT_ROOT / dk).mkdir(parents=True, exist_ok=True)
+            json.dump(provs, open(GT_ROOT / dk / "2005-12-31.json", "w"), ensure_ascii=False)
+            index_rows.append({"datokode": dk, "valid_from_date": "2005-12-31",
+                               "filename": "2005-12-31.json", "source": "lovdata_cd_2005",
+                               "era": year[:3] + "0s", "size_class": "", "amendment_intensity": ""})
+    if index_rows:
+        _update_index(index_rows)
+
+
+def _update_index(rows):
+    """Merge our rows into data/ground_truth/index.csv (add lovdata_cd_2005 rows; keep existing)."""
+    import csv
+    idx = GT_ROOT / "index.csv"
+    cols = ["datokode", "valid_from_date", "filename", "source", "era", "size_class", "amendment_intensity"]
+    existing = []
+    if idx.exists():
+        existing = [r for r in csv.DictReader(open(idx, encoding="utf-8"))
+                    if r.get("source") != "lovdata_cd_2005"]
+    with open(idx, "w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols)
+        w.writeheader()
+        for r in existing + rows:
+            w.writerow({c: r.get(c, "") for c in cols})
+    print(f"index.csv: {len(rows)} lovdata_cd_2005 rows wired into the point-in-time eval", flush=True)
 
 
 if __name__ == "__main__":

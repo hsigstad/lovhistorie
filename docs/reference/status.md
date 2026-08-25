@@ -3,7 +3,7 @@
 
 **Convergence: 72.3%** (OCR-calibrated) &nbsp;·&nbsp; 599/829
 statutory dev-set provisions &nbsp;·&nbsp; **61.4%** at the strict ≥98% bar
-&nbsp;·&nbsp; anti-gaming guards **PASS** &nbsp;·&nbsp; as of 2026-08-24.
+&nbsp;·&nbsp; anti-gaming guards **PASS** &nbsp;·&nbsp; as of 2026-08-25.
 
 ## What this number means
 
@@ -74,14 +74,16 @@ date** and score against the held-out **Lovdata Pro** historical version — tex
 is scored on but never tuned on. Reported as the ≥τ rate **and** the mean character-similarity
 (the honest reading, since the score runs over the current provision set).
 
-**Point-in-time μ: 0.879 similarity** &nbsp;·&nbsp;
-78.5% at ≥τ &nbsp;·&nbsp; over 10
+**Point-in-time μ: 0.866 similarity** &nbsp;·&nbsp;
+73.7% at ≥τ &nbsp;·&nbsp; over 12
 held-out (law × date) versions. Point-in-time **tracks convergence** — the engine reconstructs
 past states about as well as the current one, so convergence is a validated proxy (no
 date-specific failure); the residual is the same ledd / OCR / capture tail.
 
 | Law | As of | ≥τ rate | mean similarity |
 |---|---|---|---|
+| avtaleloven (`1918-05-31-4`) | 2005-12-31 | 48.9% | 0.789 |
+| oreigningslova (`1959-10-23-3`) | 2005-12-31 | 51.5% | 0.809 |
 | aksjeloven (`1997-06-13-44`) | 2001-01-01 | 71.3% | 0.854 |
 | aksjeloven (`1997-06-13-44`) | 2003-01-01 | 70.6% | 0.848 |
 | aksjeloven (`1997-06-13-44`) | 2024-01-01 | 64.2% | 0.823 |

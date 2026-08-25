@@ -27,13 +27,21 @@ def load_index(root: Path = GT_ROOT):
         return list(csv.DictReader(fh))
 
 
+def _json_provisions(path):
+    """A pre-parsed {para: text} dict written by a builder (e.g. build_gt_lovdata_cd) — used when
+    the source needs segmentation the naive .txt §-split can't do cleanly (cross-refs/footnotes)."""
+    import json
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
 def load_version(datokode: str, date: str, root: Path = GT_ROOT):
     """{paragraf_id: text} for one historical version, or None if not present.
-    Parses .html (Lovdata Pro export) via lovdata_html; .txt as plain § splits."""
+    Parses .html (Lovdata Pro export) via lovdata_html; .json as a pre-parsed dict; .txt as § splits."""
     from source.eval import lovdata_html
 
     d = root / datokode
-    for ext, parser in ((".html", lovdata_html.parse_file), (".txt", _txt_provisions)):
+    for ext, parser in ((".html", lovdata_html.parse_file), (".json", _json_provisions),
+                        (".txt", _txt_provisions)):
         p = d / f"{date}{ext}"
         if p.exists():
             return parser(p)

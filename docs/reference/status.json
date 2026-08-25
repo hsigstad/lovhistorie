@@ -1,6 +1,32 @@
 {
   "point_in_time": [
     {
+      "datokode": "1918-05-31-4",
+      "law": "avtaleloven",
+      "tau": 0.9,
+      "n_provisions": 45,
+      "dates": [
+        {
+          "date": "2005-12-31",
+          "rate": 0.489,
+          "mean": 0.789
+        }
+      ]
+    },
+    {
+      "datokode": "1959-10-23-3",
+      "law": "oreigningslova",
+      "tau": 0.9,
+      "n_provisions": 33,
+      "dates": [
+        {
+          "date": "2005-12-31",
+          "rate": 0.515,
+          "mean": 0.809
+        }
+      ]
+    },
+    {
       "datokode": "1997-06-13-44",
       "law": "aksjeloven",
       "tau": 0.9,
@@ -76,11 +102,11 @@
     }
   ],
   "point_in_time_summary": {
-    "n_versions": 10,
-    "rate_mean": 0.7845,
-    "similarity_mean": 0.8793
+    "n_versions": 12,
+    "rate_mean": 0.7374,
+    "similarity_mean": 0.8659
   },
-  "as_of": "2026-08-24",
+  "as_of": "2026-08-25",
   "convergence": 0.7226,
   "convergence_strict": 0.614,
   "matched": 599,
