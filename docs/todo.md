@@ -1,5 +1,21 @@
 # Todo
 
+## Out-of-sample / full-corpus scaling (OPEN FORK, 2026-09-25 — see done.md)
+
+Out-of-sample probe (2026-09-25): post-2001 generalizes (random 0.748 ≈ dev 0.808); pre-2001 is
+consistent where bases build (0.56–0.73, dev range) but blocked on enactment **base construction**, not
+the engine. Two structural blockers surfaced: enactment location is hand-curated (`LOCATIONS`, 9 laws
+only; the "search-based locator" is unimplemented), and the harvest is bimodal (89 files are 400+ pp
+bound volumes that `segment_issue` under-segments — this also caps existing `build_gazette` recovery).
+
+- [ ] **DECIDE the fork:** (A) pursue the **Lovdata CD** (clean structured per-law bases — sidesteps
+  location + body-extraction entirely; blocked on NB AI Lab reply), vs (B) build the **`segment_issue`
+  upgrade** = one-pass act-index over all issues, needing (b1) volume-chunking for the 89 giant files and
+  (b2) reliable enactment-body extraction (it is currently amendment-tuned). Record the choice in
+  `decisions.md` once made.
+- [ ] (independent of the fork) triage the ~1/4 of post-2001 acts that parse to **0 current provisions**
+  (amending/structural acts vs a current-parser schema gap) before any full-corpus denominator.
+
 ## Next engine work (the real remaining lift)
 
 > **Ceiling reality (2026-08-13, from `loss_breakdown`).** The 0.97 gate is **not reachable

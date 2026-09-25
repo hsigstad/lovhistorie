@@ -1,5 +1,43 @@
 # Done
 
+## 2026-09-25 — Out-of-sample generalization probe (post-2001 solid; pre-2001 base-build-limited) + harvest-granularity finding
+
+Answer-free convergence probe on RANDOM non-dev laws, to test whether the fixes generalize or are
+dev-set-tuned (convergence needs no ground truth — any law with base+amendments+current is scorable).
+
+- **Tier 1 (post-2001, clean LTI bases): GENERALIZES.** 40 random post-2001 laws (seed 20260925), 31
+  scorable (9 parse to 0 current provisions — amending/structural acts or a current-parser schema gap,
+  worth a look for the full-corpus denominator). Provision-weighted convergence **0.748** (832/1112) vs
+  the 2 post-2001 dev laws **0.808**, and above the blended dev headline 0.723. Miss profile matches dev
+  (coverage-missing 3.7%, low-quality 21.5%; τ-sensitivity 0.98→0.748, 0.95→0.789, 0.90→0.824). No
+  overfit signal on the clean-base path.
+- **Tier 2 (pre-2001, OCR/LLM path): CONSISTENT where the base builds — the bottleneck is base
+  construction, NOT the engine.** Every pre-2001 law that got a clean base (median per-prov sim ≥ 0.9,
+  base_n≈cur_n) scored 0.56–0.73, inside the dev range (0.47–0.80, weighted 0.675). No full clean sweep,
+  because enactment LOCATION is unsolved (below). Dev pre-2001 baseline reproduced cleanly (0.675),
+  validating the scorer.
+- **Structural finding 1 — enactment location is hand-curated, not automated.** `build_enactment.LOCATIONS`
+  is per-law `{urn,page,span}` (9 dev laws only); the "search-based locator (the general path)" the
+  docstring anticipates is unimplemented. A grep-for-title locator got ~8/16 (breaks on bracket short-
+  titles, OCR spacing, TOC false hits). An LLM locator (`segment_issue`, match act by date+nr) tagged
+  6/7 and cleanly recovered one grep failure (energiloven 0.66, med 0.996) but **under-extracts enactment
+  bodies** (several base_n=0 / med=0; regressed planteforedler 0.73→0.21) — `segment_issue` is tuned to
+  slice short amendment bodies, not long enactment texts.
+- **Structural finding 2 — harvest granularity is bimodal.** `data/lovtidend_text` (1033 issues, 96MB,
+  present on Educloud): median 40 pp/file but **89 files are 400+ pp** (up to 2037), whole/multi years
+  bound as one volume (1919, 1938, 1964–73, …). `segment_issue` under-segments these (77 acts from a
+  1372-pp file, missed the target). This caps BOTH a future enactment index AND the existing
+  `build_gazette` amendment recovery on those years.
+- **Implication.** The gap between "we have all NB OCR on disk" and "clean per-law point-in-time bases"
+  IS this location + body-extraction engineering. A one-pass "segment every issue → tag every act →
+  cached act-index feeding both the base and amendment builders" is the right architecture and cheaper
+  long-run, but needs (a) volume-chunking for the 89 giant files and (b) enactment-body extraction
+  (segment_issue is amendment-tuned). The Lovdata CD sidesteps ALL of it (clean structured per-law bases).
+  OPEN FORK (not decided): pursue the CD vs build the `segment_issue` upgrade — see `todo.md`.
+
+Probe scripts live in the session scratchpad; no pipeline code changed; probe-built `data/enactment/*.json`
+cleaned back to the 9 dev bases.
+
 ## 2026-08-23 (cont. 5) — lever hunt: 3 levers piloted+rejected; LLM reconstruction proven but answer-free-capped
 
 Pushed hard on "71% isn't the ceiling" (HS). Full detail in decisions.md; arc:
