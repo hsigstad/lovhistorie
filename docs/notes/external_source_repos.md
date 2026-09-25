@@ -9,15 +9,15 @@ adoptions; the repo descriptions are as given, unverified.
 | # | repo | what it gives | relevance to lovhistorie |
 |---|------|---------------|--------------------------|
 | 1 | NationalLibraryOfNorway/lovdata-public-conversion-script | current consolidated Lovdata text + metadata (doc ID, ministry, legal area, effective/amendment dates, references) | **Low as a source** — current text only; cannot be a reconstruction input (violates the point-in-time rule; = the `return current text` flaw). *Possible* use: cross-check amendment **dates/references** metadata. We already have NLOD current dumps. |
-| 2 | martgra/lovdata-pipeline | statute structural parsing: chapter/section headings, §, paragraph titles, **ledd**, cross-references, full text | **Highest** — the §/ledd/chapter structuring overlaps directly with `source/parse/{ledd,gazette}.py` and the `§N-M` heading gap. Worth mining for the **endringslov structuring parser** (the pre-2001 amendment lift) and the omnibus/name→datokode work. **Caveat:** repo is "statutes/RAG"-oriented — take only the **deterministic** parsing parts; no LLM/RAG in our reconstruction path. |
+| 2 | martgra/lovdata-pipeline | statute structural parsing: chapter/section headings, §, paragraph titles, **ledd**, cross-references, full text | **~~Highest~~ → now OBSOLETE (pipeline pivoted to LLM, ~2026-09).** This repo's whole value was a *deterministic* §/ledd/chapter parser, which mattered only under the old "no LLM at runtime" rule. Every job it offered is now done in `source/llm/`: base/§/chapter segmentation (`segment.py`, `segment_issue.py`), ledd structuring (`mark_ledds.py`), amendment op-extraction (`amend.py`), application (`apply_op.py`/`holistic_apply.py`/`pointer_apply.py`). No longer worth adopting. Residual value marginal — a deterministic parser *could* be an independent cross-check on LLM segmentation, but the guardrails are already invariant checks (monotonic/coverage/heading-matches-number), not a rival parser. |
 | 3 | doantumy/Efficiently-Summarizing-Norwegian-Legal-Texts | judgment XML → Sammendrag/Premiss/Slutning, KAPITTEL/AVSNITT | **None** for statutes (case-law). |
 | 4 | worldwidelaw/legal-sources | case-level extraction: case ID, date, court, keywords, summary, judges, parties, case history | **None** for statutes (case-law; best schema for the *case* project). |
 | 5 | StianOby/claude-legal-tools | retrieves Lovdata **Pro** decisions + metadata via browser auth | **Indirect** — case-oriented, but the **Lovdata-Pro browser-auth retrieval technique** could inform the held-out **ground-truth statute-version** acquisition (`docs/ground_truth.md`, currently a manual step). Ground-truth stays eval-only, never in the published corpus. |
 
 ## Actionable takeaways
-- **Evaluate `martgra/lovdata-pipeline`'s §/ledd/chapter parser** against `source/parse/` — specifically
-  whether it handles the `§N-M` chapter-section headings `build_enactment.py`/`gazette.py` miss, and
-  whether its structuring helps split omnibus amendment acts. Deterministic components only.
+- ~~**Evaluate `martgra/lovdata-pipeline`'s §/ledd/chapter parser**~~ — DROPPED (~2026-09): the pipeline
+  is now LLM-based end-to-end (`source/llm/`), so a deterministic structural parser buys nothing. See the
+  table row above.
 - **Consider `StianOby/claude-legal-tools`** only if the manual Lovdata-Pro ground-truth pull
   (`docs/ground_truth.md`) needs automating — eval-only, never redistributed.
 - Repos #1, #3, #4 are not useful here (#1 = current text; #3/#4 = case-law).

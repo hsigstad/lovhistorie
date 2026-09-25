@@ -32,9 +32,9 @@
   applying `ny §` adds. Run `python -m source.eval.loss_breakdown` for the current attribution.
 - [ ] ~~OCR/LLM correction, multimodal re-OCR~~ — TESTED + DEPRIORITISED (2026-08-12,
   see done.md): safe but low ceiling; OCR is a minor contributor.
-- [ ] **Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser** (external, 2026-08-12)
-  for the omnibus-act / `§N-M`-heading structuring lift — deterministic parts only, no RAG/LLM.
-  See `docs/notes/external_source_repos.md`.
+- [x] ~~**Evaluate `martgra/lovdata-pipeline` §/ledd/chapter parser**~~ — DROPPED (~2026-09): pipeline
+  pivoted to LLM segmentation/op-extraction (`source/llm/`), so a deterministic structural parser is
+  obsolete. See `docs/notes/external_source_repos.md`.
 - [ ] **Renumber-target provisions (~35, the hard residual) — via TEXT-SIMILARITY MATCHING (prototyped
   2026-08-14, see done.md).** Instead of parsing `nåværende §X blir §Y`, align consecutive versions by
   `metrics.similarity` (bipartite mutual-best above threshold): a high text-match under a different id = a
