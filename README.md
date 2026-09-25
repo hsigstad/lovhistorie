@@ -9,8 +9,14 @@ publish** (public-domain statutory text + NLOD; åndsverkloven §14).
 across time: scrub the date, see amendment redlines, and compare each reconstruction
 against the official current text.
 
-**Status:** Phase 0 — building the evaluation framework + ground-truth set. See
-`docs/reference/goal.md`, `docs/reference/evaluation.md`, `docs/reference/roadmap.md`.
+**Status (2026-08-25):** engine mature. Convergence **72.3%** on the 9-law dev set
+(anti-gaming guards pass); deliverable point-in-time **μ 0.870** across held-out
+law × date versions. Segmentation, amendment op-extraction and application are
+**LLM-based but run offline** — the model emits line numbers / verbatim anchors /
+pointers (never generated text), everything is substring-verified against
+public-domain source and cached; the **runtime that replays them is deterministic**
+and answer-key-free. See `docs/reference/goal.md`,
+`docs/reference/evaluation.md`, `docs/reference/roadmap.md`.
 
 **Why not just use existing tools?** Lovdata's free API and the open reconstructions
 (`sondreskarsten/norwegian-laws`, `norgeslover.no`) seed their history with *today's*

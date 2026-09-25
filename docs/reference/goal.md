@@ -20,11 +20,22 @@ with coverage ≥ **90%** of laws and **every failure flagged**.
    the enacting act (gazette) + the Lovtidend amendments. It is **never** given the
    current consolidated text, the historical versions, or any answer key — those
    live only in the eval harness. No network lookup of law text at eval time.
-3. **Deterministic; no LLM at pipeline runtime.** Reconstruction is pure
-   rules/regex — reproducible and auditable. **No LLM** in the reconstruction path
-   (an LLM could fabricate plausible text that passes similarity, or "recall" the
-   answer). If OCR post-correction is ever proposed, it needs separate sign-off and
-   must itself be deterministic.
+3. **Deterministic at runtime; LLM only in the offline build.** The runtime
+   reconstruction path (`pipeline.reconstruct` → `load_ops` → `replay` → `ledd`) is
+   pure, reproducible and auditable — it reads pre-built public-domain `jsonl.gz` and
+   calls **no LLM and no answer key** (G1/G2 enforce this). The LLM is used **only
+   offline** (in the `source/scrape/build_*` scripts, via `source/llm/`) to *extract*
+   public bases and amendments into those cached streams — the same status as
+   OCR/harvest data-prep. It runs in a **verbatim-anchored, flag-don't-fabricate**
+   mode: it emits line numbers / anchors / pointers, never generated statutory text,
+   and every span is substring-verified against public-domain source; an unlocatable
+   op is dropped/flagged, never invented. It never sees the current consolidated text,
+   the historical versions, or any answer key. Rationale: a free-text LLM could
+   fabricate plausible text that passes similarity or "recall" the answer — anchoring +
+   substring-verification structurally prevents that. See "Working method" below
+   (confirmed by HS 2026-08-21). *(Was originally "pure rules/regex, no LLM"; the
+   pivot to LLM extraction preserved rule 3's intent by keeping the LLM offline and
+   the runtime deterministic.)*
 4. **Flag, don't fabricate.** An op or provision the pipeline cannot handle is
    **flagged with a reason** and left unreconstructed — **never** filled with
    invented or guessed text. Fabrication that happens to score is a failure, not a
