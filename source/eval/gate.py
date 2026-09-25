@@ -73,7 +73,7 @@ DEV_LAWS = [
 
 # The reconstruction path — the modules the input-isolation guard scans. If a new
 # module joins the pipeline, add it here so the guard keeps covering the whole path.
-RECON_MODULES = ["pipeline.py", "replay.py", "ledd.py", "amendments.py"]
+RECON_MODULES = ["pipeline.py", "replay.py", "ledd.py", "amendments.py", "blanket.py"]
 _DUMP_LITERAL = re.compile(r"nl-\d{8}-\d+\.xml|LOVHISTORIE_CURRENT_DIR|current_provisions")
 
 
