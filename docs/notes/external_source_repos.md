@@ -21,3 +21,20 @@ adoptions; the repo descriptions are as given, unverified.
 - **Consider `StianOby/claude-legal-tools`** only if the manual Lovdata-Pro ground-truth pull
   (`docs/ground_truth.md`) needs automating — eval-only, never redistributed.
 - Repos #1, #3, #4 are not useful here (#1 = current text; #3/#4 = case-law).
+
+## Web sources (same thread — Manudeep/Sungho, 2026-08-05/08-12)
+
+Three websites/collections surfaced in the same "Historic versions of Norwegian laws" thread.
+None is a primary reconstruction source (they violate the point-in-time rule or are too partial),
+but two are worth holding as a **fallback / cross-check** for the known NB gazette coverage holes.
+
+| source | what it gives | relevance to lovhistorie |
+|--------|---------------|--------------------------|
+| `norgeslover.no/lover` ("Historisk visning" per law) | historic versions of laws, clickable per §/date | **Low as a source, useful as fallback/cross-check.** Like `sondreskarsten/norwegian-laws` it seeds history with *today's* consolidated text as a 2001 baseline → silently wrong for provisions unamended by 2001 (the exact flaw this pipeline exists to avoid). But it's a candidate **fallback for the NB harvest holes** (1891, 1976, 1980, 1982, 1984, 1987–89 → esp. **kjøpsloven 1988**, currently unrecoverable from NB — see `BLOCKER.md` item 3) and an independent point-in-time cross-check. Verify its true underlying source before trusting any pre-2001 wording. |
+| `norgeslover.no/lovtidend-arkiv.php` | Lovtidend changes archive, incl. pre-2001 | **Redundant** — lovhistorie already harvested the full digitised **Norsk Lovtidend Avd. I 1877–2000** from NB (`source.scrape.harvest_lovtidend`). Keep only as a spot-check if an NB issue is missing/garbled. |
+| `nb.no` student law-book digibok (`digibok_2023030748057`) | scanned student edition, subset of laws, PDF | **Marginal** — a partial subset in booklet form. Note lovhistorie *already* mines PD student booklets as a point-in-time **validation** set (`source/eval/booklet_gt.py`, e.g. aksjeloven-2001); this digibok is a candidate to add to that registry if its laws/years fill a gap, **not** a reconstruction base. |
+
+## Note
+
+This project was migrated from the earlier feasibility work in `projects/vague` (see the
+root `CLAUDE.md`) — the same law-versioning effort, now the production pipeline.
