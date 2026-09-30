@@ -324,12 +324,50 @@ def build_from_index(datokode: str, use_llm: bool = True) -> dict:
     from source.llm import segment_issue
     pages = [json.loads(l) for l in _gz.open(f, "rt", encoding="utf-8")]
     acts, _ = segment_issue.segment(pages, doc_key=iid)   # reuses the cached segmentation
-    body = next((a["body"] for a in acts if a.get("datokode") == datokode and a.get("body")), None)
-    # Flag-don't-fabricate: a body under ~200 chars is a mis-sliced heading (the next act's heading
-    # was located too close), not a real enactment. Better to flag than write a stub base. (Over-
-    # capture — a body far larger than the law — is the complementary boundary failure, handled by
-    # the body-boundary work in segment_issue, not guessable here.)
-    if not body or len(body) < 200:
+    llm_body = next((a["body"] for a in acts if a.get("datokode") == datokode and a.get("body")), None)
+    if not llm_body:
+        return {}
+    # GAP-B FIX — locate the REAL body start, then re-bound the end deterministically.
+    # Two failure modes to beat: (1) segment_issue often anchors a TABLE-OF-CONTENTS ("Innhold")
+    # entry ("Lov nr. N om <title> <pageno>") rather than the law's actual text, and (2) its body END
+    # (the next LLM-located heading) truncates (spurious nearby heading) or over-captures (missed
+    # heading). Fix (1): the heading string recurs — pick the occurrence FOLLOWED BY real provisions
+    # (§-heading density), which the TOC entry lacks. Fix (2): from that start, cut at the next
+    # _NEXT_LAW gazette heading — the same deterministic boundary the hand-authored _law_text uses.
+    full = "\n".join(p.get("text", "") for p in pages)
+    # Locate the law's real enactment HEADING — the _NEXT_LAW form "Lov nr. <nr>\nLov om <title>" —
+    # NOT the "Lov nr. N om <title> <pageno>" table-of-contents entry segment_issue anchored (same
+    # words, different form), NOR a mid-law mention of the title. This canonical heading form uniquely
+    # marks the start of the actual text; from it we cut at the next _NEXT_LAW heading, exactly as the
+    # hand-authored _law_text path does. Fall back to a §-density title search, then the LLM body.
+    nr = datokode.split("-")[-1]
+    mo = re.search(r"\bom\b\s+(.+)", " ".join(llm_body[:120].split()))
+    words = []
+    for w in (mo.group(1).split() if mo else []):        # title words after "om", up to the TOC page
+        if any(c.isdigit() for c in w):                  # number -> page no. / next TOC entry: stop
+            break
+        words.append(w)
+    words = words[:4]
+    start = -1
+    if words:
+        title_re = r"\s+".join(re.escape(w) for w in words)
+        head_re = re.compile(rf"Lov\s+nr\.?\s*{re.escape(nr)}\b[\s\d.]{{0,15}}?Lov\s+om\s+{title_re}", re.I)
+        m = head_re.search(full)
+        if m:
+            start = m.start()
+        else:                                            # fallback: title occurrence with most §§ after it
+            occ = [mm.start() for mm in re.finditer(r"Lov\s+om\s+" + title_re, full, re.I)]
+            if occ:
+                start = max(occ, key=lambda s: len(_HEAD.findall(full[s:s + 3000])))
+    if start < 0:
+        start = full.find(llm_body[:150])
+    if start < 0:
+        return {}
+    after = full[start:]
+    nxt = _NEXT_LAW.search(after, 50)                     # next act's gazette heading (deterministic)
+    body = after[: nxt.start()] if nxt else after
+    # Flag-don't-fabricate: too short to be a real enactment, or no provisions found near the start.
+    if len(body) < 200 or not _HEAD.search(body):
         return {}
     provs, extra = _segment_law(datokode, body, use_llm)
     OUT.mkdir(parents=True, exist_ok=True)

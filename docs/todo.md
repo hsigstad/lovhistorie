@@ -21,12 +21,18 @@ bound volumes that `segment_issue` under-segments — this also caps existing `b
   - **VALIDATED on well-behaved laws:** via the index (no LOCATIONS) aksje scores 0.66 ≈ its hand-curated
     0.65, mester 0.64, energiloven 0.66 — the locator reproduces hand-curated quality.
 
-- [ ] **Gap B — enactment-body boundaries (the remaining lift).** `segment_issue` slices a body between
-  consecutive located headings; a spurious nearby heading TRUNCATES it (planteforedler → 46 chars) and a
-  missed heading OVER-CAPTURES it (enhetsregister → 163k across many laws); dokumentavgift's plausible body
-  still under-segments in `_segment_law`. Fix generally (robust act boundaries in OCR, e.g. reuse the
-  deterministic `_NEXT_LAW`-style boundary on the in-memory issue text; validate on the dev set as a whole,
-  not per-law). `build_from_index` currently flags bodies <200 chars (flag-don't-fabricate).
+- [x] **Gap B — enactment-body boundaries — LARGELY FIXED (2026-09-30).** Root cause was two-fold:
+  `segment_issue` anchors the table-of-contents entry ("Lov nr. N om <title> <pageno>"), not the real body
+  heading ("Lov nr. N / Lov om <title>"), and its body END is unreliable. `build_from_index` now (a) relocates
+  the start via the canonical enactment-heading regex (nr + "Lov om" + title, title truncated at the TOC page
+  number) picking the occurrence followed by real §§, and (b) cuts the end at the next `_NEXT_LAW` gazette
+  heading (deterministic, as `_law_text`), flagging bodies <200 chars or with no §. **Validated 5/6:**
+  planteforedler 0.21→0.73, enhetsregister 0.21→0.59 (both = grep/hand quality), aksje 0.66, mester 0.64,
+  energiloven 0.66 — all via the index, zero hand-authored LOCATIONS.
+  - [ ] **Residual: giant-volume over-capture.** dokumentavgift (enactment year is a bound multi-year volume)
+    still over-captures — `_NEXT_LAW`'s second line is reflowed away so the next-act boundary is missed and the
+    body runs into later acts (base_n 46 vs 14). A looser date+"Lov nr" boundary false-early-cut normal issues,
+    so it needs a boundary that is robust in BOTH layouts (or split giant volumes per year first).
 - [ ] **Full-corpus index pass.** Current `data/act_index.json` = 1170 datokodes from only the 914 issues
   `build_gazette` happened to segment. Run `segment_issue` over ALL 1033 issues (reprocess giant volumes
   with the dedup fix — ~80s each warm-cache, live-LLM if cold) then rebuild the index for complete coverage.
