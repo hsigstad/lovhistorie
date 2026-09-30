@@ -32,8 +32,11 @@ Dropbox folder, then restore these into `data/`:
 | `amendment_streams.tar.gz` | `data/` (loose) | amendment ops + catalog index |
 | `llm_cache.tar.gz` | `data/llm_cache/` | **reuse already-paid LLM segmentation** (huge: skips re-segmenting the corpus) |
 
-You do **NOT** need `ground_truth_ENCUMBERED` — that is Lovdata Pro, eval-only, and is not
-shared. Convergence (the working metric) needs only `data/current`, which is public NLOD.
+The shared folder also includes `ground_truth_ENCUMBERED` (`data/ground_truth/`), used only
+for the point-in-time eval. It is **not required** for convergence (the working metric, which
+scores against `data/current`, public NLOD). It derives from **Lovdata Pro** (a licensed
+commercial source): treat it as internal, do not redistribute further, and check it against
+your institution's Lovdata licence.
 
 ## 3. Sanity check
 
