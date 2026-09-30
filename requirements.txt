@@ -1,0 +1,9 @@
+# Core dependencies — enough to build law bases and run the convergence gate.
+# Python 3.11+.
+pydantic>=2
+openai>=1.40
+llmkit @ git+https://github.com/hsigstad/llmkit.git
+
+# Optional, NOT needed to reconstruct laws or run the gate:
+#   pandas        -> only source/scrape/build_gt_lovdata_cd.py (the 2005 Lovdata-CD eval builder)
+#   sitekit       -> only source/site/*  (the browsable HTML site); from research-kit, git+ if needed

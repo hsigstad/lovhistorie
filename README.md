@@ -18,6 +18,9 @@ public-domain source and cached; the **runtime that replays them is deterministi
 and answer-key-free. See `docs/reference/goal.md`,
 `docs/reference/evaluation.md`, `docs/reference/roadmap.md`.
 
+**Run it yourself:** see `SETUP.md` (clone, dependencies, data restore) and `docs/todo.md`
+for the open work (the pre-2001 enactment locator).
+
 **Why not just use existing tools?** Lovdata's free API and the open reconstructions
 (`sondreskarsten/norwegian-laws`, `norgeslover.no`) seed their history with *today's*
 text as a 2001 baseline, so they are silently wrong for provisions unamended by 2001.
