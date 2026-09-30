@@ -29,6 +29,8 @@ from source.parse import amendments  # amended-provision set for the G3-complian
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "data" / "enactment"
 LTI = ROOT / "data" / "lti"   # clean Lovtidend avd. I dump (one XML/act, 2001-2024)
+TEXT_DIR = ROOT / "data" / "lovtidend_text"   # harvested NB gazette OCR (one file/issue)
+ACT_INDEX = ROOT / "data" / "act_index.json"  # datokode -> issue (source/scrape/build_act_index.py)
 
 
 def lti_path(datokode: str) -> Path:
@@ -290,6 +292,49 @@ def build_from_lti(datokode: str, xml_path: str) -> dict:
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f"{datokode}.json").write_text(json.dumps({
         "datokode": datokode, "source": {"lti": Path(xml_path).name}, "provisions": provs,
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
+    return provs
+
+
+_ACT_INDEX_CACHE = None
+
+
+def _act_index() -> dict:
+    global _ACT_INDEX_CACHE
+    if _ACT_INDEX_CACHE is None:
+        _ACT_INDEX_CACHE = json.loads(ACT_INDEX.read_text(encoding="utf-8")) if ACT_INDEX.exists() else {}
+    return _ACT_INDEX_CACHE
+
+
+def build_from_index(datokode: str, use_llm: bool = True) -> dict:
+    """Build a pre-2001 enactment base by LOCATING the act via the corpus act index
+    (source/scrape/build_act_index.py) instead of a hand-authored LOCATIONS entry — the general
+    path. Looks up datokode -> issue, segments that issue (cached), takes the matching act's body,
+    splits it into provisions, and writes data/enactment/<dk>.json. Returns {} if the datokode is
+    not in the index (flag-don't-fabricate: not located -> no base). G1-safe: reads only the
+    public-domain gazette OCR + cached segmentation, never the current/answer text."""
+    ent = _act_index().get(datokode)
+    if not ent:
+        return {}
+    iid = ent["issue_id"]
+    f = TEXT_DIR / f"{iid}.jsonl.gz"
+    if not f.exists():
+        return {}
+    import gzip as _gz
+    from source.llm import segment_issue
+    pages = [json.loads(l) for l in _gz.open(f, "rt", encoding="utf-8")]
+    acts, _ = segment_issue.segment(pages, doc_key=iid)   # reuses the cached segmentation
+    body = next((a["body"] for a in acts if a.get("datokode") == datokode and a.get("body")), None)
+    # Flag-don't-fabricate: a body under ~200 chars is a mis-sliced heading (the next act's heading
+    # was located too close), not a real enactment. Better to flag than write a stub base. (Over-
+    # capture — a body far larger than the law — is the complementary boundary failure, handled by
+    # the body-boundary work in segment_issue, not guessable here.)
+    if not body or len(body) < 200:
+        return {}
+    provs, extra = _segment_law(datokode, body, use_llm)
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / f"{datokode}.json").write_text(json.dumps({
+        "datokode": datokode, "source": {"gazette_index": iid, **extra}, "provisions": provs,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
     return provs
 

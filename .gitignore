@@ -37,3 +37,5 @@ data/gazette_unresolved.jsonl.gz
 data/applied_ops.jsonl.gz
 # pointer-consolidated provisions: derived offline (build_pointer + LLM cache), regenerated locally
 data/pointer_ops.jsonl.gz
+# act index: derived from the public gazette segmentation cache, regenerable via build_act_index
+data/act_index.json

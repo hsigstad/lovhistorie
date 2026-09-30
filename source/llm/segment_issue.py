@@ -141,11 +141,18 @@ def segment(pages, *, client=None, model: str = MODEL, cache: LLMCache = CACHE,
             located.setdefault(pos, (h.nr, h.date.strip(), h.title.strip()))
 
     # An act's "Lov nr. N" repeats as a running page header; the model may anchor a later repeat as a
-    # second heading, splitting the body. Keep only the FIRST position per nr (acts are nr-ascending).
+    # second heading, splitting the body. Keep only the FIRST position per act. The dedup key is the
+    # act's DATOKODE (own date + nr), NOT nr alone: a bound multi-year volume repeats the same nr across
+    # years (some harvested files are whole-decade volumes, 1958..1975 in one), so nr-only dedup would
+    # collapse distinct acts sharing an nr and silently drop most of the volume. datokode is unique per
+    # act; for a single-year issue it is equivalent to nr-dedup (no regression). Date-less headings
+    # (pre-~1950 OCR) have no datokode, so fall back to nr-dedup for those (unchanged old behaviour).
     first_pos = {}
     for pos in sorted(located):
-        nr = located[pos][0]
-        first_pos.setdefault(nr, pos)
+        nr, date, _ = located[pos]
+        dk = gazette.datokode(f"lov {date} nr. {nr}") if date else None
+        key = dk if dk else ("nr", nr)
+        first_pos.setdefault(key, pos)
     located = {pos: located[pos] for pos in first_pos.values()}
 
     starts = sorted(located)

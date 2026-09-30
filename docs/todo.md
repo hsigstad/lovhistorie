@@ -8,13 +8,32 @@ the engine. Two structural blockers surfaced: enactment location is hand-curated
 only; the "search-based locator" is unimplemented), and the harvest is bimodal (89 files are 400+ pp
 bound volumes that `segment_issue` under-segments — this also caps existing `build_gazette` recovery).
 
-- [ ] **DECIDE the fork:** (A) pursue the **Lovdata CD** (clean structured per-law bases — sidesteps
-  location + body-extraction entirely; blocked on NB AI Lab reply), vs (B) build the **`segment_issue`
-  upgrade** = one-pass act-index over all issues, needing (b1) volume-chunking for the 89 giant files and
-  (b2) reliable enactment-body extraction (it is currently amendment-tuned). Record the choice in
-  `decisions.md` once made.
-- [ ] (independent of the fork) triage the ~1/4 of post-2001 acts that parse to **0 current provisions**
+**Locator BUILT (2026-09-30).** Chose fork (B) and implemented the general path — no more hand-authored
+`LOCATIONS`:
+  - `source/llm/segment_issue.py`: dedup by **datokode** (date+nr), not nr — fixes the giant multi-year
+    volumes (the "89 files" root cause was cross-year nr collisions, NOT a page/token cap). Verified: the
+    1975 decade-volume went 77 → 138 acts and dokumentavgift (1975-12-12-59) is now located. Single-year
+    issues unchanged (datokode-dedup ≡ nr-dedup there), so no `build_gazette` regression.
+  - `source/scrape/build_act_index.py`: aggregates the cached per-issue segmentations into
+    `data/act_index.json` (datokode → issue). The "tag every act" index.
+  - `source/scrape/build_enactment.py::build_from_index(datokode)`: locate via the index → segment body →
+    base, zero hand-curation.
+  - **VALIDATED on well-behaved laws:** via the index (no LOCATIONS) aksje scores 0.66 ≈ its hand-curated
+    0.65, mester 0.64, energiloven 0.66 — the locator reproduces hand-curated quality.
+
+- [ ] **Gap B — enactment-body boundaries (the remaining lift).** `segment_issue` slices a body between
+  consecutive located headings; a spurious nearby heading TRUNCATES it (planteforedler → 46 chars) and a
+  missed heading OVER-CAPTURES it (enhetsregister → 163k across many laws); dokumentavgift's plausible body
+  still under-segments in `_segment_law`. Fix generally (robust act boundaries in OCR, e.g. reuse the
+  deterministic `_NEXT_LAW`-style boundary on the in-memory issue text; validate on the dev set as a whole,
+  not per-law). `build_from_index` currently flags bodies <200 chars (flag-don't-fabricate).
+- [ ] **Full-corpus index pass.** Current `data/act_index.json` = 1170 datokodes from only the 914 issues
+  `build_gazette` happened to segment. Run `segment_issue` over ALL 1033 issues (reprocess giant volumes
+  with the dedup fix — ~80s each warm-cache, live-LLM if cold) then rebuild the index for complete coverage.
+- [ ] (independent) triage the ~1/4 of post-2001 acts that parse to **0 current provisions**
   (amending/structural acts vs a current-parser schema gap) before any full-corpus denominator.
+- Lovdata CD (fork A) remains complementary — clean bases + eval oracle — but no longer the only pre-2001
+  path now that the locator works.
 
 ## Next engine work (the real remaining lift)
 
