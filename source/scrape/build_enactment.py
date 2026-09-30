@@ -355,10 +355,17 @@ def build_from_index(datokode: str, use_llm: bool = True) -> dict:
         m = head_re.search(full)
         if m:
             start = m.start()
-        else:                                            # fallback: title occurrence with most §§ after it
-            occ = [mm.start() for mm in re.finditer(r"Lov\s+om\s+" + title_re, full, re.I)]
-            if occ:
-                start = max(occ, key=lambda s: len(_HEAD.findall(full[s:s + 3000])))
+        else:
+            # Older bound volumes render the heading as the BARE short title then the first provision
+            # ("Dokumentavgift.\n§ 1."), not "Lov om <title>". The body start is then the title
+            # IMMEDIATELY followed by "§ 1" — a strong, layout-agnostic marker of the enactment's opening.
+            fp = re.search(title_re + r"[\s\S]{0,25}?§\s*1\b", full, re.I)
+            if fp:
+                start = fp.start()
+            else:                                        # last resort: title occurrence with most §§ after it
+                occ = [mm.start() for mm in re.finditer(r"Lov\s+om\s+" + title_re, full, re.I)]
+                if occ:
+                    start = max(occ, key=lambda s: len(_HEAD.findall(full[s:s + 3000])))
     if start < 0:
         start = full.find(llm_body[:150])
     if start < 0:
@@ -366,6 +373,10 @@ def build_from_index(datokode: str, use_llm: bool = True) -> dict:
     after = full[start:]
     nxt = _NEXT_LAW.search(after, 50)                     # next act's gazette heading (deterministic)
     body = after[: nxt.start()] if nxt else after
+    # NOTE (residual): in OLDER bound multi-year volumes the next act has no "Lov nr … Lov om" heading
+    # (bare short title + § restart), so _NEXT_LAW misses it and the body over-captures (dokumentavgift).
+    # A "Lov nr M != nr" boundary and a "second standalone § 1" boundary were both tried and rejected —
+    # the former misses (no Lov nr), the latter cut mid-law. Left as a documented residual (see todo.md).
     # Flag-don't-fabricate: too short to be a real enactment, or no provisions found near the start.
     if len(body) < 200 or not _HEAD.search(body):
         return {}

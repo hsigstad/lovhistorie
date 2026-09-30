@@ -29,10 +29,15 @@ bound volumes that `segment_issue` under-segments — this also caps existing `b
   heading (deterministic, as `_law_text`), flagging bodies <200 chars or with no §. **Validated 5/6:**
   planteforedler 0.21→0.73, enhetsregister 0.21→0.59 (both = grep/hand quality), aksje 0.66, mester 0.64,
   energiloven 0.66 — all via the index, zero hand-authored LOCATIONS.
-  - [ ] **Residual: giant-volume over-capture.** dokumentavgift (enactment year is a bound multi-year volume)
-    still over-captures — `_NEXT_LAW`'s second line is reflowed away so the next-act boundary is missed and the
-    body runs into later acts (base_n 46 vs 14). A looser date+"Lov nr" boundary false-early-cut normal issues,
-    so it needs a boundary that is robust in BOTH layouts (or split giant volumes per year first).
+  - [ ] **Residual: older-bound-volume END boundary.** In older bound multi-year volumes (e.g. the 1975
+    volume holding dokumentavgift) the heading is the BARE short title ("Dokumentavgift.\n§ 1.") and there is
+    NO "Lov nr … Lov om" between acts — the next act just RESTARTS § numbering. `build_from_index` now locates
+    the START correctly in this layout (title-immediately-followed-by-§1 fallback), but the END over-captures:
+    `_NEXT_LAW` finds no boundary so the body runs to the volume footer (dokumentavgift base_n 46 vs 14, 0.00).
+    Tried + rejected (both hurt): a "Lov nr M != nr" boundary (misses — no Lov nr in this layout) and a
+    "second standalone § 1" boundary (cut mid-law — the law's own § 1 recurs). Needs a boundary robust to the
+    bare-title/§-restart layout without regressing modern issues (or split giant volumes per year first). This
+    layout is the ~pre-1970 bound volumes; modern-heading pre-2001 laws are handled (5/6 validated).
 - [ ] **Full-corpus index pass.** Current `data/act_index.json` = 1170 datokodes from only the 914 issues
   `build_gazette` happened to segment. Run `segment_issue` over ALL 1033 issues (reprocess giant volumes
   with the dedup fix — ~80s each warm-cache, live-LLM if cold) then rebuild the index for complete coverage.
