@@ -1,5 +1,34 @@
 # Done
 
+## 2026-09-30 — Locator scale measurement + two rejected improvements (LLM locator, over-capture guard)
+
+Measured the regex enactment locator (`build_from_index`) at scale and tried to improve it before any
+full-corpus run. Net: the regex locator (committed d80351e) is the current best; two improvement
+attempts were measured and REJECTED. No code change kept from the improvement attempts.
+
+- **Scale measurement (50 random indexed pre-2001 laws, `use_llm=False` seg).** Body location:
+  **70% plausible** (right size), 18% under-captured, 12% over-captured. Convergence: **median 0.455,
+  mean 0.42; ≥0.5 for 48% (24/50); <0.3 for 30%.** Among plausible-body laws, ≥0.5 for 63%. Reading
+  `median_sim`: well-located laws (med≥0.9) sit ~0.5–0.55 = the OCR reconstruction ceiling (not a
+  locator problem); the ~30% mislocated are the locator's own failures. So the "5/6" 6-law spot-check
+  was optimistic; the honest corpus estimate is ~half reconstruct at ≥0.5.
+  - NB: the act-index only covers **82** pre-2001 laws (from the 914 `build_gazette`-touched issues) —
+    a full-corpus `segment_issue` pass over all 1033 issues is still needed for real coverage.
+- **REJECTED — LLM body-locator** (`source/llm/locate_body.py`, anchor-based start/end from a windowed
+  candidate). Underperformed regex on the same laws: planteforedler 0.67→0.45, enhetsregister
+  0.59→0.38 (its end-anchor truncated bodies), and it did NOT fix the dokumentavgift over-capture.
+  Removed. A better LLM locator is possible but needs real design (windowing for huge laws, end-anchor
+  precision), not a v1.
+- **REJECTED — over-capture guard** ("≥2 standalone `§ 1`" ⇒ § numbering restarted ⇒ ran into next act).
+  False-flags GOOD laws (aksje, enhetsregister, energiloven have a legitimate second `§ 1` in
+  transitional provisions/appendices). A `base_n` vs `cur_n` check would use the answer key (G1
+  violation). So there is **no cheap answer-free over-capture guard** — over-capture stays a silent
+  failure mode for now.
+- **Implication for the corpus run.** ~48% ≥0.5 with ~30% mislocated (incl. silent over-capture) is not
+  a "clean" corpus. Materially better needs one of: a properly-designed LLM locator, per-year splitting
+  of the older bound volumes, or the Lovdata CD (sidesteps location entirely). Quick regex/heuristic
+  fixes are exhausted.
+
 ## 2026-09-25 — Out-of-sample generalization probe (post-2001 solid; pre-2001 base-build-limited) + harvest-granularity finding
 
 Answer-free convergence probe on RANDOM non-dev laws, to test whether the fixes generalize or are

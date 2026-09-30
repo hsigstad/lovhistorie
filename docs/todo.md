@@ -39,8 +39,16 @@ bound volumes that `segment_issue` under-segments — this also caps existing `b
     bare-title/§-restart layout without regressing modern issues (or split giant volumes per year first). This
     layout is the ~pre-1970 bound volumes; modern-heading pre-2001 laws are handled (5/6 validated).
 - [ ] **Full-corpus index pass.** Current `data/act_index.json` = 1170 datokodes from only the 914 issues
-  `build_gazette` happened to segment. Run `segment_issue` over ALL 1033 issues (reprocess giant volumes
-  with the dedup fix — ~80s each warm-cache, live-LLM if cold) then rebuild the index for complete coverage.
+  `build_gazette` happened to segment (only 82 are pre-2001 laws with current text). Run `segment_issue`
+  over ALL 1033 issues (reprocess giant volumes with the dedup fix — ~80s each warm-cache, live-LLM if
+  cold) then rebuild the index for complete coverage.
+- [ ] **Locator quality gate before a "clean" corpus run (scale-measured 2026-09-30, see done.md).** The
+  regex locator scores **~48% ≥0.5 convergence, ~70% plausible body, ~30% mislocated** on random pre-2001
+  laws; over-capture is a SILENT failure (no answer-free guard — the "≥2 § 1" guard false-flags good laws;
+  base_n-vs-cur_n would use the answer). An LLM body-locator v1 UNDERPERFORMED regex. So a full corpus run
+  now yields good bases for ~half + silent-wrong for a chunk. Before a clean corpus run, need materially
+  better location via ONE of: (a) a properly-designed LLM locator (v1 insufficient), (b) per-year split of
+  the older bound volumes, or (c) the **Lovdata CD** (sidesteps location entirely — still the cleanest path).
 - [ ] (independent) triage the ~1/4 of post-2001 acts that parse to **0 current provisions**
   (amending/structural acts vs a current-parser schema gap) before any full-corpus denominator.
 - Lovdata CD (fork A) remains complementary — clean bases + eval oracle — but no longer the only pre-2001
