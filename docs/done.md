@@ -23,9 +23,14 @@ and understated quality. Re-ran the same 50-law sample through the REAL pipeline
 LLM segmenter): **35/49 ≥0.5, mean 0.543, median 0.609** (49 scored, 1 empty). Switching to the LLM
 segmenter lifted 18 laws / hurt 2 (e.g. helseberedskap 0.07→0.70, `2000-07-07-68` 0.67→1.00). Diagnosis of
 the med≈0 tail: only ~2/8 were genuine locator misses (kornforvaltning = wrong law located; foretaksreg =
-mid-law start); the rest were segmentation (now fixed) or the OCR/amendment ceiling. **So the locator is in
-good shape for normal issues (~5% true mislocation); the dominant remaining limit is OCR quality, then the
-~2 locator edge-cases, giant volumes, and index coverage.**
+mid-law start); the rest were segmentation (now fixed) or genuinely-changed text. **So the locator is in good shape for
+normal issues (~5% true mislocation).** The dominant remaining limit is NOT OCR — the project has
+repeatedly piloted + refuted that (decisions.md:68 re-OCR flat; done.md:1486 "OCR is a MINOR contributor;
+the pre-2001 limiter is amendment coverage"). The <τ laws here (e.g. SIS med 0.26 — body+size correct, text
+changed) are **missing amendments** (incl. blanket terminology reforms), not OCR noise. So the real
+convergence lever is **amendment capture (the pre-2001 endringslov stream)**, then the ~2 locator
+edge-cases, giant volumes, and index coverage. The locator improves bases; convergence is gated by
+amendments.
 
 ## 2026-09-30 — Locator scale measurement + two rejected improvements (LLM locator, over-capture guard)
 
