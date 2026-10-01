@@ -1,5 +1,22 @@
 # Done
 
+## 2026-10-01 — LLM body-locator (Approach B) productionized as the primary locator
+
+Replaced the regex body-location in `build_from_index` with an **LLM line-numbered, TOC-aware locator**
+(`source/llm/locate_body.py`), regex kept as fallback. The model reads the whole numbered issue and
+returns the target law's body start/end LINE numbers, told to ignore the table-of-contents entry; body
+END = earlier of the deterministic `_NEXT_LAW` heading and the LLM end (precision + anti-over-capture).
+
+- **Validated vs regex on the 50-law scale sample (same seed): strictly ≥ regex, 0 regressions**, 6 clear
+  wins (incl. a full rescue: `1999-07-16-68` regex 0.00 → B 0.67, med 1.0), 36 ~equal. Mean 0.496 vs
+  0.462; ≥0.5 for 24/42 scored. Fixes the earlier anchor-based v1's failures (which truncated bodies).
+- **Caveats (why it's incremental, not a step-change):** regex already located most normal issues, so B
+  mostly agrees + rescues a few; 7/50 were "too-big" for one context window (the 2.4–3.2M-char Register+
+  acts bound volumes — gpt-4.1's 1M context could attempt them at higher cost, deferred); ~5 laws fail in
+  BOTH locators (med 0 → likely wrong index entry or genuine non-reconstruction, not a locator miss).
+- **NOT run on the full corpus** (per HS). The corpus run still waits on: bigger locator coverage of the
+  giant volumes, index-quality fixes, and the OCR reconstruction ceiling (~0.5 for located OCR laws).
+
 ## 2026-09-30 — Locator scale measurement + two rejected improvements (LLM locator, over-capture guard)
 
 Measured the regex enactment locator (`build_from_index`) at scale and tried to improve it before any

@@ -306,13 +306,41 @@ def _act_index() -> dict:
     return _ACT_INDEX_CACHE
 
 
-def build_from_index(datokode: str, use_llm: bool = True) -> dict:
+def _clean_title(llm_body: str) -> str:
+    """Title words after 'om' in a heading, stopped at the first number (the TOC page number)."""
+    mo = re.search(r"\bom\b\s+(.+)", " ".join(llm_body[:120].split()))
+    words = []
+    for w in (mo.group(1).split() if mo else []):
+        if any(c.isdigit() for c in w):
+            break
+        words.append(w)
+    return " ".join(words[:4])
+
+
+def _regex_start(full: str, nr: str, title: str, llm_body: str) -> int:
+    """Regex body-start (fallback): canonical heading 'Lov nr. <nr> … Lov om <title>', else the older
+    bound-volume bare title + '§ 1', else the §-densest title occurrence, else the LLM body head. -1 if none."""
+    if title:
+        title_re = r"\s+".join(re.escape(w) for w in title.split())
+        m = re.search(rf"Lov\s+nr\.?\s*{re.escape(nr)}\b[\s\d.]{{0,15}}?Lov\s+om\s+{title_re}", full, re.I)
+        if m:
+            return m.start()
+        fp = re.search(title_re + r"[\s\S]{0,25}?§\s*1\b", full, re.I)
+        if fp:
+            return fp.start()
+        occ = [mm.start() for mm in re.finditer(r"Lov\s+om\s+" + title_re, full, re.I)]
+        if occ:
+            return max(occ, key=lambda s: len(_HEAD.findall(full[s:s + 3000])))
+    return full.find(llm_body[:150])
+
+
+def build_from_index(datokode: str, use_llm: bool = True, use_llm_locate: bool = True) -> dict:
     """Build a pre-2001 enactment base by LOCATING the act via the corpus act index
-    (source/scrape/build_act_index.py) instead of a hand-authored LOCATIONS entry — the general
-    path. Looks up datokode -> issue, segments that issue (cached), takes the matching act's body,
-    splits it into provisions, and writes data/enactment/<dk>.json. Returns {} if the datokode is
-    not in the index (flag-don't-fabricate: not located -> no base). G1-safe: reads only the
-    public-domain gazette OCR + cached segmentation, never the current/answer text."""
+    (source/scrape/build_act_index.py) instead of a hand-authored LOCATIONS entry — the general path.
+    Body START: the LLM line-numbered locator (source.llm.locate_body), robust to table-of-contents
+    anchoring; regex fallback. Body END: the earlier of the deterministic _NEXT_LAW heading (precise)
+    and the LLM end (caps over-capture in layouts where _NEXT_LAW is absent). Flag-don't-fabricate:
+    returns {} if not located / the body looks wrong. G1-safe: reads only public-domain gazette OCR."""
     ent = _act_index().get(datokode)
     if not ent:
         return {}
@@ -327,56 +355,28 @@ def build_from_index(datokode: str, use_llm: bool = True) -> dict:
     llm_body = next((a["body"] for a in acts if a.get("datokode") == datokode and a.get("body")), None)
     if not llm_body:
         return {}
-    # GAP-B FIX — locate the REAL body start, then re-bound the end deterministically.
-    # Two failure modes to beat: (1) segment_issue often anchors a TABLE-OF-CONTENTS ("Innhold")
-    # entry ("Lov nr. N om <title> <pageno>") rather than the law's actual text, and (2) its body END
-    # (the next LLM-located heading) truncates (spurious nearby heading) or over-captures (missed
-    # heading). Fix (1): the heading string recurs — pick the occurrence FOLLOWED BY real provisions
-    # (§-heading density), which the TOC entry lacks. Fix (2): from that start, cut at the next
-    # _NEXT_LAW gazette heading — the same deterministic boundary the hand-authored _law_text uses.
     full = "\n".join(p.get("text", "") for p in pages)
-    # Locate the law's real enactment HEADING — the _NEXT_LAW form "Lov nr. <nr>\nLov om <title>" —
-    # NOT the "Lov nr. N om <title> <pageno>" table-of-contents entry segment_issue anchored (same
-    # words, different form), NOR a mid-law mention of the title. This canonical heading form uniquely
-    # marks the start of the actual text; from it we cut at the next _NEXT_LAW heading, exactly as the
-    # hand-authored _law_text path does. Fall back to a §-density title search, then the LLM body.
     nr = datokode.split("-")[-1]
-    mo = re.search(r"\bom\b\s+(.+)", " ".join(llm_body[:120].split()))
-    words = []
-    for w in (mo.group(1).split() if mo else []):        # title words after "om", up to the TOC page
-        if any(c.isdigit() for c in w):                  # number -> page no. / next TOC entry: stop
-            break
-        words.append(w)
-    words = words[:4]
-    start = -1
-    if words:
-        title_re = r"\s+".join(re.escape(w) for w in words)
-        head_re = re.compile(rf"Lov\s+nr\.?\s*{re.escape(nr)}\b[\s\d.]{{0,15}}?Lov\s+om\s+{title_re}", re.I)
-        m = head_re.search(full)
-        if m:
-            start = m.start()
-        else:
-            # Older bound volumes render the heading as the BARE short title then the first provision
-            # ("Dokumentavgift.\n§ 1."), not "Lov om <title>". The body start is then the title
-            # IMMEDIATELY followed by "§ 1" — a strong, layout-agnostic marker of the enactment's opening.
-            fp = re.search(title_re + r"[\s\S]{0,25}?§\s*1\b", full, re.I)
-            if fp:
-                start = fp.start()
-            else:                                        # last resort: title occurrence with most §§ after it
-                occ = [mm.start() for mm in re.finditer(r"Lov\s+om\s+" + title_re, full, re.I)]
-                if occ:
-                    start = max(occ, key=lambda s: len(_HEAD.findall(full[s:s + 3000])))
+    title = _clean_title(llm_body)
+
+    start, llm_end = -1, None
+    if use_llm_locate:
+        from source.llm import locate_body
+        loc = locate_body.locate(full, nr, title)
+        if loc:
+            start, llm_end = loc
     if start < 0:
-        start = full.find(llm_body[:150])
+        start = _regex_start(full, nr, title, llm_body)
     if start < 0:
         return {}
-    after = full[start:]
-    nxt = _NEXT_LAW.search(after, 50)                     # next act's gazette heading (deterministic)
-    body = after[: nxt.start()] if nxt else after
-    # NOTE (residual): in OLDER bound multi-year volumes the next act has no "Lov nr … Lov om" heading
-    # (bare short title + § restart), so _NEXT_LAW misses it and the body over-captures (dokumentavgift).
-    # A "Lov nr M != nr" boundary and a "second standalone § 1" boundary were both tried and rejected —
-    # the former misses (no Lov nr), the latter cut mid-law. Left as a documented residual (see todo.md).
+    # END = earlier of the deterministic _NEXT_LAW heading and the LLM end (precision + anti-over-capture).
+    ends = []
+    nxt = _NEXT_LAW.search(full, start + 50)
+    if nxt:
+        ends.append(nxt.start())
+    if llm_end is not None and llm_end > start:
+        ends.append(llm_end)
+    body = full[start: min(ends)] if ends else full[start:]
     # Flag-don't-fabricate: too short to be a real enactment, or no provisions found near the start.
     if len(body) < 200 or not _HEAD.search(body):
         return {}
