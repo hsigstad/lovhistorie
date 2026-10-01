@@ -17,6 +17,16 @@ END = earlier of the deterministic `_NEXT_LAW` heading and the LLM end (precisio
 - **NOT run on the full corpus** (per HS). The corpus run still waits on: bigger locator coverage of the
   giant volumes, index-quality fixes, and the OCR reconstruction ceiling (~0.5 for located OCR laws).
 
+**CORRECTION — the real end-to-end number is ~71% ≥0.5, not 48%.** The 48%/0.46 scale figures were measured
+with `use_llm=False` (the fast regex provision-segmenter), which under-captures chapter-section (§N-M) laws
+and understated quality. Re-ran the same 50-law sample through the REAL pipeline (B locator + `use_llm=True`
+LLM segmenter): **35/49 ≥0.5, mean 0.543, median 0.609** (49 scored, 1 empty). Switching to the LLM
+segmenter lifted 18 laws / hurt 2 (e.g. helseberedskap 0.07→0.70, `2000-07-07-68` 0.67→1.00). Diagnosis of
+the med≈0 tail: only ~2/8 were genuine locator misses (kornforvaltning = wrong law located; foretaksreg =
+mid-law start); the rest were segmentation (now fixed) or the OCR/amendment ceiling. **So the locator is in
+good shape for normal issues (~5% true mislocation); the dominant remaining limit is OCR quality, then the
+~2 locator edge-cases, giant volumes, and index coverage.**
+
 ## 2026-09-30 — Locator scale measurement + two rejected improvements (LLM locator, over-capture guard)
 
 Measured the regex enactment locator (`build_from_index`) at scale and tried to improve it before any
