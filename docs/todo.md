@@ -1,5 +1,32 @@
 # Todo
 
+## Curated segmentation + law register (PLAN, 2026-10-02 — see decisions.md)
+
+The long-term track. Harvest coverage is the binding constraint (register covers 10% of in-force laws),
+not the engine. Build the backbone, make the segmentation a curated dataset, then hand off to Eivind.
+
+- [x] **Law-identity register — bootstrap.** `source/scrape/build_law_register.py` → `data/law_register.jsonl`
+  (1451 identities from the 224 indexed issues; public, oracle-free). Committed 76a1af6.
+- [ ] **Complete the register — acquire public NB metadata** (`NationalLibraryOfNorway/lovdata-public-conversion-script`):
+  doc IDs, titles, enactment/repeal dates, ministry — crucially INCLUDING repealed laws. Check license +
+  fields + completeness. This is the next high-value step: turns the 20%-coverage bootstrap into a
+  near-complete backbone and makes "target unresolvable" a real misattribution detector. (Its
+  amendment-reference metadata = strong oracle → audit-only, never a build input.)
+- [ ] **Extend the G1 guard** (`gate._DUMP_LITERAL`) to ban the reconstruction path from importing the
+  law register — enforce validation-only in code, not trust.
+- [ ] **Expand segmentation to the FULL NB harvest** (beyond the 224 indexed issues) to populate
+  `harvested` / amendment edges against the complete register.
+- [ ] **`segments.jsonl` as curated truth** — freeze the per-issue line index (hash-pinned); make
+  `segment_issue` emit `start_line` natively; bootstrap the two-level char-offset partition (acts →
+  per-target blocks; filler explicit; `head` anchor column). Archive raw classifier output for diff-merge.
+- [ ] **`source/eval/classification_qa.py`** — the invariant suite as ranked work queue (`report`) + per-fix
+  pre-commit gate (`--diff`: targeted violation clears, total violations non-increasing, frozen-text sha +
+  head anchors match). Install the pre-commit hook on `segments.jsonl`.
+- [ ] **Eivind handoff (PARKED until next week, HS 2026-10-02).** Labour-market laws under-covered
+  (only folketrygdloven well-covered); don't reply today. Repo self-serves once register + segments +
+  classification_qa are in place. (Manudeep thread "Historiske lover (1990-tallet)"; HS promised info ~Fri,
+  now deferred.)
+
 ## Out-of-sample / full-corpus scaling (OPEN FORK, 2026-09-25 — see done.md)
 
 Out-of-sample probe (2026-09-25): post-2001 generalizes (random 0.748 ≈ dev 0.808); pre-2001 is

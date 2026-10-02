@@ -2,6 +2,45 @@
 
 Committed design choices.
 
+## 2026-10-02 — Segmentation becomes a curated dataset; a PUBLIC law-identity register is the backbone (HS)
+
+**Context.** Phase-0 measurement (this session) reframed the problem. The LLM classifier's amendment
+*attribution* is largely CORRECT — the "66% unresolved target" seen in `classification_qa` is register
+INCOMPLETENESS (targets are real laws we have not harvested, incl. repealed ones), not misattribution.
+So the binding constraint is **harvest coverage** (we hold enactment bases for ~79/754 = 10% of in-force
+laws), not the classifier and not the reconstruction engine (mature, amendment-capped — see the ceiling
+rulings). A rejected idea along the way: LLM-locator-vs-regex-locator *agreement* as a confidence signal
+— it does not discriminate (≈90% agree in BOTH well-located and mislocated groups; the two share the
+index as a single point of failure).
+
+**Decision (two linked choices).**
+1. **Segmentation is a CURATED DATASET, not a regenerated output.** The gazette segmentation lives in one
+   git-tracked file (`segments.jsonl`): the classifier BOOTSTRAPS it once, then it is hand/agent-corrected
+   forever, with git history as the audit log. Canonical boundaries are **char offsets** into a frozen,
+   hash-pinned per-issue line index (line numbers + a `head` first-token column travel alongside for
+   human anchoring AND automatic misalignment detection vs the raw). It is a **two-level partition**
+   (acts → per-target blocks) because omnibus amendments are common (~38% of amend/repeal acts cite ≥2
+   target laws). An **invariant suite** (char-coverage/no-overlap, heading-at-start, klass↔marker,
+   datokode↔heading, target-echo, head-anchor + per-issue frozen-text sha) is BOTH the ranked work queue
+   AND a pre-commit gate: a fix is accepted only if its targeted violation clears and total violations do
+   not rise (mechanical monotonic non-degradation). Reconstruction is a pure function of `segments.jsonl`.
+   We sacrifice provable *completeness*, not reproducibility (reproducible given the tracked file).
+2. **A PUBLIC law-identity register is the referential-integrity backbone.** `data/law_register.jsonl`
+   (`source/scrape/build_law_register.py`): one entry per law IDENTITY (datokode, title, enactment date,
+   type, harvested?, amend_count), sourced ONLY from the public gazette, so it is publishable. DISTINCT
+   from `source/eval/build_register.py` (the amendment-register ORACLE, current-dump-derived, eval-only).
+
+**Why.** A complete law universe turns "target unresolvable" from a coverage artifact into a real
+misattribution detector, makes harvest coverage measurable, and gives the segmentation a controlled
+vocabulary of valid targets. Curation + invariants make errors visible and monotonically convergent.
+
+**Consequence / firewall.** Per the 2026-08-23 oracle ruling, the law register is VALIDATION-ONLY: it may
+flag suspects / audit coverage but MUST NOT drive a reconstruction decision — *register flags, the gazette
+adjudicates* (corrections are source-anchored, never auto-written from the register). Enforce in code by
+extending the G1 guard (`gate._DUMP_LITERAL`) to ban the reconstruction path from importing the register.
+Until the register is COMPLETE (public NB metadata, incl. repealed laws), "unresolved target" means
+coverage, not error; use the target-echo + OCR-noise checks for the small genuine-garble residual.
+
 ## 2026-08-24 — Capture-precision solved via CONTENT-AWARE application (+12 answer-free); the residual is RENUMBERING, not application
 
 **Phase 0/1 (done).** The answer-free pointer regressions are MIS-ATTRIBUTED ops (content from another
