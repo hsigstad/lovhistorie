@@ -1,5 +1,28 @@
 # Done
 
+## 2026-10-02 — Vague gate landed; law-register backbone built; curated-segmentation direction set
+
+Session resumed the killed "Vague" session's WIP and redirected the project.
+
+- **Vague's corroboration gate landed (1717c26).** Finished + measured the uncommitted edit that died in
+  the machine reset: `load_ops` lets a RECOVERY op overwrite a provision a primary stream owns ONLY for
+  source-confirmed whole-§ rewrites (`§ <id> skal lyde:`). Gate: 0.7226→0.7250 (599→601/829), G1/G2/G3
+  clean, zero regressions.
+- **engine-gap:ledd triaged — NOT a new lever.** Of 93 ledd-flagged misses, 91 already have an op in a
+  derived LLM stream; it's an application/landing problem, not extraction/engine. Tracing the "baked but
+  not landing" cases: a self-consistency gate in `build_applied` (skip a bake that collapses <50% of the
+  deterministic result) was NEUTRAL on current data — regen of `applied_ops` drifts 601→599 regardless
+  (see handoff note). Reverted; not kept.
+- **Phase-0 measurement reframed the problem.** Classifier attribution is largely correct; the binding
+  constraint is HARVEST COVERAGE (register holds enactment for ~79/754 = 10% of in-force laws), not the
+  engine (amendment-capped) or classification. Rejected: two-locator agreement as a confidence signal
+  (≈90% agree in both well/mislocated — shared index = single point of failure).
+- **Law-identity register bootstrapped (76a1af6).** `source/scrape/build_law_register.py` →
+  `data/law_register.jsonl`: 1451 public identities, oracle-free. The referential-integrity backbone.
+- **Direction recorded (26c9bcc, decisions.md).** Segmentation as a git-tracked CURATED DATASET
+  (two-level char-offset partition + invariant pre-commit gate); public law register as validation-only
+  backbone. Plan in todo.md. Eivind handoff parked to next week (labour laws under-covered).
+
 ## 2026-10-01 — LLM body-locator (Approach B) productionized as the primary locator
 
 Replaced the regex body-location in `build_from_index` with an **LLM line-numbered, TOC-aware locator**
