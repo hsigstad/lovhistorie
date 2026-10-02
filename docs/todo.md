@@ -22,6 +22,11 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
 - [ ] **`source/eval/classification_qa.py`** — the invariant suite as ranked work queue (`report`) + per-fix
   pre-commit gate (`--diff`: targeted violation clears, total violations non-increasing, frozen-text sha +
   head anchors match). Install the pre-commit hook on `segments.jsonl`.
+- [ ] **`applied_ops` reproducibility drift (noticed 2026-10-02).** `data/applied_ops.jsonl.gz` is
+  untracked; the on-disk Aug-23 artifact scores 601/829, but regenerating it
+  (`python -m source.scrape.build_applied`, warm cache) yields 599 — a silent −2 the current cache/code no
+  longer reproduces. The "good" 601 copy lives only on disk. Either commit the artifact or find the drift
+  before any clean rebuild silently drops 2 provisions.
 - [ ] **Eivind handoff (PARKED until next week, HS 2026-10-02).** Labour-market laws under-covered
   (only folketrygdloven well-covered); don't reply today. Repo self-serves once register + segments +
   classification_qa are in place. (Manudeep thread "Historiske lover (1990-tallet)"; HS promised info ~Fri,
