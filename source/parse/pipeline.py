@@ -219,6 +219,22 @@ def _grouped(_sig):
     return groups
 
 
+# Source-only corroboration for the overwrite gate (load_ops). A RECOVERY op may OVERWRITE a
+# provision a PRIMARY stream already owns ONLY if the amending act explicitly states the FULL new
+# provision — instruction "§ <id> skal lyde: …" with NOTHING between the id and "skal lyde" (so
+# sub-provision ops "§X annet ledd … skal lyde" are excluded) and a substantial verbatim payload.
+# This is the §36-class genuine rewrite (avtaleloven 1983) overwriting the stale 1918 base, decided
+# from the public amending-act text alone (no answer key, G1-safe). Everything else stays gap-fill.
+_WHOLE_REPLACE = re.compile(r"^\s*§\s*\S+\s+skal\s+lyde\b", re.I)
+
+
+def _overwrite_ok(base: dict, payload: str) -> bool:
+    instr = base.get("instruction") or ""
+    return (bool(_WHOLE_REPLACE.match(instr))
+            and base.get("change_type") in ("change", "replace")
+            and bool(payload) and len(payload) > 80)
+
+
 def load_ops(target_law: str, include_applied: bool = True):
     """Ordered ops for a law WITH change_type + clean para. change_type ∈ {change, add, repeal,
     renumber, move, unknown}; renumber/move/unknown are left for replay to flag, not fabricate.
@@ -246,8 +262,8 @@ def load_ops(target_law: str, include_applied: bool = True):
             pieces = []
         emit = pieces if pieces else [(_op_para(d), new)]
         for para, payload in emit:
-            if is_recovery and para in primary_paras:
-                continue              # recovery fills gaps only — primary owns this §
+            if is_recovery and para in primary_paras and not _overwrite_ok(base, payload):
+                continue              # recovery fills gaps only — unless a corroborated whole-§ rewrite
             key = (base["act"], para, base["date"], base["instruction"])
             if key in seen:
                 continue
