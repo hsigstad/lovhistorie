@@ -174,6 +174,8 @@ def segment(pages, *, client=None, model: str = MODEL, cache: LLMCache = CACHE,
             "target": gazette.datokode(rest) if klass in ("amend", "repeal") else None,
             "title": title or " ".join(rest.split())[:120],
             "body": body,
+            "start": pos,          # char offset into full = "\n".join(page.text); exact (verified heading, not TOC)
+            "end": end,
         })
         rep.located += 1
     if doc_key:
