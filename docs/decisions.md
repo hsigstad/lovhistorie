@@ -2,6 +2,50 @@
 
 Committed design choices.
 
+## 2026-10-04 — `segments.jsonl` IS the corpus; the locator becomes its bootstrap; two-signal commit gate (HS)
+
+**Context.** The locator (`build_from_index` + `source/llm/locate_body.py`) and the curated segmentation
+(`data/segments.jsonl`) are two views of the SAME `segment_issue` cache — and they have DIVERGED.
+`build_segments.py` records segment_issue's RAW body offsets (`frozen.find(body)` — which is also what
+produces the 10 `overlap` violations); `build_from_index` reads the same cache but then RE-LOCATES the
+start (LLM `locate_body`) and cuts the end (`_NEXT_LAW`), writing the REFINED boundaries to a throwaway
+`build/enactment/<datokode>.json` that never flows back. So the git-tracked "owned" artifact carries the
+weaker boundaries and the better locator output is transient. Two locators that disagree.
+
+**Decision.**
+1. **`segments.jsonl` is THE corpus artifact** — the single canonical, git-tracked, frozen-sha-pinned
+   record of every segment: which law it ENACTS (`datokode`+`klass=original`), which it AMENDS
+   (`target`+`klass=amend/repeal`), and its exact char offsets. We improve it ONE GATED COMMIT AT A TIME;
+   git history is the audit log. We do NOT chase provable completeness — reproducibility given the tracked
+   file is the contract (extends the 2026-10-02 curated-dataset decision from "the segmentation" to "the
+   whole enactment-base + amendment-attribution corpus").
+2. **The LLM locator is demoted from a live path to a BOOTSTRAP/CORRECTION tool.** Locating law X must end
+   as a LOOKUP into `segments.jsonl` (the `datokode=X, klass=original` row → slice the frozen issue) —
+   zero live LLM at build time, reproducible, G1-safe by construction (cf. the 2026-10-04 register ban).
+   `locate_body`/`segment_issue` survive only as offline tools that WRITE curated offsets into the file.
+3. **Archive the old locator AFTER the fold-in, in sequence** — never before: (1) fold the locator's
+   refined offsets into `segments.jsonl` (native offsets, killing `overlap-10`); (2) repoint
+   `enactment_base`/`build_from_index` to READ `segments.jsonl`; (3) THEN archive the LIVE locate path +
+   the regex locator stack (`_regex_start`, `_HEAD`/`_repair_headings` heading stack — consistent with the
+   2026-08-14 "retire regex only after full OCR-law migration" policy). The parallel `build/enactment/*.json`
+   artifact is retired in favour of bases DERIVED from `segments.jsonl`.
+4. **The commit gate needs TWO signals, not one.** `classification_qa --diff` guards the PARTITION
+   (no new gap/overlap/sha-drift/klass-marker/unresolved-target) — it does NOT check whether an offset move
+   made the base TEXT better or worse (you can tighten a boundary wrongly and stay structurally valid). So
+   any commit that MOVES offsets for law X must ALSO pass an ANSWER-FREE no-regression check: reconstruct X,
+   compare median-sim to current (`metrics.similarity`) against the pre-commit value (no ground truth). An
+   "improvement" means structure-not-worse AND base-quality-not-worse on the touched laws. Build this as the
+   second half of the pre-commit gate before the fold-in moves real offsets.
+
+**Why.** It collapses two drifting representations into one owned, publishable, reproducible file; makes
+the locator's quality permanent (curated) instead of transient; and closes the hole where a structurally-
+valid commit silently degrades the actual corpus. Convergence stays the headline metric; this is about the
+INPUT to reconstruction being a single trustworthy artifact.
+
+**Consequence.** The locator work reorders around the fold-in (todo.md): the full-corpus run POPULATES
+`segments.jsonl` rather than a throwaway dir, and is gated on the two-signal check, not the stale regex-era
+locator-quality numbers.
+
 ## 2026-10-02 — Segmentation becomes a curated dataset; a PUBLIC law-identity register is the backbone (HS)
 
 **Context.** Phase-0 measurement (this session) reframed the problem. The LLM classifier's amendment

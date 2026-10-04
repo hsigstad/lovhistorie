@@ -84,6 +84,34 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
   classification_qa are in place. (Manudeep thread "Historiske lover (1990-tallet)"; HS promised info ~Fri,
   now deferred.)
 
+## Locator → `segments.jsonl` fold-in (PRIORITY, 2026-10-04 — see decisions.md)
+
+The locator is BUILT and validated for normal issues (~71% ≥0.5, ~5% true mislocation; 74/78 in-force
+bases at median-sim 0.80). It is NO LONGER the binding constraint. The next move is to make its output
+PERMANENT and OWNED: `segments.jsonl` is THE corpus artifact, the locator becomes its offline bootstrap,
+and we improve the file one gated commit at a time (decisions.md 2026-10-04). Ordered:
+
+- [ ] **S1 — second commit-gate signal (base-quality no-regression).** `classification_qa --diff` only
+  guards the PARTITION; an offset move can stay structurally valid while degrading the base text. Add an
+  ANSWER-FREE check: for every law whose offsets changed, reconstruct and compare median-sim to current
+  (`metrics.similarity`) vs the pre-commit value; fail if any touched law regresses. Wire into the
+  pre-commit hook alongside `--diff`. **Build this BEFORE S2 moves real offsets.**
+- [ ] **S2 — fold the locator's refined offsets INTO `segments.jsonl`.** Replace `build_segments.py`'s
+  `frozen.find(body)` with the locator's start (`locate_body`) + `_NEXT_LAW`/LLM end, stored as NATIVE
+  char offsets (kills `overlap-10`). One commit per issue-batch, each passing S1 + `--diff`.
+- [ ] **S3 — repoint `enactment_base`/`build_from_index` to READ `segments.jsonl`** (the `datokode`,
+  `klass=original` row → slice the frozen issue). Zero live LLM at build time; retire the throwaway
+  `build/enactment/<datokode>.json`.
+- [ ] **S4 — archive the old locator (ONLY after S2/S3).** Archive the LIVE locate path + the regex
+  locator stack (`_regex_start`, `_HEAD`/`_repair_headings`; per the 2026-08-14 "retire regex only after
+  migration" policy). `locate_body`/`segment_issue` survive as OFFLINE correction tools that write curated
+  offsets, never a runtime path.
+- [ ] **S5 — full-corpus run POPULATES `segments.jsonl`** (not a throwaway dir), gated on S1. This is the
+  deferred "clean corpus run", now re-stated against the current stack's bar (see below), not the stale
+  regex-era numbers.
+
+The items below are the pre-reframe residuals, now SUBORDINATE to the fold-in:
+
 ## Out-of-sample / full-corpus scaling (OPEN FORK, 2026-09-25 — see done.md)
 
 Out-of-sample probe (2026-09-25): post-2001 generalizes (random 0.748 ≈ dev 0.808); pre-2001 is
@@ -122,17 +150,16 @@ bound volumes that `segment_issue` under-segments — this also caps existing `b
     "second standalone § 1" boundary (cut mid-law — the law's own § 1 recurs). Needs a boundary robust to the
     bare-title/§-restart layout without regressing modern issues (or split giant volumes per year first). This
     layout is the ~pre-1970 bound volumes; modern-heading pre-2001 laws are handled (5/6 validated).
-- [ ] **Full-corpus index pass.** Current `data/act_index.json` = 1170 datokodes from only the 914 issues
-  `build_gazette` happened to segment (only 82 are pre-2001 laws with current text). Run `segment_issue`
-  over ALL 1033 issues (reprocess giant volumes with the dedup fix — ~80s each warm-cache, live-LLM if
-  cold) then rebuild the index for complete coverage.
-- [ ] **Locator quality gate before a "clean" corpus run (scale-measured 2026-09-30, see done.md).** The
-  regex locator scores **~48% ≥0.5 convergence, ~70% plausible body, ~30% mislocated** on random pre-2001
-  laws; over-capture is a SILENT failure (no answer-free guard — the "≥2 § 1" guard false-flags good laws;
-  base_n-vs-cur_n would use the answer). An LLM body-locator v1 UNDERPERFORMED regex. So a full corpus run
-  now yields good bases for ~half + silent-wrong for a chunk. Before a clean corpus run, need materially
-  better location via ONE of: (a) a properly-designed LLM locator (v1 insufficient), (b) per-year split of
-  the older bound volumes, or (c) the **Lovdata CD** (sidesteps location entirely — still the cleanest path).
+- [~] **Full-corpus index pass — LARGELY DONE 2026-10-04.** `data/act_index.json` now = 1172 datokodes
+  from 1005/1033 issues (was 1170 from 914). Remaining: 28 giant bound volumes unsegmented (shelved — old
+  repealed laws, 0 in-force recovery, ~600k tokens each; need a chunked LLM pass or per-year split).
+- [ ] **Locator quality gate before a "clean" corpus run — PREMISE SUPERSEDED 2026-10-04.** The ~48% /
+  ~30%-mislocated figures were the REGEX locator; the current LLM locate+segment stack is ~71% ≥0.5 /
+  ~5% mislocation (done.md 2026-10-01/10-04). The gate now lives in S1 above (answer-free base-quality
+  no-regression as the second commit-gate signal), and S5 re-states the corpus-run bar against the current
+  stack. Still TODO: re-measure the honest bar on a fresh random sample (cold LLM spend — needs HS sign-off)
+  and tag the residual ~5% mislocation tail. Over-capture remains a silent failure without the S1 quality
+  signal — which is exactly why S1 is built first.
 - [ ] (independent) triage the ~1/4 of post-2001 acts that parse to **0 current provisions**
   (amending/structural acts vs a current-parser schema gap) before any full-corpus denominator.
 - Lovdata CD (fork A) remains complementary — clean bases + eval oracle — but no longer the only pre-2001
