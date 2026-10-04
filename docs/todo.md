@@ -38,12 +38,20 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
 - [ ] **~59 scattered per-law LTI gaps (2003–2024)** — individual empties/parse-fails; lower priority.
 - [ ] **pre-1970 in-force tail (~100) = NB-gap** — NB digitised register/index-only for many old years, so
   largely unrecoverable from NB. The genuine hard residual; accept or seek a non-NB source.
-- [ ] **`segments.jsonl` as curated truth** — freeze the per-issue line index (hash-pinned); make
-  `segment_issue` emit `start_line` natively; bootstrap the two-level char-offset partition (acts →
-  per-target blocks; filler explicit; `head` anchor column). Archive raw classifier output for diff-merge.
-- [ ] **`source/eval/classification_qa.py`** — the invariant suite as ranked work queue (`report`) + per-fix
-  pre-commit gate (`--diff`: targeted violation clears, total violations non-increasing, frozen-text sha +
-  head anchors match). Install the pre-commit hook on `segments.jsonl`.
+- [x] **`segments.jsonl` as curated truth.** Done 2026-10-04: `build_segments.py` → char-offset partition
+  (2459 segs / 312 law-bearing issues), filler explicit, `start_line` + `head` anchors + frozen sha
+  (`segments_meta.json`); offsets via `frozen.find(body)` (zero LLM); `segment_issue` now emits start/end.
+  Partition structurally clean (0 gap/overlap-end/sha-drift/head-mismatch).
+- [x] **`classification_qa.py` invariant suite (report).** Done 2026-10-04: coverage/overlap/sha/head +
+  klass↔marker + target-resolve. Baseline 388 violations = the work queue (target-missing 284, klass-marker
+  74, overlap 10, target-unresolved 20).
+- [ ] **classification_qa `--diff` pre-commit gate** — compare violations vs HEAD (targeted clears, total
+  non-increasing); install the git pre-commit hook on `segments.jsonl`. (report mode done; gate remains.)
+- [ ] **Work the queue** — target-missing 284 (many resolvable by law NAME, not just datokode: wire a
+  name→datokode resolver against the register); klass-marker 74 (teach the marker regex archaic forms
+  "brigde"/"tillegg til"); overlap 10 (duplicate-body find edge cases).
+- [ ] **Two-level omnibus blocks** — split each omnibus `amend` segment into per-target sub-blocks
+  (`I … II …`), each resolving to one target law (the ~38% multi-target acts).
 - [ ] **`applied_ops` reproducibility drift (noticed 2026-10-02).** `data/applied_ops.jsonl.gz` is
   untracked; the on-disk Aug-23 artifact scores 601/829, but regenerating it
   (`python -m source.scrape.build_applied`, warm cache) yields 599 — a silent −2 the current cache/code no
