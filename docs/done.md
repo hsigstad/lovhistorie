@@ -1,5 +1,27 @@
 # Done
 
+## 2026-10-04 — Register enriched (Lovdata gjeldende); locator confirmed good at scale; coverage is the gap
+
+- **Register enriched with the public Lovdata `gjeldende` dataset.** `build_law_register.load_gjeldende()`
+  parses identity+lifecycle (title/departement/legalArea/dateInForce) from the free no-auth download
+  (`api.lovdata.no/.../gjeldende-lover.tar.bz2`). Register 1451→2055; in-force universe complete (754).
+  KEY FINDING: Lovdata is IN-FORCE ONLY (no repealed laws) — it does NOT complete the historical register.
+- **Full-harvest segmentation ~complete.** 914/1033 issues were already segmented; segmented the 91 normal
+  (<600k) unsegmented issues (+2 distinct laws — they're forskrift-heavy). act_index now 1005/1033 issues,
+  1172 distinct acts. Only 28 giant bound volumes remain unsegmented.
+- **Giant volumes shelved for the in-force deliverable.** 1-giant probe (2.4M chars, 1299 pp) → 20 acts /
+  9 distinct laws, all 1869–1911, **0 in-force recovery** (poor quality: 11/20 duplicate). Giants are old
+  repealed-law volumes; ~600k tokens each for ~9 historical laws. Not worth blanket-segmenting; optional
+  historical-register padding only.
+- **Locator confirmed good AT SCALE (the real win).** Ran `build_from_index` across the 78 in-force laws
+  that were in-index but unbuilt: **74/78 built (95%), median-sim 0.80 vs current, 51/74 ≥0.5.** In-force
+  bases built 9→83. The sub-0.5 ones are amendment-capture-limited, not locator failures. Confirms: the
+  locator is good; the binding constraint is harvest COVERAGE. (4 empties: 1978-06-02-37/38, 1978-06-09-50,
+  1992-06-19-61 — old bound-volume layout.)
+- **In-force gap decomposed:** index-harvestable (80) now ~done (74 built); pre-1970 (~100) mostly NB-gap
+  (register/index-only years, unrecoverable from NB); post-2000 (~439) = the LTI path (`build_post2001`),
+  not yet measured — the next lever and the biggest bucket.
+
 ## 2026-10-02 — Vague gate landed; law-register backbone built; curated-segmentation direction set
 
 Session resumed the killed "Vague" session's WIP and redirected the project.

@@ -23,8 +23,17 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
   pre-window or garble.
 - [ ] **Extend the G1 guard** (`gate._DUMP_LITERAL`) to ban the reconstruction path from importing the
   law register — enforce validation-only in code, not trust.
-- [ ] **Expand segmentation to the FULL NB harvest** (beyond the 224 indexed issues) to populate
-  `harvested` / amendment edges against the complete register.
+- [x] **Expand segmentation to the FULL NB harvest.** Done 2026-10-04: 914→1005/1033 issues (segmented
+  the 91 normal; +2 laws, forskrift-heavy). 1172 distinct acts. 28 giant bound volumes SHELVED (1-giant
+  probe: 1869–1911 repealed, 0 in-force recovery, ~600k tokens/9 laws — optional historical padding only).
+- [x] **Build in-force bases via the locator (`build_from_index`).** Done 2026-10-04: 74/78 index-harvestable
+  in-force laws built (95%), median-sim 0.80, 51/74 ≥0.5. In-force bases 9→83. Locator confirmed good at
+  scale; sub-0.5 are amendment-capped not locator failures. (4 empties: 1978-06-02-37/38, 1978-06-09-50,
+  1992-06-19-61 — bound-volume layout, revisit if needed.)
+- [ ] **NEXT LEVER — measure the post-2001 LTI path (`build_post2001`).** ~439 of 754 in-force laws were
+  enacted after NB's ~2000 cutoff, so they reconstruct via the LTI stream (`data/lti`), NOT the NB gazette
+  index — my 2026-10-04 coverage probe undercounted them. This is the biggest in-force bucket; measure how
+  many `build_post2001` already covers + their quality before any further harvest work.
 - [ ] **`segments.jsonl` as curated truth** — freeze the per-issue line index (hash-pinned); make
   `segment_issue` emit `start_line` natively; bootstrap the two-level char-offset partition (acts →
   per-target blocks; filler explicit; `head` anchor column). Archive raw classifier output for diff-merge.

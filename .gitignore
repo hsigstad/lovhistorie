@@ -19,6 +19,7 @@ data/lti_amendments.jsonl.gz
 data/inforce.jsonl.gz
 data/current/
 data/lovdata_gjeldende/
+data/enactment/
 data/lti/
 data/lovtidend_text/
 data/_backup/
