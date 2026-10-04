@@ -34,9 +34,15 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
   1992-06-19-61 — bound-volume layout, revisit if needed.)
 - [x] **Post-2001 LTI path measured.** Done 2026-10-04: 302/438 built, median-sim 1.00, 89% ≥0.5. TRUE
   in-force coverage = 385/754 (51%), ~321 ≥0.5. Undercount corrected (gazette-only probe said 11%).
-- [ ] **Refresh the LTI dump to 2025–2026 (cheapest lever, +77 in-force laws).** `data/lti` dirs stop at
-  2024; all 40 2025-laws and 37 2026-laws miss purely for lack of data. Re-pull from the same public
-  Lovdata source as `gjeldende`. Takes in-force coverage ~51%→61%. Recent laws reconstruct near-trivially.
+- [ ] **Refresh the LTI dump to 2025–2026 — CORPUS-CURRENCY, not a metric lever (re-tagged HS 2026-10-04).**
+  `data/lti` dirs stop at 2024; the 77 missing in-force laws (40 in 2025, 37 in 2026) are all NEW
+  enactments. They reconstruct near-trivially (base ≈ current, no history) so they move NEITHER metric
+  that matters: convergence runs on the fixed 9-law `gate.DEV_LAWS` (1918–2009), and point-in-time needs
+  laws with history. The only thing they move is the in-force coverage COUNT (~51%→61%) — breadth padding
+  with tautological wins, not the goal gate. Worth doing ONLY if "published corpus current through 2026"
+  becomes an explicit deliverable goal, and then it's a MATCHED refresh (answer-key `data/current` +
+  amendment stream in lockstep) — a one-sided dir top-up against a pre-2025 answer key would WORSEN the
+  metric (reconstruct a 2026 state, grade vs a 2024 answer). Parked until that scope call.
 - [ ] **~59 scattered per-law LTI gaps (2003–2024)** — individual empties/parse-fails; lower priority.
 - [ ] **pre-1970 in-force tail (~100) = NB-gap** — NB digitised register/index-only for many old years, so
   largely unrecoverable from NB. The genuine hard residual; accept or seek a non-NB source.
