@@ -1,5 +1,31 @@
 # Done
 
+## 2026-10-04 (cont. 2) — S1 built: base-quality commit gate + tracked two-signal pre-commit hook
+
+First build step of the locator→segments.jsonl fold-in (decisions.md 2026-10-04). The pre-commit gate was
+STRUCTURE-ONLY (`classification_qa --diff`); an offset move could stay structurally valid while degrading
+the base text. S1 adds the missing quality signal BEFORE S2 starts moving real offsets.
+
+- **`source/eval/segments_quality.py`** — `report` (base-quality snapshot) + `--diff` gate. For a law X,
+  the enactment base is the `klass=original` segment → slice the frozen issue → `parse_provisions` (regex,
+  NO LLM) → median per-provision similarity to current (`metrics.similarity`). The `--diff` gate scores
+  only laws whose enactment offsets CHANGED vs HEAD and FAILs if any drops > 0.02. RELATIVE by design
+  (same law, HEAD vs working), so amendment drift + the regex splitter's absolute weakness cancel and the
+  delta isolates the offset change; missing current provisions score 0 so under-capture/mislocation is
+  visible. Harness-side, answer-key-MEASURING (never a build input); skips cleanly with no baseline / no
+  answer key. G1 untouched (not on the recon path).
+- **`source/eval/install_hooks.py`** (tracked) — writes the two-signal `.git/hooks/pre-commit`
+  (`classification_qa --diff` THEN `segments_quality --diff`). `.git/hooks` isn't version-controlled, so
+  this script is now the source of truth; run `python -m source.eval.install_hooks` on fresh clones
+  (replaces the old "reinstall by hand" note).
+- **Verified end-to-end:** no-change skips; a planted improvement passes; a planted regression FAILs
+  (exit 1, 1.000→0.049); the installed hook blocks on both gate1 (structural) and gate2 (quality). Working
+  tree restored after each test; HEAD untouched.
+- **Diagnostic the gate surfaced:** `report` = median 0.000, 13/57 ≥0.5. Not a bug — a faithful readout
+  that segments.jsonl currently carries the WEAK raw `segment_issue` offsets (e.g. `2000-07-07-68`'s
+  "original" segment is a 223-char TOC entry, not the law body). This is the exact divergence S2 folds in;
+  S1 guarantees that fold-in can only push these scores UP.
+
 ## 2026-10-04 (cont.) — G1 firewall extended to the register; archaic amendment markers taught (queue 353→330)
 
 Continuation of the curated-segmentation track. Two safe, gated, code-only improvements; the curated

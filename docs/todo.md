@@ -91,11 +91,19 @@ bases at median-sim 0.80). It is NO LONGER the binding constraint. The next move
 PERMANENT and OWNED: `segments.jsonl` is THE corpus artifact, the locator becomes its offline bootstrap,
 and we improve the file one gated commit at a time (decisions.md 2026-10-04). Ordered:
 
-- [ ] **S1 — second commit-gate signal (base-quality no-regression).** `classification_qa --diff` only
-  guards the PARTITION; an offset move can stay structurally valid while degrading the base text. Add an
-  ANSWER-FREE check: for every law whose offsets changed, reconstruct and compare median-sim to current
-  (`metrics.similarity`) vs the pre-commit value; fail if any touched law regresses. Wire into the
-  pre-commit hook alongside `--diff`. **Build this BEFORE S2 moves real offsets.**
+- [x] **S1 — second commit-gate signal (base-quality no-regression).** Done 2026-10-04:
+  `source/eval/segments_quality.py` (`report` + `--diff` gate). For each law whose enactment
+  (`klass=original`) offsets change vs HEAD, it slices the frozen issue, splits with the deterministic
+  `parse_provisions` (no LLM), and compares median per-provision similarity to current — RELATIVE
+  (HEAD-offsets vs working-offsets), so amendment drift cancels and the delta isolates the offset change.
+  FAILs if any touched law drops > 0.02; skips cleanly with no baseline / no answer key. Verified: no-change
+  skips, improvement passes, regression FAILs (exit 1, e.g. 1.000→0.049). Also made the gate REPRODUCIBLE:
+  `source/eval/install_hooks.py` (tracked) writes the two-signal `.git/hooks/pre-commit` (classification_qa
+  --diff THEN segments_quality --diff) — run `python -m source.eval.install_hooks` on fresh clones.
+  NOTE: current `report` shows median 0.000 / 13-of-57 ≥0.5 — a faithful diagnosis that segments.jsonl holds
+  the WEAK raw offsets today (e.g. 2000-07-07-68's "original" is a 223-char TOC fragment). That is exactly
+  what S2 fixes; S1 ensures S2 can only move those scores UP. V2: handle chapter-section (§N-M) ids (the
+  current `_REAL` regex scores only flat §N laws) and upgrade to full reconstruction once S3 lands.
 - [ ] **S2 — fold the locator's refined offsets INTO `segments.jsonl`.** Replace `build_segments.py`'s
   `frozen.find(body)` with the locator's start (`locate_body`) + `_NEXT_LAW`/LLM end, stored as NATIVE
   char offsets (kills `overlap-10`). One commit per issue-batch, each passing S1 + `--diff`.
