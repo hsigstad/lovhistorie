@@ -45,11 +45,14 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
 - [x] **`classification_qa.py` invariant suite (report).** Done 2026-10-04: coverage/overlap/sha/head +
   klass↔marker + target-resolve. Baseline 388 violations = the work queue (target-missing 284, klass-marker
   74, overlap 10, target-unresolved 20).
-- [ ] **classification_qa `--diff` pre-commit gate** — compare violations vs HEAD (targeted clears, total
-  non-increasing); install the git pre-commit hook on `segments.jsonl`. (report mode done; gate remains.)
-- [ ] **Work the queue** — target-missing 284 (many resolvable by law NAME, not just datokode: wire a
-  name→datokode resolver against the register); klass-marker 74 (teach the marker regex archaic forms
-  "brigde"/"tillegg til"); overlap 10 (duplicate-body find edge cases).
+- [x] **classification_qa `--diff` pre-commit gate.** Done 2026-10-04: fails if any violation category
+  grows vs HEAD; installed as local `.git/hooks/pre-commit` (reinstall on fresh clones). Verified both
+  ways — blocks a degrading edit, allows an improving one.
+- [~] **Work the queue (ongoing).** First pass done 2026-10-04: `resolve_targets.py` filled 35
+  target-missing by law name (284→249, queue 388→353, gated). REMAINING: target-missing 249 (richer
+  name/subject matching; many target laws simply aren't in the register → register-completeness, not
+  resolvable); klass-marker 74 (teach the marker regex archaic forms "brigde"/"tillegg til"); overlap 10
+  (duplicate-body `find` edge cases — switch to native segment offsets once chunk caches refreshed).
 - [ ] **Two-level omnibus blocks** — split each omnibus `amend` segment into per-target sub-blocks
   (`I … II …`), each resolving to one target law (the ~38% multi-target acts).
 - [ ] **`applied_ops` reproducibility drift (noticed 2026-10-02).** `data/applied_ops.jsonl.gz` is
