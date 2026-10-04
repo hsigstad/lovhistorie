@@ -188,12 +188,20 @@ def _line_spans(frozen: str, s: int, e: int):
         i = j
 
 
+# Kinds whose text is prose a running-header interrupts; furniture inside these is split out
+# as `noise`. NOT front_matter/toc (page numbers there are legit content), signature, other.
+_SPLIT_KINDS = {"provision", "amend_op", "amend_scope", "enactment_heading", "in_force",
+                "repeal", "forskrift", "amend", "original"}
+
+
 def _emit(rows, frozen, iid, s, e, kind, unit_key, **extra):
-    """Emit a content span, splitting out any run of page-furniture lines as `noise` so a
+    """Emit a span. For prose kinds, split out runs of page-furniture lines as `noise` so a
     furniture-interrupted unit becomes several rows sharing `unit_key`."""
     if e <= s:
         return
-    cur, buf_furn = s, None
+    if kind not in _SPLIT_KINDS:
+        rows.append(_flat_row(frozen, iid, s, e, kind, unit_key, **extra))
+        return
     segs = []                                     # (start, end, is_furniture)
     for ls, le in _line_spans(frozen, s, e):
         f = _is_furniture(frozen[ls:le])
@@ -206,6 +214,57 @@ def _emit(rows, frozen, iid, s, e, kind, unit_key, **extra):
             rows.append(_flat_row(frozen, iid, a, b, "noise", f"noise@{a}"))
         else:
             rows.append(_flat_row(frozen, iid, a, b, kind, unit_key, **extra))
+
+
+def tile_ordered(iid: str, segments: list[dict], frozen: str) -> tuple[list[dict], list[str]]:
+    """Ordered-starts tiling (segment_prompt contract): resolve each segment's start_anchor to
+    an offset (monotonically), tile [start_i, start_{i+1}] so there are NO gaps by construction,
+    then furniture-split prose segments. Returns (rows, misses)."""
+    placed, misses, pos = [], [], 0
+    for seg in segments:
+        sp = _anchor_span(frozen, seg.get("start_anchor", ""), pos) \
+            or _anchor_span(frozen, seg.get("start_anchor", ""), 0)   # retry from 0 if order slipped
+        if not sp:
+            misses.append(f"{seg.get('kind')}: start anchor not found: {seg.get('start_anchor','')[:40]!r}")
+            continue
+        placed.append((sp[0], seg))
+        pos = sp[0]
+    placed.sort(key=lambda x: x[0])
+    rows, n = [], len(frozen)
+    if placed and placed[0][0] > 0:               # agent should have started at 0 — flag the lead gap
+        _emit(rows, frozen, iid, 0, placed[0][0], "other", "lead@0")
+    _FIELDS = ("datokode", "para", "instrument", "op_kind", "from", "to", "position")
+    for i, (s, seg) in enumerate(placed):
+        e = placed[i + 1][0] if i + 1 < len(placed) else n
+        extra = {k: seg.get(k) for k in _FIELDS}
+        if seg.get("target_cite"):
+            extra["target_cite"] = seg["target_cite"]
+            extra["target"] = cite_to_datokode(seg["target_cite"])
+        _emit(rows, frozen, iid, s, e, seg.get("kind") or "other", _unit_key(seg, i), **extra)
+    return rows, misses
+
+
+def _unit_key(seg: dict, i: int) -> str:
+    dk = seg.get("datokode") or "?"
+    k = seg.get("kind")
+    if k == "provision":
+        return f"{dk}:{seg.get('para')}"
+    if k in ("amend_op", "amend_scope"):
+        return f"{dk}:op{i}"
+    return f"{dk}:{k}:{i}"
+
+
+def fold_ordered(issue_results: list[dict]) -> dict[str, list[dict]]:
+    """{iid: [flat rows]} from the ordered-starts agent output (segment_prompt.SCHEMA)."""
+    out = {}
+    for res in issue_results:
+        iid = res["iid"]
+        frozen = frozen_text(iid)
+        if frozen is None:
+            continue
+        rows, _ = tile_ordered(iid, res.get("segments") or [], frozen)
+        out[iid] = rows
+    return out
 
 
 def _flat_row(frozen, iid, s, e, kind, unit_key, **extra):

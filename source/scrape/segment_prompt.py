@@ -63,14 +63,22 @@ SCHEMA = {
 }
 
 
+def build_checklist(acts: list[dict]) -> str:
+    return "\n".join(f"  - {a['datokode']} ({a.get('klass')}): \"{a.get('title')}\"" for a in acts)
+
+
 def build_prompt(path: str, acts: list[dict]) -> str:
     """System+task prompt for one issue. `acts` = the public index's (datokode, title, klass)
     for this issue — the acts whose bodies must appear, given as a checklist (NOT an answer key:
     it is public gazette metadata)."""
-    checklist = "\n".join(f"  - {a['datokode']} ({a.get('klass')}): \"{a.get('title')}\"" for a in acts)
-    return f"""You are segmenting one issue of *Norsk Lovtidend* (the Norwegian official gazette), OCR'd from a public-domain scan. Your ONLY input is this text file:
+    return PROMPT_TEMPLATE.replace("__PATH__", path).replace("__CHECKLIST__", build_checklist(acts))
 
-{path}
+
+# The fixed template — placeholders __PATH__ / __CHECKLIST__ are filled per issue. Passed ONCE
+# into the Workflow (then interpolated per item) so the canonical text has a single home here.
+PROMPT_TEMPLATE = """You are segmenting one issue of *Norsk Lovtidend* (the Norwegian official gazette), OCR'd from a public-domain scan. Your ONLY input is this text file:
+
+__PATH__
 
 Read it with the Read tool. Do NOT read any other file or use any other source. Work solely from that text.
 
@@ -78,7 +86,7 @@ Read it with the Read tool. Do NOT read any other file or use any other source. 
 It opens with a masthead and a TABLE OF CONTENTS (acts listed with page numbers), then the ACTS THEMSELVES — each introduced by a heading like "7. juli Lov nr. 68 / Lov om …". Running headers/page numbers ("2000 / 1682 / 7. juli Lov nr. 69") are interleaved into the text — IGNORE them, do not emit segments for them (deterministic code removes them).
 
 ## Acts expected in this issue (public gazette index — their bodies must all appear)
-{checklist}
+__CHECKLIST__
 
 ## Your task — a COMPLETE, GAP-FREE, ORDERED partition
 Return an ORDERED list of segment STARTS that covers the ENTIRE issue from the very first character to the end. Each segment runs from its `start_anchor` to the NEXT segment's start, so THERE MUST BE NO GAP: every region of text — the front matter, each law heading, each individual § , each amendment operation, each commencement clause, any regulation or signature block — begins a new segment. The first segment starts at the very top of the file.
