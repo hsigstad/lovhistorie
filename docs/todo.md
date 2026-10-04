@@ -127,25 +127,32 @@ and we improve the file one gated commit at a time (decisions.md 2026-10-04). Or
   field is locating, not computing); only BASE-dependent facts (insert-vs-replace on a bare "skal lyde",
   resolving "de fire eksisterende") are left to assembly. Deep nested addresses STAY as prose inside the
   anchor (never decomposed into {ledd,nr,bokstav} — test 1's warning). Schema:
+  FLATTENED (HS 2026-10-04, stress-tested): ONE flat char-partition per issue — every char in exactly one
+  typed segment (no nested arrays). Supersedes the choice-b nesting; collapses "classify everything" +
+  "smallest segments" into one principle. Flat stress-test (furniture-interrupted §17 + chapter
+  renumber+heading + inserted treaty block) verdict: tiles cleanly, nothing forces overlap/non-linearity.
   ```
-  segment = { kind, start_anchor, end_anchor, datokode?, nr?, date?, title?,
-              in_force_clause?,                         # act's own "trer i kraft …"
-              provisions?: [{para, anchor}],            # enactment
-              targets?: [ { instrument: lov|forskrift,  # amendment/repeal (per amended doc — omnibus)
-                            target_cite, target_anchor,  # verbatim "I lov/forskrift … gjøres følgende endringer:"
-                            ops: [ { kind: set_text|repeal|renumber|word_replace|insert,
-                                     instruction_anchor,                 # verbatim; carries the prose address/scope
-                                     payload_start_anchor?, payload_end_anchor?,  # set_text|insert (new-text span)
-                                     from?, to?,          # renumber (ids/ranges) & word_replace (tokens) — verbatim substrings
-                                     position? } ] } ] }  # insert ("før de fire eksisterende" — verbatim)
+  segment = { issue_id, start, end, start_line, head,
+    kind: masthead|toc|act_heading|preamble|provision|amend_scope|amend_op|in_force|forskrift|signature|noise,
+    unit_key,                   # groups fragments of ONE logical unit split by furniture (assembly concats by key)
+    datokode?,                  # FK: the act this segment belongs to (on act_heading + all children)
+    nr?, date?, title?,         # act_heading
+    para?,                      # provision
+    target?, target_cite?, instrument?,   # amend_scope header ("I lov/forskrift …") + amend_op
+    op_kind?,                   # amend_op: set_text|repeal|renumber|word_replace|insert
+    payload_start?, from?, to?, position? }   # amend_op (payload_start = offset new text begins)
   ```
-  Structural rules from the tests: (1) ONE instruction may yield MULTIPLE ops (chapter "blir nytt kapittel V
-  og får følgende overskrift:" = renumber + set_text) — ops is a flat list, don't overload one anchor;
-  (2) `address` is NOT a separate field — it lives inside `instruction_anchor` and assembly parses it (test
-  1: don't re-emit); (3) `instrument` matters — amendments target forskrift too, sub-§ addresses are
-  relative to it; (4) `set_text` = bare "skal lyde" (assembly decides replace-vs-insert against base);
-  `insert` = explicit "ny/nytt/skytes inn/inntas" (stated in text). STILL UNTESTED edge: non-contiguous /
-  unequal-length renumber ranges (schema can't assert |from|==|to| — assembly must validate + flag).
+  Rules: (1) hierarchy is DENORMALIZED — the act = the run of same-`datokode` segments in order; no nesting.
+  (2) **Granularity FLOOR — never segment INSIDE a provision/op payload.** Inserted structured blocks
+  (a whole chapter, treaty articles "Art 1 … Art 2 …") = ONE `amend_op` payload; their internal ledd/§/
+  article structure is parsed ON DEMAND by ASSEMBLY against the base, never stored in the partition. This is
+  the ONE thing flat can't represent (nesting) — and we avoid it by deferring, not encoding. (3) A unit split
+  by page furniture = multiple segments sharing `unit_key` + a `noise` segment between; reconstruction
+  concatenates by key. (4) ONE instruction may yield MULTIPLE ops (chapter renumber+heading = renumber +
+  set_text, same unit_key). (5) `address`/scope lives in the segment text (assembly parses it, doesn't
+  re-emit). (6) `set_text` = bare "skal lyde" (assembly decides replace-vs-insert vs base); `insert` =
+  explicit "ny/nytt/skytes inn/inntas". Reconstruction-time caveats (assembly, not schema): OCR
+  de-hyphenation/de-wrap when concatenating fragments; validate+flag unequal-length renumber ranges.
 - [ ] **S5 — full-corpus run POPULATES `segments.jsonl`** (not a throwaway dir), gated on S1. This is the
   deferred "clean corpus run", now re-stated against the current stack's bar (see below), not the stale
   regex-era numbers.
