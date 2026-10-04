@@ -191,7 +191,8 @@ def _line_spans(frozen: str, s: int, e: int):
 # Kinds whose text is prose a running-header interrupts; furniture inside these is split out
 # as `noise`. NOT front_matter/toc (page numbers there are legit content), signature, other.
 _SPLIT_KINDS = {"provision", "amend_op", "amend_scope", "enactment_heading", "in_force",
-                "repeal", "forskrift", "amend", "original"}
+                "repeal", "forskrift", "delegering", "kunngjoring", "anordning",
+                "ikrafttredelse", "amend", "original"}
 
 
 def _emit(rows, frozen, iid, s, e, kind, unit_key, **extra):

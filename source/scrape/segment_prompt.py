@@ -33,15 +33,20 @@ SCHEMA = {
                     "kind": {"type": "string", "enum": [
                         "front_matter",      # masthead + table of contents (everything before the first act body)
                         "enactment_heading", # "Lov nr N / Lov om …" + preamble, up to the first §
-                        "provision",         # one § of an enacted law
+                        "provision",         # one § of an enacted law (ALWAYS, even if titled "Ikrafttredelse")
                         "amend_scope",       # "I lov/forskrift … gjøres følgende endringer:" (sets the target)
                         "amend_op",          # one amendment operation
                         "repeal",            # a standalone repealing act body
-                        "ikrafttredelse",    # a commencement notice ("Ikrafttr. av lov …")
-                        "in_force",          # an act's OWN "Loven trer i kraft …" clause
-                        "forskrift",         # a regulation (forskrift/resolusjon) body
+                        "ikrafttredelse",    # a standalone commencement NOTICE for another act ("Ikrafttr. av lov …")
+                        "in_force",          # an amending/other act's OWN UNNUMBERED "Loven trer i kraft …" clause
+                        "forskrift",         # a regulation (forskrift) body
+                        "delegering",        # a delegation of authority ("Delegering av myndighet …")
+                        "kunngjoring",       # an announcement/decision notice ("Kunngjøring av/om …", "Vedtak om …")
+                        "anordning",         # a (provisional) ordinance ("Provisorisk anordning …")
+                        "rettelser",         # corrections / errata ("Rettelser", "Oversikt over rettelser", "Nye noter til lover …")
+                        "colophon",          # the issue trailer ("Utgiver: … departementet")
                         "signature",         # promulgation / signature block
-                        "other"]},           # anything genuinely unclassifiable (flagged downstream)
+                        "other"]},           # genuinely unclassifiable (flagged downstream) — use sparingly
                     "start_anchor": {"type": "string",
                         "description": "VERBATIM first ~8 words where THIS segment begins (exact OCR substring)"},
                     "datokode": {"type": "string", "description": "YYYY-MM-DD-nr of the act this belongs to (from the index)"},
@@ -93,16 +98,21 @@ Return an ORDERED list of segment STARTS that covers the ENTIRE issue from the v
 
 For each segment give `start_anchor` = the VERBATIM first ~8 words where it begins (an exact OCR substring; I locate it by searching, so copy it character-for-character, OCR quirks and all), plus:
 - `front_matter` — the masthead + table of contents block (usually one segment at the top).
-- `enactment_heading` then one `provision` per § — for an enacted law ("Lov om <subject>"). Set `datokode`; on each provision set `para` (normalized "§1", "§5a" — the OCR often mangles the § glyph, e.g. "S 2."/"5 3." are §2/§3; use the sequence).
+- `enactment_heading` then one `provision` per § — for an enacted law ("Lov om <subject>"). Set `datokode`; on each provision set `para` (normalized "§1", "§5a" — the OCR often mangles the § glyph, e.g. "S 2."/"5 3." are §2/§3; use the sequence). A NUMBERED § is ALWAYS a `provision`, even when its heading is "Ikrafttredelse" — do NOT tag the law's own last § as `in_force`.
 - `amend_scope` — the "I lov/forskrift … gjøres følgende endringer:" line; set `target_cite` (verbatim) and `instrument` (lov|forskrift). Omnibus acts have several.
 - `amend_op` — ONE per amendment instruction. Set `op_kind` from the TEXT only: `set_text` ("… skal lyde:"), `repeal` ("… oppheves"), `renumber` ("Nåværende … blir …" — also set verbatim `from`/`to`), `word_replace` ("erstattes/endres … med/til" — set verbatim `from`/`to`), `insert` (explicit "ny/nytt/skytes inn/inntas" — set `position` if stated). Do NOT decide whether a bare "skal lyde" replaces or inserts — that is `set_text`; downstream decides against the base.
-- `in_force` — an act's own "Loven trer i kraft …" clause (its own segment, so it is not swallowed into the preceding op).
-- `ikrafttredelse` — a standalone commencement notice for another act.
-- `repeal` / `forskrift` / `signature` / `other` as they occur.
+- `in_force` — an amending/other act's own UNNUMBERED "Loven trer i kraft …" clause (its own segment, so it is not swallowed into the preceding op). NOT a numbered § (see above).
+- `ikrafttredelse` — a standalone commencement NOTICE for another act ("Ikrafttr. av lov …").
+- `delegering` — a delegation of authority ("Delegering av myndighet … til … departementet etter lov …").
+- `kunngjoring` — an announcement / decision notice ("Kunngjøring av/om …", "Vedtak om …", "Fastsetting av …").
+- `anordning` — a (provisional) ordinance ("Provisorisk anordning om …").
+- `rettelser` — a corrections / errata block ("Rettelser", "Oversikt over rettelser …", "Nye noter til lover …").
+- `colophon` — the issue trailer ("Utgiver: … departementet").
+- `forskrift` / `repeal` / `signature` as they occur; `other` ONLY if none of the above genuinely fits.
 
 ## Hard rules
 1. Anchors are VERBATIM substrings — copy, never paraphrase/fix-OCR/translate. Unfound anchors are dropped.
-2. COVER EVERYTHING — no gaps. If you are unsure what a region is, give it a segment with kind `other` rather than skipping it.
+2. COVER EVERYTHING — no gaps. Prefer a specific kind above; use `other` only as a last resort for a region that fits none of them.
 3. Do NOT segment inside a provision or an op's payload (no sub-§ breakdown, no articles inside an inserted chapter) — that structure is parsed later against the base. One segment per § and per op.
 4. Do NOT emit segments for running headers / page numbers.
 
