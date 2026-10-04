@@ -5,11 +5,14 @@ INTENT: the deterministic half of the S2 locator fold-in (decisions.md 2026-10-0
     and returns, per act, its klass/target/title plus VERBATIM start/end anchors and (for
     enactments) per-provision anchors. This module takes that JSON and does the
     fabrication-safe, reproducible part: resolve each anchor to a char offset in the frozen
-    text, substring-VERIFY it, and rebuild that issue's rows as a clean two-level partition
-    (acts tiled with explicit filler). For enactment (klass=original) rows, the per-provision
-    (§) boundaries are resolved from their anchors and NESTED on the row as
-    `provisions: [{para, start, end}]` (absolute offsets into the frozen issue) — so
-    `segments.jsonl` is the single canonical artifact (decisions.md 2026-10-04 choice b).
+    text, substring-VERIFY it, and rebuild that issue as a partition.
+    `fold_flat` is the CANONICAL path (decisions.md 2026-10-04 flatten): ONE flat typed
+    char-partition per issue — every char in exactly one typed segment (act_heading /
+    provision / amendment / toc / noise / …), page furniture split out as `noise`, a
+    furniture-interrupted unit kept as multiple rows sharing `unit_key` (assembly concatenates
+    by key). Hierarchy is denormalized (`datokode` FK + document order), no nesting.
+    (`build_issue_rows`/`apply` are the earlier act-level + nested-provision form, retained
+    until the flat migration runs over the whole corpus.)
 REASONING: the model emits only POINTERS (anchors) into the public source — never text — so
     0% content fabrication is automatic (every span is a slice of the frozen OCR, checked).
     Anchors are matched whitespace-tolerantly (the agent joins words with spaces; the OCR has
@@ -153,6 +156,102 @@ def _row(iid, start, end, frozen, *, klass="filler", provisions=None, **kw):
     if provisions:
         row["provisions"] = provisions
     return row
+
+
+# ---------------------------------------------------------------------------------------
+# FLAT partition (the canonical form; decisions.md 2026-10-04 flatten). Every char of the
+# issue lands in exactly one typed segment. Hierarchy is denormalized onto each row
+# (`datokode` FK + document order); page furniture is split out as `noise`; a logical unit
+# interrupted by furniture becomes multiple rows sharing `unit_key`.
+# ---------------------------------------------------------------------------------------
+_MON = r"(jan|feb|mars|apr|mai|juni|juli|aug|sep|sept|okt|nov|des)"
+_FURNITURE = [re.compile(p, re.I) for p in (
+    r"\d{1,4}",                                   # bare page number
+    rf"{_MON}\.?\s+(Lov\s+)?[Nn]r\.?\s*\d+",      # "juli Lov nr. 69"
+    rf"\d+\s+{_MON}\.?\s+[Nn]r\.?\s*\d+",         # "7 juli nr. 69"
+)]
+
+
+def _is_furniture(line: str) -> bool:
+    s = line.strip()
+    return bool(s) and any(p.fullmatch(s) for p in _FURNITURE)
+
+
+def _line_spans(frozen: str, s: int, e: int):
+    """Yield (start, end) char spans of each physical line within [s, e] (newlines kept on the
+    line's trailing edge so spans tile [s, e] exactly)."""
+    i = s
+    while i < e:
+        nl = frozen.find("\n", i, e)
+        j = e if nl < 0 else nl + 1
+        yield i, j
+        i = j
+
+
+def _emit(rows, frozen, iid, s, e, kind, unit_key, **extra):
+    """Emit a content span, splitting out any run of page-furniture lines as `noise` so a
+    furniture-interrupted unit becomes several rows sharing `unit_key`."""
+    if e <= s:
+        return
+    cur, buf_furn = s, None
+    segs = []                                     # (start, end, is_furniture)
+    for ls, le in _line_spans(frozen, s, e):
+        f = _is_furniture(frozen[ls:le])
+        if segs and segs[-1][2] == f:
+            segs[-1] = (segs[-1][0], le, f)
+        else:
+            segs.append((ls, le, f))
+    for a, b, f in segs:
+        if f:
+            rows.append(_flat_row(frozen, iid, a, b, "noise", f"noise@{a}"))
+        else:
+            rows.append(_flat_row(frozen, iid, a, b, kind, unit_key, **extra))
+
+
+def _flat_row(frozen, iid, s, e, kind, unit_key, **extra):
+    row = {"issue_id": iid, "start": s, "end": e, "start_line": frozen.count("\n", 0, s),
+           "head": _head(frozen[s:e]), "klass": kind, "unit_key": unit_key}
+    row.update({k: v for k, v in extra.items() if v is not None})
+    return row
+
+
+def fold_flat(issue_results: list[dict]) -> dict[str, list[dict]]:
+    """Return {iid: [flat rows]} — a complete typed char-partition per issue from the agent's
+    acts+provisions output. amend/repeal acts are one coarse `amendment` row (target set) until
+    ops are extracted; enactments explode into an `act_heading` + one `provision` row per §."""
+    out = {}
+    for res in issue_results:
+        iid = res["iid"]
+        frozen = frozen_text(iid)
+        if frozen is None:
+            continue
+        located, _ = resolve_acts(frozen, res.get("acts") or [])
+        located.sort(key=lambda a: a["start"])
+        rows, cur = [], 0
+        for a in located:
+            s, e = a["start"], a["end"]
+            if s > cur:
+                _emit(rows, frozen, iid, cur, s, "toc" if cur == 0 else "noise", f"gap@{cur}")
+            dk = a.get("datokode")
+            if a.get("klass") == "original" and a.get("provisions"):
+                provs = _resolve_provisions(frozen, s, e, a["provisions"])
+                heading_end = provs[0]["start"] if provs else e
+                _emit(rows, frozen, iid, s, heading_end, "act_heading", f"{dk}:heading",
+                      datokode=dk, nr=a.get("nr"), date=a.get("date"), title=a.get("title"))
+                for i, p in enumerate(provs):
+                    pe = provs[i + 1]["start"] if i + 1 < len(provs) else e
+                    _emit(rows, frozen, iid, p["start"], pe, "provision", f"{dk}:{p['para']}",
+                          datokode=dk, para=p["para"])
+            else:
+                cite = a.get("target")
+                _emit(rows, frozen, iid, s, e, a.get("klass") or "amendment", f"{dk}:body",
+                      datokode=dk, nr=a.get("nr"), date=a.get("date"), title=a.get("title"),
+                      target=cite_to_datokode(cite), target_cite=cite)
+            cur = e
+        if cur < len(frozen):
+            _emit(rows, frozen, iid, cur, len(frozen), "noise", f"gap@{cur}")
+        out[iid] = rows
+    return out
 
 
 def apply(issue_results: list[dict], seg_path: Path = SEG) -> dict:
