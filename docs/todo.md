@@ -7,11 +7,20 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
 
 - [x] **Law-identity register — bootstrap.** `source/scrape/build_law_register.py` → `data/law_register.jsonl`
   (1451 identities from the 224 indexed issues; public, oracle-free). Committed 76a1af6.
-- [ ] **Complete the register — acquire public NB metadata** (`NationalLibraryOfNorway/lovdata-public-conversion-script`):
-  doc IDs, titles, enactment/repeal dates, ministry — crucially INCLUDING repealed laws. Check license +
-  fields + completeness. This is the next high-value step: turns the 20%-coverage bootstrap into a
-  near-complete backbone and makes "target unresolvable" a real misattribution detector. (Its
-  amendment-reference metadata = strong oracle → audit-only, never a build input.)
+- [x] **Enrich register with Lovdata `gjeldende` (public in-force dataset).** Done 2026-10-04:
+  `build_law_register.load_gjeldende()` parses identity+lifecycle (title, departement, legalArea,
+  dateInForce) from the free no-auth download (`api.lovdata.no/.../gjeldende-lover.tar.bz2`, extracted to
+  `data/lovdata_gjeldende/`, gitignored). Register 1451→2053; in-force universe complete (754, all with
+  ministry/legal-area); `fulltext` + `lastChangedBy` NOT read (oracle). **CORRECTION to the prior plan:
+  Lovdata is IN-FORCE ONLY — it does NOT include repealed laws, so it does NOT complete the historical
+  register.** It completes the in-force universe + metadata and gives an in-force status signal.
+- [ ] **Complete the HISTORICAL register (repealed laws) — the real lever is FULL-HARVEST SEGMENTATION,
+  not a download.** No free top-down source lists repealed Norwegian laws (Lovdata excludes them;
+  norgeslover.no seeds from current text). The only authoritative public record of every law ever enacted
+  is Norsk Lovtidend itself → segment the full NB harvest (1877–2000) bottom-up; every enacted law surfaces
+  by identity. Permanent residual: pre-1877 laws (e.g. Grunnloven 1814) are outside the harvest window.
+  Two-tier target resolution: in `gjeldende` = old-but-in-force (coverage gap); in neither = repealed/
+  pre-window or garble.
 - [ ] **Extend the G1 guard** (`gate._DUMP_LITERAL`) to ban the reconstruction path from importing the
   law register — enforce validation-only in code, not trust.
 - [ ] **Expand segmentation to the FULL NB harvest** (beyond the 224 indexed issues) to populate

@@ -31,6 +31,14 @@ from source.llm import segment_issue
 
 _REPO = Path(__file__).resolve().parents[2]
 OUT = _REPO / "data" / "law_register.jsonl"
+# Lovdata's PUBLIC in-force dataset (gjeldende-lover), extracted from the free, no-auth
+# download https://api.lovdata.no/v1/publicData/get/gjeldende-lover.tar.bz2 (nightly).
+# Used for IDENTITY + LIFECYCLE enrichment only (title, departement, legalArea, dateInForce)
+# — this is the authoritative in-force law list. We DO NOT read `fulltext` (consolidated
+# current text = answer key) or `lastChangedBy`/`lastChangeInForce` (amendment-reference =
+# strong oracle); those stay eval-only. In-force only: Lovdata excludes repealed laws, so
+# this completes the in-force universe but not the historical (repealed) tail.
+GJELD = _REPO / "data" / "lovdata_gjeldende"
 
 
 class _CacheOnly:
@@ -44,6 +52,42 @@ def _title_from_amend(title: str) -> str:
     t = re.sub(r"^\s*om\s+(endr(?:ing(?:er)?|\.)?|oppheving|opphevelse)\s+(i|av)\s+", "", title or "", flags=re.I)
     t = re.sub(r"^lov(?:en)?\s+(av\s+)?\d{1,2}\.?\s*\w+\s+\d{4}\s+nr\.?\s*\d+\s*", "", t, flags=re.I)
     return t.strip(" .,")
+
+
+def _fn_to_datokode(name: str) -> str | None:
+    m = re.match(r"nl-(\d{4})(\d{2})(\d{2})-(\d+)", name)
+    return f"{m.group(1)}-{m.group(2)}-{m.group(3)}-{int(m.group(4))}" if m else None
+
+
+def _dd(html: str, cls: str) -> str | None:
+    """First <dd class="cls"> inner text, tags stripped (Lovdata key-info list)."""
+    m = re.search(rf'<dd class="{cls}">(.*?)</dd>', html, re.S)
+    if not m:
+        return None
+    t = re.sub(r"<[^>]+>", " ", m.group(1))
+    t = re.sub(r"\s+", " ", t).strip()
+    return t or None
+
+
+def load_gjeldende() -> dict[str, dict]:
+    """Identity+lifecycle metadata for every in-force law, from the PUBLIC Lovdata
+    `gjeldende-lover` download. IDENTITY FIELDS ONLY — never fulltext / change-refs."""
+    out: dict[str, dict] = {}
+    if not GJELD.exists():
+        return out
+    for p in GJELD.glob("nl-*.xml"):
+        dk = _fn_to_datokode(p.name)
+        if not dk:
+            continue
+        html = p.read_text(encoding="utf-8", errors="ignore")
+        tm = re.search(r"<title>(.*?)</title>", html, re.S)
+        out[dk] = {
+            "title": re.sub(r"\s+", " ", tm.group(1)).strip() if tm else None,
+            "departement": _dd(html, "ministry"),
+            "legal_area": _dd(html, "legalArea"),
+            "date_in_force": _dd(html, "dateInForce"),
+        }
+    return out
 
 
 def collect_acts():
@@ -80,8 +124,11 @@ def build():
                 "title": None,
                 "enactment_date": enact_date or ("-".join(dk.split("-")[:3]) if dk else None),
                 "type": "unknown",       # original | amending | repeal | unknown
+                "status": "unknown",     # in_force (present in Lovdata gjeldende) | unknown
                 "harvested": False,      # do we hold its enactment base?
                 "amend_count": 0,        # amendments in our corpus targeting it
+                "departement": None,
+                "legal_area": None,
                 "provenance": set(),
             }
         return reg[dk]
@@ -111,6 +158,23 @@ def build():
                 hint = _title_from_amend(a.get("title") or "")
                 if hint:
                     te["title"] = hint[:120]
+
+    # Enrich / extend with the public Lovdata in-force set (identity+lifecycle only).
+    gj = load_gjeldende()
+    for dk, meta in gj.items():
+        e = ensure(dk, meta.get("date_in_force"))
+        e["status"] = "in_force"
+        e["provenance"].add("lovdata_gjeldende")
+        if e["type"] == "unknown":
+            e["type"] = "original"      # a gjeldende entry is a standalone law
+        if meta.get("title"):
+            e["title"] = meta["title"][:160]
+        if meta.get("departement"):
+            e["departement"] = meta["departement"]
+        if meta.get("legal_area"):
+            e["legal_area"] = meta["legal_area"]
+        if meta.get("date_in_force"):
+            e["enactment_date"] = e["enactment_date"] or meta["date_in_force"]
 
     for e in reg.values():
         e["provenance"] = sorted(e["provenance"])
