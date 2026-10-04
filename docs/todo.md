@@ -114,14 +114,38 @@ and we improve the file one gated commit at a time (decisions.md 2026-10-04). Or
   locator stack (`_regex_start`, `_HEAD`/`_repair_headings`; per the 2026-08-14 "retire regex only after
   migration" policy). `locate_body`/`segment_issue` survive as OFFLINE correction tools that write curated
   offsets, never a runtime path.
-- [~] **S2 via CLAUDE SUBAGENTS, not OpenAI (decided HS 2026-10-04).** Pilot (issue 05c71a93, law
-  2000-07-07-68) proved it: a fresh subagent given ONLY the public OCR returns verbatim-anchored acts
-  (klass/target correct, 6/6 substring-verified) and a second subagent segments the body into provisions —
-  reading through OCR §-glyph garbles ("S 2."→§2, "5 3."→§3) the regex drops. Base score 0.000 (TOC
-  fragment) → 0.393 (regex split of the right body) → **0.976** (subagent provision split). $0 OpenAI;
-  reproducibility lives in the git-tracked file (agent = bootstrap). Building: per-issue Workflow fan-out +
-  deterministic `source/scrape/fold_segmentation.py` (anchor→offset resolve, substring-verify, two-level
-  partition rebuild) gated by both commit signals. Running a SMALL batch first, then scaling to ~121 issues.
+- [~] **S2 via CLAUDE SUBAGENTS, not OpenAI (decided HS 2026-10-04).** Pilot + 6-issue Workflow proved the
+  base path: subagent given ONLY public OCR returns verbatim-anchored acts + provisions (reading through OCR
+  §-glyph garbles "S 2."→§2 the regex drops); base 2000-07-07-68 0.000→**0.976**, planteforedler 0→0.905.
+  $0 OpenAI; reproducibility lives in the git-tracked file. Infra committed (6568b87). Next: implement the
+  v2 schema below, re-validate the 6-batch, scale to ~121.
+- [ ] **SEGMENTATION SCHEMA v2 — finalized from two stress-tests (2026-10-04).** The two tests pulled
+  OPPOSITE ways: whole-§/ledd wants THIN ops (verbatim verb + payload span, no decomposition); renumber/
+  word-replace/positional-insert want STRUCTURED fields or downstream must re-parse OCR-dirty prose / align
+  content that doesn't exist (chapters). Resolution — **located-not-computed, but "located" includes typed
+  fields WHEN the value is stated verbatim in the instruction** (copying `«kostnadsprøving»` into a `from`
+  field is locating, not computing); only BASE-dependent facts (insert-vs-replace on a bare "skal lyde",
+  resolving "de fire eksisterende") are left to assembly. Deep nested addresses STAY as prose inside the
+  anchor (never decomposed into {ledd,nr,bokstav} — test 1's warning). Schema:
+  ```
+  segment = { kind, start_anchor, end_anchor, datokode?, nr?, date?, title?,
+              in_force_clause?,                         # act's own "trer i kraft …"
+              provisions?: [{para, anchor}],            # enactment
+              targets?: [ { instrument: lov|forskrift,  # amendment/repeal (per amended doc — omnibus)
+                            target_cite, target_anchor,  # verbatim "I lov/forskrift … gjøres følgende endringer:"
+                            ops: [ { kind: set_text|repeal|renumber|word_replace|insert,
+                                     instruction_anchor,                 # verbatim; carries the prose address/scope
+                                     payload_start_anchor?, payload_end_anchor?,  # set_text|insert (new-text span)
+                                     from?, to?,          # renumber (ids/ranges) & word_replace (tokens) — verbatim substrings
+                                     position? } ] } ] }  # insert ("før de fire eksisterende" — verbatim)
+  ```
+  Structural rules from the tests: (1) ONE instruction may yield MULTIPLE ops (chapter "blir nytt kapittel V
+  og får følgende overskrift:" = renumber + set_text) — ops is a flat list, don't overload one anchor;
+  (2) `address` is NOT a separate field — it lives inside `instruction_anchor` and assembly parses it (test
+  1: don't re-emit); (3) `instrument` matters — amendments target forskrift too, sub-§ addresses are
+  relative to it; (4) `set_text` = bare "skal lyde" (assembly decides replace-vs-insert against base);
+  `insert` = explicit "ny/nytt/skytes inn/inntas" (stated in text). STILL UNTESTED edge: non-contiguous /
+  unequal-length renumber ranges (schema can't assert |from|==|to| — assembly must validate + flag).
 - [ ] **S5 — full-corpus run POPULATES `segments.jsonl`** (not a throwaway dir), gated on S1. This is the
   deferred "clean corpus run", now re-stated against the current stack's bar (see below), not the stale
   regex-era numbers.
