@@ -97,11 +97,23 @@ def check(seg_path=SEG, meta_path=META):
                     V["target-missing"].append((iid, s["start"], title[:40]))
                 elif tgt not in register:
                     V["target-unresolved"].append((iid, s["start"], f"{tgt} not in register"))
+            # I6 nested provisions (choice b) must tile WITHIN the enactment body: each §
+            # inside [start,end], monotonic, non-overlapping.
+            provs = s.get("provisions")
+            if provs:
+                prev = s["start"]
+                for p in sorted(provs, key=lambda q: q["start"]):
+                    if p["start"] < s["start"] or p["end"] > s["end"]:
+                        V["prov-span"].append((iid, p["start"], f"{p.get('para')} outside body"))
+                    if p["start"] < prev:
+                        V["prov-span"].append((iid, p["start"], f"{p.get('para')} overlaps prev"))
+                    prev = max(prev, p["end"])
     return V, len(rows), len(by_issue)
 
 
 ORDER = ["sha-drift", "issue-missing", "overlap", "coverage-gap", "coverage-end",
-         "head-mismatch", "filler-has-law", "klass-marker", "target-missing", "target-unresolved"]
+         "head-mismatch", "prov-span", "filler-has-law", "klass-marker",
+         "target-missing", "target-unresolved"]
 
 
 def report():

@@ -114,9 +114,23 @@ and we improve the file one gated commit at a time (decisions.md 2026-10-04). Or
   locator stack (`_regex_start`, `_HEAD`/`_repair_headings`; per the 2026-08-14 "retire regex only after
   migration" policy). `locate_body`/`segment_issue` survive as OFFLINE correction tools that write curated
   offsets, never a runtime path.
+- [~] **S2 via CLAUDE SUBAGENTS, not OpenAI (decided HS 2026-10-04).** Pilot (issue 05c71a93, law
+  2000-07-07-68) proved it: a fresh subagent given ONLY the public OCR returns verbatim-anchored acts
+  (klass/target correct, 6/6 substring-verified) and a second subagent segments the body into provisions —
+  reading through OCR §-glyph garbles ("S 2."→§2, "5 3."→§3) the regex drops. Base score 0.000 (TOC
+  fragment) → 0.393 (regex split of the right body) → **0.976** (subagent provision split). $0 OpenAI;
+  reproducibility lives in the git-tracked file (agent = bootstrap). Building: per-issue Workflow fan-out +
+  deterministic `source/scrape/fold_segmentation.py` (anchor→offset resolve, substring-verify, two-level
+  partition rebuild) gated by both commit signals. Running a SMALL batch first, then scaling to ~121 issues.
 - [ ] **S5 — full-corpus run POPULATES `segments.jsonl`** (not a throwaway dir), gated on S1. This is the
   deferred "clean corpus run", now re-stated against the current stack's bar (see below), not the stale
   regex-era numbers.
+- [ ] **The 22 giant bound volumes (>600k chars) — SPLIT + fan out to separate agents (HS 2026-10-04).**
+  Too large for one subagent context (up to 3.7M chars ≈ ~930k tokens). Plan: split each giant at
+  reasonable boundaries (per-year, or at detected act-cluster gaps), hand each chunk to its own subagent,
+  then stitch the anchored results back against the single frozen issue text (offsets are global, so
+  chunk-local anchors still resolve via `frozen.find`). Low in-force value (old repealed laws) but needed
+  for a complete historical register. Do AFTER the 121 normal issues validate the per-issue path.
 
 The items below are the pre-reframe residuals, now SUBORDINATE to the fold-in:
 

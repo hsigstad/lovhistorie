@@ -2,6 +2,49 @@
 
 Committed design choices.
 
+## 2026-10-04 — The whole pipeline = ONE segmentation step + a deterministic assembly layer (HS)
+
+**Decision.** lovhistorie reduces to exactly two layers, divided by a single principle —
+**segmentation LOCATES and CLASSIFIES; assembly COMPUTES**:
+
+1. **Segmentation** — one (Claude-subagent) pass per Lovtidend issue produces a complete,
+   git-tracked, verbatim-anchored description of the SOURCE in `segments.jsonl`: a typed
+   char-partition of every issue (every char gets a `kind`: masthead/toc/enactment/amendment/
+   repeal/ikrafttredelse/delegering/forskrift/signature/noise — no generic "filler"),
+   enactments carrying nested provision anchors, amendments carrying per-target op blocks
+   (verbatim instruction + payload-span anchors + a coarse text-inferable `kind`), and acts
+   carrying their in-force clauses. The model emits ONLY verbatim pointers into the public-
+   domain OCR plus text-inferable labels — never generated text, never a base-dependent
+   decision, never a computed address.
+2. **Deterministic assembly** — pure functions over `segments.jsonl` + the frozen OCR:
+   resolve cite→datokode, parse the address out of the verbatim instruction, strip running-
+   header furniture, decide insert-vs-replace against the base, order ops by in-force date,
+   apply via the replay + ledd engine, resolve renumber ranges by CONTENT ALIGNMENT
+   (`align.py`). No LLM, no oracle. "The law at date t" is a deterministic function of the
+   segmentation. (This layer is not a dumb concatenator — it carries the genuinely hard
+   deterministic work: idempotent ledd application and renumber alignment.)
+
+**The dividing rule, stated sharply (stress-test-validated).** The line is *base-dependence*.
+insert-vs-replace depends on whether the provision already exists in the base, which the model
+cannot see (answer-free) — so the model emits the verbatim verb + coarse kind and the assembly
+layer (which HAS the base) decides. Any case the deterministic layer cannot resolve is pushed
+BACK into segmentation as a more explicit pointer (the `pointer_apply` rule) — never an LLM call
+at apply time. This is the fabrication-safety + G1 firewall, generalized to the entire pipeline.
+
+**What is genuinely LEFT OUT — external residual neither layer removes:** (a) harvest coverage
+(a missing issue/act/commencement notice is an op or in-force date that simply isn't there — the
+binding constraint, upstream of both layers); (b) the OCR noise floor (hence τ_OCR); (c) oracle
+editorial conventions (Lovdata's "– – –" consequential-amendment collapse — reproducing it would
+OVERFIT the oracle, so deliberately out of scope — a measurement boundary, not a gap); (d) the
+eval/guard layer (gate/convergence/point-in-time/G1-G2-G3) — orthogonal validation, stays separate.
+
+**Consequence.** The LLM build modules (`segment_issue`, `segment`, `amend`, `apply_op`,
+`pointer_apply`, `locate_body`, `target_localize`, `mark_ledds`, …) collapse into the ONE
+segmentation pass; `pipeline`/`replay`/`ledd`/`amendments`/`blanket`/`align`/`inforce` are the
+assembly layer reading `segments.jsonl`. Generalizes the 2026-10-04 "segments.jsonl IS the corpus"
+decision from the base to the whole pipeline. Amendment-op schema (v2) + its stress-test:
+`docs/todo.md` / `docs/thinking.md`.
+
 ## 2026-10-04 — `segments.jsonl` IS the corpus; the locator becomes its bootstrap; two-signal commit gate (HS)
 
 **Context.** The locator (`build_from_index` + `source/llm/locate_body.py`) and the curated segmentation

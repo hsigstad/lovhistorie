@@ -1,5 +1,35 @@
 # Done
 
+## 2026-10-04 (cont. 3) — Subagent segmentation proven + scaled to a 6-issue Workflow; choice-b (provisions nested); architecture decision
+
+The S2 fold-in, pivoted to CLAUDE SUBAGENTS instead of OpenAI (HS). Validated end-to-end; infra committed,
+data NOT (schema still growing per the amendment-op stress-test).
+
+- **Subagent segmentation works and fans out.** Pilot (issue 05c71a93): one subagent, public OCR only,
+  returned verbatim-anchored acts (klass/target right, 6/6 substring-verified) + a second returned the
+  provision boundaries, reading through OCR §-glyph garbles ("S 2."→§2) the regex drops — base
+  2000-07-07-68 0.000→0.976. Then a 6-issue Workflow (`segment-issues`, one general-purpose subagent per
+  issue, parallel, ~3 min, 527k tokens, 0 errors) returned the full typed segmentation incl. nested
+  provisions. $0 OpenAI.
+- **Choice-b wired (provisions nested in `segments.jsonl`).** `source/scrape/fold_segmentation.py`
+  (deterministic: whitespace-tolerant anchor→offset resolve, substring-verify, two-level partition rebuild,
+  `cite_to_datokode` citation parser, provisions nested on enactment rows). `classification_qa` gains a
+  `prov-span` invariant (provisions tile their body); `segments_quality` scores from the CURATED provision
+  offsets (→ true 0.976, not the regex 0.393 floor). Fold of the 6-issue batch: quality gate PASS
+  (2000-07-07-68 0→0.976, planteforedler 0→0.905, genteknologi 0→0.805); target parser resolved the 20
+  citation→datokode; residual +1 target-missing = known hard cases (pre-1900 numberless laws + a
+  multi-target omnibus). Data restored (not committed) pending schema v2.
+- **Amendment-op schema stress-tested.** A subagent extracted ops from 3 variant-rich real bodies under a
+  proposed schema and critiqued it. Findings: insert-vs-replace is BASE-dependent → don't make the model
+  decide (emit verbatim verb + coarse kind, resolve downstream); `address` is redundant with the verbatim
+  instruction anchor → drop; payload needs TWO anchors (start+end), not "first ~8 words" + next-instruction
+  (page furniture and the act's own "Loven trer i kraft…" otherwise get swallowed); target needs verbatim
+  provenance from the "I lov … gjøres følgende endringer:" headers (the two-level omnibus block). A second
+  stress-test on renumber-ranges + word-replace is running. Finalized v2 schema in docs/todo.md.
+- **Architecture decision recorded (decisions.md):** the whole pipeline = ONE segmentation step + a
+  deterministic assembly layer, divided by locate-vs-compute (base-dependence). Harvest coverage / OCR
+  floor / oracle editorial conventions / the eval-guard layer are the acknowledged external residual.
+
 ## 2026-10-04 (cont. 2) — S1 built: base-quality commit gate + tracked two-signal pre-commit hook
 
 First build step of the locator→segments.jsonl fold-in (decisions.md 2026-10-04). The pre-commit gate was

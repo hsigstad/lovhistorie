@@ -55,29 +55,37 @@ def _frozen(iid: str) -> str | None:
     return txt
 
 
-def original_offsets(rows: list[dict]) -> dict[str, tuple]:
-    """datokode -> (issue_id, start, end) for its enactment (klass=='original') segment.
-    A datokode with >1 original row is ambiguous (should not happen) -> skipped."""
-    seen: dict[str, tuple | None] = {}
+def original_rows(rows: list[dict]) -> dict[str, dict]:
+    """datokode -> its enactment (klass=='original') row. A datokode with >1 original row
+    is ambiguous (should not happen) -> dropped."""
+    seen: dict[str, dict | None] = {}
     for r in rows:
         if r.get("klass") != "original" or not r.get("datokode"):
             continue
         dk = r["datokode"]
-        key = (r["issue_id"], r["start"], r["end"])
-        seen[dk] = None if dk in seen else key   # None marks "ambiguous, drop"
-    return {dk: v for dk, v in seen.items() if v is not None}
+        seen[dk] = None if dk in seen else r   # None marks "ambiguous, drop"
+    return {dk: r for dk, r in seen.items() if r is not None}
 
 
-def median_sim_vs_current(datokode: str, iid: str, start: int, end: int) -> float | None:
-    """Median per-provision similarity of the sliced enactment base to the current text.
-    None if the issue text or the answer key is unavailable, or current has no real §N."""
-    fr = _frozen(iid)
+def _base_provisions(fr: str, row: dict) -> dict:
+    """{§N: text} for the enactment base. Prefer the CURATED nested provision offsets
+    (choice b, decisions.md 2026-10-04); fall back to the regex splitter if a row carries
+    no provisions yet (so the gate still works pre-fold)."""
+    if row.get("provisions"):
+        return {p["para"]: fr[p["start"]:p["end"]] for p in row["provisions"] if p.get("para")}
+    return parse_provisions(strip_running_headers(fr[row["start"]:row["end"]]))
+
+
+def median_sim_vs_current(datokode: str, row: dict) -> float | None:
+    """Median per-provision similarity of the enactment base to the current text. None if
+    the issue text or the answer key is unavailable, or current has no real §N."""
+    fr = _frozen(row["issue_id"])
     if fr is None:
         return None
     cur = gate.current_provisions(datokode)
     if not cur:
         return None
-    base = parse_provisions(strip_running_headers(fr[start:end]))
+    base = _base_provisions(fr, row)
     reals = [n for n in cur if _REAL.fullmatch(n)]
     if not reals:
         return None
@@ -85,10 +93,16 @@ def median_sim_vs_current(datokode: str, iid: str, start: int, end: int) -> floa
     return statistics.median(sims) if sims else None
 
 
+def _rowkey(row: dict) -> tuple:
+    """Identity for change-detection: offsets + provision spans (so a provision edit counts)."""
+    provs = tuple((p.get("para"), p["start"], p["end"]) for p in row.get("provisions", []))
+    return (row["issue_id"], row["start"], row["end"], provs)
+
+
 def _scores(rows: list[dict]) -> dict[str, float]:
     out = {}
-    for dk, (iid, s, e) in original_offsets(rows).items():
-        sc = median_sim_vs_current(dk, iid, s, e)
+    for dk, row in original_rows(rows).items():
+        sc = median_sim_vs_current(dk, row)
         if sc is not None:
             out[dk] = sc
     return out
@@ -120,17 +134,17 @@ def diff() -> int:
         return 0
     base_rows = [json.loads(l) for l in open(head)]
     work_rows = [json.loads(l) for l in open(SEG)]
-    base_off, work_off = original_offsets(base_rows), original_offsets(work_rows)
+    base_r, work_r = original_rows(base_rows), original_rows(work_rows)
 
-    touched = [dk for dk in work_off if dk in base_off and work_off[dk] != base_off[dk]]
+    touched = [dk for dk in work_r if dk in base_r and _rowkey(work_r[dk]) != _rowkey(base_r[dk])]
     if not touched:
         print("segments_quality --diff: no enactment-offset changes; nothing to score.")
         return 0
 
     regressions, moved = [], 0
     for dk in touched:
-        sb = median_sim_vs_current(dk, *base_off[dk])
-        sw = median_sim_vs_current(dk, *work_off[dk])
+        sb = median_sim_vs_current(dk, base_r[dk])
+        sw = median_sim_vs_current(dk, work_r[dk])
         if sb is None or sw is None:
             continue                       # unscorable (no answer key / issue) -> can't judge
         moved += 1
