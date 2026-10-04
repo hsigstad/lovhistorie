@@ -30,10 +30,14 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
   in-force laws built (95%), median-sim 0.80, 51/74 ≥0.5. In-force bases 9→83. Locator confirmed good at
   scale; sub-0.5 are amendment-capped not locator failures. (4 empties: 1978-06-02-37/38, 1978-06-09-50,
   1992-06-19-61 — bound-volume layout, revisit if needed.)
-- [ ] **NEXT LEVER — measure the post-2001 LTI path (`build_post2001`).** ~439 of 754 in-force laws were
-  enacted after NB's ~2000 cutoff, so they reconstruct via the LTI stream (`data/lti`), NOT the NB gazette
-  index — my 2026-10-04 coverage probe undercounted them. This is the biggest in-force bucket; measure how
-  many `build_post2001` already covers + their quality before any further harvest work.
+- [x] **Post-2001 LTI path measured.** Done 2026-10-04: 302/438 built, median-sim 1.00, 89% ≥0.5. TRUE
+  in-force coverage = 385/754 (51%), ~321 ≥0.5. Undercount corrected (gazette-only probe said 11%).
+- [ ] **Refresh the LTI dump to 2025–2026 (cheapest lever, +77 in-force laws).** `data/lti` dirs stop at
+  2024; all 40 2025-laws and 37 2026-laws miss purely for lack of data. Re-pull from the same public
+  Lovdata source as `gjeldende`. Takes in-force coverage ~51%→61%. Recent laws reconstruct near-trivially.
+- [ ] **~59 scattered per-law LTI gaps (2003–2024)** — individual empties/parse-fails; lower priority.
+- [ ] **pre-1970 in-force tail (~100) = NB-gap** — NB digitised register/index-only for many old years, so
+  largely unrecoverable from NB. The genuine hard residual; accept or seek a non-NB source.
 - [ ] **`segments.jsonl` as curated truth** — freeze the per-issue line index (hash-pinned); make
   `segment_issue` emit `start_line` natively; bootstrap the two-level char-offset partition (acts →
   per-target blocks; filler explicit; `head` anchor column). Archive raw classifier output for diff-merge.

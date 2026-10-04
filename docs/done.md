@@ -19,8 +19,13 @@
   locator is good; the binding constraint is harvest COVERAGE. (4 empties: 1978-06-02-37/38, 1978-06-09-50,
   1992-06-19-61 — old bound-volume layout.)
 - **In-force gap decomposed:** index-harvestable (80) now ~done (74 built); pre-1970 (~100) mostly NB-gap
-  (register/index-only years, unrecoverable from NB); post-2000 (~439) = the LTI path (`build_post2001`),
-  not yet measured — the next lever and the biggest bucket.
+  (register/index-only years, unrecoverable from NB); post-2000 (~439) = the LTI path (`build_post2001`).
+- **Post-2001 LTI path measured — the biggest bucket, already working.** `build_post2001` reconstructs
+  **302/438 post-2000 in-force laws, median-sim 1.00, 89% ≥0.5** (clean LTI base, no OCR). Of the 136
+  misses, **77 are 2025–2026 laws the LTI dump simply lacks (dirs stop at 2024) → trivial refresh**; ~59
+  are scattered per-law gaps (2003–2024). **TRUE in-force coverage: 385/754 built (51%), ~321 ≥0.5 (43%)**
+  — not the "11%" the gazette-only probe implied. An LTI refresh to 2025–2026 lifts it to ~462/754 (61%);
+  the hard residual is the pre-1970 NB-gap (~100).
 
 ## 2026-10-02 — Vague gate landed; law-register backbone built; curated-segmentation direction set
 
