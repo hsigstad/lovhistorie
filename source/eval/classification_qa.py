@@ -39,9 +39,9 @@ def _frozen(iid):
     return "\n".join(json.loads(l).get("text", "") for l in gzip.open(f, "rt", encoding="utf-8"))
 
 
-def check():
-    rows = [json.loads(l) for l in open(SEG)]
-    meta = json.loads(META.read_text())
+def check(seg_path=SEG, meta_path=META):
+    rows = [json.loads(l) for l in open(seg_path)]
+    meta = json.loads(Path(meta_path).read_text())
     register = {json.loads(l)["datokode"] for l in open(REG)}
     by_issue = defaultdict(list)
     for r in rows:
@@ -87,21 +87,63 @@ def check():
     return V, len(rows), len(by_issue)
 
 
-def main():
+ORDER = ["sha-drift", "issue-missing", "overlap", "coverage-gap", "coverage-end",
+         "head-mismatch", "filler-has-law", "klass-marker", "target-missing", "target-unresolved"]
+
+
+def report():
     V, nrows, nissues = check()
-    order = ["sha-drift", "issue-missing", "overlap", "coverage-gap", "coverage-end",
-             "head-mismatch", "filler-has-law", "klass-marker", "target-missing", "target-unresolved"]
     total = sum(len(V[k]) for k in V)
     print(f"=== classification_qa: {nrows} segments, {nissues} issues, {total} violations ===\n")
-    for k in order:
+    for k in ORDER:
         if V.get(k):
             print(f"  {k:18s} {len(V[k])}")
     print("\n-- worst examples (structural first) --")
-    for k in order:
+    for k in ORDER:
         for iid, start, det in V.get(k, [])[:3]:
             print(f"  [{k}] {iid[:8]}@{start}: {det}")
     return total
 
 
+def _git_head_version(repo_path: str):
+    """Write HEAD:<repo_path> to a temp file; None if the path isn't in HEAD yet."""
+    import subprocess
+    import tempfile
+    r = subprocess.run(["git", "-C", str(_REPO), "show", f"HEAD:{repo_path}"],
+                       capture_output=True, text=True)
+    if r.returncode != 0:
+        return None
+    tf = tempfile.NamedTemporaryFile("w", suffix=Path(repo_path).suffix, delete=False, encoding="utf-8")
+    tf.write(r.stdout); tf.close()
+    return tf.name
+
+
+def diff():
+    """Pre-commit gate: FAIL (exit 1) if any violation category grew vs HEAD."""
+    head_seg = _git_head_version("data/segments.jsonl")
+    head_meta = _git_head_version("data/segments_meta.json")
+    if not head_seg or not head_meta:
+        print("classification_qa --diff: no HEAD baseline; skipping gate (first commit).")
+        return 0
+    base, _, _ = check(head_seg, head_meta)
+    work, _, _ = check()
+    regressed = [(k, len(base.get(k, [])), len(work.get(k, []))) for k in ORDER
+                 if len(work.get(k, [])) > len(base.get(k, []))]
+    bt, wt = sum(len(v) for v in base.values()), sum(len(v) for v in work.values())
+    if regressed:
+        print(f"GATE FAIL: violations rose {bt}->{wt}. Regressions:")
+        for k, b, w in regressed:
+            print(f"  {k}: {b} -> {w}  (+{w-b})")
+        return 1
+    print(f"GATE PASS: violations {bt}->{wt} (no category increased).")
+    return 0
+
+
+def main():
+    import sys
+    return diff() if "--diff" in sys.argv else (0 if report() is not None else 0)
+
+
 if __name__ == "__main__":
-    main()
+    import sys
+    sys.exit(main())
