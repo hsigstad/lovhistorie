@@ -1,5 +1,29 @@
 # Done
 
+## 2026-10-04 (cont.) — G1 firewall extended to the register; archaic amendment markers taught (queue 353→330)
+
+Continuation of the curated-segmentation track. Two safe, gated, code-only improvements; the curated
+dataset (`segments.jsonl`) was NOT regenerated.
+
+- **G1 guard now bans the validation-only law register from the reconstruction path.** Implements the
+  2026-10-02 decision's firewall ("register flags, the gazette adjudicates"): `source/eval/gate.py` gains
+  `_REGISTER_LITERAL` + an import-scan ban so any `RECON_MODULES` file referencing `build_law_register` /
+  `law_register.jsonl` (via import or text) FAILS G1. Enforced by AST + text scan, not trust. Verified:
+  PASS on the real recon path (clean today), FIRES on a planted import and a planted literal.
+- **`classification_qa._AMEND_MARK` taught the archaic amendment/repeal verbs.** The pre-war/Nynorsk
+  gazette marks amendments with forms the modern regex missed: brigde/bridge/bride (Nynorsk + OCR for
+  "endre"), forandr- ("forandring i lov"), forleng-/lengjing ("forlenget gyldighet av … lov"), opph[øo]r
+  ("opphør av lov"), "tillegg til" ("(midlertidig) tillegg til lov"). klass-marker **74→51**, total queue
+  **353→330**. Pure false-positive removal — every cleared segment's title/head carries a genuine
+  amendment verb (reviewed all 23), so the fix tightens the CHECK, never hides a misclassification. The
+  `--diff` pre-commit gate passes (data unchanged; no category rose).
+- **Residual queue characterised (no quick wins left; it's the known structural lever).** klass-marker 51
+  = enactment-headed acts mis-tagged `amend` + over-capturing TOC chunks → curation/re-segmentation, not a
+  regex. target-unresolved 20 = CONFIRMED pure register-incompleteness (all 20 are repealed/old datokodes
+  1890–2000 absent from the in-force-only register). target-missing 249 + overlap 10 unchanged. The queue
+  mass is dominated by HISTORICAL-register completeness (full-harvest segmentation) + re-segmentation —
+  exactly the lever the 2026-10-04 coverage finding already named.
+
 ## 2026-10-04 — Register enriched (Lovdata gjeldende); locator confirmed good at scale; coverage is the gap
 
 - **Register enriched with the public Lovdata `gjeldende` dataset.** `build_law_register.load_gjeldende()`

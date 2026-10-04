@@ -21,8 +21,10 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
   by identity. Permanent residual: pre-1877 laws (e.g. Grunnloven 1814) are outside the harvest window.
   Two-tier target resolution: in `gjeldende` = old-but-in-force (coverage gap); in neither = repealed/
   pre-window or garble.
-- [ ] **Extend the G1 guard** (`gate._DUMP_LITERAL`) to ban the reconstruction path from importing the
-  law register — enforce validation-only in code, not trust.
+- [x] **Extend the G1 guard** to ban the reconstruction path from importing the law register. Done
+  2026-10-04: `gate._REGISTER_LITERAL` + the import-scan ban `build_law_register` / `law_register.jsonl`
+  in any `RECON_MODULES` file (text + AST). "Register flags, the gazette adjudicates" is now enforced in
+  code, not trust. Verified: PASS on the real recon path, FIRES on a planted import/literal violation.
 - [x] **Expand segmentation to the FULL NB harvest.** Done 2026-10-04: 914→1005/1033 issues (segmented
   the 91 normal; +2 laws, forskrift-heavy). 1172 distinct acts. 28 giant bound volumes SHELVED (1-giant
   probe: 1869–1911 repealed, 0 in-force recovery, ~600k tokens/9 laws — optional historical padding only).
@@ -48,11 +50,22 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
 - [x] **classification_qa `--diff` pre-commit gate.** Done 2026-10-04: fails if any violation category
   grows vs HEAD; installed as local `.git/hooks/pre-commit` (reinstall on fresh clones). Verified both
   ways — blocks a degrading edit, allows an improving one.
-- [~] **Work the queue (ongoing).** First pass done 2026-10-04: `resolve_targets.py` filled 35
-  target-missing by law name (284→249, queue 388→353, gated). REMAINING: target-missing 249 (richer
-  name/subject matching; many target laws simply aren't in the register → register-completeness, not
-  resolvable); klass-marker 74 (teach the marker regex archaic forms "brigde"/"tillegg til"); overlap 10
-  (duplicate-body `find` edge cases — switch to native segment offsets once chunk caches refreshed).
+- [~] **Work the queue (ongoing).** Queue 388→353→**330**. Passes 2026-10-04: (1) `resolve_targets.py`
+  filled 35 target-missing by law name (284→249, gated); (2) taught `classification_qa._AMEND_MARK` the
+  archaic amendment/repeal verbs (brigde/bridge, forandr-, forleng-/lengjing, opph[øo]r, "tillegg til") —
+  klass-marker **74→51**, a pure false-positive removal (each cleared segment's title/head carries a real
+  amendment verb; verified by eye). REMAINING, now characterised:
+  - **klass-marker 51** — NOT a regex gap any more; these are enactment-headed acts ("Lov nr. N om
+    <own-name>") mis-tagged `amend` by the bootstrap classifier, plus a few over-capturing TOC chunks
+    (e.g. `om folkeregistrering` body = a 6k-char TOC slice; `om brigde i lov om omsetningsavgift` = 27k).
+    Fix = klass curation (amend→enact) + re-segmentation, NOT a marker tweak. Entangled with `overlap`.
+  - **target-missing 249** — richer name/subject matching; but many target laws simply aren't in the
+    register → register-completeness, not resolvable here.
+  - **target-unresolved 20** — CONFIRMED pure register-incompleteness (2026-10-04): all 20 are distinct
+    repealed/old datokodes 1890–2000 absent from the register (in-force-only gjeldende + indexed issues
+    don't cover them). Resolves only when the HISTORICAL register is complete (full-harvest segmentation).
+  - **overlap 10** — duplicate-body `find` edge cases — switch to native segment offsets once chunk
+    caches refreshed.
 - [ ] **Two-level omnibus blocks** — split each omnibus `amend` segment into per-target sub-blocks
   (`I … II …`), each resolving to one target law (the ~38% multi-target acts).
 - [ ] **`applied_ops` reproducibility drift (noticed 2026-10-02).** `data/applied_ops.jsonl.gz` is

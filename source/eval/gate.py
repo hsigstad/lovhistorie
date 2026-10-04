@@ -11,8 +11,10 @@ REASONING: convergence alone is gameable (return the current text). So the gate 
 ASSUMES: the current NLOD dump (the ANSWER KEY, harness-only) is at $LOVHISTORIE_CURRENT_DIR
     as nl-<datokode>.xml. amendments.jsonl.gz present. Dev-set laws below have both.
 GUARDS:
-    G1 no-answer-key-import  — recon modules must not import source.eval or hardcode the
-                               current dump; enforced by AST, not trust.
+    G1 no-answer-key-import  — recon modules must not import source.eval, hardcode the
+                               current dump, OR touch the validation-only law register
+                               (register flags, the gazette adjudicates — decisions.md
+                               2026-10-02); enforced by AST + text scan, not trust.
     G2 runs-isolated         — with the answer key physically absent, the current loader
                                fails yet reconstruct() still works → it doesn't need it.
     G3 base-integrity        — an amended provision's ENACTMENT base must differ from the
@@ -75,6 +77,12 @@ DEV_LAWS = [
 # module joins the pipeline, add it here so the guard keeps covering the whole path.
 RECON_MODULES = ["pipeline.py", "replay.py", "ledd.py", "amendments.py", "blanket.py"]
 _DUMP_LITERAL = re.compile(r"nl-\d{8}-\d+\.xml|LOVHISTORIE_CURRENT_DIR|current_provisions")
+# The public law-identity register (data/law_register.jsonl, built by
+# source.scrape.build_law_register) is VALIDATION-ONLY: it may flag suspect targets or
+# audit coverage, but MUST NOT drive a reconstruction decision (decisions.md 2026-10-02 —
+# "register flags, the gazette adjudicates"). So the recon path may neither import its
+# builder nor read the file. Banned by the same text/AST scan as the answer key.
+_REGISTER_LITERAL = re.compile(r"law_register(?:\.jsonl)?|build_law_register")
 
 
 # --- answer key (harness only; read at CALL time so G2 can hide it) --------------
@@ -110,8 +118,9 @@ def current_provisions(datokode: str):
 
 # --- G1: the reconstruction path must not be able to see the answer key ----------
 def guard_no_answer_key_import():
-    """FAIL if any recon module imports the harness (source.eval) or hardcodes the
-    current dump. AST for imports so a docstring mentioning 'current' can't false-fail."""
+    """FAIL if any recon module imports the harness (source.eval), the validation-only
+    law register (source.scrape.build_law_register), or hardcodes the current dump /
+    register file. AST for imports so a docstring mentioning 'current' can't false-fail."""
     offenders = []
     for name in RECON_MODULES:
         path = ROOT / "source" / "parse" / name
@@ -125,9 +134,14 @@ def guard_no_answer_key_import():
                 mod = ",".join(a.name for a in node.names)
             if mod and re.search(r"\bsource\.eval\b", mod):
                 offenders.append(f"{name}: imports harness `{mod}`")
+            if mod and re.search(r"\bbuild_law_register\b", mod):
+                offenders.append(f"{name}: imports validation-only register `{mod}`")
         # hardcoded answer-key path / symbol anywhere in the source text
         for m in _DUMP_LITERAL.finditer(src):
             offenders.append(f"{name}: references answer key `{m.group(0)}`")
+        # validation-only law register — flags, never adjudicates (decisions.md 2026-10-02)
+        for m in _REGISTER_LITERAL.finditer(src):
+            offenders.append(f"{name}: references validation-only register `{m.group(0)}`")
     return offenders
 
 

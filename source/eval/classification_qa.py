@@ -28,7 +28,20 @@ SEG = _REPO / "data" / "segments.jsonl"
 META = _REPO / "data" / "segments_meta.json"
 REG = _REPO / "data" / "law_register.jsonl"
 
-_AMEND_MARK = re.compile(r"\b(endr|opphev|skal lyde|tilf[øo]y)", re.I)
+# Amendment/repeal markers. Beyond the modern verbs (endr-, opphev-, "skal lyde",
+# tilføy-) the pre-war/Nynorsk gazette uses ARCHAIC forms that are no less genuine:
+#   brigde/bridge/bride  — Nynorsk (+OCR garbles) for "endre" (to amend)
+#   forandr-             — "forandring i lov …" (change in a law)
+#   forleng-/lengjing    — "forlenget gyldighet av … lov" (extend a law's validity)
+#   opph[øo]r            — "opphør av lov …" (repeal), alongside modern opphev-
+#   "tillegg til"        — "(midlertidig) tillegg til lov …" (addition to a law)
+# These are specific amendment verbs, so a segment whose title/head carries one IS an
+# amendment regardless of klass — teaching them here only removes FALSE klass-marker
+# flags (23 of 74 on the 2026-10-04 bootstrap), never hides a real misclassification.
+# The residual flags are enactment-headed acts mis-tagged `amend` (genuine curation).
+_AMEND_MARK = re.compile(
+    r"\b(endr|opphev|skal lyde|tilf[øo]y|brigde|bridge|bride|forandr|forleng"
+    r"|lengjing|opph[øo]r|tillegg til)", re.I)
 _LAWHEAD = re.compile(r"\blov\b.{0,30}\bnr\.?\s*\d+", re.I)
 
 
