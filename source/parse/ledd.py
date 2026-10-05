@@ -162,7 +162,21 @@ def _split_punktum(body):
 # ---------------------------------------------------------------------------
 def apply(provision_text, instruction, new_text):
     """Return rebuilt provision text, or None if the address can't be resolved
-    cleanly (-> replay flags it). None-means-flag contract; do not fabricate."""
+    cleanly (-> replay flags it). None-means-flag contract; do not fabricate.
+
+    Two-stage: the generic ledd/punktum/bokstav engine first; if it can't address the
+    op, fall back to the §-level numbered-point applicator (`_apply_nr_point`) for the
+    skatteloven-style shape where the § body IS a top-level '1. 2. 3.' list (no ledd),
+    which the generic path's nl-parse scatters across lines. The fallback only fires on
+    a pure 'nr. N' address over a clean 1..k base — so wherever the generic path already
+    succeeds, behaviour is unchanged."""
+    r = _apply_core(provision_text, instruction, new_text)
+    if r is not None:
+        return r
+    return _apply_nr_point(provision_text, instruction or "", new_text)
+
+
+def _apply_core(provision_text, instruction, new_text):
     instr = instruction or ""
     has_punktum = bool(re.search(r"\bpunktum\b", instr))
     has_bokstav = bool(re.search(r"\bbokstav\b", instr))
@@ -510,4 +524,98 @@ def _apply_punktum(title, ledd, mode, n, instr, act, new_text):
         return _serialize(title, new_ledd, mode)
 
     # punktum repeal is rare; flag rather than risk a wrong sentence removal
+    return None
+
+
+# ---------------------------------------------------------------------------
+# §-level numbered-point applicator (skatteloven shape: the § body is a top-level
+# '1. 2. 3.' list, NOT ledd). The nl-base stores each list line as its own "ledd",
+# so the generic engine can't address 'nr. N' here. We anchor on the top-level
+# '^N.' markers over multi-line continuations and edit the addressed point.
+# ---------------------------------------------------------------------------
+_TOPNR = re.compile(r"(?m)^[ \t]*(\d+)\.[ \t]")
+
+
+def _top_points(text):
+    """Split a provision whose body is a top-level '1. 2. 3.' numbered list.
+    Returns (title, [[num, body], …]) with body spanning continuation lines and the
+    leading 'N.' marker stripped. None unless the markers form a clean 1..k run from
+    the start (anti-fabrication: an incomplete/garbled run must flag, not be guessed)."""
+    ms = list(_TOPNR.finditer(text))
+    if len(ms) < 2:                       # need a real multi-point list to address safely
+        return None
+    nums = [int(m.group(1)) for m in ms]
+    if nums != list(range(1, len(nums) + 1)):
+        return None
+    title = text[:ms[0].start()].rstrip("\n")
+    pts = []
+    for i, m in enumerate(ms):
+        e = ms[i + 1].start() if i + 1 < len(ms) else len(text)
+        pts.append([int(m.group(1)), text[m.end():e].rstrip("\n")])
+    return title, pts
+
+
+def _serialize_points(title, pts):
+    lines = [title] if title else []
+    for num, body in pts:
+        lines.append(f"{num}. {body}")
+    return "\n".join(lines)
+
+
+def _apply_nr_point(provision_text, instruction, new_text):
+    """Apply a pure 'nr. N' op to a top-level numbered-point §. Handles replace / insert /
+    repeal, descending into punktum/bokstav of the point when the address nests
+    ('nr. 1 fjerde punktum'). None -> flag (never fabricate)."""
+    instr = instruction or ""
+    nrs = re.findall(r"\bnr\.?\s*(\d+)", instr)
+    if len(nrs) != 1:                     # no nr, or a fused multi-target -> not ours
+        return None
+    if re.search(r"\bog\s+ny(?:tt|e)?\b", instr):   # combined replace+insert -> flag
+        return None
+    act = _action(instr)
+    if not act:
+        return None
+    parsed = _top_points(provision_text)
+    if parsed is None:
+        return None
+    title, pts = parsed
+    n = int(nrs[0])
+    idx = next((i for i, (num, _) in enumerate(pts) if num == n), None)
+    rest = [t for t in _address_path(instr) if t[0] != "nr"]   # punktum/bokstav after the nr
+
+    if act == "replace":
+        if not new_text or idx is None:
+            return None
+        body = _LEAD_MARK.sub("", new_text.strip())            # drop a repeated 'N.' marker
+        if rest:                                               # nested edit inside the point
+            body = _edit_body(pts[idx][1], rest, "replace", new_text)
+            if body is None:
+                return None
+        pts[idx][1] = body
+        return _serialize_points(title, pts)
+
+    if act == "insert":
+        if not new_text:
+            return None
+        body = _LEAD_MARK.sub("", new_text.strip())
+        pos = min(max(n - 1, 0), len(pts))
+        pts.insert(pos, [n, body])
+        for i, p in enumerate(pts, start=1):                   # renumber
+            p[0] = i
+        return _serialize_points(title, pts)
+
+    if act == "repeal":
+        if idx is None:
+            return None
+        if rest:                                               # repeal a sub-item, keep the point
+            body = _edit_body(pts[idx][1], rest, "repeal", None)
+            if body is None:
+                return None
+            pts[idx][1] = body
+            return _serialize_points(title, pts)
+        pts.pop(idx)
+        for i, p in enumerate(pts, start=1):
+            p[0] = i
+        return _serialize_points(title, pts)
+
     return None
