@@ -1,5 +1,28 @@
 # Done
 
+## 2026-10-05 — Two low-hanging fixes shipped; and the honest lesson about which metric they move
+
+Picked the lowest-hanging, deterministic, no-LLM fruit from the coverage analysis and shipped both:
+
+- **`word_replace` handler** (replay + `_amend_ops_from_segments` carry `from`/`to`): 486 ops were
+  mapped to `unknown` and always flagged; now applied as a str.replace on the addressed § when the
+  term is present (else flag — no fabrication). **Applies 10** previously-always-flagged ops. Zero gate
+  impact.
+- **`load_ops` fallback-only → UNION** with segments amend_ops (dedup by amending act): restores the
+  **951 pre-2001 amending acts** the post-2001 LTI stream lacks and that fallback-only dropped whenever
+  a law also had post-2001 ops (**37 of 90 in-force laws, +124 acts**). Gate IMPROVED 601→602 / strict
+  512→514, guards PASS.
+
+- **Honest lesson — these move *point-in-time*, not *current-text convergence*.** The 90-law in-force
+  convergence (segments-base + `load_ops`) was **0.326 before, 0.325 after the union** — flat (even −1).
+  Reason: those restored acts are **pre-2001**, and the convergence metric scores only against
+  **current** text, which reflects *later* post-2001 amendments we still lack — so a correctly-applied
+  pre-2001 op lands the provision at an intermediate state that doesn't match current. The union is
+  correct and improves *historical point-in-time* reconstruction (the actual deliverable), but that
+  gain is invisible to current-convergence and needs pre-2001 ground truth to credit. I over-anticipated
+  its current-metric payoff; banking the lesson: **current-convergence is bounded by missing POST-2001
+  coverage + the ledd/renumber application tail, not by cheap pre-2001 wins.**
+
 ## 2026-10-05 — Coverage-gap quantified: the in-force shortfall is post-2001 amendments (LTI), not segmentation
 
 Follow-up to the ~0.26 score: measured, for the **90** base-reconstructable in-force laws (segments base
