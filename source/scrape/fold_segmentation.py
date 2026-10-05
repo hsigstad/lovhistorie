@@ -234,28 +234,35 @@ def tile_ordered(iid: str, segments: list[dict], frozen: str) -> tuple[list[dict
     rows, n = [], len(frozen)
     if placed and placed[0][0] > 0:               # agent should have started at 0 — flag the lead gap
         _emit(rows, frozen, iid, 0, placed[0][0], "other", "lead@0")
-    _FIELDS = ("para", "instrument", "op_kind", "from", "to", "position")
-    # Ordered-starts: the agent puts datokode on an enactment_heading and target_cite on an
-    # amend_scope; the following provisions / ops carry NEITHER and inherit by document order.
-    # Carry both forward until the next act boundary.
+    _FIELDS = ("para", "op_kind", "from", "to", "position")
+    # Ordered-starts carry-forward: the agent puts datokode on an enactment_heading and the
+    # amended-law citation + instrument on an amend_scope; the following provisions/ops carry
+    # neither and inherit by document order. An amend_op's OWN `target_cite` is the address
+    # ("§ 4 femte ledd"), NOT the law — so ops always inherit the SCOPE's law, never their own.
     _INHERIT = {"provision", "amend_op", "amend_scope", "in_force"}
-    cur_act = cur_cite = None
+    cur_act = cur_cite = cur_instr = None
     for i, (s, seg) in enumerate(placed):
         e = placed[i + 1][0] if i + 1 < len(placed) else n
         kind = seg.get("kind") or "other"
-        dk, cite = seg.get("datokode"), seg.get("target_cite")
-        if kind in _INHERIT:
+        dk = seg.get("datokode")
+        cite = instr = None
+        if kind == "amend_scope":
+            cur_cite, cur_instr = seg.get("target_cite") or None, seg.get("instrument") or None
+            cite, instr, dk = cur_cite, cur_instr, dk or cur_act
+        elif kind == "amend_op":
+            cite, instr, dk = cur_cite, cur_instr, dk or cur_act   # inherit scope's law
+        elif kind in ("provision", "in_force"):
             dk = dk or cur_act
-            if kind == "amend_scope":
-                cur_cite = cite or cur_cite          # a new scope resets the running target
-            cite = cite or cur_cite
-        else:                                        # act boundary (heading) or standalone unit
-            cur_act, cur_cite = dk, None
+        else:                                        # heading / standalone boundary
+            cur_act, cur_cite, cur_instr = dk, None, None
         extra = {k: seg.get(k) for k in _FIELDS}
         extra["datokode"] = dk
-        if cite and kind in ("amend_scope", "amend_op", "repeal"):
+        if instr:
+            extra["instrument"] = instr
+        if cite and kind in ("amend_scope", "amend_op"):
             extra["target_cite"] = cite
-            extra["target"] = cite_to_datokode(cite)
+            if instr != "forskrift":                 # law register can't resolve forskrift targets
+                extra["target"] = cite_to_datokode(cite)
         _emit(rows, frozen, iid, s, e, kind, _unit_key({**seg, "datokode": dk}, i), **extra)
     return rows, misses
 

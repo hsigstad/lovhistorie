@@ -55,37 +55,35 @@ def _frozen(iid: str) -> str | None:
     return txt
 
 
-def original_rows(rows: list[dict]) -> dict[str, dict]:
-    """datokode -> its enactment (klass=='original') row. A datokode with >1 original row
-    is ambiguous (should not happen) -> dropped."""
-    seen: dict[str, dict | None] = {}
-    for r in rows:
-        if r.get("klass") != "original" or not r.get("datokode"):
+def enactment_bases(rows: list[dict]) -> dict[str, dict]:
+    """datokode -> {issue_id, provisions: {para: [(start,end), ...]}} for enacted laws.
+    FLAT model (decisions.md 2026-10-04): an enactment's provisions are the `klass=='provision'`
+    rows carrying that datokode; a provision interrupted by furniture is several rows sharing a
+    (datokode, para), reassembled by document order."""
+    out: dict[str, dict] = {}
+    for r in sorted(rows, key=lambda r: r["start"]):
+        if r.get("klass") != "provision" or not r.get("datokode") or not r.get("para"):
             continue
-        dk = r["datokode"]
-        seen[dk] = None if dk in seen else r   # None marks "ambiguous, drop"
-    return {dk: r for dk, r in seen.items() if r is not None}
+        e = out.setdefault(r["datokode"], {"issue_id": r["issue_id"], "provisions": {}})
+        e["provisions"].setdefault(r["para"], []).append((r["start"], r["end"]))
+    return out
 
 
-def _base_provisions(fr: str, row: dict) -> dict:
-    """{§N: text} for the enactment base. Prefer the CURATED nested provision offsets
-    (choice b, decisions.md 2026-10-04); fall back to the regex splitter if a row carries
-    no provisions yet (so the gate still works pre-fold)."""
-    if row.get("provisions"):
-        return {p["para"]: fr[p["start"]:p["end"]] for p in row["provisions"] if p.get("para")}
-    return parse_provisions(strip_running_headers(fr[row["start"]:row["end"]]))
-
-
-def median_sim_vs_current(datokode: str, row: dict) -> float | None:
-    """Median per-provision similarity of the enactment base to the current text. None if
-    the issue text or the answer key is unavailable, or current has no real §N."""
-    fr = _frozen(row["issue_id"])
-    if fr is None:
+def median_sim_vs_current(datokode: str, base_ent: dict) -> float | None:
+    """Median per-provision similarity of the enactment base to the current text. The base
+    text of each § is the concatenation of its row-fragments (furniture skipped), stripped of
+    running headers. None if the issue text / answer key is unavailable or current has no §N."""
+    fr = _frozen(base_ent["issue_id"])
+    if fr is None or not datokode or len(str(datokode).split("-")) != 4:
         return None
-    cur = gate.current_provisions(datokode)
+    try:
+        cur = gate.current_provisions(datokode)
+    except Exception:
+        return None
     if not cur:
         return None
-    base = _base_provisions(fr, row)
+    base = {para: strip_running_headers(" ".join(fr[s:e] for s, e in sorted(spans)))
+            for para, spans in base_ent["provisions"].items()}
     reals = [n for n in cur if _REAL.fullmatch(n)]
     if not reals:
         return None
@@ -93,16 +91,16 @@ def median_sim_vs_current(datokode: str, row: dict) -> float | None:
     return statistics.median(sims) if sims else None
 
 
-def _rowkey(row: dict) -> tuple:
-    """Identity for change-detection: offsets + provision spans (so a provision edit counts)."""
-    provs = tuple((p.get("para"), p["start"], p["end"]) for p in row.get("provisions", []))
-    return (row["issue_id"], row["start"], row["end"], provs)
+def _basekey(ent: dict) -> tuple:
+    """Identity for change-detection: the issue + every provision's span set."""
+    return (ent["issue_id"],
+            tuple(sorted((p, tuple(sorted(sp))) for p, sp in ent["provisions"].items())))
 
 
 def _scores(rows: list[dict]) -> dict[str, float]:
     out = {}
-    for dk, row in original_rows(rows).items():
-        sc = median_sim_vs_current(dk, row)
+    for dk, ent in enactment_bases(rows).items():
+        sc = median_sim_vs_current(dk, ent)
         if sc is not None:
             out[dk] = sc
     return out
@@ -134,17 +132,17 @@ def diff() -> int:
         return 0
     base_rows = [json.loads(l) for l in open(head)]
     work_rows = [json.loads(l) for l in open(SEG)]
-    base_r, work_r = original_rows(base_rows), original_rows(work_rows)
+    base_b, work_b = enactment_bases(base_rows), enactment_bases(work_rows)
 
-    touched = [dk for dk in work_r if dk in base_r and _rowkey(work_r[dk]) != _rowkey(base_r[dk])]
+    touched = [dk for dk in work_b if dk in base_b and _basekey(work_b[dk]) != _basekey(base_b[dk])]
     if not touched:
-        print("segments_quality --diff: no enactment-offset changes; nothing to score.")
+        print("segments_quality --diff: no enactment-base changes; nothing to score.")
         return 0
 
     regressions, moved = [], 0
     for dk in touched:
-        sb = median_sim_vs_current(dk, base_r[dk])
-        sw = median_sim_vs_current(dk, work_r[dk])
+        sb = median_sim_vs_current(dk, base_b[dk])
+        sw = median_sim_vs_current(dk, work_b[dk])
         if sb is None or sw is None:
             continue                       # unscorable (no answer key / issue) -> can't judge
         moved += 1

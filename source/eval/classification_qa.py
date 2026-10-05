@@ -39,10 +39,11 @@ REG = _REPO / "data" / "law_register.jsonl"
 # amendment regardless of klass — teaching them here only removes FALSE klass-marker
 # flags (23 of 74 on the 2026-10-04 bootstrap), never hides a real misclassification.
 # The residual flags are enactment-headed acts mis-tagged `amend` (genuine curation).
-_AMEND_MARK = re.compile(
-    r"\b(endr|opphev|skal lyde|tilf[øo]y|brigde|bridge|bride|forandr|forleng"
-    r"|lengjing|opph[øo]r|tillegg til)", re.I)
-_LAWHEAD = re.compile(r"\blov\b.{0,30}\bnr\.?\s*\d+", re.I)
+# The flat segment-kind vocabulary (segment_prompt.SCHEMA) + the deterministic `noise` the
+# fold carves out of furniture; any other kind is a bug.
+_KINDS = {"front_matter", "enactment_heading", "provision", "amend_scope", "amend_op",
+          "repeal", "ikrafttredelse", "in_force", "forskrift", "delegering", "kunngjoring",
+          "anordning", "rettelser", "colophon", "signature", "other", "noise"}
 
 
 def _frozen(iid):
@@ -84,36 +85,24 @@ def check(seg_path=SEG, meta_path=META):
             for s in segs:        # I4 head anchor still at start
                 if s["head"] and s["head"] != re.sub(r"\s+", " ", fr[s["start"]:s["end"]][:40]).strip():
                     V["head-mismatch"].append((iid, s["start"], "head != text@start"))
-        # I5 klass<->marker + target
+        # I5 flat-partition kind + target checks (ordered-starts corpus, decisions.md 2026-10-04)
         for s in segs:
-            kl, title = s.get("klass"), (s.get("title") or "")
-            if kl in ("amend", "repeal") and not _AMEND_MARK.search(title + " " + (s["head"] or "")):
-                V["klass-marker"].append((iid, s["start"], f"{kl} w/o amend marker: {title[:40]!r}"))
-            if kl == "filler" and _LAWHEAD.search(s["head"] or "") and (s["end"] - s["start"]) > 80:
-                V["filler-has-law"].append((iid, s["start"], f"filler contains a law heading: {s['head'][:40]!r}"))
-            if kl in ("amend", "repeal"):
+            kind = s.get("klass")
+            if kind not in _KINDS:
+                V["kind-unknown"].append((iid, s["start"], f"kind {kind!r} not in vocabulary"))
+            # an amend_scope / amend_op targeting a LAW must resolve to a known law (forskrift
+            # targets aren't in the law register — skip them; register-completeness, not error)
+            if kind in ("amend_scope", "amend_op") and s.get("instrument") != "forskrift":
                 tgt = s.get("target")
                 if not tgt:
-                    V["target-missing"].append((iid, s["start"], title[:40]))
+                    V["target-missing"].append((iid, s["start"], (s.get("target_cite") or "")[:40]))
                 elif tgt not in register:
                     V["target-unresolved"].append((iid, s["start"], f"{tgt} not in register"))
-            # I6 nested provisions (choice b) must tile WITHIN the enactment body: each §
-            # inside [start,end], monotonic, non-overlapping.
-            provs = s.get("provisions")
-            if provs:
-                prev = s["start"]
-                for p in sorted(provs, key=lambda q: q["start"]):
-                    if p["start"] < s["start"] or p["end"] > s["end"]:
-                        V["prov-span"].append((iid, p["start"], f"{p.get('para')} outside body"))
-                    if p["start"] < prev:
-                        V["prov-span"].append((iid, p["start"], f"{p.get('para')} overlaps prev"))
-                    prev = max(prev, p["end"])
     return V, len(rows), len(by_issue)
 
 
 ORDER = ["sha-drift", "issue-missing", "overlap", "coverage-gap", "coverage-end",
-         "head-mismatch", "prov-span", "filler-has-law", "klass-marker",
-         "target-missing", "target-unresolved"]
+         "head-mismatch", "kind-unknown", "target-missing", "target-unresolved"]
 
 
 def report():

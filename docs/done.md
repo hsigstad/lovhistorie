@@ -1,5 +1,31 @@
 # Done
 
+## 2026-10-05 — Flat corpus MIGRATED: 253 small issues segmented + folded into the ordered-starts segments.jsonl
+
+The S2/S3 fold-in landed for the small-issue bulk. `segments.jsonl` is now the FLAT ordered-starts
+partition (was the act-level + nested-provision form).
+
+- **Corpus run (Claude subagents, $0 OpenAI):** 269 small issues (≤600k) segmented across batches; ~30M
+  tokens, ~9 h. 267 succeeded; 2 hit the 64k OUTPUT-token cap (dense issues → chunker). File-based
+  checklists kept the Workflow args tiny at scale.
+- **Migrated 253 fully-clean issues** → `data/segments.jsonl` (95,403 flat segments; was 2,459 act-level)
+  + `segments_meta.json`. "Clean" = tiles [0,n] gap-free, concatenates to the frozen OCR VERBATIM, and
+  every indexed act present. **0 structural violations** (coverage/overlap/sha/head/kind all clean).
+- **Gates migrated to the flat format.** `classification_qa`: coverage/overlap/sha/head + kind-vocabulary
+  + target-resolution (law-instrument only; forskrift targets skipped — not in the law register); dropped
+  the obsolete klass-marker/prov-span/filler-has-law. `segments_quality`: enactment base = the
+  `klass=provision` rows for a datokode, furniture-split fragments reassembled by `unit_key`. The migration
+  commit bypassed the cross-format `--diff` (one-time baseline reset); future edits gate normally.
+- **Baseline:** target queue 3,403 (target-missing 2,465 name-only/pre-numbered citations + unresolved 938
+  = register-completeness, the work queue — not structural). Base quality over the 66 laws with a current
+  answer key: **median 0.947, mean 0.769, 53/66 ≥0.5** (weak tail = known heavily-amended/location laws).
+- **Carry-forward fix:** ordered-starts means provisions/ops inherit datokode+law-citation+instrument from
+  the preceding heading/scope; an amend_op's own `target_cite` is the ADDRESS, so ops inherit the scope's
+  LAW, never their own. (This cut the target queue 13,106→3,403 — the rest was the bug.)
+- **Pending → chunker (≈59 issues):** 2 output-failures + 14 old/dense "missing-acts" issues + 43 giants
+  (>600k). All the same failure mode — too much for one subagent pass. NOTE: `segments.jsonl` is now 23 MB
+  (furniture `noise` rows dominate); will reach ~30 MB with giants — a leaner row encoding is a later option.
+
 ## 2026-10-04 (cont. 3) — Subagent segmentation proven + scaled to a 6-issue Workflow; choice-b (provisions nested); architecture decision
 
 The S2 fold-in, pivoted to CLAUDE SUBAGENTS instead of OpenAI (HS). Validated end-to-end; infra committed,
