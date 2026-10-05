@@ -1,3 +1,8 @@
+# LEGACY (pre-flat-corpus; the 2026-08 OpenAI build pivot). NOT the current pipeline.
+# Current path: scrape/segment_prompt.py + the subagent fold -> data/segments.jsonl ->
+# parse/pipeline.reconstruct (deterministic, no LLM at runtime). This module only (re)builds
+# the cached dev-set op streams the gate reads; the runtime never imports it.
+# See CLAUDE.md "Pipeline map" and docs/decisions.md (2026-10-04).
 """Offline pre-apply pass: bake sub-provision amendments the ledd engine drops, via the LLM applicator.
 
 INTENT: the deterministic ledd engine can't apply sub-provision ops to OCR bases lacking (N) ledd
