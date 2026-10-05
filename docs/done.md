@@ -15,6 +15,20 @@ ops (`§N`) couldn't attach. `1992-06-19-56` base-only match went **0 → 41/45*
   rows had bare keys). **Lesson (again): one dramatic law ≠ the aggregate — don't extrapolate.**
 - Per-provision cause attribution (segmenter vs data vs assembly) run separately to split what remains.
 
+**Attribution — 4,352 current provisions across the 90 laws (fix applied):**
+- 35.3% MATCH
+- **Assembly ~19.4%**: 17.1% op FLAGGED (engine can't apply — the ledd/renumber/punktum tail) + 2.3% op
+  broke a good base. Pure code, data already present.
+- **Data/coverage ~25.3%**: 16.2% amended-but-NO-op + 9.1% partial-coverage (have some ops, miss others).
+- **Base-missing ~20.0%**: § absent from base and nothing targets it (segmenter miss and/or missing data).
+- **OCR base quality ~0.1%** — bases are GOOD; re-OCR is confirmed useless (refuted lever).
+
+**Takeaways:** (1) OCR/base is a non-issue. (2) The only large lever needing NO new snapshots is the
+**assembly application engine (~19%)** — but the cheap slices (nr-point, word_replace, key-fix) are
+already taken; the residual 17% flagged is the genuinely-hard ledd/renumber/punktum tail. (3) ~45%
+(coverage + base-missing) is a data/harvest problem (complete the LTI stream, more segmentation, future
+snapshots), not fixable by code alone.
+
 ## 2026-10-05 — Two low-hanging fixes shipped; and the honest lesson about which metric they move
 
 Picked the lowest-hanging, deterministic, no-LLM fruit from the coverage analysis and shipped both:
