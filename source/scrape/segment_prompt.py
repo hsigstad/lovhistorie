@@ -88,7 +88,9 @@ __PATH__
 Read it with the Read tool. Do NOT read any other file or use any other source. Work solely from that text.
 
 ## What the issue looks like
-It opens with a masthead and a TABLE OF CONTENTS (acts listed with page numbers), then the ACTS THEMSELVES — each introduced by a heading like "7. juli Lov nr. 68 / Lov om …". Running headers/page numbers ("2000 / 1682 / 7. juli Lov nr. 69") are interleaved into the text — IGNORE them, do not emit segments for them (deterministic code removes them).
+It opens with a masthead and a TABLE OF CONTENTS (acts listed with page numbers), then the ACTS THEMSELVES — each introduced by a heading like "7. juli Lov nr. 68 / Lov om …". Running headers/page numbers ("2000 / 1682 / 7. juli Lov nr. 69" or "811 des. Lov nr. 79 6") are interleaved into the text — IGNORE them, do not emit segments for them (deterministic code removes them).
+
+CRITICAL: a running header very often interrupts a § or an amendment op **mid-sentence**. The text that RESUMES right after the header is the SAME §/op continuing — it is NOT a new segment. Do not start a new segment at resumed text (a fragment beginning with a lowercase word, mid-sentence, or a bare list item like "c) …"); let the previous segment run through the header. Start a new segment ONLY at a genuine new unit (a new § heading, a NEW amendment instruction naming its own target unit, a new act heading). When in doubt whether a line is a new op or a continuation: if it does not itself name a target unit + an amendment verb, it is a continuation.
 
 ## Acts expected in this issue (public gazette index — their bodies must all appear)
 __CHECKLIST__
@@ -100,7 +102,7 @@ For each segment give `start_anchor` = the VERBATIM first ~8 words where it begi
 - `front_matter` — the masthead + table of contents block (usually one segment at the top).
 - `enactment_heading` then one `provision` per § — for an enacted law ("Lov om <subject>"). Set `datokode`; on each provision set `para` (normalized "§1", "§5a" — the OCR often mangles the § glyph, e.g. "S 2."/"5 3." are §2/§3; use the sequence). A NUMBERED § is ALWAYS a `provision`, even when its heading is "Ikrafttredelse" — do NOT tag the law's own last § as `in_force`.
 - `amend_scope` — the "I lov/forskrift … gjøres følgende endringer:" line; set `target_cite` (verbatim) and `instrument` (lov|forskrift). Omnibus acts have several.
-- `amend_op` — ONE per amendment instruction. Set `op_kind` from the TEXT only: `set_text` ("… skal lyde:"), `repeal` ("… oppheves"), `renumber` ("Nåværende … blir …" — also set verbatim `from`/`to`), `word_replace` ("erstattes/endres … med/til" — set verbatim `from`/`to`), `insert` (explicit "ny/nytt/skytes inn/inntas" — set `position` if stated). Do NOT decide whether a bare "skal lyde" replaces or inserts — that is `set_text`; downstream decides against the base.
+- `amend_op` — ONE per amendment instruction. An amend_op MUST name a target unit (a §, ledd, punktum, bokstav, nr, kapittel, avsnitt, or overskrift) AND an amendment verb — e.g. "§ 5 annet ledd skal lyde:", "Avsnitt III oppheves.", "Nåværende avsnitt IV blir avsnitt III." A fragment that does neither — a lone roman-numeral/number divider ("IV.", "v.", "13."), a stray mark ("/"), or prose resuming mid-sentence after a page header — is NOT an amend_op; it is either a continuation of the previous op (do not start a new segment) or structural furniture (absorbed into the surrounding act — do not emit a segment for a bare "I." / "II." section divider). Set `op_kind` from the TEXT only: `set_text` ("… skal lyde:"), `repeal` ("… oppheves/vert oppheva"), `renumber` ("Nåværende … blir …" — also set verbatim `from`/`to`), `word_replace` ("erstattes/endres … med/til" — set verbatim `from`/`to`), `insert` (explicit "ny/nytt/skytes inn/inntas" — set `position` if stated). Do NOT decide whether a bare "skal lyde" replaces or inserts — that is `set_text`; downstream decides against the base.
 - `in_force` — an amending/other act's own UNNUMBERED "Loven trer i kraft …" clause (its own segment, so it is not swallowed into the preceding op). NOT a numbered § (see above).
 - `ikrafttredelse` — a standalone commencement NOTICE for another act ("Ikrafttr. av lov …").
 - `delegering` — a delegation of authority ("Delegering av myndighet … til … departementet etter lov …").
@@ -114,6 +116,6 @@ For each segment give `start_anchor` = the VERBATIM first ~8 words where it begi
 1. Anchors are VERBATIM substrings — copy, never paraphrase/fix-OCR/translate. Unfound anchors are dropped.
 2. COVER EVERYTHING — no gaps. Prefer a specific kind above; use `other` only as a last resort for a region that fits none of them.
 3. Do NOT segment inside a provision or an op's payload (no sub-§ breakdown, no articles inside an inserted chapter) — that structure is parsed later against the base. One segment per § and per op.
-4. Do NOT emit segments for running headers / page numbers.
+4. Do NOT emit segments for running headers / page numbers — and do NOT start a new segment for the text that resumes after one: that text continues the § or op the header interrupted. A new segment begins only at a genuine new unit, never at a mid-sentence/lowercase/bare-list continuation.
 
 Return ONLY the JSON object (a `segments` array) as your final message — no prose, no code fences."""
