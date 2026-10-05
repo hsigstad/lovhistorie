@@ -20,8 +20,12 @@ Picked the lowest-hanging, deterministic, no-LLM fruit from the coverage analysi
   pre-2001 op lands the provision at an intermediate state that doesn't match current. The union is
   correct and improves *historical point-in-time* reconstruction (the actual deliverable), but that
   gain is invisible to current-convergence and needs pre-2001 ground truth to credit. I over-anticipated
-  its current-metric payoff; banking the lesson: **current-convergence is bounded by missing POST-2001
-  coverage + the ledd/renumber application tail, not by cheap pre-2001 wins.**
+  its current-metric payoff; banking the lesson: on THIS population (the 90 OLD 1990s-enacted,
+  OCR-based laws) current-convergence is bounded by the **ledd/renumber application tail on a noisy OCR
+  base** (their post-2001 amendments are largely AVAILABLE in the LTI stream — the issue is applying
+  them), not by cheap pre-2001 wins. NB: this is a DIFFERENT population from the post-2001-ENACTED laws
+  (clean LTI base: vphl 212/268 @0.98, tjenesteloven 27/29 @0.98), which reconstruct near-perfectly and
+  were untouched. "Post-2001 is bad" would be wrong — it conflates the two.
 
 ## 2026-10-05 — Coverage-gap quantified: the in-force shortfall is post-2001 amendments (LTI), not segmentation
 
