@@ -29,6 +29,17 @@ already taken; the residual 17% flagged is the genuinely-hard ledd/renumber/punk
 (coverage + base-missing) is a data/harvest problem (complete the LTI stream, more segmentation, future
 snapshots), not fixable by code alone.
 
+**CORRECTION (hard-verified) — the segmenter is NOT dropping enactment provisions.** An earlier
+"645 interior gaps -> segmenter misses" claim was a BROKEN proxy (leading §-number ranges misclassify
+compound/amendment-expanded laws). Counting §-headings PHYSICALLY present in each law's frozen enactment
+span vs provisions emitted: **≈0 dropped** across the sample (heads ≈ paras). The enactment issues simply
+contain far fewer §§ than the current law (pensjonskasse 44→59, passloven 11→27, spesialisthelse 41→75)
+— the "base-missing" §§ were **ADDED by later amendments** living in un-segmented issues, not dropped by
+the segmenter. Corrected rollup: **35% match · ~19% assembly (code) · ~45% data/coverage (un-segmented
+amendment issues + stream gaps) · ~0% segmenter · ~0% OCR.** Net: the segmenter captures what it sees
+well; the dominant gap is **issue/amendment COVERAGE**, which directly contradicts "we don't miss much
+from un-segmented issues" — we miss a lot, and most of it is amendment-added §§ in issues not yet done.
+
 ## 2026-10-05 — Two low-hanging fixes shipped; and the honest lesson about which metric they move
 
 Picked the lowest-hanging, deterministic, no-LLM fruit from the coverage analysis and shipped both:
