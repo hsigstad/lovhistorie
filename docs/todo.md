@@ -1,5 +1,28 @@
 # Todo
 
+## Reconstruction-quality follow-ups (2026-10-05 — see done.md attribution)
+
+Attribution on the 90 base-reconstructable in-force laws (4,352 provisions): 35% match · ~19% assembly
+(code) · ~45% data/coverage (un-segmented issues + stream gaps) · ~0% segmenter · ~0% OCR. So:
+
+- [ ] **FRIDAY (also in Todoist, P1 2026-10-09): segment the remaining issues** — the ~45% coverage gap is
+  the top lever. Prioritized worklist: `docs/notes/friday_segmentation_worklist.md` (292 amendment-dense
+  regular issues first, then 91 giants). New prompt (`segment_prompt.py`) already tightened to cut
+  spurious amend_op rows. Fold → gates → commit per the hook.
+- [ ] **ledd-on-OCR application engine** — the residual assembly tail (~17%, ~2,200 ledd sub-provision
+  ops that flag because OCR bases lack clean ledd boundaries). The real remaining CODE lever, but a
+  DELIBERATE gated project (on the recon path), NOT a quick fix. Best done after Friday with the larger
+  corpus as a test bed. Cheap slices already taken (nr-point, word_replace, §-OCR recovery, key-fix).
+- [ ] **(optional) fold-side continuation-merge guard** — merge a mid-sentence/fragment `amend_op` back
+  into the preceding op of the same scope (extend the `unit_key` reassembly to the op case). Would clean
+  the ~83 garbage amend_op rows in the EXISTING 259 issues at load time without re-segmenting. Small
+  merge-wrong risk; prototype against the gate.
+- [ ] **(optional) dev-laws cutover onto `segments.jsonl`** — migrate the 9 dev laws off the cached
+  LTI/old `.gz` streams so the LEGACY build layer (`llm/*`, `build_{applied,gazette,omnibus,pointer}`,
+  now `# LEGACY`-marked) can be physically deleted. Will re-baseline the gate — do deliberately.
+- Point-in-time ground truth (HS future snapshots): needed to CREDIT pre-2001 amendment reconstruction,
+  which current-text convergence (the only metric today) structurally cannot see.
+
 ## Curated segmentation + law register (PLAN, 2026-10-02 — see decisions.md)
 
 The long-term track. Harvest coverage is the binding constraint (register covers 10% of in-force laws),
