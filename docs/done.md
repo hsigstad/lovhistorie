@@ -1,5 +1,20 @@
 # Done
 
+## 2026-10-05 — Root-cause investigation: a provision-key normalization bug in assembly (+ attribution)
+
+Picked a near-unamended bad law (`1992-06-19-56`, 2 amendments, base 44 / cur 45, scored 0) to attribute
+the shortfall to segmenter / data / assembly. Found a **key-normalization bug in assembly**: the
+segmentation `para` field is inconsistent (~85% `§N`, ~15% bare `'1'`), and `_base_from_segments` keyed
+the base on the raw field — so a bare-para law's base matched NOTHING in the current text (`§N`) and its
+ops (`§N`) couldn't attach. `1992-06-19-56` base-only match went **0 → 41/45** once keys align.
+
+- **Fix** (`_canon_para`, committed): normalize base keys to `§`+bare at build time. Dev laws use
+  `enactment/*.json` (already `§N`) → **gate unchanged 602/829, G1/G2/G3 PASS**.
+- **Aggregate lift (90-law clone config):** segments-base+segments-ops **0.262→0.291**; segments-base+LTI
+  **0.326→0.353** (+~2.7pp). Real, and some laws fully recover — but modest in aggregate (only ~15% of
+  rows had bare keys). **Lesson (again): one dramatic law ≠ the aggregate — don't extrapolate.**
+- Per-provision cause attribution (segmenter vs data vs assembly) run separately to split what remains.
+
 ## 2026-10-05 — Two low-hanging fixes shipped; and the honest lesson about which metric they move
 
 Picked the lowest-hanging, deterministic, no-LLM fruit from the coverage analysis and shipped both:
