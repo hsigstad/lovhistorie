@@ -1,5 +1,24 @@
 # Done
 
+## 2026-10-05 — Coverage-gap quantified: the in-force shortfall is post-2001 amendments (LTI), not segmentation
+
+Follow-up to the ~0.26 score: measured, for the **90** base-reconstructable in-force laws (segments base
++ answer key), how many of each law's amendments are present vs missing, using the answer-key-derived
+`amendment_register.jsonl.gz` as the amendment census and `act_index.json` for act→issue mapping.
+
+- **Amendment coverage: median 0%, mean 6%.** Only 2 laws ≥50% covered (both have a single amendment).
+  ~1,051 distinct amending acts are missing across the 90 laws.
+- **Era split is decisive:** ~153 missing amendments are pre-2001 (the scanned-gazette → segmentation
+  path); **~91% are 2001+**, which live in the **LTI clean-XML stream, not gazette scans at all**.
+  **766 / 1,051** distinct missing acts are **already harvested** in `data/amendments.jsonl.gz`.
+- **Only 45 of the 1,051 missing acts are locatable to a gazette issue in `act_index`** (→ 31 issues, 28
+  already segmented) — so "segment N more gazette issues" has almost no leverage for in-force→current.
+- **Implication:** the lever for reconstructing in-force law to *current* is wiring the already-harvested
+  **post-2001 LTI stream** into the new assembly layer (`load_ops` already reads it — segments is its
+  fallback), NOT more segmentation. The segmentation pipeline's natural strength is *enactment-era* and
+  *pre-2001 point-in-time* text from the gazette, where it is the only source. (Deployed `reconstruct()`
+  with the LTI stream scores higher than the pure-segments 0.26 — see the clone-config measurement.)
+
 ## 2026-10-05 — FIRST end-to-end score of the NEW (segments-only) pipeline: coverage-bound at ~0.26
 
 We had never measured the segment→deterministic-assembly pipeline itself — the 0.7250 gate is the
