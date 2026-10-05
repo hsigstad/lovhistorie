@@ -1,0 +1,6968 @@
+[
+{
+"iid": "ac024b21eef903192afb6ef2b7c1c513",
+"chars": 497363,
+"giant": false,
+"skal_lyde": 494,
+"endr_markers": 377,
+"issued": "1993",
+"pages": 230
+},
+{
+"iid": "5d30786a70ff93293c5f39bf9b1fd976",
+"chars": 139803,
+"giant": false,
+"skal_lyde": 201,
+"endr_markers": 106,
+"issued": "1979",
+"pages": 80
+},
+{
+"iid": "621c9767152ae56f109f6c2868f2e91f",
+"chars": 216579,
+"giant": false,
+"skal_lyde": 192,
+"endr_markers": 99,
+"issued": "1974",
+"pages": 112
+},
+{
+"iid": "a3c507b2b366df5ff1d047299127047f",
+"chars": 191921,
+"giant": false,
+"skal_lyde": 178,
+"endr_markers": 123,
+"issued": "1997",
+"pages": 96
+},
+{
+"iid": "5a3f9da384801bd9bb0f8dae97006cab",
+"chars": 203818,
+"giant": false,
+"skal_lyde": 166,
+"endr_markers": 53,
+"issued": "1977",
+"pages": 112
+},
+{
+"iid": "0cdb851afded5c14e74067587596110e",
+"chars": 270281,
+"giant": false,
+"skal_lyde": 165,
+"endr_markers": 65,
+"issued": "1999",
+"pages": 120
+},
+{
+"iid": "3ad2d16df367eaf531b05f9ba40d9724",
+"chars": 213719,
+"giant": false,
+"skal_lyde": 144,
+"endr_markers": 140,
+"issued": "1990",
+"pages": 110
+},
+{
+"iid": "68f44705053ccdc1edaf044bdf074130",
+"chars": 274573,
+"giant": false,
+"skal_lyde": 142,
+"endr_markers": 138,
+"issued": "2000",
+"pages": 140
+},
+{
+"iid": "0c2aac787389fd4735be5be3d6579554",
+"chars": 134913,
+"giant": false,
+"skal_lyde": 139,
+"endr_markers": 49,
+"issued": "1954",
+"pages": 66
+},
+{
+"iid": "2fa602cdf1fa55765a86a83becac1118",
+"chars": 447156,
+"giant": false,
+"skal_lyde": 135,
+"endr_markers": 70,
+"issued": "1998",
+"pages": 220
+},
+{
+"iid": "93e0f47a1d7e5f50cf8b91e138df58ab",
+"chars": 162794,
+"giant": false,
+"skal_lyde": 130,
+"endr_markers": 91,
+"issued": "1996",
+"pages": 76
+},
+{
+"iid": "06e6543c44f730ac9379ad04f460b873",
+"chars": 115486,
+"giant": false,
+"skal_lyde": 117,
+"endr_markers": 89,
+"issued": "1981",
+"pages": 64
+},
+{
+"iid": "953036af87a8ffb6d3d5615bf9cf5bbe",
+"chars": 184138,
+"giant": false,
+"skal_lyde": 116,
+"endr_markers": 73,
+"issued": "1997",
+"pages": 92
+},
+{
+"iid": "20b8daf9e0945433ff3068f50fc918f2",
+"chars": 156301,
+"giant": false,
+"skal_lyde": 98,
+"endr_markers": 91,
+"issued": "1981",
+"pages": 84
+},
+{
+"iid": "007e64c95ebe9d5f14a39514b8ec9a89",
+"chars": 280579,
+"giant": false,
+"skal_lyde": 96,
+"endr_markers": 98,
+"issued": "1998",
+"pages": 152
+},
+{
+"iid": "30e218dd9800572ffcaee8edeef679e4",
+"chars": 251314,
+"giant": false,
+"skal_lyde": 95,
+"endr_markers": 53,
+"issued": "2000",
+"pages": 116
+},
+{
+"iid": "966003ac91a300adc11ae450e99b7176",
+"chars": 219708,
+"giant": false,
+"skal_lyde": 93,
+"endr_markers": 140,
+"issued": "1999",
+"pages": 102
+},
+{
+"iid": "6bc51257ef43ae392602bd3562d13f8c",
+"chars": 262026,
+"giant": false,
+"skal_lyde": 93,
+"endr_markers": 105,
+"issued": "1998",
+"pages": 140
+},
+{
+"iid": "abad095f393f9e7741bd4aa3d8d07544",
+"chars": 311778,
+"giant": false,
+"skal_lyde": 87,
+"endr_markers": 160,
+"issued": "1996",
+"pages": 144
+},
+{
+"iid": "2cd4fba4ca37924b1083595d62a715f2",
+"chars": 247767,
+"giant": false,
+"skal_lyde": 86,
+"endr_markers": 99,
+"issued": "1993",
+"pages": 120
+},
+{
+"iid": "36667fb6317158e72dee93181eaf3481",
+"chars": 179108,
+"giant": false,
+"skal_lyde": 84,
+"endr_markers": 96,
+"issued": "1979",
+"pages": 100
+},
+{
+"iid": "58e8c54a6115b522adb01a63e0566d4c",
+"chars": 254372,
+"giant": false,
+"skal_lyde": 84,
+"endr_markers": 69,
+"issued": "1998",
+"pages": 152
+},
+{
+"iid": "2dbe1e6299d7a2c9bfcd989d86ac3ef5",
+"chars": 353223,
+"giant": false,
+"skal_lyde": 83,
+"endr_markers": 190,
+"issued": "1992",
+"pages": 184
+},
+{
+"iid": "db0c63a5f0158c110b636564e278a9b1",
+"chars": 115771,
+"giant": false,
+"skal_lyde": 79,
+"endr_markers": 65,
+"issued": "1981",
+"pages": 68
+},
+{
+"iid": "89d14892cd0da9558b2bb4a917dcaca6",
+"chars": 107693,
+"giant": false,
+"skal_lyde": 77,
+"endr_markers": 100,
+"issued": "1997",
+"pages": 56
+},
+{
+"iid": "46b4eff39e1d18030281f4e239ac1eb7",
+"chars": 76001,
+"giant": false,
+"skal_lyde": 77,
+"endr_markers": 60,
+"issued": "1979",
+"pages": 48
+},
+{
+"iid": "efe8e0cf33aab52f5d319028531ae874",
+"chars": 180469,
+"giant": false,
+"skal_lyde": 75,
+"endr_markers": 116,
+"issued": "1994",
+"pages": 96
+},
+{
+"iid": "4a29744f8a843dd2f11634af251f7b36",
+"chars": 60846,
+"giant": false,
+"skal_lyde": 73,
+"endr_markers": 43,
+"issued": "1979",
+"pages": 32
+},
+{
+"iid": "2e26d51a7b388b15da344032d1b99a68",
+"chars": 214836,
+"giant": false,
+"skal_lyde": 68,
+"endr_markers": 66,
+"issued": "2000",
+"pages": 112
+},
+{
+"iid": "587ff8c06bf7c0a1aeae8b900f487375",
+"chars": 106000,
+"giant": false,
+"skal_lyde": 68,
+"endr_markers": 56,
+"issued": "1978",
+"pages": 56
+},
+{
+"iid": "92d11b4f93aa2dc7c1d8597179c50f84",
+"chars": 116696,
+"giant": false,
+"skal_lyde": 68,
+"endr_markers": 53,
+"issued": "1974",
+"pages": 68
+},
+{
+"iid": "2353f36b318f08f445d2a24231c2ee5e",
+"chars": 76648,
+"giant": false,
+"skal_lyde": 68,
+"endr_markers": 24,
+"issued": "1970",
+"pages": 40
+},
+{
+"iid": "f34407991f0b737cfe332a6657dc3eae",
+"chars": 216457,
+"giant": false,
+"skal_lyde": 66,
+"endr_markers": 132,
+"issued": "1993",
+"pages": 138
+},
+{
+"iid": "eccf5e6c872c321b79ef8ebf6a0c1642",
+"chars": 90006,
+"giant": false,
+"skal_lyde": 66,
+"endr_markers": 61,
+"issued": "1986",
+"pages": 56
+},
+{
+"iid": "991e4372cf17366cda4c5a46c288275f",
+"chars": 167753,
+"giant": false,
+"skal_lyde": 65,
+"endr_markers": 83,
+"issued": "2000",
+"pages": 80
+},
+{
+"iid": "3e84e3e1890e9c6849a0c286fce0436a",
+"chars": 182374,
+"giant": false,
+"skal_lyde": 63,
+"endr_markers": 103,
+"issued": "1996",
+"pages": 92
+},
+{
+"iid": "455fefe1b4fbe98697dd5c9b9ec601dd",
+"chars": 170247,
+"giant": false,
+"skal_lyde": 63,
+"endr_markers": 90,
+"issued": "1997",
+"pages": 84
+},
+{
+"iid": "e8bc23a27b368592fdbe3d0bf894a804",
+"chars": 250580,
+"giant": false,
+"skal_lyde": 63,
+"endr_markers": 86,
+"issued": "1995",
+"pages": 122
+},
+{
+"iid": "e8667900d75971cbced83a15d72c961d",
+"chars": 353206,
+"giant": false,
+"skal_lyde": 62,
+"endr_markers": 154,
+"issued": "1998",
+"pages": 180
+},
+{
+"iid": "30c960f8a1adaa150e239f750f0be063",
+"chars": 209263,
+"giant": false,
+"skal_lyde": 62,
+"endr_markers": 82,
+"issued": "1999",
+"pages": 112
+},
+{
+"iid": "9a7d2ace4c9bddabfc09b1c98cb9642d",
+"chars": 241466,
+"giant": false,
+"skal_lyde": 62,
+"endr_markers": 61,
+"issued": "1981",
+"pages": 140
+},
+{
+"iid": "7b24a144e592a141bf08f0b63d91b570",
+"chars": 87236,
+"giant": false,
+"skal_lyde": 60,
+"endr_markers": 64,
+"issued": "1993",
+"pages": 46
+},
+{
+"iid": "1a9a0f95ffcdd2ba711ca85dae9aced3",
+"chars": 151922,
+"giant": false,
+"skal_lyde": 59,
+"endr_markers": 68,
+"issued": "1974",
+"pages": 84
+},
+{
+"iid": "da2d176b624c4a6bd87d691003b87eff",
+"chars": 177444,
+"giant": false,
+"skal_lyde": 59,
+"endr_markers": 62,
+"issued": "2000",
+"pages": 104
+},
+{
+"iid": "a3e98f4cce1316ad1ad2244ceade3b0a",
+"chars": 115869,
+"giant": false,
+"skal_lyde": 58,
+"endr_markers": 48,
+"issued": "1981",
+"pages": 60
+},
+{
+"iid": "04569d2bcaac7c80699870f913260746",
+"chars": 197696,
+"giant": false,
+"skal_lyde": 57,
+"endr_markers": 83,
+"issued": "1996",
+"pages": 96
+},
+{
+"iid": "fde097fc244d309538b33e09d06fe94d",
+"chars": 208052,
+"giant": false,
+"skal_lyde": 57,
+"endr_markers": 73,
+"issued": "1998",
+"pages": 110
+},
+{
+"iid": "6e3c8637c7cd8a96a3ab00235538e2de",
+"chars": 145403,
+"giant": false,
+"skal_lyde": 57,
+"endr_markers": 51,
+"issued": "1996",
+"pages": 80
+},
+{
+"iid": "5fce03ff1d7aa4d6c74541cbecfddb42",
+"chars": 145514,
+"giant": false,
+"skal_lyde": 55,
+"endr_markers": 92,
+"issued": "1993",
+"pages": 74
+},
+{
+"iid": "e359b08565112d9fcaa9777443e6de55",
+"chars": 156117,
+"giant": false,
+"skal_lyde": 55,
+"endr_markers": 78,
+"issued": "1998",
+"pages": 88
+},
+{
+"iid": "4dcb467bc06731da5160329c551b3626",
+"chars": 124475,
+"giant": false,
+"skal_lyde": 54,
+"endr_markers": 78,
+"issued": "1998",
+"pages": 72
+},
+{
+"iid": "c9587e4fd385bd219492cab714289228",
+"chars": 63036,
+"giant": false,
+"skal_lyde": 54,
+"endr_markers": 21,
+"issued": "1978",
+"pages": 36
+},
+{
+"iid": "230bce95c8e5480fe85dc84378db41e1",
+"chars": 201130,
+"giant": false,
+"skal_lyde": 53,
+"endr_markers": 83,
+"issued": "1997",
+"pages": 96
+},
+{
+"iid": "38e9111510f6ea5c2ca9f49ba7e7d085",
+"chars": 167127,
+"giant": false,
+"skal_lyde": 52,
+"endr_markers": 78,
+"issued": "1995",
+"pages": 84
+},
+{
+"iid": "c08deb233c0121f3f7626d4ff0ab493c",
+"chars": 154832,
+"giant": false,
+"skal_lyde": 51,
+"endr_markers": 83,
+"issued": "1993",
+"pages": 80
+},
+{
+"iid": "afada81b28c0c7e4d191ccd16b8435fe",
+"chars": 190405,
+"giant": false,
+"skal_lyde": 50,
+"endr_markers": 78,
+"issued": "2000",
+"pages": 104
+},
+{
+"iid": "d40189fe46c6618c55d7eb645381d789",
+"chars": 51993,
+"giant": false,
+"skal_lyde": 50,
+"endr_markers": 65,
+"issued": "1991",
+"pages": 32
+},
+{
+"iid": "6da372a361412147fb44d6c729b7bb96",
+"chars": 147887,
+"giant": false,
+"skal_lyde": 49,
+"endr_markers": 50,
+"issued": "1959",
+"pages": 76
+},
+{
+"iid": "119238080e0162eddbb59f587579df22",
+"chars": 88447,
+"giant": false,
+"skal_lyde": 48,
+"endr_markers": 28,
+"issued": "1977",
+"pages": 52
+},
+{
+"iid": "bb6914166ab8708d0088586ee665c639",
+"chars": 71346,
+"giant": false,
+"skal_lyde": 47,
+"endr_markers": 50,
+"issued": "1992",
+"pages": 40
+},
+{
+"iid": "d67b2b15df33931657abe55061e84f20",
+"chars": 114499,
+"giant": false,
+"skal_lyde": 47,
+"endr_markers": 50,
+"issued": "1958",
+"pages": 54
+},
+{
+"iid": "3c94cc5dacff01f66fba870d59ed5270",
+"chars": 251272,
+"giant": false,
+"skal_lyde": 46,
+"endr_markers": 70,
+"issued": "1970",
+"pages": 132
+},
+{
+"iid": "4941c66ba2415d44a0671467a2438f0c",
+"chars": 212741,
+"giant": false,
+"skal_lyde": 45,
+"endr_markers": 135,
+"issued": "1998",
+"pages": 112
+},
+{
+"iid": "b18db6f8a99f77acf47b7b0b24d1d573",
+"chars": 189868,
+"giant": false,
+"skal_lyde": 45,
+"endr_markers": 85,
+"issued": "1995",
+"pages": 94
+},
+{
+"iid": "6bebe2e8f1ece3f37478266adc213f83",
+"chars": 93338,
+"giant": false,
+"skal_lyde": 45,
+"endr_markers": 27,
+"issued": "1959",
+"pages": 42
+},
+{
+"iid": "0a67b87c89cb607a9e809fa87afc1eda",
+"chars": 186563,
+"giant": false,
+"skal_lyde": 44,
+"endr_markers": 74,
+"issued": "1997",
+"pages": 88
+},
+{
+"iid": "9aeaff7f96156b2af01cb6ffb4b9c30d",
+"chars": 114334,
+"giant": false,
+"skal_lyde": 44,
+"endr_markers": 44,
+"issued": "1998",
+"pages": 60
+},
+{
+"iid": "a1c99f8f1993b618b60e78d96c5ce202",
+"chars": 24548,
+"giant": false,
+"skal_lyde": 43,
+"endr_markers": 25,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "4a6b6b5293bdbf7961db03f11335a1a5",
+"chars": 135218,
+"giant": false,
+"skal_lyde": 42,
+"endr_markers": 81,
+"issued": "1998",
+"pages": 70
+},
+{
+"iid": "9f87b97ee943c2a4608cfbae4aed35b8",
+"chars": 47612,
+"giant": false,
+"skal_lyde": 42,
+"endr_markers": 70,
+"issued": "1983",
+"pages": 32
+},
+{
+"iid": "125a0bc6a84d3a8facc23a6bfce7313b",
+"chars": 241128,
+"giant": false,
+"skal_lyde": 41,
+"endr_markers": 63,
+"issued": "1997",
+"pages": 118
+},
+{
+"iid": "9d0ae13a55e61cbd0c8f87a178d8f5de",
+"chars": 144803,
+"giant": false,
+"skal_lyde": 41,
+"endr_markers": 59,
+"issued": "1993",
+"pages": 74
+},
+{
+"iid": "0b564e395c5c48c373d16533e9464cbb",
+"chars": 101511,
+"giant": false,
+"skal_lyde": 40,
+"endr_markers": 67,
+"issued": "1993",
+"pages": 54
+},
+{
+"iid": "3a62dc1f1af073d1179a96a0de1d574a",
+"chars": 178440,
+"giant": false,
+"skal_lyde": 40,
+"endr_markers": 61,
+"issued": "1996",
+"pages": 96
+},
+{
+"iid": "05a1bfb54ef2830ff96b24f07c8d6ea1",
+"chars": 83507,
+"giant": false,
+"skal_lyde": 40,
+"endr_markers": 53,
+"issued": "1991",
+"pages": 48
+},
+{
+"iid": "07239b77b2fe08a078a92e1cc410ec2e",
+"chars": 216101,
+"giant": false,
+"skal_lyde": 39,
+"endr_markers": 51,
+"issued": "1997",
+"pages": 110
+},
+{
+"iid": "e75d5a64b7b3471ad77d713a952cfffa",
+"chars": 73953,
+"giant": false,
+"skal_lyde": 39,
+"endr_markers": 51,
+"issued": "1995",
+"pages": 46
+},
+{
+"iid": "ba7551fc304dbb657a032c3c7960f0b2",
+"chars": 45567,
+"giant": false,
+"skal_lyde": 39,
+"endr_markers": 43,
+"issued": "1986",
+"pages": 32
+},
+{
+"iid": "fbad03460af940987d9c68cfa9f0423d",
+"chars": 86947,
+"giant": false,
+"skal_lyde": 38,
+"endr_markers": 55,
+"issued": "1981",
+"pages": 48
+},
+{
+"iid": "6b734abcff858e499aaeb1a0f5d258b2",
+"chars": 63099,
+"giant": false,
+"skal_lyde": 38,
+"endr_markers": 22,
+"issued": "1974",
+"pages": 36
+},
+{
+"iid": "057d5831f6f07ae834ff3da4409d7b5d",
+"chars": 212160,
+"giant": false,
+"skal_lyde": 37,
+"endr_markers": 83,
+"issued": "1996",
+"pages": 100
+},
+{
+"iid": "b9e75e0799ad8a298c75fc6f6f37a92d",
+"chars": 206599,
+"giant": false,
+"skal_lyde": 37,
+"endr_markers": 57,
+"issued": "2000",
+"pages": 112
+},
+{
+"iid": "833fc173974d4dcd876f5f7a046d811e",
+"chars": 63625,
+"giant": false,
+"skal_lyde": 37,
+"endr_markers": 55,
+"issued": "1997",
+"pages": 38
+},
+{
+"iid": "554ada63e66920f321948e8df9fbdc2f",
+"chars": 250353,
+"giant": false,
+"skal_lyde": 36,
+"endr_markers": 147,
+"issued": "1993",
+"pages": 124
+},
+{
+"iid": "d68d3c0f5ad0b58f9cd9222bf684513a",
+"chars": 240153,
+"giant": false,
+"skal_lyde": 36,
+"endr_markers": 69,
+"issued": "1999",
+"pages": 116
+},
+{
+"iid": "8ada1b326c201e491d73f4dcde1170f3",
+"chars": 181166,
+"giant": false,
+"skal_lyde": 36,
+"endr_markers": 59,
+"issued": "1993",
+"pages": 86
+},
+{
+"iid": "413d0a2cba48e0db81412ca6ac8f1028",
+"chars": 110600,
+"giant": false,
+"skal_lyde": 36,
+"endr_markers": 57,
+"issued": "1996",
+"pages": 64
+},
+{
+"iid": "f595b0a017a69043b76404304481d5b1",
+"chars": 144977,
+"giant": false,
+"skal_lyde": 36,
+"endr_markers": 51,
+"issued": "1978",
+"pages": 72
+},
+{
+"iid": "b68f1f840aa2390a766e7dd59d135174",
+"chars": 72694,
+"giant": false,
+"skal_lyde": 36,
+"endr_markers": 42,
+"issued": "1979",
+"pages": 44
+},
+{
+"iid": "2397fa04cfff985380e3ee77d83c6a5e",
+"chars": 138988,
+"giant": false,
+"skal_lyde": 36,
+"endr_markers": 34,
+"issued": "1978",
+"pages": 80
+},
+{
+"iid": "4efd53133cd207734a5a76d69d7dd9f2",
+"chars": 95157,
+"giant": false,
+"skal_lyde": 35,
+"endr_markers": 62,
+"issued": "1990",
+"pages": 48
+},
+{
+"iid": "5b6c2b72186db674dab1539f1b9d688d",
+"chars": 165532,
+"giant": false,
+"skal_lyde": 34,
+"endr_markers": 73,
+"issued": "1993",
+"pages": 84
+},
+{
+"iid": "f2e9c8d0adf462bbafdc0a1b86567568",
+"chars": 211394,
+"giant": false,
+"skal_lyde": 34,
+"endr_markers": 73,
+"issued": "1990",
+"pages": 106
+},
+{
+"iid": "a49b6b007000c415e7281bf19b83ffa5",
+"chars": 127715,
+"giant": false,
+"skal_lyde": 34,
+"endr_markers": 36,
+"issued": "1955",
+"pages": 64
+},
+{
+"iid": "81203155a40e3c845d509e72b5693379",
+"chars": 247984,
+"giant": false,
+"skal_lyde": 33,
+"endr_markers": 98,
+"issued": "1994",
+"pages": 128
+},
+{
+"iid": "95333370b3678390a5a0a55ce1854da8",
+"chars": 187567,
+"giant": false,
+"skal_lyde": 33,
+"endr_markers": 73,
+"issued": "1999",
+"pages": 98
+},
+{
+"iid": "d4b9dc53ca64efb6502363ec20677e41",
+"chars": 133485,
+"giant": false,
+"skal_lyde": 33,
+"endr_markers": 67,
+"issued": "1991",
+"pages": 72
+},
+{
+"iid": "05f5b486b45ec4f33663035bb029f377",
+"chars": 270819,
+"giant": false,
+"skal_lyde": 33,
+"endr_markers": 50,
+"issued": "1998",
+"pages": 148
+},
+{
+"iid": "154d3bba69d9e8673bdedc038dde653b",
+"chars": 57124,
+"giant": false,
+"skal_lyde": 33,
+"endr_markers": 38,
+"issued": "1978",
+"pages": 32
+},
+{
+"iid": "8ccf8ae4477ce84ce69a75ebb5bcbb08",
+"chars": 246333,
+"giant": false,
+"skal_lyde": 32,
+"endr_markers": 162,
+"issued": "1959",
+"pages": 120
+},
+{
+"iid": "8ee1e71678a8a476922c1f5a5fdd654b",
+"chars": 130828,
+"giant": false,
+"skal_lyde": 32,
+"endr_markers": 62,
+"issued": "1996",
+"pages": 64
+},
+{
+"iid": "0d6bcd091bacd46d2ebda6824fe1d179",
+"chars": 36141,
+"giant": false,
+"skal_lyde": 31,
+"endr_markers": 35,
+"issued": "1985",
+"pages": 24
+},
+{
+"iid": "554ceab3b780513f6d62a7756788ab28",
+"chars": 25314,
+"giant": false,
+"skal_lyde": 31,
+"endr_markers": 7,
+"issued": "1979",
+"pages": 20
+},
+{
+"iid": "bef55764f26cb41ea5fddcd61fab0ed0",
+"chars": 102981,
+"giant": false,
+"skal_lyde": 30,
+"endr_markers": 59,
+"issued": "1994",
+"pages": 52
+},
+{
+"iid": "6be5a933bd5bd411afdc2ce8ec4b2822",
+"chars": 62874,
+"giant": false,
+"skal_lyde": 30,
+"endr_markers": 44,
+"issued": "1991",
+"pages": 36
+},
+{
+"iid": "ae303ce6d0756282dce59887742728ee",
+"chars": 75635,
+"giant": false,
+"skal_lyde": 30,
+"endr_markers": 34,
+"issued": "1981",
+"pages": 40
+},
+{
+"iid": "aec2a9138d1f5f32471084a7b462d29e",
+"chars": 248566,
+"giant": false,
+"skal_lyde": 29,
+"endr_markers": 112,
+"issued": "1994",
+"pages": 108
+},
+{
+"iid": "190fe9b09f0007d86416dd08e179be1e",
+"chars": 326079,
+"giant": false,
+"skal_lyde": 28,
+"endr_markers": 90,
+"issued": "1994",
+"pages": 148
+},
+{
+"iid": "27eee2cff78f4963637bc7cb831d5e80",
+"chars": 177127,
+"giant": false,
+"skal_lyde": 28,
+"endr_markers": 68,
+"issued": "1994",
+"pages": 86
+},
+{
+"iid": "2edfddcd85f87e344ee0dd270c4b3c9a",
+"chars": 70330,
+"giant": false,
+"skal_lyde": 27,
+"endr_markers": 58,
+"issued": "1983",
+"pages": 44
+},
+{
+"iid": "d299c85c708453a961098ddd9a3ed77e",
+"chars": 90122,
+"giant": false,
+"skal_lyde": 27,
+"endr_markers": 25,
+"issued": "1959",
+"pages": 44
+},
+{
+"iid": "74109ede3fad0fae8258ebca65a5d272",
+"chars": 98788,
+"giant": false,
+"skal_lyde": 26,
+"endr_markers": 39,
+"issued": "1995",
+"pages": 52
+},
+{
+"iid": "ae852b6d7696bff55d00b9abe7629f2d",
+"chars": 70081,
+"giant": false,
+"skal_lyde": 26,
+"endr_markers": 38,
+"issued": "1986",
+"pages": 44
+},
+{
+"iid": "c9ff3f9415c097cddbb1c9138e7ebcc3",
+"chars": 195256,
+"giant": false,
+"skal_lyde": 25,
+"endr_markers": 97,
+"issued": "1993",
+"pages": 94
+},
+{
+"iid": "d1d0e335ed628a9aad01f10910019c75",
+"chars": 172150,
+"giant": false,
+"skal_lyde": 25,
+"endr_markers": 88,
+"issued": "1997",
+"pages": 80
+},
+{
+"iid": "102b577dc7922cc7094a727136193eaa",
+"chars": 50330,
+"giant": false,
+"skal_lyde": 25,
+"endr_markers": 36,
+"issued": "1983",
+"pages": 32
+},
+{
+"iid": "92fd47f455dddca94a1f96b2a6b0dccf",
+"chars": 70425,
+"giant": false,
+"skal_lyde": 24,
+"endr_markers": 26,
+"issued": "1974",
+"pages": 44
+},
+{
+"iid": "254acf0da8af91beeeabe70c27823ab6",
+"chars": 109943,
+"giant": false,
+"skal_lyde": 23,
+"endr_markers": 77,
+"issued": "1985",
+"pages": 64
+},
+{
+"iid": "4b67785bf0c18194ea24c8e5b272d76b",
+"chars": 112643,
+"giant": false,
+"skal_lyde": 23,
+"endr_markers": 61,
+"issued": "1997",
+"pages": 58
+},
+{
+"iid": "9eee990cd5617af0593edcd8d88b265e",
+"chars": 156471,
+"giant": false,
+"skal_lyde": 23,
+"endr_markers": 55,
+"issued": "1950",
+"pages": 72
+},
+{
+"iid": "439e68701c3efc0463e925ef1b1a775f",
+"chars": 43975,
+"giant": false,
+"skal_lyde": 23,
+"endr_markers": 25,
+"issued": "1983",
+"pages": 28
+},
+{
+"iid": "1224c62c57b2720363932b0de64c7f41",
+"chars": 35666,
+"giant": false,
+"skal_lyde": 23,
+"endr_markers": 20,
+"issued": "1979",
+"pages": 20
+},
+{
+"iid": "8b4dfdac4b251d1b440990274bd70b9b",
+"chars": 102347,
+"giant": false,
+"skal_lyde": 22,
+"endr_markers": 55,
+"issued": "1985",
+"pages": 58
+},
+{
+"iid": "6a97d9b0988df4e82107edee65d59d0a",
+"chars": 93309,
+"giant": false,
+"skal_lyde": 22,
+"endr_markers": 39,
+"issued": "1978",
+"pages": 52
+},
+{
+"iid": "defb890dacb93153d88113719b1fa45f",
+"chars": 33084,
+"giant": false,
+"skal_lyde": 22,
+"endr_markers": 22,
+"issued": "1979",
+"pages": 20
+},
+{
+"iid": "2379a8100eda3117782a58af7e7705b4",
+"chars": 33131,
+"giant": false,
+"skal_lyde": 22,
+"endr_markers": 18,
+"issued": "1977",
+"pages": 24
+},
+{
+"iid": "4c808b63e71a90eb92f30c558b5c74ba",
+"chars": 152783,
+"giant": false,
+"skal_lyde": 21,
+"endr_markers": 78,
+"issued": "1959",
+"pages": 74
+},
+{
+"iid": "2ef08fb23dd8bd9034557e5769177769",
+"chars": 213053,
+"giant": false,
+"skal_lyde": 21,
+"endr_markers": 52,
+"issued": "1990",
+"pages": 102
+},
+{
+"iid": "5ca4572e318b550226e9a2a5fcc8fcde",
+"chars": 121935,
+"giant": false,
+"skal_lyde": 21,
+"endr_markers": 50,
+"issued": "1985",
+"pages": 74
+},
+{
+"iid": "6d5f4c846cd9eb85b26adab31fe64050",
+"chars": 42417,
+"giant": false,
+"skal_lyde": 21,
+"endr_markers": 49,
+"issued": "1985",
+"pages": 28
+},
+{
+"iid": "20510cbccb112a424c1bd1df9fc1b59d",
+"chars": 62758,
+"giant": false,
+"skal_lyde": 21,
+"endr_markers": 35,
+"issued": "1990",
+"pages": 32
+},
+{
+"iid": "3afda9fc87ac50d2551ef6fc8ef46439",
+"chars": 76109,
+"giant": false,
+"skal_lyde": 21,
+"endr_markers": 33,
+"issued": "1974",
+"pages": 44
+},
+{
+"iid": "d03fe334ca37775e484b851c5a2d8907",
+"chars": 49148,
+"giant": false,
+"skal_lyde": 21,
+"endr_markers": 23,
+"issued": "1977",
+"pages": 32
+},
+{
+"iid": "277e809a9ab8f9be81c401dc67371f88",
+"chars": 310681,
+"giant": false,
+"skal_lyde": 20,
+"endr_markers": 53,
+"issued": "1997",
+"pages": 148
+},
+{
+"iid": "eee767e840509316d2b0d2b6f4a86cbb",
+"chars": 60069,
+"giant": false,
+"skal_lyde": 20,
+"endr_markers": 22,
+"issued": "1979",
+"pages": 36
+},
+{
+"iid": "07c13a7291a3e262501f9a83018bf7a8",
+"chars": 227929,
+"giant": false,
+"skal_lyde": 19,
+"endr_markers": 89,
+"issued": "1997",
+"pages": 112
+},
+{
+"iid": "1be68a2ef8e49f36ca2fd64aa813366b",
+"chars": 254220,
+"giant": false,
+"skal_lyde": 19,
+"endr_markers": 36,
+"issued": "2000",
+"pages": 148
+},
+{
+"iid": "148fe982c09e33d45100d7bcac1c0392",
+"chars": 30196,
+"giant": false,
+"skal_lyde": 19,
+"endr_markers": 29,
+"issued": "1983",
+"pages": 20
+},
+{
+"iid": "d3e35b906432ac6dd489b70adc854f74",
+"chars": 32784,
+"giant": false,
+"skal_lyde": 19,
+"endr_markers": 29,
+"issued": "1978",
+"pages": 20
+},
+{
+"iid": "8d0f04262fcfef7483f68e5597ae89fc",
+"chars": 68057,
+"giant": false,
+"skal_lyde": 19,
+"endr_markers": 28,
+"issued": "1978",
+"pages": 40
+},
+{
+"iid": "70ff6fbc140c40b1304920722c19dec0",
+"chars": 39162,
+"giant": false,
+"skal_lyde": 18,
+"endr_markers": 40,
+"issued": "1991",
+"pages": 28
+},
+{
+"iid": "aa6e22fcf1a00b39bfe8b5e8d3646cda",
+"chars": 77432,
+"giant": false,
+"skal_lyde": 17,
+"endr_markers": 45,
+"issued": "2000",
+"pages": 40
+},
+{
+"iid": "32caf25024f7282c47ab4cd7196fdcdb",
+"chars": 39009,
+"giant": false,
+"skal_lyde": 17,
+"endr_markers": 31,
+"issued": "1985",
+"pages": 28
+},
+{
+"iid": "72fde21f23ac016523197ede2ae2d944",
+"chars": 51084,
+"giant": false,
+"skal_lyde": 17,
+"endr_markers": 20,
+"issued": "1951",
+"pages": 24
+},
+{
+"iid": "226ee0f3fd98192f1acbe3e70e146c6b",
+"chars": 136570,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 59,
+"issued": "1991",
+"pages": 72
+},
+{
+"iid": "66f5e1e2acbb7f2472c9c54e8a6e4a75",
+"chars": 91677,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 55,
+"issued": "1995",
+"pages": 48
+},
+{
+"iid": "ba4f8ceb96da90367b18b27d7f73419a",
+"chars": 45973,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 40,
+"issued": "1991",
+"pages": 28
+},
+{
+"iid": "84b7b7d4838807b38652b0b3e1710554",
+"chars": 55652,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 39,
+"issued": "1979",
+"pages": 32
+},
+{
+"iid": "4f838009535df027afc798ef321c232f",
+"chars": 63377,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 34,
+"issued": "1986",
+"pages": 40
+},
+{
+"iid": "54a82ae5198234549add8640b717421d",
+"chars": 160946,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 31,
+"issued": "1985",
+"pages": 86
+},
+{
+"iid": "4ddb2d2a1f602c2fe1f8b2450fb046e0",
+"chars": 37692,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 22,
+"issued": "1958",
+"pages": 20
+},
+{
+"iid": "9cebdf481fb357c2c5f8db32869cde63",
+"chars": 20906,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 21,
+"issued": "1974",
+"pages": 16
+},
+{
+"iid": "e439590a7fd5b1429ce652df76d32903",
+"chars": 23627,
+"giant": false,
+"skal_lyde": 16,
+"endr_markers": 8,
+"issued": "1979",
+"pages": 16
+},
+{
+"iid": "cc203f18ea2af3b04a4df3359a2321cc",
+"chars": 46521,
+"giant": false,
+"skal_lyde": 15,
+"endr_markers": 60,
+"issued": "1991",
+"pages": 32
+},
+{
+"iid": "2a3590a7e500bdca0374ee1346b309ef",
+"chars": 132528,
+"giant": false,
+"skal_lyde": 15,
+"endr_markers": 49,
+"issued": "1983",
+"pages": 76
+},
+{
+"iid": "d78b748b4a83b61ce68110c1f58d8623",
+"chars": 232480,
+"giant": false,
+"skal_lyde": 15,
+"endr_markers": 44,
+"issued": "1994",
+"pages": 114
+},
+{
+"iid": "a065a84d5572b56bfa66496fa8527989",
+"chars": 88170,
+"giant": false,
+"skal_lyde": 15,
+"endr_markers": 43,
+"issued": "1990",
+"pages": 44
+},
+{
+"iid": "8cd988a9ca638f4acfe390bae64867d2",
+"chars": 41917,
+"giant": false,
+"skal_lyde": 15,
+"endr_markers": 35,
+"issued": "1986",
+"pages": 28
+},
+{
+"iid": "cf5e4456ca0b50a37b5d64de5f3d4cf2",
+"chars": 36456,
+"giant": false,
+"skal_lyde": 15,
+"endr_markers": 29,
+"issued": "1983",
+"pages": 24
+},
+{
+"iid": "67551904189de46e06da8fe17a626270",
+"chars": 56501,
+"giant": false,
+"skal_lyde": 15,
+"endr_markers": 18,
+"issued": "1970",
+"pages": 34
+},
+{
+"iid": "4fb2925ca9d18494aab73eaca7555fdf",
+"chars": 16976,
+"giant": false,
+"skal_lyde": 14,
+"endr_markers": 25,
+"issued": "1979",
+"pages": 12
+},
+{
+"iid": "db6d927c549fe8c63956085c2407de9a",
+"chars": 44037,
+"giant": false,
+"skal_lyde": 14,
+"endr_markers": 19,
+"issued": "1974",
+"pages": 32
+},
+{
+"iid": "89470d60b28a2b983339018fe5116a8d",
+"chars": 24549,
+"giant": false,
+"skal_lyde": 14,
+"endr_markers": 18,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "a68b50cbce5e68fc996425f24090ee15",
+"chars": 62935,
+"giant": false,
+"skal_lyde": 14,
+"endr_markers": 11,
+"issued": "1951",
+"pages": 32
+},
+{
+"iid": "46f8c3b4993e38c0c4b9ba1e20ec884b",
+"chars": 47839,
+"giant": false,
+"skal_lyde": 13,
+"endr_markers": 38,
+"issued": "1990",
+"pages": 24
+},
+{
+"iid": "880cbb04c570f7881e20daef10dc66be",
+"chars": 109312,
+"giant": false,
+"skal_lyde": 13,
+"endr_markers": 34,
+"issued": "2000",
+"pages": 64
+},
+{
+"iid": "f2d45da637dd9d9aab1eefffab208d6a",
+"chars": 137377,
+"giant": false,
+"skal_lyde": 13,
+"endr_markers": 29,
+"issued": "1954",
+"pages": 60
+},
+{
+"iid": "9134d10ab0b5b8cc862bb3d3570cf3e1",
+"chars": 100262,
+"giant": false,
+"skal_lyde": 13,
+"endr_markers": 24,
+"issued": "1979",
+"pages": 64
+},
+{
+"iid": "13193c94943c588dd33b77696b17e680",
+"chars": 20751,
+"giant": false,
+"skal_lyde": 13,
+"endr_markers": 21,
+"issued": "1981",
+"pages": 12
+},
+{
+"iid": "a8e6dda7c95b47bf103e74e7497f0dc8",
+"chars": 49599,
+"giant": false,
+"skal_lyde": 13,
+"endr_markers": 18,
+"issued": "1981",
+"pages": 28
+},
+{
+"iid": "e75bd1fbf45e1ef8fc2d00fa8187ffa8",
+"chars": 29692,
+"giant": false,
+"skal_lyde": 13,
+"endr_markers": 12,
+"issued": "1979",
+"pages": 16
+},
+{
+"iid": "d05b59b27a12d15d2b8901084e9b21b9",
+"chars": 17904,
+"giant": false,
+"skal_lyde": 13,
+"endr_markers": 5,
+"issued": "1979",
+"pages": 12
+},
+{
+"iid": "b0055158497e0e9c4682631a8b7d9106",
+"chars": 38661,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 45,
+"issued": "1986",
+"pages": 24
+},
+{
+"iid": "b357a6946f2b6bc36acc319b7f491d46",
+"chars": 102536,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 39,
+"issued": "1958",
+"pages": 58
+},
+{
+"iid": "d18e913ca06baa692f1f921b5773f197",
+"chars": 54966,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 34,
+"issued": "1974",
+"pages": 36
+},
+{
+"iid": "8e00b8e5cc101c5903d5d5e27edecd6a",
+"chars": 118464,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 34,
+"issued": "1983",
+"pages": 68
+},
+{
+"iid": "2faef6487976ba49246c81d668a340a6",
+"chars": 50415,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 30,
+"issued": "1974",
+"pages": 28
+},
+{
+"iid": "2db9de85d0f82622631653c725a0b94f",
+"chars": 42669,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 28,
+"issued": "1991",
+"pages": 28
+},
+{
+"iid": "2fc858999764486c6f4db88e2249d9ce",
+"chars": 33670,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 20,
+"issued": "1959",
+"pages": 18
+},
+{
+"iid": "d6c50fed80a7322f00ca3620e56b2c10",
+"chars": 28117,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 13,
+"issued": "1974",
+"pages": 16
+},
+{
+"iid": "a229e85949acb78715e3c9f61a1b0bd4",
+"chars": 24662,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 11,
+"issued": "1978",
+"pages": 16
+},
+{
+"iid": "d85f05a19b7c7dd5fb59580c40743b66",
+"chars": 28434,
+"giant": false,
+"skal_lyde": 12,
+"endr_markers": 7,
+"issued": "1979",
+"pages": 16
+},
+{
+"iid": "19142d673195e2c26348352fd43129fc",
+"chars": 71443,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 61,
+"issued": "1991",
+"pages": 44
+},
+{
+"iid": "c61da1d0da220c6688387878ef405b6d",
+"chars": 152092,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 49,
+"issued": "1986",
+"pages": 80
+},
+{
+"iid": "a47dc3001df78edd4854ebb8b7e6b339",
+"chars": 155540,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 49,
+"issued": "1951",
+"pages": 80
+},
+{
+"iid": "25642d8522520f3f54fec8b5ee11936c",
+"chars": 27024,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 28,
+"issued": "1983",
+"pages": 16
+},
+{
+"iid": "88b9cf44ce373aacc31df7e5a853d670",
+"chars": 27127,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 17,
+"issued": "1955",
+"pages": 12
+},
+{
+"iid": "8ea0dc2cbcce68a17308a95fc761a7fb",
+"chars": 41399,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 17,
+"issued": "1981",
+"pages": 24
+},
+{
+"iid": "610af2d1cdc1eaf388ac89ff78761825",
+"chars": 37065,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 16,
+"issued": "1970",
+"pages": 20
+},
+{
+"iid": "ce897155ff8a94b968fe496da1cd13d5",
+"chars": 32424,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 13,
+"issued": "1970",
+"pages": 18
+},
+{
+"iid": "55597ffcba8ce236097ac6e25e6b6a4d",
+"chars": 27849,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 13,
+"issued": "1955",
+"pages": 16
+},
+{
+"iid": "5755b96cdf187ed011e39f6bda18acfd",
+"chars": 115196,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 12,
+"issued": "1977",
+"pages": 72
+},
+{
+"iid": "d726c40c81a3c752012d3fa73e471dc7",
+"chars": 19241,
+"giant": false,
+"skal_lyde": 11,
+"endr_markers": 7,
+"issued": "1979",
+"pages": 12
+},
+{
+"iid": "d2e7e71ee4844f5e075363afe17b07c7",
+"chars": 197222,
+"giant": false,
+"skal_lyde": 10,
+"endr_markers": 79,
+"issued": "1995",
+"pages": 94
+},
+{
+"iid": "064835e03664b392ea5b80772616155f",
+"chars": 99971,
+"giant": false,
+"skal_lyde": 10,
+"endr_markers": 44,
+"issued": "1978",
+"pages": 56
+},
+{
+"iid": "38f81bc53ebe25205e0c0fd3817bfea1",
+"chars": 42871,
+"giant": false,
+"skal_lyde": 10,
+"endr_markers": 25,
+"issued": "1983",
+"pages": 24
+},
+{
+"iid": "13a6799888b1f4033b238442fe90d952",
+"chars": 72280,
+"giant": false,
+"skal_lyde": 10,
+"endr_markers": 22,
+"issued": "1977",
+"pages": 40
+},
+{
+"iid": "b61acfb14adcd998eb3a7b223ed03ae6",
+"chars": 52523,
+"giant": false,
+"skal_lyde": 10,
+"endr_markers": 10,
+"issued": "1985",
+"pages": 36
+},
+{
+"iid": "10cb57eb1d2b793342b836620b51a3ec",
+"chars": 200399,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 38,
+"issued": "1954",
+"pages": 96
+},
+{
+"iid": "f6dd08da698bc69859c9049e8bdd1ae8",
+"chars": 132015,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 37,
+"issued": "1986",
+"pages": 76
+},
+{
+"iid": "bddd9f93abd47d17a7ee0622fde7deb9",
+"chars": 63260,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 29,
+"issued": "1986",
+"pages": 40
+},
+{
+"iid": "1bc630c6a0ba11a96ac0633ca5514b4d",
+"chars": 50683,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 27,
+"issued": "1958",
+"pages": 26
+},
+{
+"iid": "1675b69fb3db5b8ee5f433305e58549d",
+"chars": 18543,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 24,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "24700b5a506be66e80d28669b6acdb5b",
+"chars": 39072,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 23,
+"issued": "1986",
+"pages": 26
+},
+{
+"iid": "3428201ada175c689327a044d78989fe",
+"chars": 68242,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 23,
+"issued": "1970",
+"pages": 40
+},
+{
+"iid": "6e55fe096d944465994cc34f9cee3fe1",
+"chars": 25816,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 21,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "58d187b13ab3ba79d7c8ca293b291656",
+"chars": 31679,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 20,
+"issued": "1974",
+"pages": 20
+},
+{
+"iid": "20acad61a93305b36312fb021a97075f",
+"chars": 63278,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 17,
+"issued": "1954",
+"pages": 32
+},
+{
+"iid": "a3a2be415e995a7325594c4c2d742d48",
+"chars": 11866,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 16,
+"issued": "1979",
+"pages": 8
+},
+{
+"iid": "a575d260a486e05f8398f9d0c62cf51e",
+"chars": 18003,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 15,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "8274db001a6419f67e6225d879a565fc",
+"chars": 23762,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 10,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "c418446ea6e297fd7ef3bd160c1dc2c6",
+"chars": 39168,
+"giant": false,
+"skal_lyde": 9,
+"endr_markers": 6,
+"issued": "1958",
+"pages": 18
+},
+{
+"iid": "c5a7a7f89197ee1109175dbfb2e0af8c",
+"chars": 62670,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 72,
+"issued": "1992",
+"pages": 40
+},
+{
+"iid": "3d951a00d578984735f76e25141baa88",
+"chars": 84373,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 41,
+"issued": "1985",
+"pages": 52
+},
+{
+"iid": "3dcba599ac3d474c699ff9f0e3be819a",
+"chars": 36957,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 37,
+"issued": "1981",
+"pages": 24
+},
+{
+"iid": "d6c9101919093d9c1e5837e5ec33e82c",
+"chars": 127629,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 34,
+"issued": "1955",
+"pages": 66
+},
+{
+"iid": "09bf7ffb201994e273e80bdf5ae11809",
+"chars": 67398,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 34,
+"issued": "1983",
+"pages": 44
+},
+{
+"iid": "01a73d489467df69aa58c73d8b8e3043",
+"chars": 70737,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 27,
+"issued": "1992",
+"pages": 40
+},
+{
+"iid": "5eec2f614a5e1553daf4a89d16ddc0a5",
+"chars": 93245,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 23,
+"issued": "1959",
+"pages": 46
+},
+{
+"iid": "a9f512f723c22b923cc52c03390fcbdc",
+"chars": 93878,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 22,
+"issued": "1951",
+"pages": 42
+},
+{
+"iid": "0d0bc9e58d64d5ec8c0da6883195a34e",
+"chars": 57955,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 21,
+"issued": "1992",
+"pages": 28
+},
+{
+"iid": "a7cedd3cae116f8d6d185338abfb03e7",
+"chars": 28047,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 19,
+"issued": "1974",
+"pages": 16
+},
+{
+"iid": "00f37f00a05d0486355bcecd6463849d",
+"chars": 36221,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 16,
+"issued": "1978",
+"pages": 20
+},
+{
+"iid": "f37be216f71c27f1167902c2ebab8e4b",
+"chars": 34476,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 15,
+"issued": "1974",
+"pages": 20
+},
+{
+"iid": "cbe99e3690015184267cfaf35fff0b40",
+"chars": 23312,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 13,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "001a5001e10a2a97d7d3a946958c27aa",
+"chars": 55859,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 13,
+"issued": "1970",
+"pages": 32
+},
+{
+"iid": "87f46013a04b0043082613dd5cb8167e",
+"chars": 37863,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 11,
+"issued": "1981",
+"pages": 24
+},
+{
+"iid": "052e7e747e4b3e48ef6e8a1064512a1f",
+"chars": 27678,
+"giant": false,
+"skal_lyde": 8,
+"endr_markers": 6,
+"issued": "1979",
+"pages": 16
+},
+{
+"iid": "d3453f082085f998eb5f0fc4b961c629",
+"chars": 67047,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 53,
+"issued": "1993",
+"pages": 36
+},
+{
+"iid": "15d6219550fd655b14c13d6e6db15ba6",
+"chars": 38452,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 33,
+"issued": "1977",
+"pages": 24
+},
+{
+"iid": "6d61999c053114f02af4db90cce827d7",
+"chars": 32423,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 30,
+"issued": "1986",
+"pages": 24
+},
+{
+"iid": "9b9cc81a327c0f2391d10f7fb55a6873",
+"chars": 66777,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 28,
+"issued": "1979",
+"pages": 40
+},
+{
+"iid": "1023f5cc7d0654c83cc293ea20ccd1e6",
+"chars": 29032,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 25,
+"issued": "1985",
+"pages": 20
+},
+{
+"iid": "4da630a0fbcfda5a6d0a02cab92bc044",
+"chars": 26963,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 19,
+"issued": "1977",
+"pages": 20
+},
+{
+"iid": "0ea5231186b62b808ec4d3309c8aabc6",
+"chars": 36410,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 19,
+"issued": "1983",
+"pages": 24
+},
+{
+"iid": "5600911a4e9a289de79689079b500b99",
+"chars": 31052,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 17,
+"issued": "1958",
+"pages": 16
+},
+{
+"iid": "8997842c6bd919a55cf19a7f2bef4491",
+"chars": 30522,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 16,
+"issued": "1983",
+"pages": 28
+},
+{
+"iid": "7515fe3e3c0fc7fc7ee9f1a88c9e5ed3",
+"chars": 16114,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 14,
+"issued": "1977",
+"pages": 12
+},
+{
+"iid": "4041fa0914286a0d3678a2bf4f1ee84c",
+"chars": 141110,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 11,
+"issued": "1974",
+"pages": 88
+},
+{
+"iid": "98acc9aefdbf1f5ef9c268ff3a7bf224",
+"chars": 54206,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 11,
+"issued": "1955",
+"pages": 26
+},
+{
+"iid": "b9ce1078853cda0d683d784a5c8bfe8a",
+"chars": 97582,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 9,
+"issued": "1949",
+"pages": 44
+},
+{
+"iid": "fdb85b54db7aed39536cba15da388ed8",
+"chars": 100699,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 9,
+"issued": "1994",
+"pages": 74
+},
+{
+"iid": "f2c3816d88f85ec4eeb4422288abb7b6",
+"chars": 37545,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 9,
+"issued": "1955",
+"pages": 18
+},
+{
+"iid": "efdbd3e4b4c6d1d44de03f9ad807a1ed",
+"chars": 42521,
+"giant": false,
+"skal_lyde": 7,
+"endr_markers": 8,
+"issued": "1978",
+"pages": 28
+},
+{
+"iid": "e82226fc86bf5efb595f6251b2d5852e",
+"chars": 231746,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 48,
+"issued": "1997",
+"pages": 114
+},
+{
+"iid": "1969df1bd732f5ede6267e0b2b392b4e",
+"chars": 536918,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 40,
+"issued": "1978",
+"pages": 324
+},
+{
+"iid": "3a693e9a8dc2f8fcfbd72d55e4680dbc",
+"chars": 181011,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 39,
+"issued": "1955",
+"pages": 96
+},
+{
+"iid": "d289725e6dab41f31a608e689d51b509",
+"chars": 47734,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 36,
+"issued": "1981",
+"pages": 28
+},
+{
+"iid": "187d2fa5c77ec144db876012ff10a7d3",
+"chars": 28281,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 29,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "66960bb25101fc5fc47dd122c5feea3f",
+"chars": 306887,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 28,
+"issued": "1999",
+"pages": 138
+},
+{
+"iid": "c73e03ad9a1cea75145e490a9f265162",
+"chars": 53478,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 28,
+"issued": "1985",
+"pages": 36
+},
+{
+"iid": "85a44beb540c10a050ca71982200642a",
+"chars": 91061,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 25,
+"issued": "1985",
+"pages": 64
+},
+{
+"iid": "06a41d6e10455eee802d5826a6f92577",
+"chars": 25184,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 25,
+"issued": "1974",
+"pages": 16
+},
+{
+"iid": "a723f5200532714e0e43a3a855b4aeec",
+"chars": 18852,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 21,
+"issued": "1979",
+"pages": 12
+},
+{
+"iid": "cb73b8cbb2f5b87a0a14aed0d37ed589",
+"chars": 13094,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 18,
+"issued": "1979",
+"pages": 8
+},
+{
+"iid": "6c2785c9f377c46b4acab5b08705c4a1",
+"chars": 15938,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 16,
+"issued": "1958",
+"pages": 10
+},
+{
+"iid": "706d2bc6e0c443bfc11a4626252da597",
+"chars": 35480,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 15,
+"issued": "1981",
+"pages": 24
+},
+{
+"iid": "e9a6dbe206f38c017ea3b696cffb418e",
+"chars": 46506,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 14,
+"issued": "1981",
+"pages": 28
+},
+{
+"iid": "e34550c0cde4d8457cb8e22b7aab5408",
+"chars": 65917,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 14,
+"issued": "1951",
+"pages": 32
+},
+{
+"iid": "3d9e0a79ba2a82994726b8ff04820ec0",
+"chars": 23540,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 14,
+"issued": "1979",
+"pages": 16
+},
+{
+"iid": "34f341a2942e7947ef0ede35cfbe2297",
+"chars": 24872,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 13,
+"issued": "1977",
+"pages": 20
+},
+{
+"iid": "e4682f921d33c9d0c1b11f508f039081",
+"chars": 43258,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 12,
+"issued": "1955",
+"pages": 22
+},
+{
+"iid": "a59270a3d72f54bafa72ed7c24d37a2a",
+"chars": 64404,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 11,
+"issued": "1978",
+"pages": 36
+},
+{
+"iid": "a8a20354b74aa267375f9739903b7f06",
+"chars": 40380,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 11,
+"issued": "1954",
+"pages": 20
+},
+{
+"iid": "0aabbeb5ef200f5307e7dd3c1d16461f",
+"chars": 21009,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 10,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "035d44966515cd630dedd50984fe61ce",
+"chars": 35742,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 10,
+"issued": "1983",
+"pages": 24
+},
+{
+"iid": "c7151b6a5e1856dad6779ec6413510fd",
+"chars": 33299,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 8,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "99e48ef66105fa0479c5ab1f24701516",
+"chars": 19512,
+"giant": false,
+"skal_lyde": 6,
+"endr_markers": 6,
+"issued": "1977",
+"pages": 16
+},
+{
+"iid": "ba2500a1d61ca2adeb239967c44db2d0",
+"chars": 165258,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 39,
+"issued": "1997",
+"pages": 80
+},
+{
+"iid": "b34a2bdd88ed65df95a2ebd02e87afa0",
+"chars": 95404,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 26,
+"issued": "1958",
+"pages": 42
+},
+{
+"iid": "bf70942d6fc8cf1c686620548d222890",
+"chars": 29098,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 24,
+"issued": "1978",
+"pages": 20
+},
+{
+"iid": "d823acc820e6f3ff2e21d178299d28c4",
+"chars": 89787,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 24,
+"issued": "1959",
+"pages": 52
+},
+{
+"iid": "20c0b79850aeda50f34d13dbeff06f94",
+"chars": 87987,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 20,
+"issued": "1974",
+"pages": 52
+},
+{
+"iid": "13538ad9bfc46094ee08f162d557d9b9",
+"chars": 58973,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 19,
+"issued": "1974",
+"pages": 32
+},
+{
+"iid": "2365e764747455dd11f3ec09c5856162",
+"chars": 81621,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 15,
+"issued": "1970",
+"pages": 48
+},
+{
+"iid": "ae5477cb6effaec04acc1b1836bd6545",
+"chars": 38574,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 15,
+"issued": "1978",
+"pages": 20
+},
+{
+"iid": "1ed9aec1cdcc5bb172738778f54f4215",
+"chars": 42161,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 15,
+"issued": "1981",
+"pages": 28
+},
+{
+"iid": "316772c8d9cbe54396cd1d9824b91b90",
+"chars": 21100,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 14,
+"issued": "1981",
+"pages": 12
+},
+{
+"iid": "0652c672cda68bbd4c7ac005811d1b21",
+"chars": 56254,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 14,
+"issued": "1958",
+"pages": 28
+},
+{
+"iid": "dee7eae2e723b4ddff737f459bdb4a4c",
+"chars": 36245,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 14,
+"issued": "1981",
+"pages": 20
+},
+{
+"iid": "67547866ac4b7b229f196165a2860a57",
+"chars": 30234,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 13,
+"issued": "1977",
+"pages": 20
+},
+{
+"iid": "9da2f07bd84a10e41e21a1ee95be7718",
+"chars": 12628,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 13,
+"issued": "1974",
+"pages": 8
+},
+{
+"iid": "c63269dc083eaca2714f3c314bdd1f7f",
+"chars": 18104,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 12,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "60da335bfb7c92b10df8bdff0420fa4f",
+"chars": 47244,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 10,
+"issued": "1981",
+"pages": 28
+},
+{
+"iid": "10f825742e3c810499f9379480d613c4",
+"chars": 32214,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 10,
+"issued": "1951",
+"pages": 16
+},
+{
+"iid": "258c8756bb7ccafa32f104d4fac04c66",
+"chars": 23606,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 9,
+"issued": "1974",
+"pages": 16
+},
+{
+"iid": "7b9857b2f8bf9c9918dd483ec6944a16",
+"chars": 26530,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 8,
+"issued": "1978",
+"pages": 16
+},
+{
+"iid": "b8ffa29a2fcfa660ff82e2d45a19500e",
+"chars": 20337,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 7,
+"issued": "1979",
+"pages": 12
+},
+{
+"iid": "e35b76df36ccaf8e6fae64417a5e6da8",
+"chars": 49619,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 7,
+"issued": "1977",
+"pages": 32
+},
+{
+"iid": "638dcfdf8db1f3cd147701475031ff70",
+"chars": 13609,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 6,
+"issued": "1958",
+"pages": 8
+},
+{
+"iid": "f409b6540a7673ddffb391d5b6a8388f",
+"chars": 27681,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 5,
+"issued": "1977",
+"pages": 20
+},
+{
+"iid": "20105e6ae0aa75a714f0fde70b8a4b1a",
+"chars": 22956,
+"giant": false,
+"skal_lyde": 5,
+"endr_markers": 3,
+"issued": "1978",
+"pages": 16
+},
+{
+"iid": "495c838eb684279116976dbea3058802",
+"chars": 48537,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 39,
+"issued": "1978",
+"pages": 28
+},
+{
+"iid": "651d0a5a5e9078310cc82b90b215f77a",
+"chars": 229306,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 31,
+"issued": "1999",
+"pages": 126
+},
+{
+"iid": "359b3a8d5c4f4b55960dcbcff2d2c8b1",
+"chars": 174032,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 31,
+"issued": "1996",
+"pages": 84
+},
+{
+"iid": "d054edde77ab1b88974f0d689591c1ad",
+"chars": 66537,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 30,
+"issued": "1986",
+"pages": 44
+},
+{
+"iid": "a6def682922db09b8ab4228e502281c3",
+"chars": 71260,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 28,
+"issued": "1977",
+"pages": 56
+},
+{
+"iid": "ba6490473ed726ec905854bd65728898",
+"chars": 50792,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 25,
+"issued": "1978",
+"pages": 28
+},
+{
+"iid": "e4d8c05b22d688f477a6ca4361d6b585",
+"chars": 47946,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 25,
+"issued": "1970",
+"pages": 28
+},
+{
+"iid": "4fd3fe2fc7be845eb3c6d17cc0b48b12",
+"chars": 46980,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 24,
+"issued": "1959",
+"pages": 28
+},
+{
+"iid": "1da57f1fcce2783d03076cf51b419636",
+"chars": 161239,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 24,
+"issued": "1950",
+"pages": 70
+},
+{
+"iid": "47526284554e8ebd22fcafc400bfed75",
+"chars": 28415,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 24,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "6d32b806e36522a935cfd5dca95b4a2c",
+"chars": 33991,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 23,
+"issued": "1986",
+"pages": 32
+},
+{
+"iid": "b03ea257211e488df0eaf2a9a0b991f2",
+"chars": 60537,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 21,
+"issued": "1985",
+"pages": 38
+},
+{
+"iid": "075b7399219c5d645df238b997418636",
+"chars": 27913,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 21,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "2be6b144245e0a5eac5855865bc4a538",
+"chars": 52836,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 19,
+"issued": "1979",
+"pages": 36
+},
+{
+"iid": "860b7d85caf40347ffb848a06fee71b3",
+"chars": 45333,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 17,
+"issued": "1958",
+"pages": 20
+},
+{
+"iid": "95800bd05dc1498342545354a7dc3485",
+"chars": 61351,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 16,
+"issued": "1949",
+"pages": 34
+},
+{
+"iid": "30620d3e8f11734f2d40cfffde311613",
+"chars": 20582,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 15,
+"issued": "1981",
+"pages": 12
+},
+{
+"iid": "d53cecc6ccc79654eafb4f4e63483011",
+"chars": 32003,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 15,
+"issued": "1990",
+"pages": 16
+},
+{
+"iid": "4ad6cd59751390f1d68d71369fc73256",
+"chars": 32528,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 14,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "f0287a99ce7fe5d840dd54be447a767a",
+"chars": 14703,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 13,
+"issued": "1958",
+"pages": 8
+},
+{
+"iid": "aa6529560ba3da348cba236d297c33c6",
+"chars": 41929,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 12,
+"issued": "1954",
+"pages": 20
+},
+{
+"iid": "0ed2f968438c7b1d2179cc95d2d1b1bd",
+"chars": 44581,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 12,
+"issued": "1951",
+"pages": 26
+},
+{
+"iid": "77e30737a0b81c4435c920259ef1303b",
+"chars": 17217,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 11,
+"issued": "1974",
+"pages": 12
+},
+{
+"iid": "2ba46dfb6a7dd4135295a39b20765fca",
+"chars": 39277,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 11,
+"issued": "1979",
+"pages": 20
+},
+{
+"iid": "5dcdcd4c671fd52f89b43c0fad6da172",
+"chars": 36560,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 11,
+"issued": "1954",
+"pages": 18
+},
+{
+"iid": "97426fc7c304a1c2b524bee4e704c24f",
+"chars": 30510,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 10,
+"issued": "1970",
+"pages": 18
+},
+{
+"iid": "007ef3430de31bffc83e6d4ac23db394",
+"chars": 22299,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 10,
+"issued": "1959",
+"pages": 12
+},
+{
+"iid": "6433a9f42658bb0e7bcae14823db285b",
+"chars": 37781,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 10,
+"issued": "1979",
+"pages": 24
+},
+{
+"iid": "68368d8d72ce7935c52541ab5858406a",
+"chars": 22649,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 9,
+"issued": "1949",
+"pages": 12
+},
+{
+"iid": "56c89d16153e8ae0f34c8f54690e1aea",
+"chars": 98938,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 9,
+"issued": "1950",
+"pages": 44
+},
+{
+"iid": "6ad6190d7965b46aea966a9d9ab8e116",
+"chars": 20833,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 9,
+"issued": "1959",
+"pages": 12
+},
+{
+"iid": "f4754492c006fef9211cb4207aa939e9",
+"chars": 63770,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 8,
+"issued": "1949",
+"pages": 32
+},
+{
+"iid": "209c81eb693b08fc9d5f481fb48dc2de",
+"chars": 12711,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 8,
+"issued": "1978",
+"pages": 8
+},
+{
+"iid": "b8b89adffbb789062df2039d1c12921d",
+"chars": 22312,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 7,
+"issued": "1977",
+"pages": 16
+},
+{
+"iid": "52b008fa84e39a9334aa5999df2ad887",
+"chars": 25252,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 7,
+"issued": "1949",
+"pages": 12
+},
+{
+"iid": "db475ccb624fbce81b4c49ad17df83ff",
+"chars": 18760,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 7,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "7ce3ee27fa453039e5bbb697e41bbcf8",
+"chars": 21077,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 6,
+"issued": "1974",
+"pages": 16
+},
+{
+"iid": "9b536c1b0b8850488051a689b9f16124",
+"chars": 6419,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 6,
+"issued": "1950",
+"pages": 4
+},
+{
+"iid": "9d3b69459c00ee0910ab1fe59bde0088",
+"chars": 22278,
+"giant": false,
+"skal_lyde": 4,
+"endr_markers": 2,
+"issued": "1979",
+"pages": 12
+},
+{
+"iid": "1852a7e138fa3a49dfb5df6fe0417b31",
+"chars": 80853,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 42,
+"issued": "1985",
+"pages": 48
+},
+{
+"iid": "24fd640bd5806af14ee3888894e24380",
+"chars": 182388,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 39,
+"issued": "1994",
+"pages": 84
+},
+{
+"iid": "c6c599b58b4b104b62ecd91b719bf5be",
+"chars": 73583,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 34,
+"issued": "1983",
+"pages": 44
+},
+{
+"iid": "4020aa454f533b8f7cd73cd393bd6a5e",
+"chars": 124501,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 26,
+"issued": "1955",
+"pages": 56
+},
+{
+"iid": "6a153fdce978ea59a50b056d08bbd0c5",
+"chars": 59074,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 25,
+"issued": "1955",
+"pages": 28
+},
+{
+"iid": "37e3f2ecae6c9bfe62a444045c0bffd5",
+"chars": 133351,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 24,
+"issued": "1977",
+"pages": 72
+},
+{
+"iid": "a76fda5a0c3e53458784a47bb97002e8",
+"chars": 44597,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 24,
+"issued": "1970",
+"pages": 24
+},
+{
+"iid": "7809107b43fac9e5267f268710c29489",
+"chars": 108181,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 21,
+"issued": "1959",
+"pages": 58
+},
+{
+"iid": "544a929483d78c5d87971d44e29eb441",
+"chars": 44913,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 19,
+"issued": "1974",
+"pages": 24
+},
+{
+"iid": "de5eab5eb7407e9e316fb91588f4d0cb",
+"chars": 135504,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 19,
+"issued": "1955",
+"pages": 60
+},
+{
+"iid": "9e448ae67b9f2fb998a3d121d9615267",
+"chars": 69529,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 19,
+"issued": "1977",
+"pages": 44
+},
+{
+"iid": "88a4c474b811969aff8332e7ca7f8efb",
+"chars": 81862,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 18,
+"issued": "1958",
+"pages": 42
+},
+{
+"iid": "141d97dc6331688b885d44d3607b3a20",
+"chars": 25486,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 15,
+"issued": "1978",
+"pages": 16
+},
+{
+"iid": "429540832c5c9c051697b07f29ea9cf6",
+"chars": 110030,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 15,
+"issued": "1958",
+"pages": 52
+},
+{
+"iid": "8f246d99d637feebc3a9f6148be2cbc6",
+"chars": 28690,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 14,
+"issued": "1978",
+"pages": 16
+},
+{
+"iid": "ef0cdef11bb4f2775dd4f112b07e7c8f",
+"chars": 20792,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 14,
+"issued": "1974",
+"pages": 12
+},
+{
+"iid": "3797335ccb38c82d976a9e0a65258fd4",
+"chars": 19645,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 13,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "c20716ae43994cd5af066db67b736c98",
+"chars": 49637,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 11,
+"issued": "1958",
+"pages": 22
+},
+{
+"iid": "e71e2f2f32e4f4ba76cbd73abc2a8767",
+"chars": 11781,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 11,
+"issued": "1979",
+"pages": 8
+},
+{
+"iid": "1a2df20ade85d3c9c4bb70be63e087e9",
+"chars": 42626,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 10,
+"issued": "1977",
+"pages": 28
+},
+{
+"iid": "da5fa88e7aab207cc29351af9d26d038",
+"chars": 38373,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 10,
+"issued": "1954",
+"pages": 18
+},
+{
+"iid": "9296db1daabf803592f88cb17f952bc9",
+"chars": 30537,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 10,
+"issued": "1977",
+"pages": 24
+},
+{
+"iid": "d443af89d71ff036cbe1a1f222ef36ae",
+"chars": 38140,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 10,
+"issued": "1974",
+"pages": 24
+},
+{
+"iid": "55972cfa944a20050fe4d1bd9ea2e336",
+"chars": 29725,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 9,
+"issued": "1949",
+"pages": 14
+},
+{
+"iid": "a94ea707622c76bf96c905456d1fcc11",
+"chars": 33668,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 9,
+"issued": "1949",
+"pages": 16
+},
+{
+"iid": "5c333eef6eb1669c682a7c1ea37def1e",
+"chars": 58364,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 8,
+"issued": "1951",
+"pages": 28
+},
+{
+"iid": "a76c637f147f545fed9581e015b0e7b2",
+"chars": 38236,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 8,
+"issued": "1950",
+"pages": 18
+},
+{
+"iid": "3f389cf10cd005b3aed4d171a14c1a82",
+"chars": 42653,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 7,
+"issued": "1949",
+"pages": 20
+},
+{
+"iid": "bacdec51f61e540d18b7270f45d0146f",
+"chars": 12499,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 7,
+"issued": "1958",
+"pages": 8
+},
+{
+"iid": "0ee677a9df06883ec1908c5f1480817f",
+"chars": 13401,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 7,
+"issued": "1974",
+"pages": 12
+},
+{
+"iid": "e38f7d4275d76d7570d0425d12dfc0cd",
+"chars": 23768,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 7,
+"issued": "1958",
+"pages": 12
+},
+{
+"iid": "ab057d95f98dc06d8cb44e7d0b870801",
+"chars": 11197,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 6,
+"issued": "1959",
+"pages": 8
+},
+{
+"iid": "1a807ef111bb26b705985c55b2777263",
+"chars": 25468,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 6,
+"issued": "1955",
+"pages": 12
+},
+{
+"iid": "671100f368bab65a0c3fdaf694144500",
+"chars": 18973,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 5,
+"issued": "1974",
+"pages": 12
+},
+{
+"iid": "e11deef4e7f280e4358e1f885fd117bb",
+"chars": 27327,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 3,
+"issued": "1958",
+"pages": 14
+},
+{
+"iid": "cbe52531dc0f92cf675ee47e3d69e50c",
+"chars": 6262,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 3,
+"issued": "1954",
+"pages": 4
+},
+{
+"iid": "f11edd7352b7a72e9dd6cc0c94d492b7",
+"chars": 9048,
+"giant": false,
+"skal_lyde": 3,
+"endr_markers": 2,
+"issued": "1950",
+"pages": 6
+},
+{
+"iid": "77d479b451f8ce37b0e5da4b498eb438",
+"chars": 213658,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 131,
+"issued": "1970",
+"pages": 104
+},
+{
+"iid": "6d44a96e62e47b03e0206c5cbf71655e",
+"chars": 76349,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 41,
+"issued": "1955",
+"pages": 40
+},
+{
+"iid": "55d85f61fa17bccacfe03a91b6c538cb",
+"chars": 32749,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 37,
+"issued": "1981",
+"pages": 20
+},
+{
+"iid": "b6449588fb892049e7d37e49e1026ec5",
+"chars": 19641,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 32,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "fe8239bfacb10c223ca1c69f73079f89",
+"chars": 19645,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 27,
+"issued": "1979",
+"pages": 12
+},
+{
+"iid": "be5afd539b26f6abc42928419de2143c",
+"chars": 477580,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 27,
+"issued": "2000",
+"pages": 260
+},
+{
+"iid": "37a6cb35c471c2c96a392c5b35db74b0",
+"chars": 104100,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 26,
+"issued": "1997",
+"pages": 60
+},
+{
+"iid": "caefcaa66cd9cc520e528ddb91247a93",
+"chars": 32083,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 25,
+"issued": "1959",
+"pages": 18
+},
+{
+"iid": "ccec6f8f7e62c146b332be8a323e83e7",
+"chars": 108589,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 25,
+"issued": "1974",
+"pages": 62
+},
+{
+"iid": "fe31812c4f574e9a07b73fa9d88e2b2e",
+"chars": 36489,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 20,
+"issued": "1974",
+"pages": 20
+},
+{
+"iid": "84ecb66daaba9a0c7aa02fc792a1dd03",
+"chars": 24412,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 20,
+"issued": "1978",
+"pages": 16
+},
+{
+"iid": "06f5de46af79666adcb3f9df609a8fc3",
+"chars": 104099,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 20,
+"issued": "1981",
+"pages": 68
+},
+{
+"iid": "c72b7665fa5a83d09fcd13ed9574f9d3",
+"chars": 120418,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 19,
+"issued": "1950",
+"pages": 54
+},
+{
+"iid": "a43fab9e68dd1c61b977e8a6e5205773",
+"chars": 27084,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 18,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "3e2a2329285c65c4aca00d335f020ab9",
+"chars": 77136,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 18,
+"issued": "1958",
+"pages": 38
+},
+{
+"iid": "8e5d260e9da942804101dcc65854e355",
+"chars": 52016,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 17,
+"issued": "1978",
+"pages": 32
+},
+{
+"iid": "e97aaa4830abd185aaa7e4ebbb39a2bd",
+"chars": 111494,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 17,
+"issued": "1951",
+"pages": 52
+},
+{
+"iid": "59605b643eb893d49596d5d8654e47c7",
+"chars": 98737,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 16,
+"issued": "1951",
+"pages": 48
+},
+{
+"iid": "4ffa0f9f65c05cc77ad4f41c1e6ea934",
+"chars": 66313,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 15,
+"issued": "1958",
+"pages": 32
+},
+{
+"iid": "438d22e5a128dc13205cbe8d9dea0fd4",
+"chars": 37113,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 15,
+"issued": "1981",
+"pages": 20
+},
+{
+"iid": "137ae3f1fd6c1a6889155d4722c62af7",
+"chars": 44308,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 15,
+"issued": "1970",
+"pages": 24
+},
+{
+"iid": "11d8b0a9c0d621e867eaaf5c51aeb81f",
+"chars": 85808,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 14,
+"issued": "1949",
+"pages": 40
+},
+{
+"iid": "f0c2b202f8632020bcaaa02e2e50d90f",
+"chars": 33546,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 14,
+"issued": "1951",
+"pages": 18
+},
+{
+"iid": "52718a60e8d1a2f224cd8e9909afd543",
+"chars": 35044,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 13,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "e310b68341ae490236c8fb5d10da7a21",
+"chars": 23691,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 13,
+"issued": "1979",
+"pages": 16
+},
+{
+"iid": "9b440e79885f2ab149107345773bb021",
+"chars": 23821,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 13,
+"issued": "1977",
+"pages": 16
+},
+{
+"iid": "edf07fb9d39c050291e473bb79dbd166",
+"chars": 43926,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 13,
+"issued": "1949",
+"pages": 22
+},
+{
+"iid": "70caf4ee31011970e453f0741b986e39",
+"chars": 40553,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 13,
+"issued": "1951",
+"pages": 18
+},
+{
+"iid": "93710559d6be831d07817c7f8f7a7072",
+"chars": 40875,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 13,
+"issued": "1950",
+"pages": 20
+},
+{
+"iid": "e4b51ccdb3b969dcd46d8574c2e94654",
+"chars": 102001,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 13,
+"issued": "1958",
+"pages": 48
+},
+{
+"iid": "5064ef6f737db0c34911a4d15d3ebbec",
+"chars": 27568,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 11,
+"issued": "1977",
+"pages": 20
+},
+{
+"iid": "d0243d327cf38e3e656c5e0f8f850c12",
+"chars": 68886,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 11,
+"issued": "1949",
+"pages": 32
+},
+{
+"iid": "460b2d73441160109653172c70dd6ce4",
+"chars": 30824,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 11,
+"issued": "1974",
+"pages": 20
+},
+{
+"iid": "c81f11e962dfe9ba9e3b4b30b8b04df2",
+"chars": 43943,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 11,
+"issued": "1951",
+"pages": 22
+},
+{
+"iid": "18a88c83216a4599f4264a0877ce13c6",
+"chars": 8802,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 11,
+"issued": "1979",
+"pages": 8
+},
+{
+"iid": "8270e32a663f5443bbd00bc923453caf",
+"chars": 18218,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 10,
+"issued": "1958",
+"pages": 10
+},
+{
+"iid": "6157768ded7e090e1aa4624caef20d87",
+"chars": 45789,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 10,
+"issued": "1978",
+"pages": 28
+},
+{
+"iid": "226639654ced0d8c166d7fb9a837bd21",
+"chars": 19768,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 10,
+"issued": "1954",
+"pages": 12
+},
+{
+"iid": "311a640bf94c436b68a51b5fa84e58de",
+"chars": 34368,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 10,
+"issued": "1951",
+"pages": 18
+},
+{
+"iid": "f6fb3c8f845de137b86f367185881f5a",
+"chars": 19509,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 9,
+"issued": "1977",
+"pages": 16
+},
+{
+"iid": "3c199e15429fbfb0d0080d935be322be",
+"chars": 47192,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 9,
+"issued": "1977",
+"pages": 32
+},
+{
+"iid": "5189f2fcbf8c305bca8c5a8b28027039",
+"chars": 37797,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 8,
+"issued": "1981",
+"pages": 32
+},
+{
+"iid": "c9fb658065c80c31211020927541b38a",
+"chars": 17219,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 8,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "42f32586c25ecdd8570548aa9bc2a9e9",
+"chars": 49426,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 8,
+"issued": "1949",
+"pages": 26
+},
+{
+"iid": "51e833add1cba472e4ac916ceb79f11f",
+"chars": 15302,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 8,
+"issued": "1959",
+"pages": 8
+},
+{
+"iid": "117002cae890a46a9773fef05ad4eb4d",
+"chars": 26887,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 8,
+"issued": "1979",
+"pages": 16
+},
+{
+"iid": "9218da7e89458d0c6597d76795d4b950",
+"chars": 32219,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 7,
+"issued": "1981",
+"pages": 20
+},
+{
+"iid": "8bd76957561c2586863c5673b11db494",
+"chars": 84383,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 7,
+"issued": "1951",
+"pages": 40
+},
+{
+"iid": "201c066c808205e91e885895e1f19a54",
+"chars": 28802,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 7,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "4896c7bcb302d122faa9e0859dfc3039",
+"chars": 35361,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 7,
+"issued": "1949",
+"pages": 18
+},
+{
+"iid": "324974afda775bcbcb169dfe22dc0f55",
+"chars": 12196,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 7,
+"issued": "1959",
+"pages": 8
+},
+{
+"iid": "6df36cb1ade9dc608d3370c4179dd3c8",
+"chars": 32290,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 6,
+"issued": "1955",
+"pages": 16
+},
+{
+"iid": "fcab18aa80399db1a8a0954044ebe8ef",
+"chars": 9697,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 6,
+"issued": "1974",
+"pages": 8
+},
+{
+"iid": "e967fae5791e72df4b1a2b36c66721cb",
+"chars": 14804,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 6,
+"issued": "1974",
+"pages": 8
+},
+{
+"iid": "ccc31712725db9c29f757a865b40d078",
+"chars": 34776,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 6,
+"issued": "1949",
+"pages": 16
+},
+{
+"iid": "a2e0d33f7f922471b04ed7662a0e9664",
+"chars": 39666,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 6,
+"issued": "1951",
+"pages": 18
+},
+{
+"iid": "1d02a9b06f0cf85f892311dd79e5f9ce",
+"chars": 70192,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 6,
+"issued": "1954",
+"pages": 40
+},
+{
+"iid": "be1aa5b28f19090537102336746e2b87",
+"chars": 20548,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 5,
+"issued": "1954",
+"pages": 10
+},
+{
+"iid": "dcc5a38204e27a9ccef6697a26d752bd",
+"chars": 17084,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 5,
+"issued": "1977",
+"pages": 16
+},
+{
+"iid": "40df103dbc692b1b5800f2eff54ec2a6",
+"chars": 29002,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 5,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "aca8de04f2e27863518e9384f31e5481",
+"chars": 22750,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 5,
+"issued": "1959",
+"pages": 12
+},
+{
+"iid": "8b9a7f01cea9b21cfe2ef5af3df4b8a3",
+"chars": 16265,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 5,
+"issued": "1950",
+"pages": 8
+},
+{
+"iid": "31e19db69458c9a587b116cb4f8fa6e5",
+"chars": 36764,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 5,
+"issued": "1970",
+"pages": 20
+},
+{
+"iid": "4a056319fbab658c9de2353c513d87a6",
+"chars": 24271,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 4,
+"issued": "1954",
+"pages": 12
+},
+{
+"iid": "b7d3ac8920c9d4493ea71b9101ee3711",
+"chars": 25103,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 4,
+"issued": "1978",
+"pages": 16
+},
+{
+"iid": "7c12b07d8ef30d056aea9cbae80f9ea0",
+"chars": 20152,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 3,
+"issued": "1958",
+"pages": 10
+},
+{
+"iid": "e9cce95f709d61a38d76500a63f17b0f",
+"chars": 22590,
+"giant": false,
+"skal_lyde": 2,
+"endr_markers": 1,
+"issued": "1950",
+"pages": 12
+},
+{
+"iid": "531a1bfb131f111f832b966cb2480956",
+"chars": 38968,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 41,
+"issued": "1981",
+"pages": 24
+},
+{
+"iid": "357df5af72d7a5912dce12e18a593ea1",
+"chars": 329716,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 34,
+"issued": "1992",
+"pages": 128
+},
+{
+"iid": "fffbabdf8eea26d3e92a7a9e8e11950c",
+"chars": 96193,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 25,
+"issued": "1955",
+"pages": 44
+},
+{
+"iid": "af647222c452944406e760562e89300b",
+"chars": 255149,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 21,
+"issued": "1993",
+"pages": 144
+},
+{
+"iid": "2828d6eb5e34a36d089dd07aab9fd69b",
+"chars": 47674,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 20,
+"issued": "1951",
+"pages": 22
+},
+{
+"iid": "70922bf55f2292a2f1c1066920de9a1e",
+"chars": 76284,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 19,
+"issued": "1954",
+"pages": 34
+},
+{
+"iid": "a5c064c2cb5f96b1cdf3bf1c4a2ef5b9",
+"chars": 82810,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 19,
+"issued": "1954",
+"pages": 40
+},
+{
+"iid": "491e7585d9bdb97545e34e98a75a673c",
+"chars": 34829,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 18,
+"issued": "1959",
+"pages": 18
+},
+{
+"iid": "7cf7a1c56b6be6a9742276000d3ec1bd",
+"chars": 122087,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 17,
+"issued": "1958",
+"pages": 56
+},
+{
+"iid": "1851139f4a5d98af6ac7fa7f353efae3",
+"chars": 47941,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 17,
+"issued": "1970",
+"pages": 28
+},
+{
+"iid": "3814bf67693e77beb697933f9ac3d423",
+"chars": 55909,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 16,
+"issued": "1951",
+"pages": 26
+},
+{
+"iid": "48d4c58dc3008cb1f069345b21b0c7d0",
+"chars": 31327,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 16,
+"issued": "1970",
+"pages": 18
+},
+{
+"iid": "9e90ccc769ea42736806bb4467c264fa",
+"chars": 29526,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 16,
+"issued": "1949",
+"pages": 16
+},
+{
+"iid": "826fda17ff372cbd0ee018887bf79d74",
+"chars": 150514,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 16,
+"issued": "1955",
+"pages": 72
+},
+{
+"iid": "e5a5631f70db3c94aed7cb4f9e8c7c75",
+"chars": 73943,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 15,
+"issued": "1950",
+"pages": 38
+},
+{
+"iid": "d7be68a0330e4e4b9ec9d5a647bbe6b1",
+"chars": 31657,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 15,
+"issued": "1951",
+"pages": 16
+},
+{
+"iid": "7bf4be14fdb724f35aab5f44d5daf49e",
+"chars": 39309,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 15,
+"issued": "1949",
+"pages": 20
+},
+{
+"iid": "f9dbafcb414d813782bcc508d02e92a2",
+"chars": 48437,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 15,
+"issued": "1954",
+"pages": 24
+},
+{
+"iid": "0c9b42ea72e962e4ce8ece4b6933052b",
+"chars": 38055,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 14,
+"issued": "1959",
+"pages": 18
+},
+{
+"iid": "d4beb5696549f84da6e8e3eafad5f217",
+"chars": 47041,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 14,
+"issued": "1977",
+"pages": 32
+},
+{
+"iid": "e322a8ec47cab30fba3fb1bfa1a1a79f",
+"chars": 103957,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 13,
+"issued": "1955",
+"pages": 48
+},
+{
+"iid": "528532247b1dd7c45169b5e3ccb8ae16",
+"chars": 105054,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 13,
+"issued": "1974",
+"pages": 72
+},
+{
+"iid": "41f7dc008f5b9c9d23e409613eeee9cc",
+"chars": 84704,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 13,
+"issued": "1959",
+"pages": 48
+},
+{
+"iid": "3c796c97732dc163fa01805284b9c018",
+"chars": 78328,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 13,
+"issued": "1974",
+"pages": 48
+},
+{
+"iid": "9dafadbe3031e92d6e682d99d7cb04b7",
+"chars": 57586,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 12,
+"issued": "1951",
+"pages": 28
+},
+{
+"iid": "994ab6670c4dedf25ad9da37df81649c",
+"chars": 28021,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 12,
+"issued": "1949",
+"pages": 14
+},
+{
+"iid": "1bf9673cfbd80f6cb6a7b32a42e16d3b",
+"chars": 44758,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 12,
+"issued": "1950",
+"pages": 24
+},
+{
+"iid": "b61e8a015668648b084a5728bd83d8ba",
+"chars": 59411,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 12,
+"issued": "1955",
+"pages": 32
+},
+{
+"iid": "cbe09cc40a0eadc5b6211571be36dd5a",
+"chars": 30126,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 11,
+"issued": "1949",
+"pages": 16
+},
+{
+"iid": "e67a336187ca2ce43327eb7d906ccdc5",
+"chars": 30118,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 11,
+"issued": "1955",
+"pages": 16
+},
+{
+"iid": "613e7dadbea3028a6ae242ea5ee9368d",
+"chars": 69701,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 11,
+"issued": "1958",
+"pages": 32
+},
+{
+"iid": "0c97057c9ffe7dd80b13d2df37ac8d1a",
+"chars": 21430,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 11,
+"issued": "1951",
+"pages": 10
+},
+{
+"iid": "e1d32f521f3c4066f159cd5c6a1f6f61",
+"chars": 32785,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 11,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "7787f0e9d624311b15ae46b72e48fc42",
+"chars": 32236,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "3d55daba43e875a67dcced1a1e46ddfd",
+"chars": 31233,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "4662f963c32ab350c01cb7a53d9d8108",
+"chars": 66509,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1955",
+"pages": 28
+},
+{
+"iid": "e3af37359ddf6b3ee448b375f9cfd8d6",
+"chars": 84840,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1950",
+"pages": 40
+},
+{
+"iid": "237ceed0a13379cf8a7d637e65c695a0",
+"chars": 65849,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1958",
+"pages": 30
+},
+{
+"iid": "e87fc98a679e51d71f40aa99c937c1b5",
+"chars": 16949,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1959",
+"pages": 10
+},
+{
+"iid": "7db8cc88693e23593087cff23ce51721",
+"chars": 49382,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1954",
+"pages": 24
+},
+{
+"iid": "2d23cc0701b69b913101d22d7eb37fc4",
+"chars": 18467,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1950",
+"pages": 10
+},
+{
+"iid": "d0b9a7c2d45a90ac4c53f3a86602c266",
+"chars": 28765,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 10,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "767f2c7a96afb65fb13cc0318b20b947",
+"chars": 21251,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1955",
+"pages": 10
+},
+{
+"iid": "ee23bf448e9bf5b3a75cd2e003a2a28e",
+"chars": 33497,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1977",
+"pages": 24
+},
+{
+"iid": "1f5854e5bb07ae5db395c141a6088720",
+"chars": 15961,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1974",
+"pages": 12
+},
+{
+"iid": "92bbf4d9fbdc955e0fedb5cbc0cbe1e0",
+"chars": 29896,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1958",
+"pages": 16
+},
+{
+"iid": "35b5b1517fd404959a9c3ca175c1f449",
+"chars": 15820,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1954",
+"pages": 8
+},
+{
+"iid": "00beb681ad3d50d1f1af1336e385b58a",
+"chars": 42197,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1981",
+"pages": 28
+},
+{
+"iid": "c7f0b3060c8a9b5a788ce62d2670292b",
+"chars": 31820,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1949",
+"pages": 16
+},
+{
+"iid": "8152a9d1be39ac29075c996f6e8ce2f6",
+"chars": 68595,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1950",
+"pages": 32
+},
+{
+"iid": "8f63223dfa85462e437359dad4c3fcfa",
+"chars": 36637,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 9,
+"issued": "1949",
+"pages": 18
+},
+{
+"iid": "76f21b25c2f50ba77304d3b38cb1840a",
+"chars": 17042,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1958",
+"pages": 10
+},
+{
+"iid": "bd7d244b5cdb3b30e661ff224a6db9e2",
+"chars": 62793,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1950",
+"pages": 30
+},
+{
+"iid": "8802ba768d10287c3da224e6f071c34d",
+"chars": 36379,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1949",
+"pages": 18
+},
+{
+"iid": "45ddebcd0f2160bbd9dd84c8916a7624",
+"chars": 33821,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1955",
+"pages": 20
+},
+{
+"iid": "97db42c1b7fe27a07b78210e42fb1fd9",
+"chars": 30744,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1949",
+"pages": 16
+},
+{
+"iid": "20032c090f8888ea23bbbbac469e2b96",
+"chars": 35101,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1949",
+"pages": 18
+},
+{
+"iid": "4cc20e8bfb225d1786cb5c87bbefebd8",
+"chars": 44558,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1949",
+"pages": 22
+},
+{
+"iid": "b85fdd38c099b3f469d204a0b5c9da70",
+"chars": 20917,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1974",
+"pages": 12
+},
+{
+"iid": "565979f8b42857e9818a5369fb5ebcb8",
+"chars": 48567,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 8,
+"issued": "1950",
+"pages": 24
+},
+{
+"iid": "ca659d9e496f228d86e66074e08c6f9d",
+"chars": 28993,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 7,
+"issued": "1974",
+"pages": 20
+},
+{
+"iid": "3fddead07b253430a31a68d75b6bf32d",
+"chars": 30018,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 7,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "c53796a83b56bfb3a5f80901c8d54dd1",
+"chars": 42656,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 7,
+"issued": "1950",
+"pages": 20
+},
+{
+"iid": "2eb012313878af0ea9207a6b25738ca3",
+"chars": 94850,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 7,
+"issued": "1950",
+"pages": 40
+},
+{
+"iid": "667510a8f2ff8002e12a2084576dfc92",
+"chars": 14903,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 7,
+"issued": "1959",
+"pages": 8
+},
+{
+"iid": "f92e15013a41030f1a8db079510bbab2",
+"chars": 18001,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1959",
+"pages": 10
+},
+{
+"iid": "9bc0830b1d55d19b01e0f9c4638c49ec",
+"chars": 36263,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1958",
+"pages": 18
+},
+{
+"iid": "2574a754cf156aaa76c60092cff9ddb4",
+"chars": 53483,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1950",
+"pages": 30
+},
+{
+"iid": "17343bce0a692d27ab035699af7571be",
+"chars": 43666,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1950",
+"pages": 20
+},
+{
+"iid": "94daa640434c5b9fb138b015961f9703",
+"chars": 29278,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "ed8aca084a67456b8ae6b5870a74d3fe",
+"chars": 13339,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1950",
+"pages": 8
+},
+{
+"iid": "36cc2f6848c9377151cefe61b16b3d08",
+"chars": 76360,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1979",
+"pages": 44
+},
+{
+"iid": "f1a4f48c496b94905dc66ea226ffd3dc",
+"chars": 28642,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1958",
+"pages": 14
+},
+{
+"iid": "58aaf18dfd16e5290bb018ab92f57cf2",
+"chars": 29800,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "8997325bbe4e3d206db956da5936ca5e",
+"chars": 31633,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 6,
+"issued": "1949",
+"pages": 16
+},
+{
+"iid": "8c3808ccb8c5898bf6e6a5fb511e36b2",
+"chars": 50161,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 5,
+"issued": "1954",
+"pages": 26
+},
+{
+"iid": "0be0633264cfcc38ee3adba8e4cecdae",
+"chars": 32579,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 5,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "5f5f064f266c8e233312395e98fe34c7",
+"chars": 23909,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 5,
+"issued": "1954",
+"pages": 12
+},
+{
+"iid": "534bba71add6c4f934a276d151de35dc",
+"chars": 33227,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 5,
+"issued": "1950",
+"pages": 16
+},
+{
+"iid": "c8110aa386c8cb9e4045aaa2afa0b180",
+"chars": 9599,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 5,
+"issued": "1954",
+"pages": 8
+},
+{
+"iid": "c641378cfaab8555467c4c449059b097",
+"chars": 14176,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 5,
+"issued": "1978",
+"pages": 8
+},
+{
+"iid": "31bdb7ccab79a8074acd7a711d7d59f1",
+"chars": 41734,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 5,
+"issued": "1958",
+"pages": 26
+},
+{
+"iid": "4cd4d36504f6f047fc40e961c23e422d",
+"chars": 14331,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 4,
+"issued": "1958",
+"pages": 8
+},
+{
+"iid": "700d480316a6935fb9e2463e22439ef7",
+"chars": 10853,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 4,
+"issued": "1950",
+"pages": 8
+},
+{
+"iid": "152d895a32c4390586db729a056aa62a",
+"chars": 25168,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 4,
+"issued": "1970",
+"pages": 16
+},
+{
+"iid": "b1b8c2eed25398adb224661599fb852f",
+"chars": 15887,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 4,
+"issued": "1948",
+"pages": 8
+},
+{
+"iid": "f81b917d493830655eaa8f9f48d5789f",
+"chars": 13182,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 4,
+"issued": "1949",
+"pages": 8
+},
+{
+"iid": "9244d23cc618ed4ef6a3c2440dc11f14",
+"chars": 58384,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 4,
+"issued": "1954",
+"pages": 26
+},
+{
+"iid": "ce5d14e246fd932ee4c60f0666ef6e84",
+"chars": 15539,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 4,
+"issued": "1958",
+"pages": 8
+},
+{
+"iid": "1b56f1490802bc5d62d39fcaa339a962",
+"chars": 13213,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 3,
+"issued": "1950",
+"pages": 8
+},
+{
+"iid": "28c894161e003f9e90ec63894bf11bb8",
+"chars": 6979,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 3,
+"issued": "1954",
+"pages": 4
+},
+{
+"iid": "28ed87603837762a45383b3bae9a847b",
+"chars": 16865,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 3,
+"issued": "1949",
+"pages": 8
+},
+{
+"iid": "6a794ddc6487688f1aca11297d8abbe4",
+"chars": 11235,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 2,
+"issued": "1955",
+"pages": 8
+},
+{
+"iid": "17cb8124b385447259ceec8975f66793",
+"chars": 42283,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 2,
+"issued": "1951",
+"pages": 20
+},
+{
+"iid": "f0a4233531404feb606af5611c3f63a1",
+"chars": 12203,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 2,
+"issued": "1958",
+"pages": 6
+},
+{
+"iid": "6c92d777d5577cbaab3e45a4104a059b",
+"chars": 4837,
+"giant": false,
+"skal_lyde": 1,
+"endr_markers": 1,
+"issued": "1954",
+"pages": 4
+},
+{
+"iid": "b15181cb8ca3ac41c62a972d1a77d646",
+"chars": 217623,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 116,
+"issued": "1994",
+"pages": 96
+},
+{
+"iid": "db2fdd5b1aa869a8871ed6a3b1375f1c",
+"chars": 222538,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 74,
+"issued": "1996",
+"pages": 106
+},
+{
+"iid": "1c722ae711451386261ee27859f6e89d",
+"chars": 90779,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 40,
+"issued": "1954",
+"pages": 42
+},
+{
+"iid": "4906afd1a14b3a86f77b32954b371025",
+"chars": 23852,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 27,
+"issued": "1955",
+"pages": 12
+},
+{
+"iid": "ae1d38b6fc553266fe0c06dbee3a4d14",
+"chars": 235405,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 22,
+"issued": "1992",
+"pages": 96
+},
+{
+"iid": "3d60634ec34e2e26e4a7f87fd684a7d7",
+"chars": 127499,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 22,
+"issued": "1959",
+"pages": 64
+},
+{
+"iid": "ccaf04aef4144bcaf9bd0f7adc2e96d2",
+"chars": 325870,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 22,
+"issued": "2000",
+"pages": 244
+},
+{
+"iid": "356ec03416d3dfdae4a4b19f16658441",
+"chars": 44174,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 21,
+"issued": "1970",
+"pages": 26
+},
+{
+"iid": "d267901d342bd16da9bcd24c401b6b90",
+"chars": 40131,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 21,
+"issued": "1959",
+"pages": 20
+},
+{
+"iid": "a813d18b39bf30bbd1e97e8334dcc42e",
+"chars": 79691,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 21,
+"issued": "1979",
+"pages": 48
+},
+{
+"iid": "a7f86c3afc4be708a6e3d588b6736d94",
+"chars": 56252,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 20,
+"issued": "1958",
+"pages": 26
+},
+{
+"iid": "9a84bb57e8d9315d883025384dc09e29",
+"chars": 65526,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 19,
+"issued": "1959",
+"pages": 32
+},
+{
+"iid": "d8b418ab3013cbfd846b4720fa819ca6",
+"chars": 117202,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 17,
+"issued": "1951",
+"pages": 56
+},
+{
+"iid": "33b45fbcd279e338a95f6c7ab26fc179",
+"chars": 40839,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 17,
+"issued": "1950",
+"pages": 20
+},
+{
+"iid": "5c72c3e060982f020e9900c96d71a947",
+"chars": 35306,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 16,
+"issued": "1959",
+"pages": 18
+},
+{
+"iid": "d666cfb24dd231b5d41ef5a473335bf6",
+"chars": 48901,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 16,
+"issued": "1949",
+"pages": 26
+},
+{
+"iid": "09457950c0ac465f7b51d3296ac9b4f0",
+"chars": 159821,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 15,
+"issued": "2000",
+"pages": 100
+},
+{
+"iid": "553397fb8f01d0dea40d0a8fe576faed",
+"chars": 52004,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 15,
+"issued": "1951",
+"pages": 26
+},
+{
+"iid": "9cce29ae3e5c772b84d8868dab92adbb",
+"chars": 17276,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 15,
+"issued": "1959",
+"pages": 10
+},
+{
+"iid": "0b54178608c7dbd50d88e54d61a58efa",
+"chars": 37419,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 15,
+"issued": "1977",
+"pages": 24
+},
+{
+"iid": "0dd1d402a21b7c2d0d4641b41f156e25",
+"chars": 23813,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 15,
+"issued": "1954",
+"pages": 14
+},
+{
+"iid": "fbc0e22cc3935466bfc3611d78b77480",
+"chars": 42947,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 14,
+"issued": "1950",
+"pages": 22
+},
+{
+"iid": "1165179e348310ff128f4814d84c1a8a",
+"chars": 37572,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 14,
+"issued": "1958",
+"pages": 18
+},
+{
+"iid": "93ab7e72156320107129bbc0bea8ff94",
+"chars": 26058,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 14,
+"issued": "1979",
+"pages": 16
+},
+{
+"iid": "f2885838bf7282196b2244cb4c028de9",
+"chars": 14795,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 13,
+"issued": "1959",
+"pages": 8
+},
+{
+"iid": "6be36a0014c6dfca448583bc6f14b901",
+"chars": 49345,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 13,
+"issued": "1970",
+"pages": 28
+},
+{
+"iid": "510848da028832dfe16579202c7f8c7f",
+"chars": 39021,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 12,
+"issued": "1949",
+"pages": 20
+},
+{
+"iid": "af6f8239e8f61a4d4ff34d9f252881e1",
+"chars": 31147,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 12,
+"issued": "1958",
+"pages": 16
+},
+{
+"iid": "862ea48bd22d3842ea3c443f7a1cbc18",
+"chars": 19701,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 12,
+"issued": "1949",
+"pages": 12
+},
+{
+"iid": "dafbb49d6f8d640c4ef4169e030d713d",
+"chars": 27265,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 12,
+"issued": "1951",
+"pages": 16
+},
+{
+"iid": "9b40e2967f8a50976f0da8fe8068c0ca",
+"chars": 30557,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 12,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "204eca6167d5e20c34bc3bff6f91cb74",
+"chars": 51605,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 12,
+"issued": "1954",
+"pages": 26
+},
+{
+"iid": "45d281f83f3c4806ecb43c8cd999af0d",
+"chars": 52734,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 12,
+"issued": "1958",
+"pages": 28
+},
+{
+"iid": "ea9f7f18cb2ded01f7df1d626e82e092",
+"chars": 38962,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 11,
+"issued": "1954",
+"pages": 20
+},
+{
+"iid": "9d19094b96d1abafd79e7c591ed43fda",
+"chars": 38248,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 11,
+"issued": "1950",
+"pages": 20
+},
+{
+"iid": "c5179750be188196b2383c572295c2d9",
+"chars": 42760,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 11,
+"issued": "1951",
+"pages": 20
+},
+{
+"iid": "f4ce7943c66e1bc9c5f327305bfa01dd",
+"chars": 34892,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 11,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "8151d5c044b6dc795e6600bdcd0a8133",
+"chars": 55640,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 10,
+"issued": "1949",
+"pages": 26
+},
+{
+"iid": "2a8de0285fb8d6c265393d72b97aca26",
+"chars": 26597,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 10,
+"issued": "1958",
+"pages": 14
+},
+{
+"iid": "9c00a4e861e50f5c2e306cc9dc5e32ec",
+"chars": 29492,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 10,
+"issued": "1951",
+"pages": 16
+},
+{
+"iid": "94d062c01db27930de0140beb8f3d24e",
+"chars": 64606,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 10,
+"issued": "1951",
+"pages": 28
+},
+{
+"iid": "c600eb60f8d34bde338eaf813ac22ae6",
+"chars": 50108,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 10,
+"issued": "1951",
+"pages": 24
+},
+{
+"iid": "8071ff8163d201ceb2a796217c9902e1",
+"chars": 29653,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 10,
+"issued": "1981",
+"pages": 16
+},
+{
+"iid": "d915c6b156bd7d48d515229dc8d8c815",
+"chars": 90068,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 9,
+"issued": "1979",
+"pages": 48
+},
+{
+"iid": "3acc23f23417fc00537de8bdc6aa2fa5",
+"chars": 29144,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 9,
+"issued": "1951",
+"pages": 16
+},
+{
+"iid": "459c2c6e8a88b3334a64918a7fd63d1d",
+"chars": 36210,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 9,
+"issued": "1981",
+"pages": 20
+},
+{
+"iid": "9b1a6722f75bf1827d58f794d0f00b78",
+"chars": 90418,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 9,
+"issued": "1950",
+"pages": 42
+},
+{
+"iid": "dafa272dcb5f84b29f7a3430ee4672ca",
+"chars": 42635,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1959",
+"pages": 20
+},
+{
+"iid": "7fb9489e7ae868ebb5144d68e200678c",
+"chars": 55096,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1955",
+"pages": 26
+},
+{
+"iid": "5dd2f197f043d3098c0749a130ab42f8",
+"chars": 185905,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1954",
+"pages": 80
+},
+{
+"iid": "70e1f665a1e6bd5165782a6590fb4ab2",
+"chars": 84489,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1950",
+"pages": 38
+},
+{
+"iid": "b7fb52961179f5bcf14705e926ebc8a5",
+"chars": 39388,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1951",
+"pages": 20
+},
+{
+"iid": "8535938f9c1df90f9bf8aa92f9661de0",
+"chars": 37533,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1955",
+"pages": 18
+},
+{
+"iid": "8bd72be72b1a28c27432c6e6d97d4aeb",
+"chars": 15534,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1954",
+"pages": 8
+},
+{
+"iid": "c7d870cc097edc74471ac4747b27057b",
+"chars": 32643,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1951",
+"pages": 16
+},
+{
+"iid": "bb20a0fb157282e00d24c64e2164a745",
+"chars": 47281,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1958",
+"pages": 22
+},
+{
+"iid": "28a932754d560d2a141f94b8a34ac2b1",
+"chars": 25090,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 8,
+"issued": "1951",
+"pages": 12
+},
+{
+"iid": "38dc7f9b141297892aee455864af7aab",
+"chars": 54528,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1955",
+"pages": 26
+},
+{
+"iid": "ab378f9d2b1c6d7ce372be44f7306ce4",
+"chars": 13027,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1951",
+"pages": 8
+},
+{
+"iid": "aed54ace4f41b98bfbe14eac2a57f2a1",
+"chars": 114084,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1955",
+"pages": 50
+},
+{
+"iid": "2bd8c5629863235db07ad373c2048086",
+"chars": 51207,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1950",
+"pages": 22
+},
+{
+"iid": "57d4c5203fe27daf8352b25dd9d53ec1",
+"chars": 28139,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1978",
+"pages": 16
+},
+{
+"iid": "847c53c372e2dc07a977505841d1578f",
+"chars": 19848,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1955",
+"pages": 12
+},
+{
+"iid": "d098d5a48993824e05ef64504010542e",
+"chars": 30079,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1958",
+"pages": 18
+},
+{
+"iid": "6457b356da94830c133c9c0ed9e04e17",
+"chars": 12700,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1955",
+"pages": 8
+},
+{
+"iid": "255775a64b05ad1b0c0a07c8cbf48159",
+"chars": 14820,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1974",
+"pages": 12
+},
+{
+"iid": "ee7bd84be1cc20800a7f72a374debe1c",
+"chars": 21026,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 7,
+"issued": "1954",
+"pages": 10
+},
+{
+"iid": "8295aa7386c6661ffa36a7223884db7a",
+"chars": 17611,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1949",
+"pages": 10
+},
+{
+"iid": "99d6aaaf1bd2513dfacf1c5e2e22ad1b",
+"chars": 25777,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1951",
+"pages": 12
+},
+{
+"iid": "11a7b89fbd85173effcb9ef62a066ad6",
+"chars": 19461,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1950",
+"pages": 10
+},
+{
+"iid": "a8f438d2d6db64b1146fcb3c517cc877",
+"chars": 47316,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1949",
+"pages": 26
+},
+{
+"iid": "503db8082c11dd235975cc668eabf2f3",
+"chars": 41563,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1950",
+"pages": 22
+},
+{
+"iid": "c9d4c3465f30893d93477c3998ad3f90",
+"chars": 73102,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1950",
+"pages": 32
+},
+{
+"iid": "44bcaf28f709677c815f2bd4fedba6ac",
+"chars": 109554,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1955",
+"pages": 50
+},
+{
+"iid": "755328b7b54fe4e0ed8edd100336d53f",
+"chars": 46370,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1954",
+"pages": 24
+},
+{
+"iid": "331a9364f28a65d9a63dad2c8ee0b57c",
+"chars": 25394,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1954",
+"pages": 12
+},
+{
+"iid": "4fb2602a7ca2833fc5106a392909d0b8",
+"chars": 32910,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1958",
+"pages": 16
+},
+{
+"iid": "7edbd7d527d1a216c4c4ef51818b0abe",
+"chars": 26278,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1958",
+"pages": 16
+},
+{
+"iid": "fb520bff639c6774da2477ae06994514",
+"chars": 48725,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 6,
+"issued": "1979",
+"pages": 28
+},
+{
+"iid": "a2a51c13606f9886070d4a0b113a6149",
+"chars": 53785,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1954",
+"pages": 32
+},
+{
+"iid": "2be3a18ffaddd2d38cbda48b51fa323a",
+"chars": 31887,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1950",
+"pages": 16
+},
+{
+"iid": "4ccd146c2340a23b8f99dcbd7382827e",
+"chars": 18626,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1949",
+"pages": 10
+},
+{
+"iid": "839e4a46651ebde9d93c5b0a0dfb0a79",
+"chars": 15879,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1951",
+"pages": 10
+},
+{
+"iid": "f5bf6ca5e59b72189c5a9bf9e3de6a48",
+"chars": 135756,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "2000",
+"pages": 96
+},
+{
+"iid": "b0de87a055ebe75eeac7e1057e33ce35",
+"chars": 27598,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1955",
+"pages": 16
+},
+{
+"iid": "7c38c6b3bd2449fb3e1fb1d66c37d0a3",
+"chars": 19767,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1951",
+"pages": 10
+},
+{
+"iid": "a46565ce6ff78095d5538a639647dbef",
+"chars": 13334,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1959",
+"pages": 8
+},
+{
+"iid": "5e0ddfc71583d866abee0befcaf56e4c",
+"chars": 29554,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1977",
+"pages": 20
+},
+{
+"iid": "0c8c86adfef6bf548fd4f1c018a2b383",
+"chars": 35079,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1950",
+"pages": 16
+},
+{
+"iid": "179046e26b44b2c288479e4d83c9df9c",
+"chars": 12290,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1949",
+"pages": 8
+},
+{
+"iid": "f65600222ca331cc287f22f2a7cfd022",
+"chars": 17698,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1951",
+"pages": 10
+},
+{
+"iid": "cf41e4c010278cb91b55cd2954c03dd7",
+"chars": 40305,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1950",
+"pages": 20
+},
+{
+"iid": "43dd7c3d41017c0483dd560fcb96c031",
+"chars": 29876,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 5,
+"issued": "1951",
+"pages": 16
+},
+{
+"iid": "83c8a5d2fa6d1f2e6237f66ae687672a",
+"chars": 36114,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1955",
+"pages": 16
+},
+{
+"iid": "21c474861253facaa1d97812dce2f4b2",
+"chars": 18974,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1950",
+"pages": 10
+},
+{
+"iid": "fd1ac8dfece4c36be292ae3bd57c8e07",
+"chars": 19506,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1954",
+"pages": 10
+},
+{
+"iid": "b0a9d2589fb93b1369fee79357aa4b45",
+"chars": 17948,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1950",
+"pages": 10
+},
+{
+"iid": "84997effae35bb48652a9ac7b2f732d2",
+"chars": 32975,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1977",
+"pages": 20
+},
+{
+"iid": "06e97bfb49c6079e511870aa6fbb2e1e",
+"chars": 34409,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1955",
+"pages": 16
+},
+{
+"iid": "ad186abea377c128266f96493021bd5b",
+"chars": 14484,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1955",
+"pages": 8
+},
+{
+"iid": "2748cfc8ef1a5e11b611175212c8abd1",
+"chars": 38561,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1949",
+"pages": 24
+},
+{
+"iid": "401884d2b8b52fc0096aba9847a55784",
+"chars": 23437,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1949",
+"pages": 12
+},
+{
+"iid": "10b05c8c1eaed6bd26e1c3438522bce7",
+"chars": 19136,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1950",
+"pages": 10
+},
+{
+"iid": "3351ef1c984151a0031477b0b6dfd182",
+"chars": 199927,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1950",
+"pages": 114
+},
+{
+"iid": "4b62140b98df5652ddebce7aab8b650e",
+"chars": 16810,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1959",
+"pages": 8
+},
+{
+"iid": "762683599e9cbc30ed3bf96572aeccdd",
+"chars": 37981,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1954",
+"pages": 18
+},
+{
+"iid": "3c63da0789d2d58c4df05ca8f6c0a499",
+"chars": 15057,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1950",
+"pages": 8
+},
+{
+"iid": "22dbe27791d20cf9ed07bffc2a99c337",
+"chars": 17704,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1959",
+"pages": 10
+},
+{
+"iid": "3a7312a62b698d667ef611928cce2cd6",
+"chars": 18923,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 4,
+"issued": "1950",
+"pages": 10
+},
+{
+"iid": "4376b9a1800e513132da0f16be58d1bb",
+"chars": 28469,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1959",
+"pages": 16
+},
+{
+"iid": "954964e7879e058a975ac86bf64d8ecd",
+"chars": 16524,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1950",
+"pages": 8
+},
+{
+"iid": "29d54ab4c0e52c44ba525c5717e7f5b0",
+"chars": 387179,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1959",
+"pages": 220
+},
+{
+"iid": "b78d9be47b4147e37873ccc3dc89dc46",
+"chars": 25927,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1954",
+"pages": 12
+},
+{
+"iid": "cd6f60663d828d4ddb5c85b7b2e62df8",
+"chars": 14455,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1949",
+"pages": 8
+},
+{
+"iid": "fadf7fd9011ff473f0e318e6f3d19d1f",
+"chars": 16176,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1949",
+"pages": 8
+},
+{
+"iid": "93d2b4b082098c1828d091358248728d",
+"chars": 50780,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1950",
+"pages": 24
+},
+{
+"iid": "449d80d8309f7547e8af9af681e7a019",
+"chars": 47892,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1950",
+"pages": 22
+},
+{
+"iid": "a13aadbe516e87b98b3d398f4bc97392",
+"chars": 17872,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1978",
+"pages": 12
+},
+{
+"iid": "c4051bf6c6c0d7aa9c15257a5b82fcf7",
+"chars": 53802,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1959",
+"pages": 26
+},
+{
+"iid": "c7911cd45e91ef322b3fcd751a122b73",
+"chars": 23898,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1951",
+"pages": 12
+},
+{
+"iid": "792334240c61d16fa7f1d64beb048157",
+"chars": 19456,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1979",
+"pages": 12
+},
+{
+"iid": "7b1127eacdb0528ed7e4a7506caa6524",
+"chars": 83854,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1949",
+"pages": 42
+},
+{
+"iid": "0d02c7d62923abf63ca6630035e2b329",
+"chars": 19288,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1951",
+"pages": 12
+},
+{
+"iid": "39e40efb51e97c073c469d37114b6f37",
+"chars": 128249,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1949",
+"pages": 56
+},
+{
+"iid": "99f4355812de4730e13e2231053019cf",
+"chars": 46017,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1949",
+"pages": 24
+},
+{
+"iid": "b0742e2c3d06c1f17d83148039b97538",
+"chars": 31478,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1981",
+"pages": 28
+},
+{
+"iid": "e111cf76849898c46a75a1fd07542bde",
+"chars": 12318,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 3,
+"issued": "1954",
+"pages": 8
+},
+{
+"iid": "5e3a7d048788db6f003cb34b6e7a692c",
+"chars": 38038,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1950",
+"pages": 20
+},
+{
+"iid": "fe037e0cb22009c83e614c41a075765b",
+"chars": 15514,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1950",
+"pages": 8
+},
+{
+"iid": "7c0446dcf2c078958354187805254e55",
+"chars": 22058,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1955",
+"pages": 12
+},
+{
+"iid": "2ef36343b76d8aefa897d7f9c17c4d17",
+"chars": 15642,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1951",
+"pages": 10
+},
+{
+"iid": "2104f18656a8341a6367f52731800f20",
+"chars": 8255,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1954",
+"pages": 8
+},
+{
+"iid": "414502044ddce3d73fe2c3f5c90d177d",
+"chars": 9437,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1954",
+"pages": 8
+},
+{
+"iid": "297f9e7ed8f23cf4d595a294cc702dcb",
+"chars": 13256,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1951",
+"pages": 8
+},
+{
+"iid": "b51a6699c70c2681f3e3070a23ffd7fc",
+"chars": 5502,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1950",
+"pages": 4
+},
+{
+"iid": "339b2a27a553945ad451053bd9cd5da0",
+"chars": 11623,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1955",
+"pages": 8
+},
+{
+"iid": "e4412e09e5d022a122f091161f69170b",
+"chars": 6232,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 2,
+"issued": "1949",
+"pages": 4
+},
+{
+"iid": "2fc2ea70e9340ec3dad3bc62357f7275",
+"chars": 12447,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 1,
+"issued": "1951",
+"pages": 8
+},
+{
+"iid": "26ecd42ecf88a05704836b3ae3ad58e0",
+"chars": 30219,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 1,
+"issued": "1954",
+"pages": 16
+},
+{
+"iid": "747d0eeec086ae421284fb1eab44ff21",
+"chars": 11753,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 1,
+"issued": "1951",
+"pages": 8
+},
+{
+"iid": "f36a9121f54dd5d0ce0222f020b50314",
+"chars": 19449,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 1,
+"issued": "1955",
+"pages": 10
+},
+{
+"iid": "ab73bb4c67bef53b8231510c0a6dbb82",
+"chars": 22816,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 1,
+"issued": "1949",
+"pages": 14
+},
+{
+"iid": "7225a62459a79c664a8a8e5988afe13d",
+"chars": 7766,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 1,
+"issued": "1951",
+"pages": 4
+},
+{
+"iid": "1672c9ff38f4f28625942489387f96c2",
+"chars": 20014,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 1,
+"issued": "1977",
+"pages": 16
+},
+{
+"iid": "6a6857b412cf7c32ce85b7145aae8d59",
+"chars": 520964,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1877",
+"pages": 309
+},
+{
+"iid": "3ba6cd71afdc7e2d3dded4940efe3238",
+"chars": 18452,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1902",
+"pages": 15
+},
+{
+"iid": "ba1e2a02bc6921f465a5b57afc70f6d2",
+"chars": 62126,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1954",
+"pages": 28
+},
+{
+"iid": "aec43f215b2b8251e91d22b6482206ac",
+"chars": 496394,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1880",
+"pages": 281
+},
+{
+"iid": "7f0d2b42d88bd28611c959c91f78e302",
+"chars": 404304,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1878",
+"pages": 267
+},
+{
+"iid": "0e0ca980aff8163a75ab874a9892e7df",
+"chars": 9972,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1951",
+"pages": 8
+},
+{
+"iid": "37a734e1173ea0350cc405a04aa79389",
+"chars": 14528,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1902",
+"pages": 13
+},
+{
+"iid": "9ca9aa92991b5a07a4fc093d68199fd9",
+"chars": 383415,
+"giant": false,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1879",
+"pages": 253
+},
+{
+"iid": "126d0417975fcf4d5b5eada87cc451b2",
+"chars": 2972200,
+"giant": true,
+"skal_lyde": 634,
+"endr_markers": 1236,
+"issued": "1969",
+"pages": 1675
+},
+{
+"iid": "af1db44a49eaeefdd84a74d64f2e2e54",
+"chars": 2382851,
+"giant": true,
+"skal_lyde": 573,
+"endr_markers": 647,
+"issued": "1975",
+"pages": 1372
+},
+{
+"iid": "9f63b3acc431327fa2046136c82bac97",
+"chars": 3169508,
+"giant": true,
+"skal_lyde": 540,
+"endr_markers": 1126,
+"issued": "1972",
+"pages": 1791
+},
+{
+"iid": "1b3fa975f13c629d31fd0809dfd1f55c",
+"chars": 2820456,
+"giant": true,
+"skal_lyde": 499,
+"endr_markers": 1209,
+"issued": "1973",
+"pages": 1639
+},
+{
+"iid": "365712be0bd0a1246c9883b50fdc1feb",
+"chars": 3220479,
+"giant": true,
+"skal_lyde": 457,
+"endr_markers": 1238,
+"issued": "1971",
+"pages": 1811
+},
+{
+"iid": "7530e26de3f0123f4a7457eadd3d3bfe",
+"chars": 3177308,
+"giant": true,
+"skal_lyde": 437,
+"endr_markers": 1130,
+"issued": "1970",
+"pages": 1733
+},
+{
+"iid": "bc9cc206ad25f019010553993bc27c83",
+"chars": 649154,
+"giant": true,
+"skal_lyde": 338,
+"endr_markers": 173,
+"issued": "1997",
+"pages": 282
+},
+{
+"iid": "0e7d87485514b51555a88f13689d0799",
+"chars": 2885292,
+"giant": true,
+"skal_lyde": 269,
+"endr_markers": 1092,
+"issued": "1968",
+"pages": 1629
+},
+{
+"iid": "2b21135357d3ddb4d0805ab8b7a17d06",
+"chars": 3682589,
+"giant": true,
+"skal_lyde": 267,
+"endr_markers": 1151,
+"issued": "1966",
+"pages": 1961
+},
+{
+"iid": "17055e0a692224069946566846ad839e",
+"chars": 2660206,
+"giant": true,
+"skal_lyde": 244,
+"endr_markers": 826,
+"issued": "1959",
+"pages": 1381
+},
+{
+"iid": "15ada757be151caa3e87cda17f0dae1e",
+"chars": 3512860,
+"giant": true,
+"skal_lyde": 242,
+"endr_markers": 1022,
+"issued": "1965",
+"pages": 1887
+},
+{
+"iid": "38881a372376fdd8f9f200aedc1f303f",
+"chars": 3710478,
+"giant": true,
+"skal_lyde": 238,
+"endr_markers": 1188,
+"issued": "1967",
+"pages": 2037
+},
+{
+"iid": "a1014507bc842173245401c66721e8a9",
+"chars": 3721665,
+"giant": true,
+"skal_lyde": 238,
+"endr_markers": 1126,
+"issued": "1964",
+"pages": 1941
+},
+{
+"iid": "0ffb6620e36b27ff53350e5b6d0e6771",
+"chars": 2738128,
+"giant": true,
+"skal_lyde": 238,
+"endr_markers": 685,
+"issued": "1956",
+"pages": 1331
+},
+{
+"iid": "d9f99fdcfcdcf78da13b2682aa60c968",
+"chars": 1716695,
+"giant": true,
+"skal_lyde": 229,
+"endr_markers": 724,
+"issued": "1960",
+"pages": 897
+},
+{
+"iid": "0fdfc472a6455d5f12898970e842776c",
+"chars": 2251246,
+"giant": true,
+"skal_lyde": 222,
+"endr_markers": 497,
+"issued": "1954",
+"pages": 1091
+},
+{
+"iid": "c2098e2d7b4943d0bb587a07e29098be",
+"chars": 2620345,
+"giant": true,
+"skal_lyde": 207,
+"endr_markers": 869,
+"issued": "1963",
+"pages": 1333
+},
+{
+"iid": "10d016a811582cdf6642965de0d4fe8d",
+"chars": 2815127,
+"giant": true,
+"skal_lyde": 206,
+"endr_markers": 797,
+"issued": "1957",
+"pages": 1377
+},
+{
+"iid": "603ec326b313f93b542a3b632b362dc1",
+"chars": 2221704,
+"giant": true,
+"skal_lyde": 202,
+"endr_markers": 776,
+"issued": "1961",
+"pages": 1117
+},
+{
+"iid": "251f4d171ef9caf8fd22a72f045cf5b7",
+"chars": 1869772,
+"giant": true,
+"skal_lyde": 186,
+"endr_markers": 722,
+"issued": "1962",
+"pages": 969
+},
+{
+"iid": "d8096f88ebc8f4c53b511fd9bba210bd",
+"chars": 2759533,
+"giant": true,
+"skal_lyde": 130,
+"endr_markers": 656,
+"issued": "1952",
+"pages": 1367
+},
+{
+"iid": "be02185988560d3ca7e9bb21af9dd0ed",
+"chars": 2763787,
+"giant": true,
+"skal_lyde": 110,
+"endr_markers": 604,
+"issued": "1953",
+"pages": 1325
+},
+{
+"iid": "efa991eb62e4a33451746c691c32c3ae",
+"chars": 1861192,
+"giant": true,
+"skal_lyde": 106,
+"endr_markers": 101,
+"issued": "1933",
+"pages": 931
+},
+{
+"iid": "01bb41a0442aae5fb735829cf0d5906b",
+"chars": 2212257,
+"giant": true,
+"skal_lyde": 93,
+"endr_markers": 511,
+"issued": "1951",
+"pages": 1085
+},
+{
+"iid": "156dda594a7d221bfd14a160a28f9a7c",
+"chars": 2186212,
+"giant": true,
+"skal_lyde": 84,
+"endr_markers": 104,
+"issued": "1934",
+"pages": 1043
+},
+{
+"iid": "50bfa67b254cea262e305003e8e63bba",
+"chars": 1910351,
+"giant": true,
+"skal_lyde": 81,
+"endr_markers": 602,
+"issued": "1941",
+"pages": 989
+},
+{
+"iid": "f180c69351edf4888b8409087825dfbb",
+"chars": 2422262,
+"giant": true,
+"skal_lyde": 78,
+"endr_markers": 74,
+"issued": "1930",
+"pages": 1149
+},
+{
+"iid": "6c090474b5f77604aed9b64467233a91",
+"chars": 2405110,
+"giant": true,
+"skal_lyde": 72,
+"endr_markers": 106,
+"issued": "1935",
+"pages": 1155
+},
+{
+"iid": "4d0d9da3cb4d8e81ea4e99de495a8816",
+"chars": 2277874,
+"giant": true,
+"skal_lyde": 72,
+"endr_markers": 0,
+"issued": "1899",
+"pages": 1067
+},
+{
+"iid": "f9f3d1dddc73add69f73adb998addee6",
+"chars": 2573216,
+"giant": true,
+"skal_lyde": 71,
+"endr_markers": 416,
+"issued": "1950",
+"pages": 1273
+},
+{
+"iid": "94cf409371c086be660562d7850503c0",
+"chars": 2408352,
+"giant": true,
+"skal_lyde": 70,
+"endr_markers": 397,
+"issued": "1948",
+"pages": 1207
+},
+{
+"iid": "1e36d825da260b08b41c9da836fb7971",
+"chars": 2866975,
+"giant": true,
+"skal_lyde": 70,
+"endr_markers": 128,
+"issued": "1936",
+"pages": 1359
+},
+{
+"iid": "27b51567d8a7d314f08ad6258cf60a24",
+"chars": 1968636,
+"giant": true,
+"skal_lyde": 70,
+"endr_markers": 68,
+"issued": "1932",
+"pages": 1007
+},
+{
+"iid": "c400e0ac139626bc2696daa1e2da1165",
+"chars": 2057601,
+"giant": true,
+"skal_lyde": 68,
+"endr_markers": 705,
+"issued": "1942",
+"pages": 1061
+},
+{
+"iid": "b036de387ae7133194f7a1aa43d5391e",
+"chars": 1768293,
+"giant": true,
+"skal_lyde": 59,
+"endr_markers": 426,
+"issued": "1946",
+"pages": 883
+},
+{
+"iid": "821eb13fd791673521b91e9ea78f2bb9",
+"chars": 2232059,
+"giant": true,
+"skal_lyde": 57,
+"endr_markers": 448,
+"issued": "1947",
+"pages": 1099
+},
+{
+"iid": "d8a033754bf484c3d6b3901080214fa1",
+"chars": 1610867,
+"giant": true,
+"skal_lyde": 55,
+"endr_markers": 119,
+"issued": "1925",
+"pages": 793
+},
+{
+"iid": "d9a56887c1f0dbb46493862caf6553c3",
+"chars": 2217464,
+"giant": true,
+"skal_lyde": 53,
+"endr_markers": 84,
+"issued": "1927",
+"pages": 1067
+},
+{
+"iid": "a3c2b0b752729e98bb8f602bac234ca5",
+"chars": 1619888,
+"giant": true,
+"skal_lyde": 49,
+"endr_markers": 80,
+"issued": "1931",
+"pages": 783
+},
+{
+"iid": "0bd00cfce08bac663604e9d67291a7c5",
+"chars": 2656845,
+"giant": true,
+"skal_lyde": 47,
+"endr_markers": 343,
+"issued": "1939",
+"pages": 1275
+},
+{
+"iid": "da18cdaa043447af8d93f0def5136526",
+"chars": 1887088,
+"giant": true,
+"skal_lyde": 46,
+"endr_markers": 0,
+"issued": "1900",
+"pages": 947
+},
+{
+"iid": "bfae88a84d7fed524f69d377598e99a4",
+"chars": 2417739,
+"giant": true,
+"skal_lyde": 44,
+"endr_markers": 0,
+"issued": "1915",
+"pages": 1299
+},
+{
+"iid": "61a6f3af7369505a10b5db20c916099f",
+"chars": 3607202,
+"giant": true,
+"skal_lyde": 43,
+"endr_markers": 161,
+"issued": "1938",
+"pages": 1683
+},
+{
+"iid": "c5ef477a3ddb1cfa628795bbd5b03dcf",
+"chars": 2883663,
+"giant": true,
+"skal_lyde": 42,
+"endr_markers": 224,
+"issued": "1937",
+"pages": 1401
+},
+{
+"iid": "953916243bc50616633a42db84ee04e9",
+"chars": 1126381,
+"giant": true,
+"skal_lyde": 39,
+"endr_markers": 0,
+"issued": "1898",
+"pages": 597
+},
+{
+"iid": "9e50e3a594ecedf23c3b0dccfd88ffab",
+"chars": 2649572,
+"giant": true,
+"skal_lyde": 37,
+"endr_markers": 1,
+"issued": "1918",
+"pages": 1477
+},
+{
+"iid": "3d7395cb32621e15072b463bff2f79ab",
+"chars": 1194573,
+"giant": true,
+"skal_lyde": 36,
+"endr_markers": 268,
+"issued": "1944",
+"pages": 633
+},
+{
+"iid": "28f44b3a61b5002c018df2c70e28c194",
+"chars": 1526404,
+"giant": true,
+"skal_lyde": 36,
+"endr_markers": 0,
+"issued": "1901",
+"pages": 747
+},
+{
+"iid": "37694ffbf8ad4b5f586343000e68fb3e",
+"chars": 1322883,
+"giant": true,
+"skal_lyde": 35,
+"endr_markers": 0,
+"issued": "1903",
+"pages": 683
+},
+{
+"iid": "111bd6d21373ec77c78a073f68ff5f37",
+"chars": 1792115,
+"giant": true,
+"skal_lyde": 33,
+"endr_markers": 0,
+"issued": "1916",
+"pages": 1035
+},
+{
+"iid": "c7b13fd7248555c1d49614bbfe94b301",
+"chars": 1556680,
+"giant": true,
+"skal_lyde": 32,
+"endr_markers": 589,
+"issued": "1943",
+"pages": 821
+},
+{
+"iid": "19226a75a2397c90dc050828a914c1c9",
+"chars": 1595108,
+"giant": true,
+"skal_lyde": 32,
+"endr_markers": 64,
+"issued": "1928",
+"pages": 817
+},
+{
+"iid": "0b3e977dff01c9b1deb5368b274b1b56",
+"chars": 1650480,
+"giant": true,
+"skal_lyde": 31,
+"endr_markers": 96,
+"issued": "1929",
+"pages": 817
+},
+{
+"iid": "7604daa39e9f69ae9d9419f618c47708",
+"chars": 1899704,
+"giant": true,
+"skal_lyde": 29,
+"endr_markers": 0,
+"issued": "1888",
+"pages": 878
+},
+{
+"iid": "b996dae2ab5797550f4421f96afcd706",
+"chars": 1998850,
+"giant": true,
+"skal_lyde": 27,
+"endr_markers": 0,
+"issued": "1911",
+"pages": 1021
+},
+{
+"iid": "052419f9d335edfec99395fe3a82641c",
+"chars": 2088293,
+"giant": true,
+"skal_lyde": 26,
+"endr_markers": 58,
+"issued": "1920",
+"pages": 1233
+},
+{
+"iid": "1762247e5edba2f4d611068e728caca2",
+"chars": 2641578,
+"giant": true,
+"skal_lyde": 23,
+"endr_markers": 28,
+"issued": "1919",
+"pages": 1533
+},
+{
+"iid": "c5ed5920d58fc9e7b388cc78928612b6",
+"chars": 2409399,
+"giant": true,
+"skal_lyde": 23,
+"endr_markers": 0,
+"issued": "1917",
+"pages": 1295
+},
+{
+"iid": "9895d7ca17e94072ffc8ff6d1117670c",
+"chars": 1842852,
+"giant": true,
+"skal_lyde": 21,
+"endr_markers": 0,
+"issued": "1890",
+"pages": 813
+},
+{
+"iid": "7a34a7ca7756a9bb9876a3b0aa89eb3a",
+"chars": 1556371,
+"giant": true,
+"skal_lyde": 21,
+"endr_markers": 0,
+"issued": "1914",
+"pages": 891
+},
+{
+"iid": "c686e44c01e8fc58307454c534b4fdaf",
+"chars": 1927601,
+"giant": true,
+"skal_lyde": 21,
+"endr_markers": 0,
+"issued": "1902",
+"pages": 951
+},
+{
+"iid": "14f2b6989695030d20d65197c59f3311",
+"chars": 706950,
+"giant": true,
+"skal_lyde": 20,
+"endr_markers": 234,
+"issued": "1945",
+"pages": 385
+},
+{
+"iid": "ff7b97d0934434b90fd7c6c62494904e",
+"chars": 1772973,
+"giant": true,
+"skal_lyde": 20,
+"endr_markers": 0,
+"issued": "1912",
+"pages": 933
+},
+{
+"iid": "2ea6b03fc4420ae13dee6b55dd1e1542",
+"chars": 1449027,
+"giant": true,
+"skal_lyde": 18,
+"endr_markers": 58,
+"issued": "1926",
+"pages": 767
+},
+{
+"iid": "5ec329e75b1d702d3f008e9bc468c569",
+"chars": 1539740,
+"giant": true,
+"skal_lyde": 17,
+"endr_markers": 209,
+"issued": "1940",
+"pages": 745
+},
+{
+"iid": "b4a235d55885f1382fcd8880e9b0d81a",
+"chars": 1395120,
+"giant": true,
+"skal_lyde": 17,
+"endr_markers": 50,
+"issued": "1924",
+"pages": 759
+},
+{
+"iid": "1e702be4d68fbbc9c0a4727fa48af719",
+"chars": 1280403,
+"giant": true,
+"skal_lyde": 16,
+"endr_markers": 49,
+"issued": "1923",
+"pages": 723
+},
+{
+"iid": "fa9616f8f3ec3cd133b18674c31c0c9c",
+"chars": 1406644,
+"giant": true,
+"skal_lyde": 16,
+"endr_markers": 2,
+"issued": "1906",
+"pages": 759
+},
+{
+"iid": "fb9cd53b520120c533129b27817b716c",
+"chars": 1849607,
+"giant": true,
+"skal_lyde": 16,
+"endr_markers": 0,
+"issued": "1910",
+"pages": 967
+},
+{
+"iid": "1c3550f074938c86bd41bc09b798423b",
+"chars": 1643470,
+"giant": true,
+"skal_lyde": 16,
+"endr_markers": 0,
+"issued": "1913",
+"pages": 871
+},
+{
+"iid": "b0e1ad12fc5946886ebae9b3bc542804",
+"chars": 1259546,
+"giant": true,
+"skal_lyde": 15,
+"endr_markers": 43,
+"issued": "1922",
+"pages": 763
+},
+{
+"iid": "fea4bf0ac7e0ea593727cb57a86b5451",
+"chars": 1425624,
+"giant": true,
+"skal_lyde": 15,
+"endr_markers": 35,
+"issued": "1921",
+"pages": 837
+},
+{
+"iid": "b3314d2822c888fb3568a4d53bcc9098",
+"chars": 1692393,
+"giant": true,
+"skal_lyde": 14,
+"endr_markers": 0,
+"issued": "1907",
+"pages": 847
+},
+{
+"iid": "61014201e9ba3d74f60ae810dabde2cd",
+"chars": 1368783,
+"giant": true,
+"skal_lyde": 12,
+"endr_markers": 0,
+"issued": "1894",
+"pages": 683
+},
+{
+"iid": "8a059321dbd9f495a498427a01c05193",
+"chars": 1129272,
+"giant": true,
+"skal_lyde": 11,
+"endr_markers": 0,
+"issued": "1908",
+"pages": 657
+},
+{
+"iid": "6bc3f9f12f8e70cf971fe6887bc3933e",
+"chars": 2300969,
+"giant": true,
+"skal_lyde": 10,
+"endr_markers": 0,
+"issued": "1909",
+"pages": 1199
+},
+{
+"iid": "da9474320e0fa3294439d3782c86df7a",
+"chars": 1624722,
+"giant": true,
+"skal_lyde": 7,
+"endr_markers": 0,
+"issued": "1892",
+"pages": 773
+},
+{
+"iid": "b650f77b614ce39757a828f24754506b",
+"chars": 1209135,
+"giant": true,
+"skal_lyde": 3,
+"endr_markers": 0,
+"issued": "1893",
+"pages": 583
+},
+{
+"iid": "7f6c9e7658e6d8c40eda3a9f3ae25e4b",
+"chars": 1984004,
+"giant": true,
+"skal_lyde": 3,
+"endr_markers": 0,
+"issued": "1889",
+"pages": 957
+},
+{
+"iid": "541b7fad11562e97084f671ae2896774",
+"chars": 1455514,
+"giant": true,
+"skal_lyde": 2,
+"endr_markers": 0,
+"issued": "1897",
+"pages": 765
+},
+{
+"iid": "62b943ec2ebc74f0fccd497901a9b808",
+"chars": 1349023,
+"giant": true,
+"skal_lyde": 1,
+"endr_markers": 0,
+"issued": "1884",
+"pages": 721
+},
+{
+"iid": "325597ba90aed788dc039b9b7be74e9b",
+"chars": 815610,
+"giant": true,
+"skal_lyde": 1,
+"endr_markers": 0,
+"issued": "1887",
+"pages": 433
+},
+{
+"iid": "44e2272ba45872616ff033f1505ac1a6",
+"chars": 616840,
+"giant": true,
+"skal_lyde": 1,
+"endr_markers": 0,
+"issued": "1885",
+"pages": 321
+},
+{
+"iid": "7b47857f98a85dab07924db0eeeb839f",
+"chars": 1142962,
+"giant": true,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1905",
+"pages": 653
+},
+{
+"iid": "deaab07319f66a4e7a1fd5e7dca5cc55",
+"chars": 1456432,
+"giant": true,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1904",
+"pages": 775
+},
+{
+"iid": "6a11abecfdb342aa3ec2630431d0b1c1",
+"chars": 1445528,
+"giant": true,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1896",
+"pages": 779
+},
+{
+"iid": "fb2a60a72241a245a2d6f37fc1feba94",
+"chars": 1079669,
+"giant": true,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1886",
+"pages": 607
+},
+{
+"iid": "7341a48134ba754d45ca78c2e6900aa0",
+"chars": 1614160,
+"giant": true,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1883",
+"pages": 875
+},
+{
+"iid": "ec44743663d0f7d1ced6652a86f1c2fd",
+"chars": 1035585,
+"giant": true,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1895",
+"pages": 581
+},
+{
+"iid": "8e6a711a0c307c65dcd7c5a984ee1d3d",
+"chars": 1533060,
+"giant": true,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1881",
+"pages": 797
+},
+{
+"iid": "d5a8b7cbf52270b5894c7a158299fdba",
+"chars": 2047613,
+"giant": true,
+"skal_lyde": 0,
+"endr_markers": 0,
+"issued": "1882",
+"pages": 1135
+}
+]
