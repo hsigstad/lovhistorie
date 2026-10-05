@@ -219,8 +219,7 @@ def _emit(rows, frozen, iid, s, e, kind, unit_key, **extra):
 
 def tile_ordered(iid: str, segments: list[dict], frozen: str) -> tuple[list[dict], list[str]]:
     """Ordered-starts tiling (segment_prompt contract): resolve each segment's start_anchor to
-    an offset (monotonically), tile [start_i, start_{i+1}] so there are NO gaps by construction,
-    then furniture-split prose segments. Returns (rows, misses)."""
+    an offset (monotonically), then tile. Returns (rows, misses)."""
     placed, misses, pos = [], [], 0
     for seg in segments:
         sp = _anchor_span(frozen, seg.get("start_anchor", ""), pos) \
@@ -230,6 +229,12 @@ def tile_ordered(iid: str, segments: list[dict], frozen: str) -> tuple[list[dict
             continue
         placed.append((sp[0], seg))
         pos = sp[0]
+    return _tile_placed(iid, placed, frozen), misses
+
+
+def _tile_placed(iid: str, placed: list[tuple], frozen: str) -> list[dict]:
+    """Tile a resolved [(global_start, seg), ...] list: [start_i, start_{i+1}] so there are NO
+    gaps by construction, global datokode/cite carry-forward, then furniture-split prose."""
     placed.sort(key=lambda x: x[0])
     rows, n = [], len(frozen)
     if placed and placed[0][0] > 0:               # agent should have started at 0 — flag the lead gap
@@ -264,7 +269,7 @@ def tile_ordered(iid: str, segments: list[dict], frozen: str) -> tuple[list[dict
             if instr != "forskrift":                 # law register can't resolve forskrift targets
                 extra["target"] = cite_to_datokode(cite)
         _emit(rows, frozen, iid, s, e, kind, _unit_key({**seg, "datokode": dk}, i), **extra)
-    return rows, misses
+    return rows
 
 
 def _unit_key(seg: dict, i: int) -> str:
@@ -275,6 +280,52 @@ def _unit_key(seg: dict, i: int) -> str:
     if k in ("amend_op", "amend_scope"):
         return f"{dk}:op{i}"
     return f"{dk}:{k}:{i}"
+
+
+# ---------------------------------------------------------------------------------------
+# Chunked segmentation for big/dense issues that overflow one subagent (output-token cap or
+# under-segmentation). Split into overlapping line-aligned chunks; each chunk is segmented
+# independently; stitch resolves each chunk's anchors to GLOBAL offsets within its window,
+# dedups the overlap, and runs the global carry-forward + tiling (`_tile_placed`) — so a law
+# whose heading is in one chunk and whose §§ are in the next still groups correctly.
+# ---------------------------------------------------------------------------------------
+def chunk_ranges(frozen: str, target: int = 250000, overlap: int = 12000) -> list[tuple]:
+    """Line-aligned overlapping [start, end) char ranges covering the whole issue."""
+    n, i, out = len(frozen), 0, []
+    while i < n:
+        end = min(i + target, n)
+        if end < n:
+            nl = frozen.find("\n", end)
+            end = n if nl < 0 else nl + 1
+        out.append((i, end))
+        if end >= n:
+            break
+        nxt = max(i + 1, end - overlap)
+        nl = frozen.rfind("\n", 0, nxt)
+        i = nl + 1 if nl >= 0 else nxt
+    return out
+
+
+def stitch_chunks(iid: str, chunk_results: list[dict], frozen: str) -> tuple[list[dict], list[str]]:
+    """chunk_results: [{cstart, cend, segments}]. Resolve each chunk's start_anchors to GLOBAL
+    offsets WITHIN [cstart, cend] (monotonic), merge, dedup by global offset, then tile."""
+    placed, misses, seen = [], [], set()
+    for ch in sorted(chunk_results, key=lambda c: c["cstart"]):
+        cstart, cend, pos = ch["cstart"], ch["cend"], ch["cstart"]
+        for seg in ch.get("segments") or []:
+            sp = _anchor_span(frozen, seg.get("start_anchor", ""), pos)
+            if not sp or sp[0] >= cend:
+                sp = _anchor_span(frozen, seg.get("start_anchor", ""), cstart)   # retry within window
+            if not sp or sp[0] >= cend:
+                misses.append(f"chunk@{cstart}: anchor not found: {seg.get('start_anchor','')[:40]!r}")
+                continue
+            g = sp[0]
+            if g in seen:                       # overlap duplicate
+                continue
+            seen.add(g)
+            placed.append((g, seg))
+            pos = g
+    return _tile_placed(iid, placed, frozen), misses
 
 
 def fold_ordered(issue_results: list[dict]) -> dict[str, list[dict]]:
