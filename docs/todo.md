@@ -86,12 +86,28 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
 
 ## Locator → `segments.jsonl` fold-in (PRIORITY, 2026-10-04 — see decisions.md)
 
-> **RESUME POINT (2026-10-05, HS paused at usage limit):** flat corpus = **253/312 small issues
-> committed**; chunker validated. PENDING: stitch+fold the 16 flagged + validated giant (→ ~270), then
-> run the 42 giants (~82M tokens, approved "Full") → full ~312. Full resume plan + caveats in
-> `docs/notes/handoffs/2026-10-05T10-00-00_corpus-giants-resume.md`. Giant/flagged chunk runs were STOPPED;
-> scratchpad + same-session Workflow cache won't survive the reset, so expect a clean re-run (chunk files
-> regenerate deterministically via `chunk_ranges`).
+> **RESUME POINT (2026-10-05, HS paused at usage limit).** Flat corpus = **253/312 small issues committed**
+> (0 structural violations; base-quality median 0.947). Pipeline + chunker DONE and validated (giant
+> be2815f061: one-shot 98% `other` → chunked 1.14%, gap-free). The giant + flagged chunk Workflows were
+> STOPPED mid-run; scratchpad (`/tmp/.../scratchpad`) and same-session Workflow cache will NOT survive the
+> reset — so resume with a clean re-run. **Remaining budget ≈ 82M tokens (42 giants) + ~5M (16 flagged).**
+>
+> PENDING → full ~312-issue corpus:
+> - **16 flagged** (14 "missing-acts" bound volumes + 2 output-token failures) + the already-validated
+>   giant → fold → ~270.
+> - **42 giants** (>600k chars; the `>600k` issues in `segments.jsonl` minus be2815f061) → fold → ~312.
+>
+> RESUME PROCEDURE (all deterministic logic is committed in `source/`):
+> 1. For each pending iid: `fold_segmentation.chunk_ranges(frozen)` → write `<iid>_<cidx>.txt` chunk files
+>    + `<iid>_chk.txt` checklist (from `act_index`). Giants target=250000; the 16 flagged target=80000
+>    (dense → smaller chunks, to stay under the 64k OUTPUT-token cap that failed them one-shot).
+> 2. Workflow: one `general-purpose` subagent per chunk with the chunk-template (text is "a PORTION";
+>    `segment_prompt`-style schema), returns `{iid, cidx, segments}`. Pass chunks compactly as `{iid,cidx}`;
+>    derive paths in-script. (≤600k issues one-shot via the file-checklist path, as the 253 were done.)
+> 3. `fold_segmentation.stitch_chunks(iid, chunk_results, frozen)` per issue → rows; verify tiling
+>    (gap-free + verbatim), `other`%, base quality.
+> 4. Append clean issues to `data/segments.jsonl` + `segments_meta.json`; re-run both gates (`--diff` now
+>    gates flat-vs-flat normally); commit (pre-commit hook active).
 
 The locator is BUILT and validated for normal issues (~71% ≥0.5, ~5% true mislocation; 74/78 in-force
 bases at median-sim 0.80). It is NO LONGER the binding constraint. The next move is to make its output
