@@ -307,8 +307,15 @@ def load_ops(target_law: str, include_applied: bool = True):
                     "act": d.get("act_refid"), "para": d.get("paragraph"),
                     "new_text": d.get("new_text"),
                 })
-    if not ops:                                  # S3b: law not in the old streams -> corpus amend_op rows
-        ops = _amend_ops_from_segments(target_law.split("/")[-1])
+    # S3b: UNION the corpus amend_op rows with the stream ops. The segments corpus holds ~951
+    # pre-2001 amending acts absent from the post-2001 LTI stream; fallback-only (used only when
+    # the streams were empty) silently DROPPED them for any law that also had post-2001 ops.
+    # Dedup by amending act — where both sources have an act, keep the stream's (maturer) extraction
+    # and add only segments acts the streams don't cover. (Empty-stream laws behave as before.)
+    seg_ops = _amend_ops_from_segments(target_law.split("/")[-1])
+    if seg_ops:
+        have = {o.get("act") for o in ops}
+        ops = ops + [o for o in seg_ops if o.get("act") not in have]
     ops.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
     return ops
 
