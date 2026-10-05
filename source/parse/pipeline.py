@@ -440,9 +440,19 @@ def _base_from_segments(datokode: str) -> dict:
         return {}
     by_para = defaultdict(list)
     for r in rows:
-        by_para[r["para"]].append(r)
+        by_para[_canon_para(r["para"])].append(r)
     return {para: " ".join(frozen[x["start"]:x["end"]] for x in sorted(fr, key=lambda q: q["start"]))
             for para, fr in by_para.items()}
+
+
+def _canon_para(p: str) -> str:
+    """Canonical provision id '§N' / '§N-M' matching the current text, the ops (`_para_at`) and the
+    enactment-json bases. The segmentation's raw `para` field is INCONSISTENT — ~85% are already
+    '§N' but ~15% are bare ('1', '2-3') — so a bare-para law's base keyed on the raw field matches
+    NOTHING in current/ops (ops silently can't attach, provisions silently can't score). Normalise to
+    the '§'+bare form (no space) here, where the base is built, so every consumer aligns."""
+    s = (p or "").lstrip("§").strip().replace(" ", "")
+    return f"§{s}" if s else (p or "")
 
 
 def is_ocr_base(target_law: str, base: str = "enactment") -> bool:
