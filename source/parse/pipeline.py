@@ -339,18 +339,39 @@ def _amend_ops_by_target() -> dict:
     return out
 
 
+# OCR variants of the §-number glyph seen in the gazette scans: a letter standing in for a digit
+# ('§l7'→§17, '§s—l7'→§5-17) and em/en-dash for the compound hyphen ('§l—l'→§1-1). Used ONLY to
+# RECOVER an address _PARA missed, and ONLY when the recovered § already exists in the law's base —
+# so a bad OCR guess can never attach to (and corrupt) the wrong provision; it just stays flagged.
+_OCR_DIGIT = str.maketrans({"l": "1", "I": "1", "s": "5", "S": "5", "O": "0", "o": "0", "B": "8"})
+_DASH = re.compile(r"[—–]")
+
+
+def _para_from_op_ocr(text: str, valid_paras: set) -> str | None:
+    g = re.search(r"§\s*([^\s,.;:]{1,8})", text)
+    if not g:
+        return None
+    tok = re.sub(r"\s+", "", _DASH.sub("-", g.group(1)).translate(_OCR_DIGIT))
+    m = re.match(r"(\d+(?:-\d+)?)([a-z])?$", tok) or re.match(r"(\d+(?:-\d+)?)([a-z])?", tok)
+    if not m or not m.group(1):
+        return None
+    para = f"§{m.group(1)}{m.group(2) or ''}"
+    return para if para in valid_paras else None
+
+
 def _amend_ops_from_segments(datokode: str) -> list:
     """Deterministic ops for `datokode` assembled from the corpus `amend_op` rows: parse the § from
     the instruction, map op_kind->change_type, slice the payload (text after 'skal lyde:'). In-force
     date = the amending act's own date (datokode); a delt-ikraftsetting refinement is future work."""
     ops = []
+    valid_paras = set(_base_from_segments(datokode))      # for the OCR-address safety cross-check
     for r in _amend_ops_by_target().get(datokode, []):
         fr = _frozen(r["issue_id"])
         if not fr:
             continue
         text = fr[r["start"]:r["end"]]
         m = _PARA.search(text)
-        para = _para_at(text, m) if m else None
+        para = _para_at(text, m) if m else _para_from_op_ocr(text, valid_paras)
         kind = r.get("op_kind")
         payload = ""
         if kind in ("set_text", "insert"):
