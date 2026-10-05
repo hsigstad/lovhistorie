@@ -307,7 +307,53 @@ def load_ops(target_law: str, include_applied: bool = True):
                     "act": d.get("act_refid"), "para": d.get("paragraph"),
                     "new_text": d.get("new_text"),
                 })
+    if not ops:                                  # S3b: law not in the old streams -> corpus amend_op rows
+        ops = _amend_ops_from_segments(target_law.split("/")[-1])
     ops.sort(key=lambda o: (o["date"] or "", o["act"] or ""))
+    return ops
+
+
+_OPKIND_CT = {"set_text": "change", "insert": "add", "repeal": "repeal",
+              "renumber": "renumber", "word_replace": "unknown"}
+_SKAL_LYDE = re.compile(r"skal\s+ly[dd]e\s*:?\s*", re.I)
+
+
+@functools.lru_cache(maxsize=1)
+def _amend_ops_by_target() -> dict:
+    """{amended-law datokode: [amend_op rows]} from the flat corpus. The op's own `datokode` is the
+    AMENDING act; `target` is the amended law. Public corpus only (G1-safe)."""
+    out = defaultdict(list)
+    if not _SEGMENTS.exists():
+        return out
+    for line in open(_SEGMENTS, encoding="utf-8"):
+        r = json.loads(line)
+        if r.get("klass") == "amend_op" and r.get("target"):
+            out[r["target"]].append(r)
+    return out
+
+
+def _amend_ops_from_segments(datokode: str) -> list:
+    """Deterministic ops for `datokode` assembled from the corpus `amend_op` rows: parse the § from
+    the instruction, map op_kind->change_type, slice the payload (text after 'skal lyde:'). In-force
+    date = the amending act's own date (datokode); a delt-ikraftsetting refinement is future work."""
+    ops = []
+    for r in _amend_ops_by_target().get(datokode, []):
+        fr = _frozen(r["issue_id"])
+        if not fr:
+            continue
+        text = fr[r["start"]:r["end"]]
+        m = _PARA.search(text)
+        para = _para_at(text, m) if m else None
+        kind = r.get("op_kind")
+        payload = ""
+        if kind in ("set_text", "insert"):
+            parts = _SKAL_LYDE.split(text, maxsplit=1)
+            payload = parts[1].strip() if len(parts) > 1 else ""
+        amend_dk = r.get("datokode") or ""
+        date = "-".join(amend_dk.split("-")[:3]) if amend_dk.count("-") >= 3 else None
+        ops.append({"change_type": _OPKIND_CT.get(kind, "unknown"),
+                    "instruction": text.split("\n", 1)[0][:120], "date": date,
+                    "act": amend_dk, "para": para, "new_text": payload or None})
     return ops
 
 
