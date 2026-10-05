@@ -86,6 +86,13 @@ not the engine. Build the backbone, make the segmentation a curated dataset, the
 
 ## Locator → `segments.jsonl` fold-in (PRIORITY, 2026-10-04 — see decisions.md)
 
+> **RESUME POINT (2026-10-05, HS paused at usage limit):** flat corpus = **253/312 small issues
+> committed**; chunker validated. PENDING: stitch+fold the 16 flagged + validated giant (→ ~270), then
+> run the 42 giants (~82M tokens, approved "Full") → full ~312. Full resume plan + caveats in
+> `docs/notes/handoffs/2026-10-05T10-00-00_corpus-giants-resume.md`. Giant/flagged chunk runs were STOPPED;
+> scratchpad + same-session Workflow cache won't survive the reset, so expect a clean re-run (chunk files
+> regenerate deterministically via `chunk_ranges`).
+
 The locator is BUILT and validated for normal issues (~71% ≥0.5, ~5% true mislocation; 74/78 in-force
 bases at median-sim 0.80). It is NO LONGER the binding constraint. The next move is to make its output
 PERMANENT and OWNED: `segments.jsonl` is THE corpus artifact, the locator becomes its offline bootstrap,
