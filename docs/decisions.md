@@ -2,6 +2,23 @@
 
 Committed design choices.
 
+## 2026-10-05 — classification_qa --diff gate: structural = absolute, target-* = existing-issue-scoped
+
+**Decision.** The pre-commit structural gate (`classification_qa --diff`) distinguishes two
+kinds of violation. STRUCTURAL invariants (sha-drift / issue-missing / overlap / coverage-gap /
+coverage-end / head-mismatch / kind-unknown) are gated on ABSOLUTE count — any new one, anywhere
+(including a newly-folded issue), blocks. The register-completeness QUEUE (`target-missing` /
+`target-unresolved`) is gated only on issues present in BOTH versions: an EXISTING issue whose
+amendment-target resolution worsens still blocks, but a brand-new clean issue that cites a law not
+yet in the register legitimately ADDS target-* entries — that is queue growth, not a regression.
+
+**Why.** The old gate failed on any absolute target-* increase, which made the corpus
+un-growable: every new issue cites some not-yet-registered law, so folding clean issues always
+tripped the gate. Target-* is a *completeness* backlog (fills as the historical register is
+built), not a segmentation-quality signal — conflating it with structural defects defeats the
+gate's purpose. New-issue queue growth is still reported (informational) so the backlog stays
+visible.
+
 ## 2026-10-04 — The whole pipeline = ONE segmentation step + a deterministic assembly layer (HS)
 
 **Decision.** lovhistorie reduces to exactly two layers, divided by a single principle —

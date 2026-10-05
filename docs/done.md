@@ -1,5 +1,22 @@
 # Done
 
+## 2026-10-05 — Folded 6 flagged/giant issues into the corpus (253→259) + fixed the --diff gate semantics
+
+The flagged chunk-run (`w7016n4l8`, 47 chunks, 0 errors, ~3.8M tokens) completed; stitched + folded
+via `scratchpad/fold_append.py`.
+
+- **Folded 6 clean issues** (incl. the validated 2.70M-char giant `be2815f061`) → `segments.jsonl`
+  **95,403→103,836 rows, 253→259 issues**. Each verified gap-free + verbatim + all-indexed-acts before
+  append. **Zero structural violations** (coverage/overlap/sha/head/kind).
+- **11 still rejected** ("missing-acts") = the known bound-volume tail (annual-register issues where not
+  every indexed act appears as a full enactment — needs either a relaxed "indexed act" definition or
+  finer segmentation; left for the register-completeness track).
+- **Fixed `classification_qa --diff` gate** (decisions.md 2026-10-05): structural invariants gated on
+  absolute count (any new defect blocks); `target-*` queue gated only on issues in BOTH versions, so
+  new clean issues citing unregistered laws (here +693) no longer spuriously block the commit. The old
+  gate made the corpus un-growable. `--diff` now PASS; base-quality `--diff` unchanged (no answer-key
+  base touched).
+
 ## 2026-10-05 — ledd: §-level numbered-point applicator (reduces amend flags on skatteloven-shape laws)
 
 Diagnosed the high flag count on heavily-amended corpus laws (worst case `1991-07-20-65`: 110 ops → 100

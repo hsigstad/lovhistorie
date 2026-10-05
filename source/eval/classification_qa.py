@@ -104,6 +104,16 @@ def check(seg_path=SEG, meta_path=META):
 ORDER = ["sha-drift", "issue-missing", "overlap", "coverage-gap", "coverage-end",
          "head-mismatch", "kind-unknown", "target-missing", "target-unresolved"]
 
+# STRUCTURAL invariants must never grow — a new coverage gap / overlap / sha-drift /
+# unknown kind is a real defect wherever it appears (incl. a newly-added issue), so the
+# gate compares their ABSOLUTE counts. The target-* categories are the register-COMPLETENESS
+# QUEUE: a brand-new clean issue that cites a law not yet in the register legitimately adds
+# target-* entries — that is queue growth, not a segmentation regression (and blocking it
+# would make the corpus un-growable). So target-* is gated only on issues present in BOTH
+# versions (an EXISTING issue whose target resolution worsens still fails); new-issue queue
+# growth is reported as informational. See decisions.md 2026-10-05.
+_QUEUE = {"target-missing", "target-unresolved"}
+
 
 def report():
     V, nrows, nissues = check()
@@ -141,15 +151,28 @@ def diff():
         return 0
     base, _, _ = check(head_seg, head_meta)
     work, _, _ = check()
-    regressed = [(k, len(base.get(k, [])), len(work.get(k, []))) for k in ORDER
-                 if len(work.get(k, [])) > len(base.get(k, []))]
+    common = {json.loads(l)["issue_id"] for l in open(head_seg)} & \
+             {json.loads(l)["issue_id"] for l in open(SEG)}
+
+    def _count(V, k):
+        # queue categories: count only EXISTING (common) issues so new-issue queue growth
+        # doesn't trip the gate; structural categories: absolute count everywhere.
+        if k in _QUEUE:
+            return sum(1 for iid, *_ in V.get(k, []) if iid in common)
+        return len(V.get(k, []))
+
+    regressed = [(k, _count(base, k), _count(work, k)) for k in ORDER
+                 if _count(work, k) > _count(base, k)]
     bt, wt = sum(len(v) for v in base.values()), sum(len(v) for v in work.values())
+    queue_growth = sum(len(work.get(k, [])) for k in _QUEUE) - sum(_count(work, k) for k in _QUEUE)
     if regressed:
-        print(f"GATE FAIL: violations rose {bt}->{wt}. Regressions:")
+        print(f"GATE FAIL: a tracked category worsened on existing issues ({bt}->{wt} total).")
         for k, b, w in regressed:
-            print(f"  {k}: {b} -> {w}  (+{w-b})")
+            scope = " (existing issues)" if k in _QUEUE else ""
+            print(f"  {k}{scope}: {b} -> {w}  (+{w-b})")
         return 1
-    print(f"GATE PASS: violations {bt}->{wt} (no category increased).")
+    print(f"GATE PASS: no structural regression; no existing issue's target queue worsened "
+          f"(total {bt}->{wt}; +{queue_growth} target-* from new issues = register-completeness queue).")
     return 0
 
 
