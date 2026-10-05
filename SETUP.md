@@ -34,9 +34,9 @@ need all of it:
 
 | archive | restores to | needed for |
 |---|---|---|
-| **`lovtidend_text.tar.gz`** (88M) | `data/lovtidend_text/` | **reconstruction** — the frozen NB OCR that `segments.jsonl` points into. **This is the only archive you need to reconstruct corpus laws.** |
+| **`lovtidend_text.tar.gz`** (88M) | `data/lovtidend_text/` | **reconstruction** — the frozen NB OCR that `segments.jsonl` points into. Enough on its own for *enactment-era* + *pre-2001 point-in-time* text (the gazette is the only source there). |
+| **`amendment_streams.tar.gz`** | `data/` (loose) | **reconstructing *in-force / current* law** — carries the harvested post-2001 LTI op stream that `load_ops` applies on top of the base (segments carries ~none of a law's post-2001 amendments). Without it, in-force laws converge ~0.26; with it ~0.33 (89-law sample). Also feeds the dev-set gate. |
 | `current.tar.gz` (8.6M) | `data/current/` | the convergence metric (NLOD current-text denominator) + `--list` sanity |
-| `amendment_streams.tar.gz` | `data/` (loose) | the 9 dev-set laws' pre-built op streams (the gate) |
 | `lti.tar.gz` (94M) | `data/lti/` | building NEW post-2001 bases |
 | `llm_cache.tar.gz` | `data/llm_cache/` | reusing already-paid LLM segmentation when building new bases |
 | `ground_truth_ENCUMBERED.tar.gz` (1.1M) | `data/ground_truth/` | the point-in-time eval ONLY (Lovdata Pro — licensed, internal, do **not** redistribute) |
@@ -73,7 +73,10 @@ provs, flags = pipeline.reconstruct("lov/2007-06-29-75", as_of="2010-01-01")  # 
 lightly-amended laws reconstruct well; heavily-amended laws reconstruct the base + apply what
 the deterministic engine can, and **FLAG (never fabricate)** the ops it can't — flagged §§ are
 left at their last-known text, and the CLI prints a flag summary. Flags are the known
-sub-provision/renumber tail, not silent errors.
+sub-provision/renumber tail, not silent errors. **`segments.jsonl` carries a law's enactment base
+but almost none of its post-2001 amendments** — those come from the LTI op stream in
+`amendment_streams.tar.gz` (applied by `load_ops`). So reconstructing a modern law to its *current*
+text requires that archive restored; with only `lovtidend_text` you get the enactment-era text.
 
 ## 4. Sanity check (optional — needs `current` + `amendment_streams`)
 
