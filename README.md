@@ -18,6 +18,15 @@ public-domain source and cached; the **runtime that replays them is deterministi
 and answer-key-free. See `docs/reference/goal.md`,
 `docs/reference/evaluation.md`, `docs/reference/roadmap.md`.
 
+**Pipeline (current vs legacy).** The pipeline is **one segmentation step → a deterministic
+assembly layer** (`docs/decisions.md` 2026-10-04). *Current:* `source/scrape/segment_prompt.py`
++ the subagent fold `fold_segmentation.py` build **`data/segments.jsonl`** (the flat corpus, in
+git); `source/parse/pipeline.py` → `replay.py` → `ledd.py` reconstruct from it deterministically
+(CLI `source/parse/reconstruct.py`; no LLM at runtime). *Legacy:* the 2026-08 OpenAI build modules
+(`source/llm/*`, `source/scrape/build_{applied,gazette,omnibus,pointer}.py`,
+`source/parse/{endringslov,gazette,inforce}.py`) each carry a `# LEGACY` header — they only rebuild
+cached op streams the 9 dev-set laws still replay, and the runtime never imports them.
+
 **Run it yourself:** see `SETUP.md` (clone, dependencies, data restore) and `docs/todo.md`
 for the open work (the pre-2001 enactment locator).
 
