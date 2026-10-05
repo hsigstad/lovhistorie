@@ -1,5 +1,25 @@
 # Done
 
+## 2026-10-05 — ledd: §-level numbered-point applicator (reduces amend flags on skatteloven-shape laws)
+
+Diagnosed the high flag count on heavily-amended corpus laws (worst case `1991-07-20-65`: 110 ops → 100
+flags). **It is NOT a ledd-engine gap in the usual sense and NOT op-extraction noise for the bulk:** 71 of
+74 `set_text` ops are sub-provision edits on tax-law §§ whose body IS a top-level `1. 2. 3.` numbered list
+(no ledd). The generic engine's nl-parse scatters those points across "ledd" lines, and `nr. N skal lyde`
+carries no ledd ordinal, so `ledd.apply` returned None and replay flagged every one.
+
+- **Fix:** `ledd._apply_nr_point`, a fallback invoked only after the generic path gives up. Anchors on the
+  top-level `^N.` markers over multi-line continuations; applies replace/insert/repeal; descends into
+  punktum/bokstav when the address nests (`nr. 1 fjerde punktum`). Requires a clean `1..k` run
+  (anti-fabrication); None→flag contract preserved. Deterministic, no LLM, no answer-key (G1 clean).
+- **Dev gate IMPROVED, no regression:** convergence 599→**601**/829, strict 509→**512**/829, G1/G2/G3 PASS.
+- **Corpus:** `1991-07-20-65` 100→**64** flags (36 nr-point ops now apply). Committed + pushed.
+- **Remaining tail (NOT pursued — smaller + riskier):** OCR §-parse variants (`§ 1— 6`, `§l-1`, `§ 1- 2`
+  intra-number space) mis-address; segmentation over-split furniture/scope fragments (`///.`, `april Lov
+  nr. 41`, `28.`) counted as pseudo-ops; genuinely-hard nested/`og`-fused ops. The §-parse fix touches the
+  shared `_PARA` regex (gate blast-radius); the junk-op count is really a segmentation-quality issue best
+  fixed upstream, not masked downstream. Left as a decision for HS.
+
 ## 2026-10-05 — Flat corpus MIGRATED: 253 small issues segmented + folded into the ordered-starts segments.jsonl
 
 The S2/S3 fold-in landed for the small-issue bulk. `segments.jsonl` is now the FLAT ordered-starts
