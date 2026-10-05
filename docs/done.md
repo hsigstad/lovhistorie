@@ -16,8 +16,12 @@ Follow-up to the ~0.26 score: measured, for the **90** base-reconstructable in-f
 - **Implication:** the lever for reconstructing in-force law to *current* is wiring the already-harvested
   **post-2001 LTI stream** into the new assembly layer (`load_ops` already reads it — segments is its
   fallback), NOT more segmentation. The segmentation pipeline's natural strength is *enactment-era* and
-  *pre-2001 point-in-time* text from the gazette, where it is the only source. (Deployed `reconstruct()`
-  with the LTI stream scores higher than the pure-segments 0.26 — see the clone-config measurement.)
+  *pre-2001 point-in-time* text from the gazette, where it is the only source.
+- **Clone-config measurement** (segments base forced, so no local gitignored `enactment/*.json`
+  confound): segments-base + **segments ops** = **0.262**; segments-base + **`load_ops` (LTI stream)** =
+  **0.326** (+6.4pp, per-law median 0.31→0.41). So restoring `amendment_streams.tar.gz` and letting
+  `load_ops` feed the post-2001 ops is worth ~6pp today; the remaining gap to current is incomplete LTI
+  coverage (~285 acts absent from the stream + 153 pre-2001) plus the ledd/renumber application tail.
 
 ## 2026-10-05 — FIRST end-to-end score of the NEW (segments-only) pipeline: coverage-bound at ~0.26
 
