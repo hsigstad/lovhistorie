@@ -24,7 +24,10 @@ from pathlib import Path
 
 from source.parse import amendments, replay
 
-_ENACTMENT = Path(__file__).resolve().parents[2] / "data" / "enactment"
+_REPO = Path(__file__).resolve().parents[2]
+_ENACTMENT = _REPO / "data" / "enactment"
+_SEGMENTS = _REPO / "data" / "segments.jsonl"
+_FROZEN_DIR = _REPO / "data" / "lovtidend_text"
 _PARA = re.compile(r"§\s*(\d+(?:-\d+)?)([a-z])?")
 # Recover a SPACED single-letter suffix ('§ 38 b første ledd', 'Ny § 15 a skal lyde') that the
 # no-space _PARA drops. A genuine suffix is a lone letter FLANKED by a space and FOLLOWED by a
@@ -338,9 +341,52 @@ def enactment_base(target_law: str, base: str = "enactment") -> dict:
     Lovdata CD (2005), NEVER from the current consolidated text. Laws not yet built return {}.
     """
     f = _base_path(target_law, base)
+    if f.exists():
+        return json.loads(f.read_text(encoding="utf-8")).get("provisions", {})
+    if base == "enactment":                      # S3: fall back to the curated flat corpus
+        return _base_from_segments(target_law.split("/")[-1])
+    return {}
+
+
+@functools.lru_cache(maxsize=1)
+def _segments_by_datokode() -> dict:
+    """{datokode: [provision rows]} from the curated flat segments.jsonl (decisions.md 2026-10-04).
+    Loaded once. Reads ONLY the public corpus — never the current dump / register (G1-safe: the
+    reconstruction path builds its base from the owned segmentation, as the architecture intends)."""
+    out = defaultdict(list)
+    if not _SEGMENTS.exists():
+        return out
+    for line in open(_SEGMENTS, encoding="utf-8"):
+        r = json.loads(line)
+        if r.get("klass") == "provision" and r.get("datokode") and r.get("para"):
+            out[r["datokode"]].append(r)
+    return out
+
+
+@functools.lru_cache(maxsize=256)
+def _frozen(iid: str) -> str:
+    f = _FROZEN_DIR / f"{iid}.jsonl.gz"
     if not f.exists():
+        return ""
+    return "\n".join(json.loads(l).get("text", "") for l in gzip.open(f, "rt", encoding="utf-8"))
+
+
+def _base_from_segments(datokode: str) -> dict:
+    """{§N: text} enactment base assembled from the flat corpus's `provision` rows for `datokode`
+    — each § is the concatenation (in offset order) of its row-fragments sliced from the frozen
+    issue. Furniture was split into `noise` rows at fold time, so provision text is already clean.
+    {} if the law is not in the corpus (then reconstruction has no base, as before)."""
+    rows = _segments_by_datokode().get(datokode) or []
+    if not rows:
         return {}
-    return json.loads(f.read_text(encoding="utf-8")).get("provisions", {})
+    frozen = _frozen(rows[0]["issue_id"])
+    if not frozen:
+        return {}
+    by_para = defaultdict(list)
+    for r in rows:
+        by_para[r["para"]].append(r)
+    return {para: " ".join(frozen[x["start"]:x["end"]] for x in sorted(fr, key=lambda q: q["start"]))
+            for para, fr in by_para.items()}
 
 
 def is_ocr_base(target_law: str, base: str = "enactment") -> bool:
