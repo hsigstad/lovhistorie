@@ -1,5 +1,31 @@
 # Done
 
+## 2026-10-05 — FIRST end-to-end score of the NEW (segments-only) pipeline: coverage-bound at ~0.26
+
+We had never measured the segment→deterministic-assembly pipeline itself — the 0.7250 gate is the
+LEGACY path (committed bases + old `.gz` streams; S3/S3b never fire for the 9 dev laws). Forced the
+segments-only path (`_base_from_segments` + `_amend_ops_from_segments` → replay) and scored vs the
+NLOD current text at τ≥0.90, the gate's metric.
+
+- **The corpus and the dev set barely overlap:** only **1 of 9** dev laws has a base in
+  `segments.jsonl`. The 259-issue corpus and the old benchmark are different populations, so the new
+  pipeline can't be scored on the old dev set.
+- **Scorable set** = laws in `segments.jsonl` **and** with a current-text answer key = **~90** (the
+  segments corpus genuinely reaches **373** well-formed laws; 90 of those are still in force / in the
+  NLOD dump).
+- **Score: pooled convergence ≈ 0.26** (1140/4352 provisions); **base-only ≈ base+ops** (0.2629 vs
+  0.2619 — applying the in-corpus amendments adds ~nothing); only **2/90** laws reconstruct ≥90% of
+  provisions; per-law median 0.31.
+- **Diagnosis — it's COVERAGE, not the engine.** `segments.jsonl` holds enactment bases but almost
+  none of each law's amendment history (those live in the ~750 un-segmented gazette issues), so
+  reconstruction ≈ enactment text ≈ matches current only for never-amended provisions (~26%). The
+  lever is segmenting more issues, not engine tuning (consistent with CLAUDE.md "residual is a
+  capture/harvest tail"). This also means the Eivind handoff reconstructs *enactment-era* text well,
+  but *current / point-in-time* only for laws whose amendments happen to fall in the 259 issues.
+- Fixed `reconstruct.available_laws()` to require `para` (mirror `_segments_by_datokode`); note that
+  `--list` still globs the gitignored local `data/enactment/*.json` (442 here, 9 on a clone), so its
+  count reflects the checkout, not the shipped corpus.
+
 ## 2026-10-05 — Folded 6 flagged/giant issues into the corpus (253→259) + fixed the --diff gate semantics
 
 The flagged chunk-run (`w7016n4l8`, 47 chunks, 0 errors, ~3.8M tokens) completed; stitched + folded

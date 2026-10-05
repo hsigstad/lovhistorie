@@ -59,7 +59,11 @@ def available_laws() -> list[str]:
     if pipeline._SEGMENTS.exists():
         for line in open(pipeline._SEGMENTS, encoding="utf-8"):
             r = json.loads(line)
-            if r.get("klass") == "provision" and _DATOKODE.match(r.get("datokode") or ""):
+            # mirror _segments_by_datokode: a reconstructable base needs provision rows that
+            # carry BOTH a well-formed datokode AND a `para` (a datokode alone, with no §, yields
+            # no base) — otherwise --list overclaims laws that reconstruct to nothing.
+            if (r.get("klass") == "provision" and r.get("para")
+                    and _DATOKODE.match(r.get("datokode") or "")):
                 dks.add(r["datokode"])
     if pipeline._ENACTMENT.exists():
         for f in pipeline._ENACTMENT.glob("*.json"):
