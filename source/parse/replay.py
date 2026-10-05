@@ -94,6 +94,18 @@ def _apply_change_type(doc, op, flags, ledd_fallback=None):
             return
         doc.pop(para, None)          # whole-provision repeal
         return
+    if ct == "word_replace":
+        # "ordet «X» erstattes med «Y»" / "«X» strykes" (to=""). Apply as a verbatim str.replace
+        # on the ADDRESSED § only, and ONLY when the from-term is actually present there — else
+        # FLAG (don't fabricate / don't guess which § or blanket the whole law). from/to are the
+        # verbatim pair carried from the segmentation.
+        frm = op.get("from")
+        to = op.get("to") or ""
+        if frm and para and frm in doc.get(para, ""):
+            doc[para] = doc[para].replace(frm, to)
+            return
+        _flag(flags, op, "word_replace")
+        return
     if "overskrift" not in instr and para and new and new.lstrip().startswith("§"):
         # A whole-provision body ('§ N. …') IS the provision's new enacted text,
         # whatever the instruction's change_type parsed to. Chapter/part block

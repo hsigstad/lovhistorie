@@ -314,7 +314,7 @@ def load_ops(target_law: str, include_applied: bool = True):
 
 
 _OPKIND_CT = {"set_text": "change", "insert": "add", "repeal": "repeal",
-              "renumber": "renumber", "word_replace": "unknown"}
+              "renumber": "renumber", "word_replace": "word_replace"}
 _SKAL_LYDE = re.compile(r"skal\s+ly[dd]e\s*:?\s*", re.I)
 
 
@@ -353,7 +353,10 @@ def _amend_ops_from_segments(datokode: str) -> list:
         date = "-".join(amend_dk.split("-")[:3]) if amend_dk.count("-") >= 3 else None
         ops.append({"change_type": _OPKIND_CT.get(kind, "unknown"),
                     "instruction": text.split("\n", 1)[0][:120], "date": date,
-                    "act": amend_dk, "para": para, "new_text": payload or None})
+                    "act": amend_dk, "para": para, "new_text": payload or None,
+                    # word_replace carries the verbatim term pair ("ordet «X» erstattes med «Y»" /
+                    # "«X» strykes" -> to=""); replay applies it as a str.replace on the addressed §.
+                    "from": r.get("from"), "to": r.get("to")})
     return ops
 
 
