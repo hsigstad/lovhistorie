@@ -1,5 +1,34 @@
 # Done
 
+## 2026-10-12 — Assembly shareability diagnosis: the bottleneck is sub-provision APPLICATION, not coverage
+
+Ran the deterministic assembly over the enlarged corpus and scored in-force reconstruction vs the
+current NLOD dump (harness-only answer key) to assess shareability. Findings:
+
+- **Health:** gate guards PASS, dev convergence 0.726 (602/829) UNCHANGED — the +59 issues did not
+  regress the recon path. Corpus now: 1,229 reconstructable datokodes, 30,354 amend_op rows ->
+  **586 distinct target laws** (14,556 resolved ops).
+- **In-force reconstruction is weak in aggregate** (55-law spread sample, segments base + unioned ops):
+  median-over-laws per-provision similarity ~0.37, mean ~0.45, rate>=0.90 ~0.34; 2/55 laws clean, 33/55
+  below 0.5. Best laws hit 0.98-0.99 (stable / whole-provision-amended); worst hit 0.00.
+- **ROOT CAUSE (corrects an earlier wrong guess).** I first blamed a "measurement artifact" (grading
+  pre-2001 work against post-2001 current text). WRONG: `load_ops` already UNIONS the post-2001
+  amendment stream — folketrygdloven (`1997-02-28-19`) gets **1,966 ops, 1,654 of them post-2001, dated
+  to 2026**. The real limiter is that the bulk of ops are **sub-provision ("change"/ledd/punktum/
+  repeal-subunit) edits that `replay` sends to the deterministic `ledd.apply`, which returns None on
+  OCR bases (no clean ledd markers) and FLAGS** rather than fabricating — folketrygd: 1,626 flagged,
+  **1,300 of them `change`**. The provision is left at last-known text, so it misses current.
+- **Why dev laws look better (0.73):** their ledd ops were PRE-APPLIED offline by the legacy OpenAI
+  apply layer into cached streams; the 586 segments-covered in-force laws get only deterministic
+  whole-provision replay, so their ledd ops flag out.
+- **Re-ranked levers for DELIVERABLE quality:** (1) **ledd-on-OCR application engine = per-law
+  fidelity** (the real lever); (2) more amendment coverage = breadth; (3) more segmentation = breadth.
+  Segmentation was correctly first (nothing applies without the ops existing), but the engine is what
+  converts coverage into faithful point-in-time text. Plan: `docs/notes/llm_ledd_applicator.md`.
+- **Shareable now:** the segmentation DATASET (clean, gated, 586 amended laws) + reconstruction for the
+  strong laws (whole-provision-amended + clean post-2001 bases, breadth ~0.89); NOT blanket point-in-time
+  text for arbitrary laws (honest: flagged, not wrong).
+
 ## 2026-10-12 — Friday segmentation: top-50-densest Tier 1 issues segmented (259->313)
 
 Executed the 2026-10-05 coverage reframe: segmented the amendment-dense un-segmented issues

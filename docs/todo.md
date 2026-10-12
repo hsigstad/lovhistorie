@@ -20,6 +20,12 @@ Attribution on the 90 base-reconstructable in-force laws (4,352 provisions): 35%
   ops that flag because OCR bases lack clean ledd boundaries). The real remaining CODE lever, but a
   DELIBERATE gated project (on the recon path), NOT a quick fix. Best done after Friday with the larger
   corpus as a test bed. Cheap slices already taken (nr-point, word_replace, §-OCR recovery, key-fix).
+  - **CONFIRMED the #1 deliverable lever (done.md 2026-10-12):** in-force per-law fidelity is bottlenecked
+    HERE, not on coverage — folketrygd has 1,300 flagged `change` ops (post-2001 ops ARE present, they
+    just don't apply on OCR bases). **DESIGN: `docs/notes/llm_ledd_applicator.md`** — port the legacy
+    localize-then-splice applicator (`llm/apply_op.py` / `pointer_apply.py`) into the segments path as an
+    OFFLINE Claude-subagent precompute (anchors not offsets; substring-verified; flag-on-miss; cached),
+    baked into the runtime as verified text. First validation target: folketrygd `1997-02-28-19`.
 - [ ] **(optional) fold-side continuation-merge guard** — merge a mid-sentence/fragment `amend_op` back
   into the preceding op of the same scope (extend the `unit_key` reassembly to the op case). Would clean
   the ~83 garbage amend_op rows in the EXISTING 259 issues at load time without re-segmenting. Small
