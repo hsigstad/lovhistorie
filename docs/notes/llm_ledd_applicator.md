@@ -121,11 +121,37 @@ ephemeral runtime computation.
 - **Separate file, not a field on the amend_op row:** an op lives in issue X but amends law Y, so the
   application pointer is into law Y's provision — cross-referential, keyed by `(target_law, op)`. Two
   clean layers: segments = WHAT each amendment says; applications = WHERE/HOW each op lands on the base.
-- **OPEN design choice (settle at build):** per-op SEQUENTIAL splices (anchor relative to the running
-  provision state — simple, but a changed early op can break later anchors) vs per-provision HOLISTIC
-  pointers (the `pointer_apply.py` model: one ordered `{base_span | payload}` list producing the final
-  provision in a single pass — more robust, naturally one hand-improvable entry per provision). Holistic
-  likely the better fit for a curated file.
+- **SETTLED: per-provision HOLISTIC pointers** (the `pointer_apply.py` model: one ordered
+  `{base_span | payload}` list producing the final provision in a single pass), NOT per-op sequential
+  splices. Decided on the staleness argument below — holistic entries depend only on the fixed enactment
+  base + the payloads, so one op changing re-derives ONE provision's entry instead of cascading through
+  later anchors.
+
+### Staleness / future-proofing (HS 2026-10-12) — the artifact must degrade to "flagged", never to wrong text
+
+The risk: the base a pointer points into can change (re-segmented enactment base, changed payload). Rules
+that make this foolproof — staleness degrades to today's safe behaviour and is LOUD, never silent:
+1. **Anchors, not raw offsets** — resolved by search at build time, so offset shifts elsewhere don't
+   break a span (raw offsets would). First line of defence.
+2. **Re-verify on every build (the core guarantee)** — the build never trusts the stored pointer: it
+   re-resolves the anchor and SUBSTRING-VERIFIES the removed span vs current base and inserted text vs
+   current payload. Mismatch -> flag-don't-fabricate: the op reverts to unapplied, provision falls back
+   to last-known text. Worst case of a stale pointer = "looks like today" (pre-applicator), NEVER
+   corrupted law text.
+3. **Dependency fingerprints** — each row carries a sha of the base-provision-state + payload it was
+   derived against (mirrors segments_meta.json pinning frozen text). Hash mismatch -> row is STALE ->
+   must re-derive, not silently re-apply.
+4. **Gate surfaces it** — `applications_qa --diff` fails on any application that no longer
+   resolves/verifies or is fingerprint-stale: a blocking, countable, visible condition at commit.
+5. **Regenerable cache, stable keys** — keyed by content-stable op identity (amending datokode +
+   instruction + seq), not line numbers; "outdated" = re-run the offline applicator on the invalidated
+   subset, review, re-commit. One provision, no cascade.
+
+Through-line: the file is a set of RE-VERIFIED pointers, not stored text. Staleness can only make a
+provision revert to its safe last-known state AND raise a gate flag — it cannot produce silently-wrong
+output. (Same principle already protects segments.jsonl: offsets pinned by a frozen-text sha; the
+Lovtidend OCR scan is immutable, so segment offsets are stable in practice — applications point at the
+reconstructed enactment, which CAN move, so the fingerprint + re-verify matter more here.)
 
 ## Open questions
 
