@@ -512,7 +512,12 @@ def reconstruct(target_law: str, as_of: str | None = None, base: str = "enactmen
     since = base_as_of(target_law, base)
     if since:
         ops = [o for o in ops if not o.get("date") or o["date"] >= since]
-    provs, flags = replay.replay(b, ops, as_of=as_of)
+    # Deterministic application layer: the curated applications.jsonl pointer rows re-splice the
+    # sub-provision ops the regex ledd engine can't resolve on OCR bases (docs/notes/llm_ledd_
+    # applicator.md). NO LLM — a file lookup + verbatim splice, re-verified against the current
+    # provision, so it is safe on the runtime path (empty file -> no-op -> unchanged behaviour).
+    from source.parse import ledd_apply
+    provs, flags = replay.replay(b, ops, as_of=as_of, ledd_fallback=ledd_apply.make_fallback(target_law))
     # blanket terminology reforms ("ordet «A» endres til «B»") — applied AFTER the per-provision
     # ops as a deterministic str.replace over provisions containing the term (source.parse.blanket).
     reforms = _load_reforms(target_law)

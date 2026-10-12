@@ -17,15 +17,20 @@ import subprocess
 from pathlib import Path
 
 _HOOK = """#!/usr/bin/env bash
-# Two-signal gate for curated-segmentation edits (decisions.md 2026-10-04).
+# Curated-artifact gates (decisions.md 2026-10-04; applications 2026-10-12).
 # Installed by `python -m source.eval.install_hooks` — edit THERE, not here.
-if git diff --cached --name-only | grep -qx 'data/segments.jsonl'; then
-  root="$(git rev-parse --show-toplevel)"
-  cd "$root" || exit 1
+staged="$(git diff --cached --name-only)"
+root="$(git rev-parse --show-toplevel)"
+cd "$root" || exit 1
+if echo "$staged" | grep -qx 'data/segments.jsonl'; then
   PYTHONPATH=. python -m source.eval.classification_qa --diff || {
     echo "pre-commit: segments.jsonl edit worsens classification_qa invariants — blocked."; exit 1; }
   PYTHONPATH=. python -m source.eval.segments_quality --diff || {
     echo "pre-commit: segments.jsonl edit regresses a base's quality vs current — blocked."; exit 1; }
+fi
+if echo "$staged" | grep -qx 'data/applications.jsonl'; then
+  PYTHONPATH=. python -m source.eval.applications_qa --diff || {
+    echo "pre-commit: applications.jsonl edit drops fired ops or grows orphans — blocked."; exit 1; }
 fi
 exit 0
 """
