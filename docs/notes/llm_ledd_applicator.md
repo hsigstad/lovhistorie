@@ -1,7 +1,11 @@
 # LLM ledd-applicator — design note (2026-10-12)
 
-**Status:** PLAN (deliberate-gated engine project; see docs/todo.md "ledd-on-OCR application engine").
-Supersedes nothing yet — no code written. Prototype pending (budget).
+**Status:** BUILT end-to-end 2026-10-12 (see done.md). Deterministic core
+(`source/parse/ledd_apply.py`) + gate (`source/eval/applications_qa.py`, in the pre-commit hook) +
+wiring (`pipeline.reconstruct` via replay's `ledd_fallback`) + applicator prompt
+(`source/scrape/apply_prompt.py`) are committed; first 35 applications (helsepersonelloven) landed.
+REMAINING: track the offline populator (extractor + fold, currently scratch) as a module; a
+SOURCE-ONLY confidence guard for the ~1/17 mis-location tail; scale to more laws (one gated commit each).
 
 ## Problem
 

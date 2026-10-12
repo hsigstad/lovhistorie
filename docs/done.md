@@ -1,5 +1,29 @@
 # Done
 
+## 2026-10-12 — Ledd applicator BUILT end-to-end (applications.jsonl layer) + validated
+
+Built the LLM ledd-applicator as a git-tracked pointer layer (design: docs/notes/llm_ledd_applicator.md).
+The engine reconstruction is live:
+- **Deterministic core (no LLM, runtime-safe):** `source/parse/ledd_apply.py` loads
+  `data/applications.jsonl` pointer rows and re-splices a flagged sub-provision op by RE-RESOLVING its
+  span anchors against the current provision + splicing the verbatim payload; returns None (-> replay
+  flags -> last-known text) if anchors don't resolve, so a changed base degrades safely. Wired into
+  `pipeline.reconstruct` via replay's `ledd_fallback` seam. Empty file = true no-op (verified).
+- **Gate:** `source/eval/applications_qa.py` — `fired` = ops flagged WITHOUT the layer that apply WITH
+  it; + orphan check; `--diff` fails if fired drops / orphans grow. Added to the pre-commit hook
+  (`install_hooks`). G1/G2/G3 PASS with the layer wired; dev convergence unchanged 0.7262.
+- **Applicator (offline):** Claude subagents (Sonnet) read provision+instruction+payload -> span
+  anchors (prompt+schema tracked in `source/scrape/apply_prompt.py`). Validated two ways:
+  (a) vs the deterministic ledd engine on 12 clean-base ops: **10/12 exact, 0.977 mean, 0 fabrication**;
+  (b) first real OCR law helsepersonelloven `1999-07-02-64`: **35/37 ops applied** (2 skipped =
+  anchors unresolved, stay flagged), rate>=0.90 0.48->0.51, flagged 133->98. On 17 touched provisions
+  mean 0.745->0.779 (10 improved / 7 "worse", but 5/7 are multi-op intermediate-state confound vs a
+  2015-2026 current, 1 negligible; only §65 a genuine mis-location review candidate).
+- **Commits:** 29fdb5a (plumbing + gate + hook), 9713343 (first 35 applications).
+- **Remaining productionization:** track the offline populator (recording-fallback extractor + fold;
+  currently scratch) as a module like `fold_append`; a SOURCE-ONLY confidence guard for the ~1/17
+  mis-location tail (no oracle at build time); scale to more laws (one gated commit each).
+
 ## 2026-10-12 — Assembly shareability diagnosis: the bottleneck is sub-provision APPLICATION, not coverage
 
 Ran the deterministic assembly over the enlarged corpus and scored in-force reconstruction vs the
