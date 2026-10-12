@@ -22,10 +22,17 @@ Attribution on the 90 base-reconstructable in-force laws (4,352 provisions): 35%
   corpus as a test bed. Cheap slices already taken (nr-point, word_replace, §-OCR recovery, key-fix).
   - **CONFIRMED the #1 deliverable lever (done.md 2026-10-12):** in-force per-law fidelity is bottlenecked
     HERE, not on coverage — folketrygd has 1,300 flagged `change` ops (post-2001 ops ARE present, they
-    just don't apply on OCR bases). **DESIGN: `docs/notes/llm_ledd_applicator.md`** — port the legacy
-    localize-then-splice applicator (`llm/apply_op.py` / `pointer_apply.py`) into the segments path as an
-    OFFLINE Claude-subagent precompute (anchors not offsets; substring-verified; flag-on-miss; cached),
-    baked into the runtime as verified text. First validation target: folketrygd `1997-02-28-19`.
+    just don't apply on OCR bases). **DESIGN: `docs/notes/llm_ledd_applicator.md`**.
+  - **BUILT end-to-end 2026-10-12 (done.md):** application layer is LIVE — `data/applications.jsonl`
+    (git-tracked pointers) + `source/parse/ledd_apply.py` (deterministic re-splice, runtime-safe, wired
+    into `pipeline.reconstruct`) + `source/eval/applications_qa.py` gate (pre-commit hook) +
+    `source/scrape/{apply_prompt,apply_fold}.py` (tracked offline populator). Validated 10/12 exact vs the
+    engine; first law helsepersonelloven `1999-07-02-64` = 35 ops applied, net-positive, 0 fabrication.
+  - **NEXT (scale + harden), recipe in the design note "RUN":** per law, `apply_fold extract --law DK` →
+    applicator Workflow (apply_prompt, sonnet) → `apply_fold fold` → gate → commit; densest-flagged first
+    (folketrygd `1997-02-28-19` = 1,300 flagged, the biggest). Plus: a SOURCE-ONLY confidence guard for
+    the ~1/17 mis-location tail (no oracle at build); re-populate 1999-07-02-64 via the tracked module for
+    base_sha consistency (it surfaces ~98 flagged ops vs the 37 the scratch run saw).
 - [ ] **(optional) fold-side continuation-merge guard** — merge a mid-sentence/fragment `amend_op` back
   into the preceding op of the same scope (extend the `unit_key` reassembly to the op case). Would clean
   the ~83 garbage amend_op rows in the EXISTING 259 issues at load time without re-segmenting. Small
