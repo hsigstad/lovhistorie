@@ -5,10 +5,17 @@
 Attribution on the 90 base-reconstructable in-force laws (4,352 provisions): 35% match · ~19% assembly
 (code) · ~45% data/coverage (un-segmented issues + stream gaps) · ~0% segmenter · ~0% OCR. So:
 
-- [ ] **FRIDAY (also in Todoist, P1 2026-10-09): segment the remaining issues** — the ~45% coverage gap is
+- [~] **FRIDAY (also in Todoist, P1 2026-10-09): segment the remaining issues** — the ~45% coverage gap is
   the top lever. Prioritized worklist: `docs/notes/friday_segmentation_worklist.md` (292 amendment-dense
   regular issues first, then 91 giants). New prompt (`segment_prompt.py`) already tightened to cut
   spurious amend_op rows. Fold → gates → commit per the hook.
+  - **DONE 2026-10-12 (see done.md): top-50-densest Tier 1 segmented, corpus 259→313** (HS ~20M-token
+    cap). Pipeline now TRACKED: `source/scrape/fold_append.py` (prepare/fold around
+    `fold_segmentation`, empty-chunk guard). Both one-shot + chunked paths validated; every batch gated.
+  - **REMAINING: ~238 Tier-1 issues** (the sub-54-`skal_lyde` regular tail) **+ 91 Tier-2 giants.** Resume:
+    rank `friday_issue_priority.json` minus current `segments.jsonl` iids (densest first), then
+    `python -m source.scrape.fold_append prepare --iids …` → Workflow (one subagent per unit,
+    `segment_prompt.SCHEMA`) → `fold_append fold` → gates → commit, batches of ~12. Each batch ~2-4M tokens.
 - [ ] **ledd-on-OCR application engine** — the residual assembly tail (~17%, ~2,200 ledd sub-provision
   ops that flag because OCR bases lack clean ledd boundaries). The real remaining CODE lever, but a
   DELIBERATE gated project (on the recon path), NOT a quick fix. Best done after Friday with the larger

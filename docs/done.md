@@ -1,5 +1,32 @@
 # Done
 
+## 2026-10-12 — Friday segmentation: top-50-densest Tier 1 issues segmented (259->313)
+
+Executed the 2026-10-05 coverage reframe: segmented the amendment-dense un-segmented issues
+(the ~45% lever). HS approved a ~20M-token cap = the **top 50 densest** Tier 1 issues
+(`docs/notes/friday_segmentation_worklist.md`, ranked by `skal_lyde`).
+
+- **Corpus 259 -> 313 distinct issues** (+54: 4 validation + 50 top-densest), each a gated,
+  pure-addition commit. ~16M subagent tokens total. Commits: 2d099d0, 0440c3f (validation),
+  7c3da78, 0435f7c, a25e8a0, d30911a, 1a9f26a (batches 1-5).
+- **Pipeline (recreated + now TRACKED):** `source/scrape/fold_append.py` (`prepare` writes frozen
+  OCR -> per-issue/per-chunk .txt + segment_prompt jobs; `fold` stitches subagent output via
+  `fold_segmentation.{tile_ordered,stitch_chunks}`, REPLACES each touched issue's rows and keeps
+  untouched issues VERBATIM -> clean diffs). The prior session's scratchpad copy was lost on reset;
+  committing it closes that gap (incident->check). Added an **empty-chunk guard**: refuse to fold a
+  chunked issue with any empty chunk (would collapse the span into one swallowing segment).
+- **Both paths validated:** one-shot (<=100k chars) and chunked (80k chunks + 12k overlap, dedup by
+  global offset). Densest issue ac024b21 (1993, 494 amendments, 497k chars, 8 chunks) -> 840 amend_ops
+  + 396 provisions. Anchor misses rare (0-7 per 12-issue batch); 0 empty units after the one batch-2
+  re-run (6bc51257 cidx1 was a quota-table forskrift appendix, 0 amendments — verified, not missed acts).
+- **Gates:** every batch PASS on `classification_qa --diff` + `segments_quality --diff` (via the
+  pre-commit hook). New issues only add register-completeness `target-*` queue entries (gated only on
+  issues common to HEAD, per decisions.md 2026-10-05), never a structural regression.
+- **Remaining Tier 1: ~238 issues** (242 regular with skal_lyde>=5 minus the 54 done, i.e. the sub-54-
+  skal_lyde tail) + the 91 Tier-2 giants. Resume: regenerate the ranked remainder from
+  `friday_issue_priority.json` minus `segments.jsonl` iids, then `fold_append prepare`/Workflow/`fold`
+  in gated batches of ~12 (densest first).
+
 ## 2026-10-05 — Root-cause investigation: a provision-key normalization bug in assembly (+ attribution)
 
 Picked a near-unamended bad law (`1992-06-19-56`, 2 amendments, base 44 / cur 45, scored 0) to attribute
