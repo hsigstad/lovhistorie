@@ -62,6 +62,25 @@ dump or the law register. It emits only pointers/anchors. Deterministic code fet
 substring-verifies every span. Offline + cached -> reproducible build input, never a runtime call. An
 unverifiable pointer is flagged, not guessed. This is the same contract the segmenter already honours.
 
+## Prototype 1 (2026-10-12) — plumbing validated, quality test confounded
+
+10 flagged `change` ops on folketrygd `1997-02-28-19`, Sonnet subagents emitting span anchors ->
+deterministic splice. Result:
+- **Plumbing works:** 10/10 anchors resolved whitespace-tolerantly; splice clean; fabrication-safe
+  (payload verbatim amendment, removed span verbatim base slice). Agents showed real comprehension
+  (flagged OCR-duplicated ledd, reasoned about which paragraph is the true "andre ledd").
+- **Quality unmeasurable from this sample (my selection error):** I picked the LOWEST-sim-vs-current
+  provisions. Those are low *because they were later reformed away* — folketrygd ch.10 (rehabiliteringspenger)
+  was replaced by arbeidsavklaringspenger (2010). E.g. §10-14 has ONE op (2000) but its payload scores
+  0.01 vs current (current 190 chars vs payload 1549) — current §10-14 is a different provision. No correct
+  application of an intermediate op can reach 2026 current. Only the one genuinely-operative op improved
+  (§20-2 insert_after, 0.07 -> 0.30).
+- **LESSON — validation needs no oracle if done right:** compare the applicator's output to the
+  DETERMINISTIC `ledd.apply` on CLEAN-base provisions where the engine SUCCEEDS (same inputs -> same
+  output). Matching there = strong evidence of correctness on the OCR bases where the engine fails (its
+  actual job). Do this before scoring anything vs current; and when scoring vs current, restrict to
+  provisions whose LAST op is the one applied (else later reform confounds).
+
 ## Open questions
 
 - Partial-sentence edits ("i § X erstattes «A» med «B»") — word_replace is already handled
