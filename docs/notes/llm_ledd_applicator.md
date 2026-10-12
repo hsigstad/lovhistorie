@@ -81,6 +81,27 @@ deterministic splice. Result:
   actual job). Do this before scoring anything vs current; and when scoring vs current, restrict to
   provisions whose LAST op is the one applied (else later reform confounds).
 
+## Prototype 2 (2026-10-12) — CONCEPT VALIDATED vs the deterministic engine (no oracle)
+
+The oracle-free validation from Prototype 1's lesson: 12 clean-base (LTI) sub-provision ops on
+`2001-05-18-21` / `2001-06-15-53` where the deterministic `ledd.apply` SUCCEEDS; ran the applicator
+(Sonnet) on the same inputs; compared spliced output to the engine's output.
+- **10/12 exact match; mean similarity-to-engine 0.977; 10/12 >=0.95.** Covered nytt-punktum inserts,
+  første/andre-ledd replaces, whole-§, and a nested `andre ledd andre punktum innledningen`.
+- The 2 near-misses are NOT fabrication: §4 (0.93) the applicator inserted the new ledd right after
+  ledd 1 while the engine appended it after a `Kapittel 2` heading that bled into the base (applicator
+  arguably MORE correct); §36 (0.80) a hard nested lead-in-before-a-list address, partial diff.
+- Conclusion: the applicator reproduces the known-correct engine by READING (not regex), so it should
+  carry to the OCR bases where the regex engine returns None — its actual job. 0% fabrication holds
+  (every char is a verbatim slice of base or the amendment payload). **Green light to build for real.**
+
+Build order (the larger follow-on, not this session): (1) module `source/llm/ledd_apply.py` (or revive
+`apply_op.py`) with the anchor schema + deterministic splice + substring-verify, cached via llmkit,
+Claude-subagent backend; (2) wire as the `ledd_fallback` in `replay._apply_change_type` (offline
+precompute -> baked verified text, runtime stays deterministic); (3) idempotency guard before
+`whole_only=False`; (4) measure the in-force convergence lift (expect the folketrygd/tax ledd-heavy laws
+to move most). Validate each step vs the engine on clean bases + the gate on the 9 dev laws.
+
 ## Open questions
 
 - Partial-sentence edits ("i § X erstattes «A» med «B»") — word_replace is already handled
