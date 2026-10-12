@@ -102,6 +102,31 @@ precompute -> baked verified text, runtime stays deterministic); (3) idempotency
 `whole_only=False`; (4) measure the in-force convergence lift (expect the folketrygd/tax ledd-heavy laws
 to move most). Validate each step vs the engine on clean bases + the gate on the 9 dev laws.
 
+## Artifact design (HS 2026-10-12): applications as a git-tracked, continuously-improved layer
+
+The applicator's OUTPUT is a curated artifact, exactly parallel to `segments.jsonl` (decisions.md
+2026-10-04: "segments.jsonl is THE corpus artifact, improved one gated commit at a time"). NOT an
+ephemeral runtime computation.
+
+- **`data/applications.jsonl` (git-tracked), POINTERS ONLY** — one row per applied op:
+  `{target_law, para, op_key, op_kind, span_start_anchor, span_end_anchor}`. No statutory text: the
+  removed span is a verbatim slice of the public base, the inserted text is the segments `amend_op`
+  payload (public). Same G1 guarantee as segments.jsonl — the model emits anchors, deterministic code
+  holds the text.
+- **Build = deterministic re-splice** from anchors + public base + payload. Zero live LLM at runtime.
+- **Improve loop** identical to the segmentation fold: offline applicator PROPOSES rows for flagged ops;
+  human/agent corrects a bad anchor; each change a gated commit.
+- **Gate = `applications_qa`** (sibling to classification_qa / segments_quality, same pre-commit hook):
+  every tracked application's anchors resolve + substring-verify against the base; no regression vs HEAD.
+- **Separate file, not a field on the amend_op row:** an op lives in issue X but amends law Y, so the
+  application pointer is into law Y's provision — cross-referential, keyed by `(target_law, op)`. Two
+  clean layers: segments = WHAT each amendment says; applications = WHERE/HOW each op lands on the base.
+- **OPEN design choice (settle at build):** per-op SEQUENTIAL splices (anchor relative to the running
+  provision state — simple, but a changed early op can break later anchors) vs per-provision HOLISTIC
+  pointers (the `pointer_apply.py` model: one ordered `{base_span | payload}` list producing the final
+  provision in a single pass — more robust, naturally one hand-improvable entry per provision). Holistic
+  likely the better fit for a curated file.
+
 ## Open questions
 
 - Partial-sentence edits ("i § X erstattes «A» med «B»") — word_replace is already handled
