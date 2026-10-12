@@ -66,6 +66,28 @@ dump or the law register. It emits only pointers/anchors. Deterministic code fet
 substring-verifies every span. Offline + cached -> reproducible build input, never a runtime call. An
 unverifiable pointer is flagged, not guessed. This is the same contract the segmenter already honours.
 
+## RUN — populate / scale applications.jsonl (reproducible, gated)
+
+Per law (one gated commit each; mirrors the segmentation fold):
+1. `python -m source.scrape.apply_fold extract --law <DK> --outdir <dir>` — replays the law with a
+   recording fallback, writes `<dir>/case_<i>.json` (provision+instruction+payload for each flagged
+   sub-provision op) + `meta.json` + `jobs.json`. Uses `enactment_base` = the RUNTIME base (see note).
+2. Run the applicator Workflow over `jobs.json`: one `general-purpose` subagent per case with
+   `apply_prompt.build_prompt(path)` + `apply_prompt.SCHEMA`, `model: 'sonnet'`; save the result array
+   (one `{idx, op_kind, span_start_anchor, span_end_anchor?}` per case) to `results.json`. (Same
+   Workflow shape as the segmentation runs this session.)
+3. `python -m source.scrape.apply_fold fold --meta <dir>/meta.json --results results.json` — splice-
+   verifies each on the recorded provision; writes verified pointer rows (merge/replace by (law,op_key)).
+4. `python -m source.eval.applications_qa --diff` (pre-commit hook runs it); `python -m source.eval.gate`
+   (guards + dev unchanged); then `git add data/applications.jsonl && git commit` (hook gates).
+
+**Base note (correctness):** extract and the runtime (`pipeline.reconstruct` -> replay) MUST use the same
+base. The tracked `apply_fold.extract` uses `enactment_base` (the runtime base); the first scratch run
+of helsepersonelloven used `_base_from_segments` (they fire anyway because `ledd_apply` re-verifies
+anchors against the live provision, but the base_sha provenance differs). A future re-populate of
+1999-07-02-64 via the tracked module gives base_sha consistency and surfaces the law's full ~98 flagged
+sub-ops (vs the 37 the scratch run saw).
+
 ## Prototype 1 (2026-10-12) — plumbing validated, quality test confounded
 
 10 flagged `change` ops on folketrygd `1997-02-28-19`, Sonnet subagents emitting span anchors ->
