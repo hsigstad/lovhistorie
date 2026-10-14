@@ -117,10 +117,19 @@ Two findings:
    once an earlier op rewrites a provision, later ops' anchors no longer match and flag (folketrygd: 334
    rows had a row but didn't resolve; only 873/1,654 post-2001 ops applied). FIX: `extract(apply_committed=
    True)` re-locates anchors against the RUNNING state (apply committed rows first, record only the still-
-   flagged), iterated extract->apply->fold to a fixpoint. Folketrygd fired 684 -> 913 after 2 passes.
-   Running the fixpoint across all 86 laws (2026-10-14) — numbers refresh on completion. Out-of-scope
-   ops (renumber/move/unknown) still flag — a later lever. (Earlier "intermediate-state confound"
-   framing was WRONG: we DO apply post-2001 amendments; the gap was under-application, now being fixed.)
+   flagged), iterated extract->apply->fold to a fixpoint. Across all 86 laws: **fired 2,614 -> 3,599**
+   (73% of 10,595 ops apply; 83% of provisions fully-applied). Still flagged: change 1512 + add 276
+   (in-scope; hard-OCR or deeper chains), renumber 458 + move 51 + unknown 140 (out of op-kind scope),
+   repeal-subunit 362. (Earlier "intermediate-state confound" framing was WRONG about why: we DO apply
+   post-2001 amendments; the first-pass gap was under-application.)
+3. **BUT current-text quality stayed FLAT (0.705->0.706) even after +985 ops.** Even on the 1,334 TOUCHED
+   provisions it is only +0.005 (641 better, 499 worse). The applicator is validated-correct vs the engine
+   on CLEAN bases (10/12), so the two-way churn is (a) current-convergence's inability to adjudicate
+   PARTIAL amendment application (intermediate states + coverage gaps move provisions both ways vs a 2026
+   answer) and (b) some OCR-base mislocation. **CONCLUSION: current-convergence can neither credit nor
+   refute this work — the binding constraint is now POINT-IN-TIME ground truth (the parked Lovdata-Pro
+   download), not more applicator coverage.** Optional before GT: a source-only confidence guard to prune
+   the OCR mislocation tail (the 499 worse).
 
 ## gpt-4.1 for SEGMENTATION — evaluated, NOT adopted (2026-10-14)
 
