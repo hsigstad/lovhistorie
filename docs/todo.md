@@ -28,11 +28,17 @@ Attribution on the 90 base-reconstructable in-force laws (4,352 provisions): 35%
     into `pipeline.reconstruct`) + `source/eval/applications_qa.py` gate (pre-commit hook) +
     `source/scrape/{apply_prompt,apply_fold}.py` (tracked offline populator). Validated 10/12 exact vs the
     engine; first law helsepersonelloven `1999-07-02-64` = 35 ops applied, net-positive, 0 fabrication.
-  - **NEXT (scale + harden), recipe in the design note "RUN":** per law, `apply_fold extract --law DK` →
-    applicator Workflow (apply_prompt, sonnet) → `apply_fold fold` → gate → commit; densest-flagged first
-    (folketrygd `1997-02-28-19` = 1,300 flagged, the biggest). Plus: a SOURCE-ONLY confidence guard for
-    the ~1/17 mis-location tail (no oracle at build); re-populate 1999-07-02-64 via the tracked module for
-    base_sha consistency (it surfaces ~98 flagged ops vs the 37 the scratch run saw).
+  - **SCALED on gpt-4.1 2026-10-14 (done.md / design note):** 2,369 applications across the top-8 non-dev
+    in-force laws (folketrygd 984, ...), via `apply_fold extract|apply|fold` (llmkit/OpenAI, cached, ~$8,
+    0% Claude weekly). gate.DEV_LAWS guard added (applicator-populating a dev law regressed the gate
+    602->599). gpt-4.1 chosen over Sonnet-subagents (~37% of weekly) given the 59% budget; quality a notch
+    below Sonnet but net-positive + gated. Scaling cost: ~$13 OpenAI for the whole ~4,144-op corpus.
+  - **NEXT (harden + finish), recipe in design note "RUN":** (1) SOURCE-ONLY confidence guard for the
+    mis-location tail — current-convergence is FLAT (intermediate-state confound, can't credit the
+    point-in-time win; can't use the oracle at build). (2) Remaining ~14 non-dev laws with 10-50 flagged
+    ops (top-25 = 86% coverage; ~$ a few more). (3) Re-run the length-cap skips (max_tokens now 1500).
+  - **Segmentation stays on CLAUDE** — gpt-4.1 mis-classifies vedtak/forskrift as law provisions
+    (`segment_llm.py` = evaluated, not adopted).
 - [ ] **(optional) fold-side continuation-merge guard** — merge a mid-sentence/fragment `amend_op` back
   into the preceding op of the same scope (extend the `unit_key` reassembly to the op case). Would clean
   the ~83 garbage amend_op rows in the EXISTING 259 issues at load time without re-segmenting. Small
