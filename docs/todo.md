@@ -36,9 +36,14 @@ Attribution on the 90 base-reconstructable in-force laws (4,352 provisions): 35%
   - **FULL non-dev scale DONE 2026-10-14:** all 86 non-dev in-force laws the corpus touches populated —
     3,652 applications, 2,614 firing, 0 orphans, 0 fabrication (~$12 OpenAI, 0% Claude weekly). Length-cap
     skips recovered (max_tokens 1500). Dev gate 602, guards PASS.
-  - **NEXT (harden):** SOURCE-ONLY confidence guard for the mis-location tail — current-convergence is
-    FLAT (intermediate-state confound: can't credit the point-in-time win, can't use the oracle at build),
-    so a self-consistency/source signal is the only way to prune bad rows. This is the last engine lever.
+  - **IN PROGRESS (2026-10-14): FIXPOINT iteration so post-2001 ops actually APPLY.** The first scale pass
+    under-applied — anchors located on a static pre-application snapshot don't resolve once earlier ops
+    rewrite the provision at runtime (folketrygd: only 873/1,654 post-2001 ops applied, 334 rows stale).
+    `extract(apply_committed=True)` relocates against the running state; iterated to a fixpoint (folketrygd
+    fired 684->913). Running across all 86 laws. (We DO apply post-2001 amendments — the gap was
+    under-application, not a confound.)
+  - **NEXT (harden):** extend op_kinds to renumber/move (still flag); a SOURCE-ONLY confidence guard for
+    the mis-location tail. Point-in-time GT (Lovdata-Pro download) to credit the historical gains.
   - **Segmentation stays on CLAUDE** — gpt-4.1 mis-classifies vedtak/forskrift as law provisions
     (`segment_llm.py` = evaluated, not adopted).
 - [ ] **(optional) fold-side continuation-merge guard** — merge a mid-sentence/fragment `amend_op` back

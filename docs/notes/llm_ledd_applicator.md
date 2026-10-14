@@ -92,10 +92,12 @@ All non-dev in-force laws the corpus touches are now applicator-populated: **3,6
 pointer rows across 86 laws, 2,614 firing, 0 orphans, 0 fabrication** (gpt-4.1, llmkit, cached,
 ~$12 OpenAI total, 0% Claude weekly). Dev gate unchanged at 602 (guards PASS — dev laws excluded by
 the `apply_fold.extract` guard). max_tokens 500->1500 recovered the length-cap skips on re-run.
-REMAINING ENGINE WORK: the SOURCE-ONLY confidence guard for the mis-location tail (current-convergence
-is flat / can't adjudicate — the win is point-in-time, needs GT); re-test a stronger/cheaper model for
-segmentation if one appears. The ~59 scattered per-law LTI gaps + the dev-law migration are separate
-(docs/todo.md).
+REMAINING ENGINE WORK: (a) the FIXPOINT iteration so post-2001 (and all) ops actually apply — the first
+pass under-applied (anchors located on a static snapshot don't resolve once earlier ops rewrite the
+provision at runtime); `extract(apply_committed=True)` relocates against the running state (folketrygd
+684->913 fired). (b) out-of-scope ops (renumber/move/unknown) still flag — extend op_kinds. (c) a
+SOURCE-ONLY confidence guard for the mis-location tail. Re-test a stronger/cheaper segmentation model if
+one appears. The ~59 scattered per-law LTI gaps + the dev-law migration are separate (docs/todo.md).
 
 ## First scale run on gpt-4.1 — 8 laws, 2,369 applications (2026-10-14)
 
@@ -108,14 +110,17 @@ Two findings:
    rettsgebyr (1982-12-17-86) — both dev laws, which already get ledd ops from the LEGACY applied-ops
    stream. The gpt-4.1 applications competed with that and **regressed the dev gate 602->599**. Removed
    those 216 rows (gate restored to 602); added a guard in `apply_fold.extract` (skips `gate.DEV_LAWS`).
-2. **Current-text convergence is FLAT on the non-dev laws** (aggregate 0.672->0.672; some laws +0.007,
-   some -0.012). This is the documented intermediate-state confound, NOT an applicator failure: these
-   are pre-2001 laws whose CURRENT text reflects post-2001 amendments; applying a correct INTERMEDIATE
-   op lands the provision at an intermediate historical state that may match current better OR worse.
-   The applicator is validated-correct (10/12 vs the engine, 0 fabrication) and improves POINT-IN-TIME
-   fidelity (the deliverable) — which current-convergence structurally cannot credit (needs GT). The
-   some-worse tail also motivates the SOURCE-ONLY confidence guard (next). Net: the applications are
-   correct, safe, gated, and committed as a better corpus; do not expect current-convergence to move.
+2. **Current-text convergence was flat at first — because the first pass UNDER-APPLIED, not a
+   measurement confound.** `load_ops` already unions ALL amendment ops (pre- AND post-2001; folketrygd
+   1,654 post-2001), and they SHOULD all apply to reach current. The sequential applicator located each
+   op's anchors against a STATIC pre-application snapshot, so at runtime — where ops apply in date order —
+   once an earlier op rewrites a provision, later ops' anchors no longer match and flag (folketrygd: 334
+   rows had a row but didn't resolve; only 873/1,654 post-2001 ops applied). FIX: `extract(apply_committed=
+   True)` re-locates anchors against the RUNNING state (apply committed rows first, record only the still-
+   flagged), iterated extract->apply->fold to a fixpoint. Folketrygd fired 684 -> 913 after 2 passes.
+   Running the fixpoint across all 86 laws (2026-10-14) — numbers refresh on completion. Out-of-scope
+   ops (renumber/move/unknown) still flag — a later lever. (Earlier "intermediate-state confound"
+   framing was WRONG: we DO apply post-2001 amendments; the gap was under-application, now being fixed.)
 
 ## gpt-4.1 for SEGMENTATION — evaluated, NOT adopted (2026-10-14)
 

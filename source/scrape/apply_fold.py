@@ -32,8 +32,15 @@ APPS = _REPO / "data" / "applications.jsonl"
 DEFAULT_OUTDIR = Path("/tmp/lovhist_apply_cases")
 
 
-def extract(law: str, outdir: Path = DEFAULT_OUTDIR):
-    """Capture flagged sub-provision ops of `law` with their provision-state; write case files."""
+def extract(law: str, outdir: Path = DEFAULT_OUTDIR, apply_committed: bool = True):
+    """Capture flagged sub-provision ops of `law` with their provision-state; write case files.
+
+    apply_committed=True (default): during the capture replay, APPLY the already-committed applications
+    first, then record only the ops that STILL flag — so each recorded provision reflects the RUNNING
+    state (prior ops applied), the state the runtime actually reaches. This is the fixpoint fix for the
+    sequential-anchor problem: a row located against a stale pre-application snapshot won't resolve at
+    runtime; re-extracting on the running state relocates it. Iterate extract->apply->fold until no new
+    rows. apply_committed=False reproduces the original one-shot snapshot behaviour."""
     dk = law.split("/")[-1]
     # Dev laws already get their ledd ops from the LEGACY applied-ops stream; applying the applicator
     # ON TOP competes and REGRESSED the dev gate (602->599, 2026-10-14). Never populate a dev law.
@@ -46,10 +53,15 @@ def extract(law: str, outdir: Path = DEFAULT_OUTDIR):
     base = pipeline.enactment_base("lov/" + dk)
     ops = pipeline.load_ops("lov/" + dk)
     rec = []
+    ledd_apply.reset_cache()
+    _apply = ledd_apply.make_fallback("lov/" + dk) if apply_committed else (lambda *a: None)
 
     def fb(provision, instruction, new_text, op_type):
+        r = _apply(provision, instruction, new_text, op_type)
+        if r is not None:
+            return r                                 # committed row applies -> advance the running state
         rec.append({"instruction": instruction, "payload": new_text, "provision": provision})
-        return None                                  # record only; leave the op flagged
+        return None                                  # still flags -> record with the RUNNING-state provision
 
     replay.replay(base, ops, ledd_fallback=fb)
     seen, cases = set(), []

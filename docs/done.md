@@ -17,8 +17,9 @@ The engine reconstruction is live:
   (a) vs the deterministic ledd engine on 12 clean-base ops: **10/12 exact, 0.977 mean, 0 fabrication**;
   (b) first real OCR law helsepersonelloven `1999-07-02-64`: **35/37 ops applied** (2 skipped =
   anchors unresolved, stay flagged), rate>=0.90 0.48->0.51, flagged 133->98. On 17 touched provisions
-  mean 0.745->0.779 (10 improved / 7 "worse", but 5/7 are multi-op intermediate-state confound vs a
-  2015-2026 current, 1 negligible; only §65 a genuine mis-location review candidate).
+  mean 0.745->0.779 (10 improved / 7 "worse" — later found to be the sequential-anchor UNDER-application
+  bug, not a confound: on multi-op provisions the applicator's static-snapshot anchors don't resolve once
+  an earlier op rewrites the provision at runtime; fixed by the fixpoint iteration, see 2026-10-14).
 - **Commits:** 29fdb5a (plumbing + gate + hook), 9713343 (first 35 applications).
 - **Remaining productionization:** track the offline populator (recording-fallback extractor + fold;
   currently scratch) as a module like `fold_append`; a SOURCE-ONLY confidence guard for the ~1/17
@@ -136,8 +137,9 @@ Picked the lowest-hanging, deterministic, no-LLM fruit from the coverage analysi
 - **Honest lesson — these move *point-in-time*, not *current-text convergence*.** The 90-law in-force
   convergence (segments-base + `load_ops`) was **0.326 before, 0.325 after the union** — flat (even −1).
   Reason: those restored acts are **pre-2001**, and the convergence metric scores only against
-  **current** text, which reflects *later* post-2001 amendments we still lack — so a correctly-applied
-  pre-2001 op lands the provision at an intermediate state that doesn't match current. The union is
+  **current** text, which reflects *later* post-2001 amendments that ARE loaded (LTI stream) but that
+  the ledd/sequential-application tail doesn't yet fully apply (see 2026-10-14) — so adding a correct
+  pre-2001 op alone doesn't close the gap to current. The union is
   correct and improves *historical point-in-time* reconstruction (the actual deliverable), but that
   gain is invisible to current-convergence and needs pre-2001 ground truth to credit. I over-anticipated
   its current-metric payoff; banking the lesson: on THIS population (the 90 OLD 1990s-enacted,
