@@ -35,6 +35,12 @@ DEFAULT_OUTDIR = Path("/tmp/lovhist_apply_cases")
 def extract(law: str, outdir: Path = DEFAULT_OUTDIR):
     """Capture flagged sub-provision ops of `law` with their provision-state; write case files."""
     dk = law.split("/")[-1]
+    # Dev laws already get their ledd ops from the LEGACY applied-ops stream; applying the applicator
+    # ON TOP competes and REGRESSED the dev gate (602->599, 2026-10-14). Never populate a dev law.
+    from source.eval import gate
+    if dk in {d for _, d in gate.DEV_LAWS}:
+        print(f"SKIP {dk}: dev law (handled by the legacy applied-ops stream — do not applicator-populate)")
+        return []
     outdir = Path(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     base = pipeline.enactment_base("lov/" + dk)

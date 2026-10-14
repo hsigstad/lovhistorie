@@ -61,7 +61,7 @@ def locate(provision: str, instruction: str, payload: str, *, client=None, model
                       system_prompt=apply_prompt.INSTRUCTIONS,
                       user_prompt=apply_prompt.user_message(provision, instruction, payload or ""),
                       schema=OpLocation, model=model, cache=cache, client=client, reextract=reextract,
-                      use_structured_outputs=True, schema_in_cache_key=True, max_tokens=500)
+                      use_structured_outputs=True, schema_in_cache_key=True, max_tokens=1500)
     except Exception as e:
         print(f"  locate error: {str(e)[:80]}", file=sys.stderr)
         return None

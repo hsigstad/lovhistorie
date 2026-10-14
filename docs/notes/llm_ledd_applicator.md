@@ -86,6 +86,39 @@ NOTE: the gate catches NON-resolving anchors, not wrong-but-resolving spans → 
 sets corpus correctness, so this choice matters for a publishable corpus (lean on the source-only
 confidence guard harder with a weaker model).
 
+## First scale run on gpt-4.1 — 8 laws, 2,369 applications (2026-10-14)
+
+Ran the applicator on the top-flagged in-force laws via gpt-4.1 (`apply_fold extract|apply|fold`,
+cached, ~$8 OpenAI, 0% Claude weekly). Result: **2,369 pointer rows across 8 non-dev laws, 1,576
+fired, 0 orphans, 0 fabrication**. folketrygd 984, 1999-03-26-14 577, 1981-05-22-25 326, ...
+
+Two findings:
+1. **NEVER applicator-populate a DEV law.** The run initially included aksjeloven (1997-06-13-44) and
+   rettsgebyr (1982-12-17-86) — both dev laws, which already get ledd ops from the LEGACY applied-ops
+   stream. The gpt-4.1 applications competed with that and **regressed the dev gate 602->599**. Removed
+   those 216 rows (gate restored to 602); added a guard in `apply_fold.extract` (skips `gate.DEV_LAWS`).
+2. **Current-text convergence is FLAT on the non-dev laws** (aggregate 0.672->0.672; some laws +0.007,
+   some -0.012). This is the documented intermediate-state confound, NOT an applicator failure: these
+   are pre-2001 laws whose CURRENT text reflects post-2001 amendments; applying a correct INTERMEDIATE
+   op lands the provision at an intermediate historical state that may match current better OR worse.
+   The applicator is validated-correct (10/12 vs the engine, 0 fabrication) and improves POINT-IN-TIME
+   fidelity (the deliverable) — which current-convergence structurally cannot credit (needs GT). The
+   some-worse tail also motivates the SOURCE-ONLY confidence guard (next). Net: the applications are
+   correct, safe, gated, and committed as a better corpus; do not expect current-convergence to move.
+
+## gpt-4.1 for SEGMENTATION — evaluated, NOT adopted (2026-10-14)
+
+Tested whether segmentation (not just the applicator) could move off the Claude weekly onto gpt-4.1
+(`source/llm/segment_llm.py`, a llmkit segmenter sharing segment_prompt's instructions). On 3 already-
+Claude-segmented issues: gpt-4.1 had **0 anchor misses** (coverage mechanics fine) and comparable
+amend_op capture, BUT **mis-classifies** — on 638dcfdf it tagged 30 municipal *vedtekter/vedtak* §§
+(shop opening-hours bylaws) as `provision` with `datokode=None` (Claude correctly: `kunngjoring`). That
+injects fake orphan law-provisions the STRUCTURAL gate can't catch (they tile gap-free). On the one
+law-bearing test issue (cb73b8cb) the two agreed 18/18 provisions — so not uniformly bad, just
+unreliable on the law-vs-forskrift-vs-vedtak distinction that `segments.jsonl` depends on. DECISION:
+keep Claude for segmentation; `segment_llm.py` retained as a re-test harness for future/stronger models.
+The applicator (simple one-span, well-gated) stays on gpt-4.1.
+
 ## RUN — populate / scale applications.jsonl (reproducible, gated)
 
 Per law (one gated commit each; mirrors the segmentation fold):
