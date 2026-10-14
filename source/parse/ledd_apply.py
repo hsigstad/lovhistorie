@@ -41,9 +41,12 @@ def op_key(target_law: str, instruction: str, new_text: str) -> str:
 _cache: dict | None = None
 
 
-def load_applications(path: Path = APPLICATIONS) -> dict:
-    """{(target_law, op_key): row}. Cached; call reset_cache() after writing the file."""
+def load_applications(path: Path | None = None) -> dict:
+    """{(target_law, op_key): row}. Cached; call reset_cache() after writing the file.
+    Resolves APPLICATIONS at CALL time (not a default-arg bind) so reassigning the module
+    global — e.g. applications_qa pointing at a HEAD temp file — actually takes effect."""
     global _cache
+    path = path if path is not None else APPLICATIONS
     if _cache is None:
         _cache = {}
         if path.exists():
