@@ -86,6 +86,17 @@ NOTE: the gate catches NON-resolving anchors, not wrong-but-resolving spans → 
 sets corpus correctness, so this choice matters for a publishable corpus (lean on the source-only
 confidence guard harder with a weaker model).
 
+## FULL non-dev scale complete — 86 laws, 3,652 applications (2026-10-14)
+
+All non-dev in-force laws the corpus touches are now applicator-populated: **3,652 located+verified
+pointer rows across 86 laws, 2,614 firing, 0 orphans, 0 fabrication** (gpt-4.1, llmkit, cached,
+~$12 OpenAI total, 0% Claude weekly). Dev gate unchanged at 602 (guards PASS — dev laws excluded by
+the `apply_fold.extract` guard). max_tokens 500->1500 recovered the length-cap skips on re-run.
+REMAINING ENGINE WORK: the SOURCE-ONLY confidence guard for the mis-location tail (current-convergence
+is flat / can't adjudicate — the win is point-in-time, needs GT); re-test a stronger/cheaper model for
+segmentation if one appears. The ~59 scattered per-law LTI gaps + the dev-law migration are separate
+(docs/todo.md).
+
 ## First scale run on gpt-4.1 — 8 laws, 2,369 applications (2026-10-14)
 
 Ran the applicator on the top-flagged in-force laws via gpt-4.1 (`apply_fold extract|apply|fold`,
