@@ -32,28 +32,36 @@ SCHEMA = {
 
 
 def build_prompt(case_path: str) -> str:
-    """Prompt for one application case file ({provision, instruction, payload})."""
-    return PROMPT_TEMPLATE.replace("__PATH__", case_path)
+    """Subagent prompt for one application case FILE ({provision, instruction, payload})."""
+    return (f"Read this JSON file with the Read tool:\n{case_path}\n"
+            f'It has three fields: "provision", "instruction", "payload".\n\n' + INSTRUCTIONS
+            + "\n\nReturn ONLY the JSON object.")
 
 
-PROMPT_TEMPLATE = """You apply ONE Norwegian statutory amendment to a provision, by LOCATING the span it edits — you NEVER write statutory text yourself.
+def user_message(provision: str, instruction: str, payload: str) -> str:
+    """Inline user message for the llmkit (OpenAI) path — same task, text given directly."""
+    return f"INSTRUCTION: {instruction}\n\nPAYLOAD (new text, for context only — do NOT echo it):\n{payload}\n\nPROVISION:\n{provision}"
 
-Read this JSON file with the Read tool:
-__PATH__
-It has three fields:
+
+# Delivery-agnostic task body, shared by the subagent prompt (build_prompt) and the llmkit system
+# prompt (ledd_apply_llm). Describes the three named inputs + exactly what to return.
+INSTRUCTIONS = """You apply ONE Norwegian statutory amendment to a provision, by LOCATING the span it edits — you NEVER write statutory text yourself. You are given three inputs:
 - "provision": the current text of the § (OCR'd; ledd = paragraphs; may have no explicit numbering).
 - "instruction": the amendment instruction, e.g. "§ 24-2 andre ledd skal lyde:" or "§ 10-13 første punktum skal lyde:" or "§ X skal lyde:".
-- "payload": the NEW text the amendment supplies (this will be spliced in by deterministic code — NOT your job).
+- "payload": the NEW text the amendment supplies (context only; deterministic code splices it in — NOT your job).
 
-Your task: decide WHERE in "provision" the edit applies, and return ONLY verbatim anchors into "provision":
+Decide WHERE in "provision" the edit applies, and return ONLY verbatim anchors into "provision":
 - Parse the instruction's address: a whole § ("§ X skal lyde") replaces the ENTIRE provision; "andre/annet ledd" = the 2nd paragraph; "første/andre … punktum" = the Nth sentence of the addressed ledd; "bokstav a/b" = that lettered item; "nr. N" = that numbered item; "nytt … ledd/punktum/bokstav" = an INSERT (nothing replaced).
 - Ordinals: første=1, annet/andre=2, tredje=3, fjerde=4, femte=5, sjette=6, syvende/sjuende=7, ...
 - Count ledd as the natural paragraphs of the provision text, reading through OCR noise.
 
 Return:
 - op_kind: "replace" (… skal lyde on existing text), "insert_after" (nytt/ny … — the payload is NEW, nothing is removed), or "delete" (… oppheves).
-- span_start_anchor: the VERBATIM first ~8 words of the located span in "provision" (copy exactly, OCR quirks and all). For a whole-§ replace, this is the first ~8 words of the whole provision. For insert_after, this is the ~8 words AFTER WHICH the new text goes (e.g. the end of the preceding ledd).
-- span_end_anchor: the VERBATIM last ~8 words of the located span (the span ends right after these). For a whole-§ replace, the last ~8 words of the provision. OMIT for insert_after.
+- span_start_anchor: the VERBATIM first ~8 words of the located span in "provision" (copy exactly, OCR quirks and all). For a whole-§ replace, the first ~8 words of the whole provision. For insert_after, the ~8 words AFTER WHICH the new text goes (e.g. the end of the preceding ledd).
+- span_end_anchor: the VERBATIM last ~8 words of the located span (the span ends right after these). For a whole-§ replace, the last ~8 words of the provision. Leave empty for insert_after.
 - reasoning: one short sentence.
 
-Anchors MUST be exact substrings of "provision" — I locate them by searching. If you cannot confidently locate the span, return op_kind with your best anchors anyway (deterministic verification will reject a bad anchor). Return ONLY the JSON object."""
+Anchors MUST be exact substrings of "provision" — they are located by searching. If you cannot confidently locate the span, give your best anchors anyway (deterministic verification rejects a bad anchor)."""
+
+# Back-compat alias (the subagent workflow referenced PROMPT_TEMPLATE via build_prompt only).
+PROMPT_TEMPLATE = INSTRUCTIONS

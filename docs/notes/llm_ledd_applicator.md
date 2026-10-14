@@ -66,6 +66,26 @@ dump or the law register. It emits only pointers/anchors. Deterministic code fet
 substring-verifies every span. Offline + cached -> reproducible build input, never a runtime call. An
 unverifiable pointer is flagged, not guessed. This is the same contract the segmenter already honours.
 
+## Scaling cost + model choice (2026-10-14)
+
+Volume: **4,144 flagged sub-provision ops across 92 in-force laws**, concentrated — top 10 laws = 67%,
+top 25 = 86%, top 50 = 97% (folketrygd 1997-02-28-19 = 1,020; 1999-03-26-14 = 622; median law 9).
+
+The one-Claude-subagent-per-op prototype is ~38k tokens/op (mostly agent overhead) → ~155M Claude-weekly
+tokens for the corpus: **prohibitive**. So the populator moved to a DIRECT cached call via `apply_fold
+apply` (`source/llm/ledd_apply_llm.py`, llmkit/OpenAI): ~1k tokens/op, cached, OFF the Claude weekly.
+
+**Model quality vs the deterministic engine** (12 clean-base ledd ops, mean similarity-to-engine):
+- Claude Sonnet (subagent): **0.977**, 10/12 ≥0.95  — best, but subscription-heavy at 38k tok/op.
+- gpt-4.1 (llmkit): 0.909, 7/12 ≥0.95 — ~$13 for all 4,144 ops (OpenAI).
+- gpt-4.1-mini: 0.862 · gpt-4o-mini: 0.870 — ~$0.73–2.34.
+The task is Claude-favored; the gap likely widens on the OCR bases the applicator actually targets.
+DEFAULT set to gpt-4.1 (best OpenAI). OPEN (HS decision): add a direct Anthropic-API branch (Haiku/Sonnet,
+~1k tok/op, separate API billing) for Claude quality off the subscription — needs ANTHROPIC_API_KEY.
+NOTE: the gate catches NON-resolving anchors, not wrong-but-resolving spans → applicator quality directly
+sets corpus correctness, so this choice matters for a publishable corpus (lean on the source-only
+confidence guard harder with a weaker model).
+
 ## RUN — populate / scale applications.jsonl (reproducible, gated)
 
 Per law (one gated commit each; mirrors the segmentation fold):

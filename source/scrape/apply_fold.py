@@ -66,6 +66,25 @@ def extract(law: str, outdir: Path = DEFAULT_OUTDIR):
     return cases
 
 
+def apply(meta_path: Path, out_path: Path, reextract: bool = False, model: str = None):
+    """Run the llmkit (OpenAI) applicator over a meta.json's cases -> results.json (fold input).
+    Cheap + cached: replaces the one-subagent-per-op Workflow. Offline; OPENAI_API_KEY required."""
+    from source.llm import ledd_apply_llm
+    model = model or ledd_apply_llm.MODEL
+    meta = json.loads(Path(meta_path).read_text())
+    cases = meta["cases"]
+    results = []
+    for i, c in enumerate(cases):
+        loc = ledd_apply_llm.locate(c["provision"], c["instruction"], c["payload"], model=model, reextract=reextract)
+        if loc:
+            results.append({"idx": i, **loc})
+        if (i + 1) % 25 == 0:
+            print(f"  applied {i + 1}/{len(cases)} (located {len(results)})")
+    Path(out_path).write_text(json.dumps(results, ensure_ascii=False), encoding="utf-8")
+    print(f"located {len(results)}/{len(cases)} ops for {meta['dk']} -> {out_path}")
+    return results
+
+
 def fold(meta_path: Path, results_path: Path, apps_path: Path = APPS):
     """Splice-verify the applicator results on the recorded provisions; write verified pointer rows."""
     meta = json.loads(Path(meta_path).read_text())
@@ -114,11 +133,18 @@ if __name__ == "__main__":
     ep = sub.add_parser("extract")
     ep.add_argument("--law", required=True, help="datokode, e.g. 1999-07-02-64")
     ep.add_argument("--outdir", default=str(DEFAULT_OUTDIR))
+    ap2 = sub.add_parser("apply")
+    ap2.add_argument("--meta", required=True)
+    ap2.add_argument("--out", required=True)
+    ap2.add_argument("--model", default=None)
+    ap2.add_argument("--reextract", action="store_true")
     fp = sub.add_parser("fold")
     fp.add_argument("--meta", required=True)
     fp.add_argument("--results", required=True)
     a = ap.parse_args()
     if a.cmd == "extract":
         extract(a.law, a.outdir)
+    elif a.cmd == "apply":
+        apply(a.meta, a.out, a.reextract, a.model)
     else:
         fold(a.meta, a.results)
