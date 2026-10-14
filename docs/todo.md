@@ -33,10 +33,12 @@ Attribution on the 90 base-reconstructable in-force laws (4,352 provisions): 35%
     0% Claude weekly). gate.DEV_LAWS guard added (applicator-populating a dev law regressed the gate
     602->599). gpt-4.1 chosen over Sonnet-subagents (~37% of weekly) given the 59% budget; quality a notch
     below Sonnet but net-positive + gated. Scaling cost: ~$13 OpenAI for the whole ~4,144-op corpus.
-  - **NEXT (harden + finish), recipe in design note "RUN":** (1) SOURCE-ONLY confidence guard for the
-    mis-location tail — current-convergence is FLAT (intermediate-state confound, can't credit the
-    point-in-time win; can't use the oracle at build). (2) Remaining ~14 non-dev laws with 10-50 flagged
-    ops (top-25 = 86% coverage; ~$ a few more). (3) Re-run the length-cap skips (max_tokens now 1500).
+  - **FULL non-dev scale DONE 2026-10-14:** all 86 non-dev in-force laws the corpus touches populated —
+    3,652 applications, 2,614 firing, 0 orphans, 0 fabrication (~$12 OpenAI, 0% Claude weekly). Length-cap
+    skips recovered (max_tokens 1500). Dev gate 602, guards PASS.
+  - **NEXT (harden):** SOURCE-ONLY confidence guard for the mis-location tail — current-convergence is
+    FLAT (intermediate-state confound: can't credit the point-in-time win, can't use the oracle at build),
+    so a self-consistency/source signal is the only way to prune bad rows. This is the last engine lever.
   - **Segmentation stays on CLAUDE** — gpt-4.1 mis-classifies vedtak/forskrift as law provisions
     (`segment_llm.py` = evaluated, not adopted).
 - [ ] **(optional) fold-side continuation-merge guard** — merge a mid-sentence/fragment `amend_op` back
