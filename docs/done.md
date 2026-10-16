@@ -1,5 +1,15 @@
 # Done
 
+## 2026-10-16 (cont.) — Consumer access layer for the handoff (catalog + law_as_of + quickstart)
+
+Lowest-bang-for-buck handoff unblock: a legible front door so Eivind/Sungho consume the panel without
+reverse-engineering the pipeline. `source/consume.py`: `law_as_of(datokode, date)` (thin wrapper over
+pipeline.reconstruct, accepts bare or lov/-prefixed datokode), `catalog()`, `reliable_laws(min_fidelity)`.
+Static reliability catalog `docs/reference/laws_catalog.csv` (154 laws + title/reconstructable/fidelity/
+coverage/ocr_base, built from the 2005 pit report via `python -m source.consume build-catalog`). README
+"Using the panel" quickstart added. Smoke-tested: reliable_laws(0.7)=16 laws; law_as_of aksjeloven@2005
+= 267 provisions. No new pipeline logic, read-only consumer layer.
+
 ## 2026-10-16 (cont.) — Made the deliverable LEGIBLE: corpus-wide pit report (handoff prep for Eivind/Sungho)
 
 Turned today's 2005 oracle into a readable deliverable-quality picture (no new data). New

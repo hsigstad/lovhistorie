@@ -30,6 +30,27 @@ cached op streams the 9 dev-set laws still replay, and the runtime never imports
 **Run it yourself:** see `SETUP.md` (clone, dependencies, data restore) and `docs/todo.md`
 for the open work (the pre-2001 enactment locator).
 
+## Using the panel (for collaborators)
+
+Get "law L as it read on date t" to join against case / outcome data — `source/consume.py`:
+
+```python
+from source import consume
+
+consume.reliable_laws(0.7)                       # datokodes we reconstruct faithfully (2005-oracle fidelity >= 0.7)
+consume.law_as_of("1997-06-13-44", "2005-12-31") # {paragraf_id: text} for aksjeloven as of that date
+consume.law_as_of("1997-06-13-44")               # latest; date=None -> current
+consume.catalog()                                # every validated law + reconstructable/fidelity/coverage flags
+# join to a case:  consume.law_as_of(case.law_datokode, case.decision_date)
+```
+
+**Which laws to trust:** `docs/reference/laws_catalog.csv` (per-law `reconstructable`, `fidelity`,
+`coverage`, `ocr_base`) and the honest state in `docs/reference/pit_coverage.md`. Short version:
+the pipeline currently reconstructs **79** of the 154 laws with 2005 gold; fidelity over those is
+**median ~0.56 (0 laws >= 0.90)** — dev-set convergence (72.3%) overstates it. Pick laws from the
+catalog by `fidelity`; laws absent from it may still reconstruct but are unvalidated. Regenerate:
+`python -m source.eval.pit_corpus && python -m source.consume build-catalog`.
+
 **Why not just use existing tools?** Lovdata's free API and the open reconstructions
 (`sondreskarsten/norwegian-laws`, `norgeslover.no`) seed their history with *today's*
 text as a 2001 baseline, so they are silently wrong for provisions unamended by 2001.
