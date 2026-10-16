@@ -9,9 +9,14 @@
 - **loss_breakdown (227 dev misses):** ledd/sub-provision engine 44% (the applicator — proven ~zero today
   — was its tool; the rest is fabrication-risky), missing-amendment/coverage ~30% (= the segmentation/
   harvest lever), OCR 12% (known low ceiling), renumber/move ~14%.
-- **Only bounded SAFE code lever left without more segmentation:** productionize the renumber/move matcher
-  (`source/parse/align.py` built but unwired into replay) — ~14% of misses, modest (~+3-4pp). Everything
-  else is either a ceiling (ledd tail, OCR) or needs more segmentation (coverage).
+- **The renumber/move matcher is NOT worth wiring — MEASURED, not assumed (2026-10-16).** The loss-
+  breakdown "struct/renumber" buckets are ~14% of misses by CATEGORY, but `align.py` (orphan-source
+  prefilter, best_match >= tau) actually recovers only **2 of 227 dev misses** (kjøp §88<-§99, vphl
+  §17A-3<-§17, ~+0.2pp) — the rest aren't clean text-preserving renumbers (text also changed / source not
+  in recon). Same shape as the applicator: a plausible lever that realizes ~zero. Do NOT wire it expecting
+  gains. (Measure levers before building — scratchpad/renum2.py.)
+- **Net: no easy safe lever remains.** Ledd tail (44%) + OCR (12%) are ceilings; renumber realizes ~0;
+  the only real headroom is coverage = more segmentation/harvest.
 
 ## 2026-10-16 (cont.) — Consumer access layer for the handoff (catalog + law_as_of + quickstart)
 
