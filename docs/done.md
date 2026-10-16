@@ -1,5 +1,37 @@
 # Done
 
+## 2026-10-16 (cont.) — GLOBAL today-constraint GENERALIZED to 37-law corpus + validated on PAST gold: CEILING confirmed (both gates fail the <10% bar)
+
+Henrik: "test on a 2nd law first." No second clean-base law has multiple Lovdata-Pro HIST dates (vphl was
+THE ideal testbed; 1997-06-13-44 is OCR/blob, 2009-06-19-103 is 6 ops). So ran the "does today ever
+discriminate" screen across all **37 non-OCR reconstructable laws** (fit uses the current dump — no HIST
+gold needed for the screen), then validated every accept against held-out PAST gold. Scripts:
+scratchpad/global_fit_corpus.py, strict_corpus_validate.py, validate_accepts.py.
+
+- **vphl's total null does NOT fully generalize — but both acceptance gates fail the pre-committed criterion:**
+  | gate | accepts / 37 laws | past-gold cells | misplacement |
+  |---|---|---|---|
+  | strict (unique-today-repro + floor) | **1** (§51, 2003-03-14-15) | 0 (op postdates the 2005 gold) | untestable — too rare |
+  | margin δ=0.05 (clearly-better + floor) | **5** | 3 | **67%** (criterion <10%) |
+- **The margin relaxation (HS's "accept if clearly better than alternatives") is REFUTED by the held-out
+  past test.** The 5 margin-accepts looked good on today (e.g. §7-38 regnskapsloven off_today 0.770 ->
+  0.904; §456 straffeprosess 0.366 -> 0.585 with a clear margin over 2nd), but at 2005 gold: §14-9 IMPROVED
+  (0.597->0.756), §456 CLOBBER (0.565->0.487), §7-38 CLOBBER (0.246->0.122) = 1/3 correct. **"Clearly better
+  on TODAY" is a leaky proxy for correct PAST placement — the same failure mode as the local margin**, for
+  the same reason: when today doesn't UNIQUELY pin the slot, the today-best pick is today-overfit (later
+  overwrites make today's structure diverge from the past's).
+- **Strict is safe but vanishingly rare:** today uniquely pins a hard sub-op's slot in only 1/37 laws,
+  because the chains overwrite/moot those ops (vphl mechanism, now corpus-wide). So the ≥90% operating point
+  is unreachable: strict gives ~0 verifiable coverage; relaxing to get coverage reintroduces leak.
+- **Durable win = the clobber floor** ("never accept worse-than-abstain against today"), which held in every
+  config: it turned the LOCAL net-negative into net-neutral and is the correct default if any ledd fallback
+  is ever wired. **Conclusion: the today-constraint is a genuine CEILING for the ledd/sub-provision tail**
+  (reconfirms done.md via the strongest available filter). Resolving the PAST placements needs independent
+  past evidence (Route B — earlier CD snapshots), not today; the remaining real lever is coverage/harvest.
+- Caveat: past-gold validation is THIN (most corpus laws have only 2005 CD gold, and the hard ops postdate
+  2005 -> few on/off-differing cells). But the 2 margin clobbers are large and unambiguous, and vphl is an
+  independent 5-date confirmation (0 accepts, floor caught the clobbers). Negative conclusion is robust.
+
 ## 2026-10-16 (cont.) — GLOBAL today-constraint (pure-ledd) MEASURED on vphl: net-NEUTRAL, honest-null — today is structurally blind to the gap
 
 Built + measured the one untested ledd lever (spec: docs/notes/global_consistency_ledd.md): use today's text
