@@ -137,6 +137,119 @@ def build():
         _update_index(index_rows)
 
 
+CURRENT_DIR = _REPO / "data" / "current"
+
+
+def _current_index() -> dict:
+    """datokode -> {year, title, kort[]} from the NLOD current dump — the laws we can score.
+    Used to resolve each CD 'Norges Lover' block to a datokode (and drop repealed laws absent
+    from the dump, which are out of scope because there is no current text to score against)."""
+    import glob
+    out = {}
+    for f in glob.glob(str(CURRENT_DIR / "*.xml")):
+        t = open(f, encoding="utf-8", errors="replace").read(1200)
+        md = re.search(r"Datokode</dt><dd[^>]*>LOV-([\d-]+)", t)
+        if not md:
+            continue
+        mt = re.search(r"<title>(.*?)</title>", t)
+        title = mt.group(1) if mt else ""
+        dk = md.group(1)
+        # korttittel is given in (parens) OR [brackets] depending on the law — capture both
+        kort = [k.strip().lower() for k in re.findall(r"[\(\[]([a-zæøåA-ZÆØÅ. ]+)[\)\]]", title)]
+        out[dk] = {"year": dk[:4], "title": title, "kort": kort}
+    return out
+
+
+def resolve_blocks(full: str | None = None) -> dict:
+    """{datokode: block_text} for every CD 'Norges Lover' law present in the current dump.
+
+    Match is by enactment year + korttittel (the title's parenthetical, e.g. '(aksjeloven)') or a
+    title substring. Sub-400-char splits (spurious HEADER hits) are dropped; the first block per
+    datokode wins. Repealed laws absent from the current dump stay unresolved (not scoreable)."""
+    if full is None:
+        full = load_corpus(OUT)
+    heads = [(m.start(), m.group(1), m.group(2).strip()) for m in HEADER.finditer(full)]
+    cur = _current_index()
+    norm = lambda s: re.sub(r"[^a-zæøå]", "", s.lower())  # noqa: E731
+    out = {}
+    for i, (pos, y, nm) in enumerate(heads):
+        end = heads[i + 1][0] if i + 1 < len(heads) else len(full)
+        if end - pos < 400:
+            continue
+        base = norm(nm.split(" - ")[0])
+        if not base:
+            continue
+        peers = [(dk, v) for dk, v in cur.items() if v["year"] == y]
+        # 1. exact korttittel (disambiguates e.g. aksjeloven vs allmennaksjeloven); accept if unique
+        hits = [dk for dk, v in peers if any(norm(k) == base for k in v["kort"])]
+        # 2. fallback: exact normalised title (minus any "- abbrev") — for laws with no korttittel
+        if not hits:
+            hits = [dk for dk, v in peers if norm(v["title"].split(" - ")[0]) == base]
+        # 3. fallback: unique title-substring, but only when exactly one peer contains it (guards the
+        #    aksjeloven-in-allmennaksjeloven cross-match, which would give 2 hits -> rejected)
+        if not hits:
+            hits = [dk for dk, v in peers if base in norm(v["title"])]
+        if len(hits) == 1:
+            out.setdefault(hits[0], full[pos:end])
+    return out
+
+
+def build_corpus(min_completeness: float = 0.85, limit: int | None = None):
+    """Extract the 2005 point-in-time gold for EVERY resolvable CD 'Norges Lover' law via extract_cd,
+    gate each on full-body completeness, and emit gold + a manifest (data/ground_truth/2005/corpus_manifest.csv).
+
+    Laws whose gold is >= min_completeness complete are wired into the point-in-time eval (index.csv);
+    the rest are flagged (the NCC 2005 CD drops bodies for some large laws — see docs/notes/lovdata_cd_2005.md).
+    Completeness = fraction of current statutory provisions with a full (non-title-only) gold body.
+    RESUMABLE: extract_cd is llmkit-cached, so a re-run after an interrupt is ~free."""
+    import csv
+    from source.llm import extract_cd
+    from source.eval import gate, metrics
+    OUT.mkdir(parents=True, exist_ok=True)
+    items = list(resolve_blocks().items())
+    if limit:
+        items = items[:limit]
+    manifest, index_rows = [], []
+    for n, (dk, blk) in enumerate(items, 1):
+        provs, rep = extract_cd.extract_law(dk, blk)
+        try:
+            cur = gate.current_provisions(dk)
+        except Exception:
+            cur = None
+        if cur:
+            order = [p for p in cur if not metrics.is_convention_annex(p)]
+            full_body = [p for p in order if p in provs and not extract_cd._is_title_only(provs[p])]
+            completeness = len(full_body) / len(order) if order else 0.0
+            denom = len(order)
+        else:                                            # no current text: fall back to intrinsic
+            completeness = 1 - len(rep.title_only) / (rep.n or 1)
+            denom = rep.n
+        trusted = completeness >= min_completeness and rep.n >= 5
+        json.dump(provs, open(OUT / f"{dk}.json", "w"), ensure_ascii=False)
+        if trusted:
+            (GT_ROOT / dk).mkdir(parents=True, exist_ok=True)
+            json.dump(provs, open(GT_ROOT / dk / "2005-12-31.json", "w"), ensure_ascii=False)
+            index_rows.append({"datokode": dk, "valid_from_date": "2005-12-31",
+                               "filename": "2005-12-31.json", "source": "lovdata_cd_2005",
+                               "era": dk[:3] + "0s", "size_class": "", "amendment_intensity": ""})
+        manifest.append({"datokode": dk, "n": rep.n, "denom": denom,
+                         "completeness": round(completeness, 3), "title_only": len(rep.title_only),
+                         "low_trace": len(rep.low_trace), "trusted": int(trusted)})
+        print(f"[{n}/{len(items)}] {dk}: n={rep.n} complete={completeness:.0%} "
+              f"title_only={len(rep.title_only)} low_trace={len(rep.low_trace)} "
+              f"{'TRUSTED' if trusted else 'flag'}", flush=True)
+    with open(OUT / "corpus_manifest.csv", "w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=["datokode", "n", "denom", "completeness",
+                                           "title_only", "low_trace", "trusted"])
+        w.writeheader(); w.writerows(manifest)
+    if index_rows:
+        _update_index(index_rows)
+    nt = sum(m["trusted"] for m in manifest)
+    print(f"\nCORPUS: {len(manifest)} CD laws extracted; {nt} >= {min_completeness:.0%} complete "
+          f"-> wired into the point-in-time eval. Manifest: {OUT / 'corpus_manifest.csv'}", flush=True)
+    return manifest
+
+
 def _update_index(rows):
     """Merge our rows into data/ground_truth/index.csv (add lovdata_cd_2005 rows; keep existing)."""
     import csv
@@ -155,4 +268,8 @@ def _update_index(rows):
 
 
 if __name__ == "__main__":
-    build()
+    import sys as _sys
+    if "--corpus" in _sys.argv:
+        build_corpus()
+    else:
+        build()
