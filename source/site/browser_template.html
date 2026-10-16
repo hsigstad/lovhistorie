@@ -79,6 +79,8 @@
   .badge.good{background:var(--good-bg);color:var(--good)} .badge.good .b-dot{background:var(--good)}
   .badge.warn{background:var(--warn-bg);color:var(--warn)} .badge.warn .b-dot{background:var(--warn)}
   .badge.bad{background:var(--bad-bg);color:var(--bad)} .badge.bad .b-dot{background:var(--bad)}
+  .lawmeta{margin:7px 0 2px;font-size:.73rem;color:var(--muted);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .lawmeta .badge{font-size:.7rem;padding:3px 9px}
 
   .card{background:var(--surface);border:1px solid var(--hair);border-radius:14px;box-shadow:var(--shadow);margin:18px 0;padding:20px 22px 24px}
   .card-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;margin-bottom:18px}
@@ -193,6 +195,7 @@
     <aside class="side" aria-label="Statute and section picker">
       <div class="side-head">
         <select class="lawsel" id="lawSelect" aria-label="Choose a statute"></select>
+        <div class="lawmeta" id="lawMeta" aria-live="polite"></div>
         <input class="search" id="search" type="search" placeholder="Find a section — e.g. 7-15" aria-label="Find a section" />
       </div>
       <div class="side-scroll" id="picker"><div class="loading">Loading…</div></div>
@@ -262,13 +265,13 @@
       gazette instead — owned, and correct back to 1877.</p>
 
       <h3>How good is it, honestly</h3>
-      <p><b>__PERF__</b> (convergence __CONV__, as of __ASOF__) — but that headline is a single strict
-      bar, and "reconstructs or doesn't" hides how close the rest land. __DIST__ This site shows you
+      <p><b>__PERF__.</b> __DIST__ This site shows you
       exactly where each provision falls — and how far off — via the fidelity badge and the
-      reconstruction-vs-official comparison on every section. Reproducing a past date is scored against
-      held-out Lovdata Pro versions internally,
-      but that licensed text is never shown here — which is the whole reason the corpus is built from the
-      gazette.</p>
+      reconstruction-vs-official comparison on every section. Quality is strongest for clean-base and
+      post-2005 laws and weakest for the OCR-based older tail; the picker is sorted best-first so the
+      honest state across every law is visible at a glance. Reproducing a past date is scored against
+      held-out Lovdata Pro versions internally, but that licensed text is never shown here — which is the
+      whole reason the corpus is built from the gazette.</p>
       __DISTBAR__
 
       <div class="doclinks">
@@ -336,7 +339,7 @@
     return["bad",Math.round(f*100)+"% — reconstruction differs"];}
 
   const el=id=>document.getElementById(id);
-  const E={};["stats","lawSelect","search","picker","provId","provName","fidBadge","rail","railFill",
+  const E={};["stats","lawSelect","lawMeta","search","picker","provId","provName","fidBadge","rail","railFill",
     "handle","scrub","asofDate","asofAct","redlineBtn","legend","legendVs","statute","fidBtn","fidSub",
     "fidDiff","srcBtn","srcBox","minYear","maxYear"].forEach(k=>E[k]=el(k));
   const MND=["","januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
@@ -430,6 +433,11 @@
     E.picker.innerHTML='<div class="loading">Loading…</div>';
     const data=await (await fetch("laws/"+dk+".json")).json();
     provs=data.provisions;curLaw=data;E.search.value="";
+    const ir=INDEX.find(r=>r.datokode===dk)||{};
+    const lc=data.fidelity>=0.90?"good":data.fidelity>=0.70?"warn":"bad";
+    E.lawMeta.innerHTML='<span class="badge '+lc+'"><span class="b-dot"></span>'+Math.round((data.fidelity||0)*100)
+      +'% to today’s text</span><span>'+provs.length+' sections · enacted '+data.enacted
+      +(ir.ocr?' · OCR base':'')+'</span>';
     // per-law timeline: start ~200 days before enactment, end at the corpus horizon
     RMIN=Date.parse(data.enacted)-200*864e5;
     E.minYear.textContent=new Date(RMIN).getUTCFullYear();
@@ -440,7 +448,8 @@
   function buildLawSelect(){
     E.lawSelect.innerHTML="";
     INDEX.forEach(r=>{const o=document.createElement("option");o.value=r.datokode;
-      o.textContent=r.law.charAt(0).toUpperCase()+r.law.slice(1)+"  ·  "+r.n_provisions+" §";E.lawSelect.appendChild(o);});
+      o.textContent=r.law.charAt(0).toUpperCase()+r.law.slice(1)+"  ·  "+r.n_provisions+" §  ·  "
+        +Math.round((r.fidelity||0)*100)+"% to today";E.lawSelect.appendChild(o);});
     E.lawSelect.addEventListener("change",()=>loadLaw(E.lawSelect.value));
   }
   async function boot(){

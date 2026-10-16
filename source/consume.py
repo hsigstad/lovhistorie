@@ -11,20 +11,28 @@ ASSUMES: the reconstruction pipeline (source.parse.pipeline) and, for the catalo
 For collaborators (Eivind, Sungho, ...) who want "law L as it read on date t" to join against
 case / outcome data. Three entry points:
 
-    catalog()                       -> [{datokode, title, reconstructable, fidelity, coverage, ocr_base}]
-    reliable_laws(min_fidelity=0.7) -> [datokode, ...]      (the laws worth joining against)
-    law_as_of(datokode, date)       -> {paragraf_id: text}  (one law at a date; date=None -> latest)
+    catalog()                          -> [{datokode, title, n_provisions, current_fidelity,
+                                            current_rate, hist_fidelity_2005, ocr_base}]
+    reliable_laws(min_fidelity=0.85)   -> [datokode, ...]      (the laws worth joining against)
+    law_as_of(datokode, date)          -> {paragraf_id: text}  (one law at a date; date=None -> latest)
 
-The reliability columns come from the independent 2005 Lovdata-CD oracle (see docs/reference/
-pit_coverage.md): `fidelity` is char-similarity of our 2005 reconstruction to that gold over
-full-body provisions, `coverage` is how much of the law the gold even contains, `reconstructable`
-is whether the pipeline has a base/stream for the law at all. Laws NOT in the catalog may still be
-reconstructable, but we have not validated them.
+RELIABILITY — two numbers, kept apart (do not collapse):
+  - `current_fidelity` (the DEFAULT reliability signal) = char-similarity of reconstruct(law, today) to
+    the official current NLOD text, mean over the law's provisions (`current_rate` = fraction >=tau). BROAD:
+    we hold this for 328 laws, and it is publishable (NLOD current is public-domain). It measures
+    CURRENT-TEXT accuracy. Built by `python -m source.eval.convergence_corpus`.
+  - `hist_fidelity_2005` (the honesty caveat, where available) = char-similarity of reconstruct(law,
+    2005-12-31) to the independent 2005 Lovdata-CD oracle. This is HISTORICAL point-in-time fidelity and is
+    LOWER — current_fidelity OVERSTATES history (the last amendment sets today's text directly; see
+    docs/reference/pit_coverage.md). Blank for laws with no 2005 gold.
+Use current_fidelity to pick laws; read hist_fidelity_2005 as the discount for deep-historical joins.
+The catalog lists the 328 reconstructable laws we can score against today; more are reconstructable but
+unvalidated (no current-dump answer key). Laws NOT in the catalog may still reconstruct via law_as_of.
 
 Quickstart:
     from source import consume
-    good = consume.reliable_laws(0.7)                       # laws we reconstruct faithfully
-    text = consume.law_as_of("1997-06-13-44", "2005-12-31") # aksjeloven as of 2005-12-31
+    good = consume.reliable_laws(0.85)                      # ~191 laws, strong current-text accuracy
+    text = consume.law_as_of("2007-06-29-75", "2014-01-01") # verdipapirhandelloven as of 2014-01-01
     # join to a case: law_as_of(case.law_datokode, case.decision_date)
 """
 from __future__ import annotations
@@ -38,6 +46,10 @@ if str(_REPO) not in sys.path:
 
 CATALOG = _REPO / "docs" / "reference" / "laws_catalog.csv"
 _PIT = _REPO / "build" / "eval" / "pit_2005_corpus.csv"
+_CONV = _REPO / "build" / "eval" / "convergence_today_corpus.csv"
+_REGISTER = _REPO / "data" / "law_register.jsonl"
+_FIELDS = ["datokode", "title", "n_provisions", "current_fidelity",
+           "current_rate", "hist_fidelity_2005", "ocr_base"]
 
 
 def _norm(datokode: str) -> str:
@@ -60,42 +72,70 @@ def law_as_of(datokode: str, date: str | None = None) -> dict:
 
 
 def catalog() -> list[dict]:
-    """Validated laws with reliability flags. Reads docs/reference/laws_catalog.csv (build it with
-    `python -m source.consume build-catalog`)."""
+    """Reconstructable laws scoreable against today, with reliability columns. Reads
+    docs/reference/laws_catalog.csv (build it with `python -m source.consume build-catalog`)."""
     if not CATALOG.exists():
         return []
     rows = list(csv.DictReader(open(CATALOG, encoding="utf-8")))
     for r in rows:
-        r["reconstructable"] = r.get("reconstructable") == "1"
         r["ocr_base"] = r.get("ocr_base") == "1"
-        for k in ("fidelity", "coverage"):
+        r["n_provisions"] = int(r["n_provisions"]) if r.get("n_provisions") else None
+        for k in ("current_fidelity", "current_rate", "hist_fidelity_2005"):
             r[k] = float(r[k]) if r.get(k) not in (None, "") else None
     return rows
 
 
-def reliable_laws(min_fidelity: float = 0.7) -> list[str]:
-    """Datokodes of reconstructable laws whose 2005-oracle fidelity is at least `min_fidelity`."""
-    return [r["datokode"] for r in catalog()
-            if r["reconstructable"] and (r["fidelity"] or 0) >= min_fidelity]
+def reliable_laws(min_fidelity: float = 0.85, metric: str = "current") -> list[str]:
+    """Datokodes whose reliability is at least `min_fidelity`. metric='current' (default) uses
+    current-text accuracy (reconstruct-vs-today); metric='hist2005' uses the 2005-oracle historical
+    fidelity (only the laws with 2005 gold qualify)."""
+    key = "current_fidelity" if metric == "current" else "hist_fidelity_2005"
+    return [r["datokode"] for r in catalog() if (r.get(key) or 0) >= min_fidelity]
+
+
+def _titles() -> dict:
+    """datokode -> title, from the public law-identity register (validation-side only)."""
+    import json
+    out = {}
+    if _REGISTER.exists():
+        for line in open(_REGISTER, encoding="utf-8"):
+            line = line.strip()
+            if not line:
+                continue
+            d = json.loads(line)
+            dk = (d.get("datokode") or "").split("/")[-1]
+            if dk:
+                out[dk] = d.get("title") or d.get("korttittel") or ""
+    return out
 
 
 def build_catalog():
-    """(Re)generate docs/reference/laws_catalog.csv by joining the 2005 pit report with law titles.
-    Run `python -m source.eval.pit_corpus` first to refresh build/eval/pit_2005_corpus.csv."""
-    from source.scrape.build_gt_lovdata_cd import _current_index
-    if not _PIT.exists():
-        raise SystemExit("run `python -m source.eval.pit_corpus` first (need build/eval/pit_2005_corpus.csv)")
-    titles = {dk: v["title"] for dk, v in _current_index().items()}
-    pit = list(csv.DictReader(open(_PIT, encoding="utf-8")))
-    rows = [{"datokode": r["datokode"], "title": titles.get(r["datokode"], ""),
-             "reconstructable": r["reconstructable"], "fidelity": r["fidelity_mean"],
-             "coverage": r["coverage"], "ocr_base": r["ocr_base"]} for r in pit]
-    rows.sort(key=lambda r: (-int(r["reconstructable"]), -float(r["fidelity"])))
+    """(Re)generate docs/reference/laws_catalog.csv from the today-convergence artifact (primary) +
+    register titles + the 2005 pit report (historical caveat column, where available).
+    Run `python -m source.eval.convergence_corpus` first (needs build/eval/convergence_today_corpus.csv)."""
+    if not _CONV.exists():
+        raise SystemExit("run `python -m source.eval.convergence_corpus` first "
+                         "(need build/eval/convergence_today_corpus.csv)")
+    titles = _titles()
+    hist = {}
+    if _PIT.exists():
+        for r in csv.DictReader(open(_PIT, encoding="utf-8")):
+            if r.get("reconstructable") == "1" and r.get("fidelity_mean") not in (None, ""):
+                hist[r["datokode"]] = r["fidelity_mean"]
+    rows = []
+    for r in csv.DictReader(open(_CONV, encoding="utf-8")):
+        dk = r["datokode"]
+        rows.append({"datokode": dk, "title": titles.get(dk, ""),
+                     "n_provisions": r["n_provisions"], "current_fidelity": r["current_fidelity"],
+                     "current_rate": r["current_rate"], "hist_fidelity_2005": hist.get(dk, ""),
+                     "ocr_base": r["ocr_base"]})
+    rows.sort(key=lambda r: -float(r["current_fidelity"]))
     CATALOG.parent.mkdir(parents=True, exist_ok=True)
     with open(CATALOG, "w", encoding="utf-8", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=["datokode", "title", "reconstructable", "fidelity", "coverage", "ocr_base"])
+        w = csv.DictWriter(fh, fieldnames=_FIELDS)
         w.writeheader(); w.writerows(rows)
-    print(f"wrote {CATALOG} ({len(rows)} laws, {sum(int(r['reconstructable']) for r in rows)} reconstructable)")
+    nhist = sum(1 for r in rows if r["hist_fidelity_2005"])
+    print(f"wrote {CATALOG} ({len(rows)} laws scoreable vs today; {nhist} also have 2005 gold)")
 
 
 if __name__ == "__main__":

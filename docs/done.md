@@ -1,5 +1,32 @@
 # Done
 
+## 2026-10-16 (cont.) — Consumer catalog rebased on today-convergence + public browser expanded to ALL laws
+
+Acted on the re-characterization: the consumer front door and the public site now show the honest state
+across every law we hold, not the 9 dev laws / 79-law 2005 subset.
+
+- **New eval module `source/eval/convergence_corpus.py`** (`python -m source.eval.convergence_corpus` ->
+  `build/eval/convergence_today_corpus.csv`): per-law char-sim of reconstruct(law, today) to the current
+  NLOD text (mean + rate>=tau), over all reconstructable+scoreable laws. 328 laws; mean 0.834, median 0.892,
+  151 >=0.90, 277 >=0.70. The breadth quality signal, kept separate from historical fidelity by design.
+- **`source/consume.py` catalog rebased** off the 2005 oracle onto today-convergence. New schema: datokode,
+  title, n_provisions, `current_fidelity`, `current_rate`, `hist_fidelity_2005` (the honesty caveat column,
+  71 laws have it), ocr_base. Titles from `data/law_register.jsonl`. `reliable_laws(min_fidelity=0.85,
+  metric="current")` now returns 197 laws (was 16 on the 2005 metric); >=0.90 -> 151, >=0.70 -> 277.
+  `build-catalog` reads the convergence CSV. docs/reference/laws_catalog.csv regenerated (328 rows).
+- **Public browser (`source/site/browser.py`) expanded from 9 dev laws to all 328** reconstructable+
+  scoreable laws (18,594 provisions). Key engineering: `_reconstruct_series` does ONE date-ordered replay
+  pass capturing a snapshot at every amendment date (a sub-op touches only its own provision + the op stream
+  is date-sorted -> validated 0/60 mismatch on vphl), with a per-law guard that falls back to exact per-date
+  reconstruct on any disagreement (undated-op laws). ~15x fewer reconstructs; full build ~45 min. Index rows
+  now carry per-law `fidelity`; picker shows "<title> · N§ · X% to today" sorted best-first; a law-level
+  fidelity badge (good/warn/bad >=0.90/0.70) + "N sections · enacted · OCR" line renders on load. Landing
+  copy + distribution bar recomputed over the WHOLE corpus (`_corpus_dist` reads the built law JSONs);
+  strict dev-set convergence kept but explicitly labelled as the 9-law gate.
+- **Deploy:** `build/` is gitignored and there is no push-Action, so the site is built+deployed manually
+  (laptop) — committed CODE only; the per-law data regenerates when `python -m source.site.browser` runs at
+  build time. Did NOT deploy from the sandbox.
+
 ## 2026-10-16 (cont.) — Deliverable re-characterized against TODAY (not the 2005 oracle): 328 laws scoreable, 147 at >=0.90
 
 Henrik: "measure against today's laws not 2005; does Norway not have more than 154 laws?" Both right — the

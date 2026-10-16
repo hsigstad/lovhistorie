@@ -1,155 +1,329 @@
-datokode,title,reconstructable,fidelity,coverage,ocr_base
-1955-06-30-20,Lov om når norsk tenestemakt kan halda brudvigjing i utlandet og utenlandsk tenestemakt i Noreg,1,0.873,1.0,0
-1974-12-20-68,Lov om vegfraktavtaler [vegfraktloven],1,0.872,0.98,0
-1977-06-03-57,Lov om sterilisering [steriliseringsloven],1,0.872,0.867,0
-2000-11-24-82,Lov om vassdrag og grunnvann (vannressursloven),1,0.86,0.905,1
-1992-12-04-126,Lov om arkiv [arkivlova],1,0.854,0.875,0
-1959-10-23-3,Lov om oreigning av fast eigedom (oreigningslova),1,0.852,1.0,1
-1918-05-31-4,"Lov om avslutning av avtaler, om fuldmagt og om ugyldige viljeserklæringer [avtaleloven]",1,0.84,0.889,1
-2003-11-28-98,Lov om konsesjon ved erverv av fast eiendom mv. (konsesjonsloven),1,0.84,0.769,0
-1992-05-15-47,Lov om laksefisk og innlandsfisk mv. (lakse- og innlandsfiskloven),1,0.817,0.926,1
-1972-05-12-28,Lov om atomenergivirksomhet [atomenergiloven],1,0.808,0.952,1
-1983-06-03-54,Lov om tannhelsetjenesten (tannhelsetjenesteloven),1,0.727,0.595,1
-1988-05-13-27,Lov om kjøp [kjøpsloven],1,0.725,0.977,1
-1993-03-12-32,Lov om planteforedlerrett (planteforedlerloven),1,0.716,0.606,1
-1991-07-04-47,Lov om ekteskap (ekteskapsloven),1,0.712,0.738,1
-1997-06-13-44,Lov om aksjeselskaper (aksjeloven),1,0.71,0.874,1
-1991-07-20-67,Lov om overføring av domfelte,1,0.701,0.684,0
-1994-08-05-55,Lov om vern mot smittsomme sykdommer [smittevernloven],1,0.693,0.613,0
-1975-06-06-31,Lov om utnytting av rettar og lunnende m.m. i statsallmenningane (fjellova),1,0.691,1.0,1
-1990-06-29-50,"Lov om produksjon, omforming, overføring, omsetning, fordeling og bruk av energi m.m. (energiloven)",1,0.689,0.416,1
-1975-06-06-29,Lov om eigedomsskatt til kommunane (eigedomsskattelova),1,0.677,0.674,1
-1991-07-04-45,Lov om rett til felles bolig og innbo når husstandsfellesskap opphører [husstandsfellesskapsloven],1,0.67,0.833,1
-2000-11-24-81,Lov om innskuddspensjon i arbeidsforhold (innskuddspensjonsloven),1,0.667,0.831,1
-1993-06-11-100,"Lov om anlegg og drift av jernbane, herunder sporvei, tunnelbane og forstadsbane m.m. (jernbaneloven)",1,0.661,0.455,1
-1992-07-17-99,Lov om frivillig og tvungen gjeldsordning for privatpersoner (gjeldsordningsloven),1,0.655,0.596,1
-1985-06-21-79,Lov om enerett til foretaksnavn og andre forretningskjennetegn mv. (foretaksnavneloven),1,0.652,0.893,1
-1990-04-27-9,"Lov om regulering av eksporten av fisk, fiskevarer og marine produkter (fiskeeksportloven)",1,0.651,0.9,1
-1981-05-29-38,Lov om jakt og fangst av vilt (viltloven),1,0.642,0.742,0
-1994-06-24-39,Lov om sjøfarten (sjøloven),1,0.637,0.636,1
-1993-06-11-101,Lov om luftfart (luftfartsloven),1,0.598,0.56,1
-1992-06-19-56,Lov om handelsagenter og handelsreisende (agenturloven),1,0.595,0.977,1
-2003-06-06-38,Lov om bustadbyggjelag (bustadbyggjelagslova),1,0.592,0.73,0
-1981-05-22-25,Lov om rettergangsmåten i straffesaker (Straffeprosessloven),1,0.59,0.881,0
-2000-06-02-39,Lov om apotek (apotekloven),1,0.58,0.636,1
-1999-03-26-14,Lov om skatt av formue og inntekt (skatteloven),1,0.576,0.584,1
-1985-06-21-78,Lov om registrering av foretak (foretaksregisterloven),1,0.575,0.878,0
-1997-06-13-45,Lov om allmennaksjeselskaper (allmennaksjeloven),1,0.574,0.452,1
-1985-06-21-83,Lov om ansvarlige selskaper og kommandittselskaper (Selskapsloven),1,0.565,0.829,1
-1992-12-04-127,Lov om kringkasting og audiovisuelle bestillingstjenester mv. (kringkastingsloven),1,0.562,0.387,0
-1999-03-26-17,Lov om husleieavtaler (husleieloven),1,0.557,0.462,1
-2003-12-05-100,Lov om humanmedisinsk bruk av bioteknologi m.m. (bioteknologiloven),1,0.556,0.155,0
-2003-06-06-39,Lov om burettslag (burettslagslova),1,0.546,0.591,0
-2003-05-09-31,Lov om rett til miljøinformasjon og deltakelse i offentlige beslutningsprosesser av betydning for miljøet (miljøinformasjonsloven),1,0.517,0.682,0
-1992-06-26-86,Lov om tvangsfullbyrdelse (tvangsfullbyrdelsesloven),1,0.51,0.799,1
-1997-06-19-82,Lov om pass (passloven),1,0.488,0.824,1
-1997-06-13-42,Lov om Kystvakten (kystvaktloven),1,0.472,0.462,1
-1992-07-03-93,Lov om avhending av fast eigedom (avhendingslova),1,0.464,0.717,1
-1976-06-11-79,Lov om kontroll med produkter og forbrukertjenester (produktkontrolloven),1,0.447,0.577,0
-1997-02-28-19,Lov om folketrygd (folketrygdloven),1,0.446,0.315,1
-2000-05-12-36,Lov om strålevern og bruk av stråling [strålevernloven],1,0.444,0.643,1
-1993-04-02-38,Lov om framstilling og bruk av genmodifiserte organismer m.m. (genteknologiloven),1,0.438,0.629,1
-1999-07-02-61,Lov om spesialisthelsetjenesten m.m. (spesialisthelsetjenesteloven),1,0.437,0.141,1
-1999-07-02-62,Lov om etablering og gjennomføring av psykisk helsevern (psykisk helsevernloven),1,0.437,0.474,1
-2001-06-15-59,Lov om stiftelser (stiftelsesloven),1,0.432,0.708,0
-1999-07-16-66,Lov om Schengen informasjonssystem (SIS) [SIS-loven],1,0.428,0.458,1
-1884-06-14-3,Lov om beskyttelse av undersjøiske kabler og rørledninger utenfor sjøterritoriet,1,0.423,1.0,0
-1998-07-17-56,Lov om årsregnskap m.v. (regnskapsloven),1,0.418,0.51,0
-1989-06-02-27,Lov om omsetning av alkoholholdig drikk m.v. (alkoholloven),1,0.406,0.571,0
-2001-01-05-1,Lov om vaktvirksomhet (vaktvirksomhetsloven),1,0.389,0.727,0
-2001-05-18-21,Lov om gjennomføring av straff mv. (straffegjennomføringsloven),1,0.378,0.202,0
-1981-04-08-7,Lov om barn og foreldre (barnelova),1,0.375,0.566,0
-2003-05-23-35,Lov om visse sider av elektronisk handel og andre informasjonssamfunnstjenester (ehandelsloven),1,0.366,0.682,0
-1999-01-29-6,Lov om interkommunale selskaper (IKS-loven),1,0.36,0.681,0
-2003-07-04-74,Lov om forsvarlig hundehold (hundeloven),1,0.356,0.421,0
-2003-12-19-124,Lov om matproduksjon og mattrygghet mv. (matloven),1,0.344,0.846,0
-1975-06-13-35,Lov om skattlegging av undersjøiske petroleumsforekomster mv. (petroleumsskatteloven),1,0.332,0.846,1
-1977-06-10-73,Lov om jernbaneansvar (jernbaneansvarsloven),1,0.322,1.0,0
-1999-07-02-64,Lov om helsepersonell m.v. (helsepersonelloven),1,0.322,0.255,1
-2003-03-14-15,Lov om beskyttelse av design (designloven),1,0.306,0.415,0
-1986-06-20-35,Lov om mesterbrev i håndverk og annen næring [mesterbrevloven],1,0.295,0.727,1
-2003-02-21-12,Lov om behandlingsbiobanker (behandlingsbiobankloven),1,0.259,0.87,0
-1978-06-09-50,Lov om kulturminner [kulturminneloven],1,0.258,0.289,0
-2001-06-15-75,Lov om veterinærer og annet dyrehelsepersonell [dyrehelsepersonelloven],1,0.241,0.884,0
-1990-05-18-11,Lov om stadnamn (stadnamnlova),1,0.239,0.875,1
-1929-05-24-4,Lov om tilsyn med elektriske anlegg og elektrisk utstyr (el-tilsynsloven),1,0.223,0.895,0
-2002-03-08-4,Lov om barnetrygd (barnetrygdloven),1,0.21,0.926,0
-1980-06-13-35,Lov om fri rettshjelp [rettshjelploven],1,0.202,0.724,0
-2004-05-28-29,Lov om register over opplysninger om valutaveksling og overføring av betalingsmidler inn og ut av Norge (valutaregisterloven),1,0.181,1.0,0
-1954-11-26-3,Lov om stønad ved krigsskade på person [krigsskadestønadsloven],1,0.18,0.143,0
-1995-05-12-23,Lov om jord (jordlova),1,0.15,0.294,1
-1933-05-19-11,Lov om særavgifter (særavgiftsloven),0,0.372,0.778,0
-1967-12-15-9,Lov om patenter (patentloven),0,0.317,0.566,0
-1957-06-28-16,Lov om friluftslivet (friluftsloven),0,0.24,0.941,0
-1917-12-14-17,Lov om regulering og kraftutbygging i vassdrag (vassdragsreguleringsloven),0,0.189,0.537,0
-1981-03-06-5,Lov om barneombud [barneombudsloven],0,0.186,0.75,0
-1987-06-12-56,Lov om Sametinget og andre samiske rettsforhold (sameloven),0,0.178,0.377,0
-1925-07-17-11,Lov om Svalbard [Svalbardloven],0,0.156,0.868,0
-1962-06-22-12,Lov om pensjonsordning for sykepleiere [sykepleierpensjonsloven],0,0.151,0.642,0
-1918-08-14-2,Lov om utdrag i sivile saker og straffesaker [rettsutdragsloven],0,0.145,1.0,0
-1973-03-09-14,Lov om vern mot tobakksskader (tobakksskadeloven),0,0.133,0.178,0
-1935-06-07-2,Lov om tinglysing [tinglysingsloven],0,0.129,0.895,0
-1978-06-02-37,Lov om godtroerverv av løsøre [godtroervervloven],0,0.121,0.875,0
-1969-06-13-26,Lov om skadeserstatning (skadeserstatningsloven),0,0.116,0.906,0
-1995-08-04-53,Lov om politiet (politiloven),0,0.099,0.379,0
-1989-02-17-2,Lov om bidragsforskott (forskotteringsloven),0,0.094,0.643,0
-1902-05-22-13,Militær Straffelov,0,0.075,0.855,0
-1931-06-19-18,Lov om Aktieselskapet Vinmonopolet [vinmonopolloven],0,0.071,1.0,0
-1957-06-28-12,Lov om pensjonstrygd for fiskere [fiskerpensjonsloven],0,0.065,0.6,0
-1965-06-18-4,Lov om vegtrafikk (vegtrafikkloven),0,0.064,0.753,0
-1980-02-08-2,Lov om pant (panteloven),0,0.062,0.833,0
-1963-06-21-23,Lov om vegar (veglova),0,0.06,0.816,0
-1981-03-13-6,Lov om vern mot forurensninger og om avfall (forurensningsloven),0,0.054,0.883,0
-1996-11-29-72,Lov om petroleumsvirksomhet [petroleumsloven],0,0.051,0.536,0
-1988-05-13-26,Lov om inkassovirksomhet og annen inndriving av forfalte pengekrav (inkassoloven),0,0.045,0.73,0
-1989-06-16-65,Lov om yrkesskadeforsikring (yrkesskadeforsikringsloven),0,0.044,0.905,0
-2000-03-24-16,Lov om foretakspensjon (foretakspensjonsloven),0,0.044,0.651,0
-1984-06-08-59,Lov om fordringshavernes dekningsrett (dekningsloven),0,0.027,0.98,0
-1966-12-16-9,Lov om anke til Trygderetten (trygderettsloven),0,0.025,0.825,0
-1974-06-28-58,Lov om odelsretten og åsetesretten (odelslova),0,0.025,0.952,0
-1917-06-01-1,Lov om skjønn og ekspropriasjonssaker [skjønnsprosessloven],0,0.024,1.0,0
-1989-06-16-69,Lov om forsikringsavtaler (forsikringsavtaleloven),0,0.022,0.413,0
-1958-12-12-10,Lov om yrkesskadetrygd [yrkesskadetrygdloven],0,0.021,0.869,0
-1950-12-15-7,"Lov om særlige rådgjerder under krig, krigsfare og liknende forhold [beredskapsloven]",0,0.018,0.955,0
-1958-07-18-2,Lov om offentlige tjenestetvister [tjenestetvistloven],0,0.016,0.857,0
-1932-05-27-3,Lov om chekker [sjekkloven],0,0.012,0.985,0
-1932-05-27-2,Lov om veksler [vekselloven],0,0.008,0.979,0
-1970-04-17-21,Lov om retten til oppfinnelser som er gjort av arbeidstakere [arbeidstakeroppfinnelsesloven],0,0.007,1.0,0
-1971-05-21-47,Lov om brannfarlige varer samt væsker og gasser under trykk [brannfarligvareloven] [gjelder bare for Svalbard],0,0.004,0.92,0
-1893-07-20-2,Lov om Stranding og Vrag [vrakloven],0,0.0,1.0,0
-1894-07-21-5,Lov om delvis Omordning af det civile Embedsværk,0,0.0,1.0,0
-1916-06-30-1,Lov om kommisjon (kommisjonsloven),0,0.0,0.984,0
-1927-07-01-1,Lov om registrering av elektriske kraftledninger [kraftledningsregisterloven],0,0.0,0.947,0
-1932-02-05-1,Lov om ansvar for handlinger som påtales ved Riksrett [ansvarlighetsloven],0,0.0,0.526,0
-1939-02-17-1,Lov om gjeldsbrev [gjeldsbrevlova],0,0.0,0.925,0
-1939-02-17-2,Lov om deponering i gjeldshøve [deponeringslova],0,0.0,1.0,0
-1947-05-02-1,Lov um prisereglar og prisedomstolar,0,0.0,0.733,0
-1947-12-05-1,Lov om boikott [boikottloven],0,0.0,1.0,0
-1948-12-13-5,Lov om Riksteatret [riksteaterlova],0,0.0,1.0,0
-1949-07-08-13,"Lov om produksjon, transport og omsetning av agn [agnforsyningsloven]",0,0.0,1.0,0
-1950-12-15-4,Lov om fiendegods [fiendegodsloven],0,0.0,1.0,0
-1953-05-29-3,Lov om hittegods [hittegodslova],0,0.0,0.929,0
-1953-07-03-2,Lov om sjøtrygdelag [sjøtrygdelagloven],0,0.0,0.846,0
-1953-07-17-2,Lov om erstatning for krigsskade på eiendom og interesse [krigsskadeerstatningsloven],0,0.0,0.917,0
-1957-07-06-26,Lov om samordning av pensjons- og trygdeytelser (samordningsloven),0,0.0,0.757,0
-1959-12-18-1,Lov om mortifikasjon av skuldbrev m.v. [mortifikasjonslova],0,0.0,1.0,0
-1961-06-16-15,Lov om rettshøve mellom grannar (grannelova),0,0.0,0.567,0
-1964-04-03-1,Lov om mellomfolkeleg-privatrettslege reglar for lausøyrekjøp [kjøpslovvalgsloven],0,0.0,0.857,0
-1965-06-18-6,Lov om sameige [sameigelova],0,0.0,1.0,0
-1965-06-25-1,Lov om forpakting [forpaktingslova],0,0.0,0.967,0
-1966-12-09-1,Lov om hevd [hevdslova],0,0.0,1.0,0
-1975-06-13-39,Lov om utlevering av lovbrytere m.v. [utleveringsloven],0,0.0,0.588,0
-1976-12-17-91,Lov om Norges økonomiske sone [økonomiske soneloven],0,0.0,0.692,0
-1982-12-17-84,Lov om sikre containere [containerloven],0,0.0,0.9,0
-1984-04-06-17,Lov om vederlag ved oreigning av fast eigedom [ekspropriasjonserstatningslova],0,0.0,1.0,0
-1984-06-08-55,Lov om linjekonferanser m.v. [linjekonferanseloven],0,0.0,0.917,0
-1987-06-12-48,Lov om norsk internasjonalt skipsregister [NIS-loven],0,0.0,0.684,0
-1987-12-18-93,"Lov om kontroll med eksport av strategiske varer, tjenester og teknologi m.v. [eksportkontrolloven]",0,0.0,1.0,0
-1988-04-29-21,Lov om ferie [ferieloven],0,0.0,0.556,0
-1988-12-23-104,Lov om produktansvar [produktansvarsloven],0,0.0,1.0,0
-1989-06-16-63,Lov om håndverkertjenester m.m for forbrukere [håndverkertjenesteloven],0,0.0,1.0,0
-1992-11-27-109,Lov om gjennomføring i norsk rett av hoveddelen i avtale om Det europeiske økonomiske samarbeidsområde (EØS) m.v. (EØS-loven),0,0.0,1.0,0
-1992-11-27-111,Lov om lovvalg i forsikring [forsikringslovvalgsloven],0,0.0,0.75,0
-1994-12-09-64,Lov om løysingsrettar,0,0.0,0.667,0
-1996-11-29-68,Lov om skatt til Svalbard (Svalbardskatteloven),0,0.0,0.741,0
-1997-06-13-43,Lov om avtalar med forbrukar om oppføring av ny bustad m.m. (bustadoppføringslova),0,0.0,0.565,0
+datokode,title,n_provisions,current_fidelity,current_rate,hist_fidelity_2005,ocr_base
+2015-05-22-33,Lov om Norges institusjon for menneskerettigheter (NIM-loven),14,1.0,1.0,,0
+2012-11-30-70,"Lov om registrering av regjeringsmedlemmers, statssekretærers og politiske rådgiveres verv og økonomiske interesser",3,1.0,1.0,,0
+2014-06-20-30,Lov om kredittvurderingsbyråer,7,0.9995,1.0,,0
+2021-06-18-115,Lov om Stortingets ombudsnemnd for Forsvaret (forsvarsombudsloven),17,0.9994,1.0,,0
+2022-01-28-2,Lov om lønnsstøtte (økonomiske tiltak i møte med pandemien),23,0.9992,1.0,,0
+2018-03-23-3,Lov om Bankenes sikringsfond,9,0.9991,1.0,,0
+2024-12-20-96,Lov om abort (abortloven),28,0.999,1.0,,0
+2022-06-17-56,Lov om levering av digitale ytelser til forbrukere (digitalytelsesloven),57,0.9987,1.0,,0
+2021-06-18-99,Lov om virksomheters åpenhet og arbeid med grunnleggende menneskerettigheter og anstendige arbeidsforhold (åpenhetsloven),15,0.9986,1.0,,0
+2007-06-29-88,Lov om register for frivillig virksomhet,23,0.9982,0.9565,,0
+2009-06-19-95,Lov om voksenopplæring (voksenopplæringsloven),14,0.9978,1.0,,0
+2018-06-15-44,Lov om gjennomføring av EUs forordning om elektronisk identifikasjon og tillitstjenester for elektroniske transaksjoner i det indre marked (lov om elektroniske ,11,0.9975,1.0,,0
+2020-06-19-95,Lov om infrastruktur for alternativt drivstoff,7,0.9973,1.0,,0
+2021-06-18-121,Lov om Stortingets ombud for kontroll med forvaltningen (sivilombudsloven),35,0.9968,0.9714,,0
+2006-08-18-61,Lov om beredskapslagring av petroleumsprodukt,3,0.9966,1.0,,0
+2019-03-01-3,Lov om tilskudd til visse private virksomheter med offentlig tjenestepensjonsordning,5,0.9943,1.0,,0
+2020-05-07-38,Midlertidig lov om rekonstruksjon for å avhjelpe økonomiske problemer som følge av utbrudd av covid-19 (rekonstruksjonsloven),66,0.9942,0.9697,,0
+2024-12-13-76,Lov om elektronisk kommunikasjon (ekomloven),151,0.9928,0.9934,,0
+2022-03-11-9,Lov om inn- og utførsel av varer (vareførselsloven),140,0.9919,0.9714,,0
+1995-05-26-25,Lov om gjennomføring av fellesregler om innenlands transport i EØS-avtalen,4,0.9919,1.0,,1
+2020-12-18-146,Lov om finansavtaler (finansavtaleloven),179,0.9918,0.9721,,0
+2023-06-16-62,"Lov om valg til Stortinget, fylkesting og kommunestyrer (valgloven)",148,0.9917,0.9797,,0
+2016-06-17-64,Lov om åpenhet om eierskap i medier,7,0.9914,0.8571,,0
+2024-12-13-77,Lov om Riksrevisjonen (riksrevisjonsloven),35,0.991,0.8571,,0
+2011-12-16-60,Lov om pensjonsordning for stortingsrepresentanter og regjeringsmedlemmer (stortings- og regjeringspensjonsloven),54,0.9902,0.8704,,0
+2005-12-21-126,Lov om kosmetikk og kroppspleieprodukt m.m. (kosmetikklova),24,0.989,0.875,,0
+2024-06-25-69,Lov om bærekraftige produkter og verdikjeder (bærekraftige produkter-loven),16,0.9877,0.9375,,0
+2008-06-27-62,Lov om individuell pensjonsordning,42,0.9865,0.8333,,0
+2017-06-16-51,Lov om likestilling og forbud mot diskriminering (likestillings- og diskrimineringsloven),49,0.9862,0.9592,,0
+2018-06-15-32,Lov om pakkereiser og reisegaranti mv. (pakkereiseloven),55,0.9848,0.9273,,0
+2023-06-09-30,Lov om grunnskoleopplæringa og den vidaregåande opplæringa (opplæringslova),202,0.9846,0.9257,,0
+2012-01-27-9,Lov om arbeidstvister (arbeidstvistloven),65,0.9839,0.9692,,0
+2018-04-20-7,"Lov om våpen, skytevåpen, våpendelar og ammunisjon (våpenlova)",43,0.9837,0.8837,,0
+2019-06-14-21,Lov om arv og dødsboskifte (arveloven),183,0.9827,0.9016,,0
+2019-03-15-6,Lov om verdipapirsentraler og verdipapiroppgjør mv. (verdipapirsentralloven),61,0.9824,0.9344,,0
+1992-05-29-50,Lov om inspeksjoner i samsvar med Avtalen om konvensjonelle styrker i Europa (CFE-avtalen) og om immunitet og privilegier for inspektørene m.fl,5,0.9823,1.0,,1
+2010-02-12-4,Lov om pensjonsordning for oppdragstaker i beredskapshjem eller spesialisert fosterhjem,8,0.9818,0.875,,0
+2021-12-22-163,Lov om forsikringsformidling (forsikringsformidlingsloven),52,0.9804,0.9423,,0
+2014-06-06-19,Lov om stans i utbetalinga av offentlege ytingar og barnebidrag når ein av foreldra har bortført eit barn til utlandet,16,0.9804,0.75,,0
+1994-05-06-10,"Lov om gjennomføring av Konvensjonen om forbod mot utvikling, produksjon, lagring og bruk av kjemiske våpen samt øydelegging av dei",6,0.9803,1.0,,1
+2024-03-08-9,Lov om universiteter og høyskoler (universitets- og høyskoleloven),122,0.9797,0.9098,,0
+2013-06-21-100,Lov om fastsetjing og endring av eigedoms- og rettshøve på fast eigedom m.m. (jordskiftelova),132,0.9797,0.8712,,0
+2000-07-07-68,Lov om avgift til forskning og utvikling i fiskeri- og havbruksnæringen,6,0.9794,1.0,,1
+2019-03-01-2,Lov om register over reelle rettighetshavere,16,0.9791,0.9375,,0
+2017-06-16-67,Lov om statens ansatte mv. (statsansatteloven),46,0.9785,0.8913,,0
+2001-06-15-79,Lov om miljøvern på Svalbard (svalbardmiljøloven),106,0.9778,0.8679,,0
+2020-06-19-77,Lov om Etterretningstjenesten (etterretningstjenesteloven),94,0.9769,0.9468,,0
+2018-06-15-40,Lov om opphavsrett til åndsverk mv. (åndsverkloven),121,0.9759,0.9256,,0
+2004-05-14-25,Lov om voldgift,50,0.9758,0.96,,0
+2022-12-16-91,Lov om låneformidling (låneformidlingsloven),39,0.9749,0.9744,,0
+2022-05-12-28,Lov om advokater og andre som yter rettslig bistand (advokatloven),74,0.9749,0.8514,,0
+1997-06-06-32,Lov om innførsle- og utførsleregulering,5,0.974,1.0,,1
+2003-05-23-35,Lov om visse sider av elektronisk handel og andre informasjonssamfunnstjenester (ehandelsloven),22,0.9727,0.8636,0.366,0
+2023-11-24-85,Lov om militær politimyndighet (militærpolitiloven),29,0.9724,0.931,,0
+2019-03-22-7,Lov om mineralvirksomhet på kontinentalsokkelen (havbunnsmineralloven),71,0.9722,0.9155,,0
+2018-06-22-83,Lov om kommuner og fylkeskommuner (kommuneloven),188,0.9713,0.8777,,0
+2019-12-20-109,Lov om behandling av opplysninger i kredittopplysningsvirksomhet (kredittopplysningsloven),31,0.9702,0.9677,,0
+2012-01-20-4,Lov om pågriping og overlevering til og frå Noreg for straffbare forhold på grunnlag av ein arrestordre (arrestordreloven),43,0.9694,0.8837,,0
+2022-03-18-12,Lov om pengespill (pengespilloven),40,0.969,0.95,,0
+2003-06-06-38,Lov om bustadbyggjelag (bustadbyggjelagslova),141,0.9681,0.7518,0.592,0
+2010-05-28-16,Lov om behandling av opplysninger i politiet og påtalemyndigheten (politiregisterloven),71,0.968,0.7465,,0
+2011-11-25-44,Lov om verdipapirfond (verdipapirfondloven),119,0.9679,0.8319,,0
+2018-06-01-23,Lov om tiltak mot hvitvasking og terrorfinansiering (hvitvaskingsloven),55,0.966,0.7636,,0
+2007-06-29-81,Lov om samvirkeforetak (samvirkelova),168,0.9658,0.8036,,0
+2020-06-23-98,Lov om behandling av forbrukerklager i Forbrukertilsynet og Forbrukerklageutvalget (forbrukerklageloven),27,0.9638,0.963,,0
+2009-06-19-103,Lov om tjenestevirksomhet (tjenesteloven),29,0.9637,0.931,,0
+2017-06-16-56,Lov om Statens undersøkelseskommisjon for helse- og omsorgstjenesten,21,0.9632,0.8571,,0
+2004-07-02-64,Lov om ordning med brukerrom for inntak av narkotika (brukerromsloven),9,0.9623,0.6667,,0
+2022-03-11-8,Lov om tollavgift (tollavgiftsloven),64,0.962,0.8906,,0
+2013-06-21-75,Lov om førstehandsomsetning av viltlevande marine ressursar (fiskesalslagslova),26,0.9618,0.8846,,0
+2011-06-24-39,Lov om elsertifikater,34,0.9605,0.8235,,0
+2018-06-01-24,Lov om nasjonal sikkerhet (sikkerhetsloven),70,0.9603,0.8286,,0
+2017-06-16-65,Lov om eierseksjoner (eierseksjonsloven),74,0.9598,0.7703,,0
+2024-06-21-41,Lov om Finanstilsynet (finanstilsynsloven),33,0.9594,0.8788,,0
+2010-03-26-9,Lov om vergemål (vergemålsloven),102,0.9593,0.4804,,0
+2009-06-19-100,Lov om forvaltning av naturens mangfold (naturmangfoldloven),83,0.9593,0.8072,,0
+2021-06-18-136,Lov om røystingsrådgjevarar,8,0.9577,0.875,,0
+2019-06-21-31,Lov om Norges Bank og pengevesenet mv. (sentralbankloven),53,0.9574,0.8302,,0
+2015-05-12-27,Lov om forsvunne personar,24,0.9574,0.6667,,0
+2001-12-14-95,Lov om beskyttelse av supplerende pensjonsrettigheter for arbeidstakere og selvstendig næringsdrivende som flytter innenfor EØS-området,9,0.9556,0.6667,,0
+2005-06-17-90,Lov om mekling og rettergang i sivile tvister (tvisteloven),354,0.9553,0.8644,,0
+2003-06-06-39,Lov om burettslag (burettslagslova),181,0.9547,0.6575,0.546,0
+2016-06-17-46,Lov om endring av juridisk kjønn,9,0.9543,0.8889,,0
+2002-06-14-20,"Lov om vern mot brann, eksplosjon og ulykker med farlig stoff og om brannvesenets redningsoppgaver (brann- og eksplosjonsvernloven)",55,0.9542,0.8182,,0
+2016-12-09-88,Lov om folkeregistrering (folkeregisterloven),44,0.954,0.7955,,0
+2007-06-29-89,Lov om offentlege styresmakters ansvar for kulturverksemd (kulturlova),7,0.9538,0.8571,,0
+2005-05-27-31,Lov om skogbruk (skogbrukslova),26,0.9531,0.8077,,0
+2010-03-26-8,Lov om beskyttelse av varemerker (varemerkeloven),95,0.9502,0.7474,,0
+2007-02-16-9,Lov om skipssikkerhet (skipssikkerhetsloven),78,0.9497,0.6795,,0
+2020-04-24-31,Lov om tros- og livssynssamfunn (trossamfunnsloven),24,0.9492,0.75,,0
+2019-06-21-70,Lov om havner og farvann (havne- og farvannsloven),54,0.9487,0.9259,,0
+2017-06-16-47,Lov om gjeldsinformasjon ved kredittvurdering av privatpersoner (gjeldsinformasjonsloven),21,0.9486,0.8095,,0
+2011-12-16-65,Lov om næringsberedskap (næringsberedskapsloven),24,0.9483,0.6667,,0
+2021-05-21-42,Lov om språk (språklova),22,0.9475,0.8182,,0
+2002-06-21-34,Lov om forbrukerkjøp (forbrukerkjøpsloven),66,0.9472,0.8485,,0
+2010-06-04-21,Lov om fornybar energiproduksjon til havs (havenergilova),41,0.947,0.7805,,0
+2022-12-16-90,Lov om regnskapsførere (regnskapsførerloven),30,0.9468,0.8333,,0
+2013-12-13-106,Lov om tjenestepensjon (tjenestepensjonsloven),81,0.9455,0.9259,,0
+2003-05-09-31,Lov om rett til miljøinformasjon og deltakelse i offentlige beslutningsprosesser av betydning for miljøet (miljøinformasjonsloven),22,0.9448,0.8182,0.517,0
+2020-12-18-156,Lov om midlertidig tilskuddsordning for foretak med stort omsetningsfall etter august 2020,13,0.9448,0.8462,,0
+2020-05-07-40,Lov om tilrettelegging for utbygging av høyhastighetsnett for elektronisk kommunikasjon (bredbåndsutbyggingsloven),26,0.9446,0.8846,,0
+2020-11-20-128,Lov om revisjon og revisorer (revisorloven),72,0.9421,0.625,,0
+2017-06-16-50,Lov om Likestillings- og diskrimineringsombudet og Diskrimineringsnemnda (diskrimineringsombudsloven),26,0.942,0.6538,,0
+2009-06-19-97,Lov om dyrevelferd,42,0.9416,0.8571,,0
+2020-06-23-99,Lov om tilskudd ved avbrutt permittering (økonomiske tiltak i møte med virusutbruddet),23,0.9416,0.913,,0
+2018-06-08-28,Lov om høyere yrkesfaglig utdanning (fagskoleloven),58,0.9413,0.8103,,0
+2007-06-29-44,Lov om Folketrygdfondet,17,0.9409,0.7647,,0
+2020-04-17-29,Lov om god handelsskikk i dagligvarekjeden,21,0.9401,0.7619,,0
+2001-06-15-93,Lov om helseforetak m.m. (helseforetaksloven),58,0.9399,0.7931,,0
+1999-01-15-1,Lov om pensjonsordning for ledsagere i utenrikstjenesten,6,0.9399,0.8333,,1
+2017-04-28-23,Lov om organisering av forskningsetisk arbeid (forskningsetikkloven),14,0.9393,0.8571,,0
+2018-04-20-8,Lov om grensetilsyn og grensekontroll av personer (grenseloven),29,0.9372,0.7241,,0
+2003-03-14-15,Lov om beskyttelse av design (designloven),65,0.937,0.7231,0.306,0
+1998-07-17-54,"Lov om gjennomføring av Konvensjonen om forbud mot bruk, lagring, produksjon og overføring av antipersonellminer og om ødeleggelse av slike miner",7,0.937,0.5714,,0
+2008-06-06-37,Lov om forvaltning av viltlevande marine ressursar (havressurslova),78,0.9347,0.7564,,0
+2015-02-13-9,Lov om utenrikstjenesten (utenrikstjenesteloven),18,0.9344,0.8333,,0
+2004-03-26-17,Lov om finansiell sikkerhetsstillelse,12,0.9338,0.9167,,0
+2007-06-29-73,Lov om eiendomsmegling (eiendomsmeglingsloven),60,0.9334,0.6833,,0
+2015-09-04-91,Lov om posttjenester (postloven),63,0.9327,0.7778,,0
+2022-06-17-57,Lov om erstatning fra staten til voldsutsatte (voldserstatningsloven),19,0.9322,0.8421,,0
+2001-06-15-59,Lov om stiftelser (stiftelsesloven),72,0.9309,0.7639,0.432,0
+2009-03-06-12,Lov om Statens finansfond,12,0.9299,0.9167,,0
+2015-06-19-70,"Lov om informasjonsplikt, karantene og saksforbud for politikere, embetsmenn og statsansatte (karanteneloven)",23,0.9298,0.5217,,0
+2009-05-29-30,Lov om Husbanken,13,0.9291,0.6923,,0
+1992-12-04-126,om arkiv,24,0.9284,0.625,0.854,0
+2005-06-17-85,Lov om rettsforhold og forvaltning av grunn og naturressurser i Finnmark (Finnmarksloven),51,0.9276,0.7451,,0
+2007-12-14-116,Lov om studentsamskipnader (studentsamskipnadsloven),14,0.9268,0.4286,,0
+2005-06-17-102,Lov om visse forhold vedrørende de politiske partiene (partiloven),38,0.9232,0.7632,,0
+2015-12-04-95,Lov om fastsettelse av finansielle referanseverdier (referanseverdiloven),14,0.9225,0.7857,,0
+2015-05-07-25,"Lov om donasjon og transplantasjon av organ, celler og vev (transplantasjonslova)",27,0.9211,0.5926,,0
+1988-05-13-27,Lov om kjøp [kjøpsloven],88,0.921,0.8182,0.725,1
+2020-05-07-37,Lov om medisinsk utstyr,17,0.9202,0.7059,,0
+2024-01-12-1,Lov om suppleringsskatt på underbeskattet inntekt i konsern (suppleringsskatteloven),43,0.9199,0.4419,,0
+2005-04-01-14,Lov om europeiske selskaper (SE-loven),15,0.9189,0.8667,,0
+1977-06-03-57,Lov om sterilisering [steriliseringsloven],15,0.9187,0.6667,0.872,0
+2014-06-20-49,Lov om konfliktrådsbehandling (konfliktrådsloven),46,0.918,0.7609,,0
+2003-11-28-98,Lov om konsesjon ved erverv av fast eiendom mv. (konsesjonsloven),26,0.9167,0.6154,0.84,0
+1993-03-12-32,Lov om planteforedlerrett (planteforedlerloven),33,0.9166,0.7576,0.716,1
+2004-05-28-29,Lov om register over opplysninger om valutaveksling og overføring av betalingsmidler inn og ut av Norge (valutaregisterloven),11,0.9153,0.7273,0.181,0
+1998-08-21-65,"Lov om pensjonsordning for ballettdansere, sangsolister og korsangere ved Den Norske Opera &amp; Ballett [operapensjonsloven]",6,0.9152,0.8333,,1
+2001-06-15-65,Lov om gjennomføring i norsk rett av Den internasjonale straffedomstols vedtekter 17. juli 1998 (Roma-vedtektene),16,0.9148,0.8125,,0
+2015-06-05-39,Lov om nasjonalt identitetskort (ID-kortloven),18,0.9145,0.7222,,0
+1999-03-26-17,Lov om husleieavtaler (husleieloven),93,0.9143,0.8387,0.557,1
+1994-06-24-38,Lov om gjennomføring i norsk rett av De forente nasjoners sikkerhetsråds vedtak om å opprette internasjonale domstoler for forbrytelser i det tidligere Jugoslav,9,0.9136,0.6667,,1
+2017-06-16-69,Lov om godkjenning av yrkeskvalifikasjoner (yrkeskvalifikasjonsloven),26,0.9129,0.8077,,0
+2022-03-04-7,Lov om nasjonale saksbehandlingsregler i saker om offentlig støtte (støtteprosessloven),19,0.9116,0.8421,,0
+2002-06-07-19,Lov om personnavn (navneloven),17,0.9116,0.5882,,0
+1992-06-19-60,Lov om skogsdrift m.v. i statsallmenningene,51,0.9103,0.7647,,1
+1992-06-19-59,Lov om bygdeallmenninger,85,0.9088,0.7882,,1
+1996-12-20-106,Lov om tomtefeste,47,0.9082,0.617,,0
+2013-06-21-102,Lov om stillingsvern mv. for arbeidstakere på skip (skipsarbeidsloven),97,0.9072,0.8351,,0
+1994-06-03-15,om Enhetsregisteret,34,0.8996,0.5588,,0
+2024-06-21-40,Lov om nøkkelinformasjon om sammensatte og forsikringsbaserte investeringsprodukter (PRIIPs-loven),11,0.8993,0.8182,,0
+2009-06-05-35,Lov om naturområder i Oslo og nærliggende kommuner (markaloven),26,0.8989,0.8077,,0
+2007-06-15-40,Lov om reindrift (reindriftsloven),90,0.8986,0.6444,,0
+2020-12-18-153,Lov om økonomisk støtte til mediene (mediestøtteloven),13,0.8975,0.8462,,0
+2015-05-07-26,Lov om obduksjon og avgjeving av lik til undervisning og forsking (obduksjonslova),21,0.8974,0.6667,,0
+2015-04-10-17,Lov om finansforetak og finanskonsern (finansforetaksloven),378,0.8973,0.7646,,0
+2000-11-24-82,Lov om vassdrag og grunnvann (vannressursloven),74,0.8951,0.7568,0.86,1
+2003-06-27-64,Lov om alternativ behandling av sykdom mv.,11,0.8944,0.6364,,0
+2005-06-10-51,Lov om norsk statsborgerskap (statsborgerloven),52,0.8944,0.7308,,0
+1991-08-30-71,om statsforetak,62,0.8939,0.629,,0
+2009-12-18-131,Lov om sosiale tjenester i arbeids- og velferdsforvaltningen (sosialtjenesteloven),56,0.8936,0.7143,,0
+2002-03-08-4,Lov om barnetrygd (barnetrygdloven),27,0.8927,0.4815,0.21,0
+2016-05-27-14,Lov om skatteforvaltning (skatteforvaltningsloven),148,0.8921,0.7297,,0
+2005-06-17-79,Lov om akvakultur (akvakulturloven),42,0.8912,0.6905,,0
+2009-01-09-2,Lov om kontroll med markedsføring og avtalevilkår mv. (markedsføringsloven),61,0.8863,0.6721,,0
+2017-05-22-28,Lov om tilskudd til sysselsetting av arbeidstakere til sjøs,5,0.8854,0.4,,0
+2006-05-19-16,Lov om rett til innsyn i dokument i offentleg verksemd (offentleglova),34,0.8839,0.5588,,0
+1992-06-26-87,Lov om forsøk i offentlig forvaltning (forsøksloven),8,0.8832,0.875,,1
+2003-12-19-130,Lov om Innovasjon Norge,50,0.8825,0.78,,0
+2014-06-20-28,Lov om forvaltning av alternative investeringsfond,80,0.8823,0.7125,,0
+2005-04-29-21,Lov om supplerande stønad til personar med kort butid i Noreg,24,0.8817,0.2083,,0
+1990-04-27-9,"Lov om regulering av eksporten av fisk, fiskevarer og marine produkter (fiskeeksportloven)",10,0.8806,0.8,0.651,1
+2014-06-20-27,Lov om opplysningsplikt og angrerett ved fjernsalg og salg utenom faste forretningslokaler (angrerettloven).,33,0.8803,0.6364,,0
+2004-03-05-11,Lov om gjennomføring og kontroll av EØS-avtalens konkurranseregler mv. (EØS-konkurranseloven),13,0.8799,0.7692,,0
+2003-12-19-124,Lov om matproduksjon og mattrygghet mv. (matloven),39,0.8766,0.7179,0.344,0
+2005-12-21-124,Lov om obligatorisk tjenestepensjon [OTP-loven],11,0.8744,0.5455,,0
+2011-06-24-30,Lov om kommunale helse- og omsorgstjenester m.m. (helse- og omsorgstjenesteloven),89,0.8736,0.6742,,0
+1997-06-13-42,Lov om Kystvakten (kystvaktloven),39,0.8724,0.6923,0.472,1
+1970-06-05-35,Lov om utlevering for å få iverksatt vedtak om frihetsinngrep truffet av myndighet i annet nordisk land,13,0.8724,0.4615,,0
+2001-06-15-75,Lov om veterinærer og annet dyrehelsepersonell [dyrehelsepersonelloven],43,0.8719,0.7442,0.241,0
+2012-06-22-58,Lov om Patentstyret og Klagenemnda for industrielle rettar (patentstyrelova),11,0.8706,0.6364,,0
+2015-02-06-7,Lov om beskyttelse av mindreårige mot skadelige bildeprogram mv.,22,0.8674,0.7273,,0
+2016-06-17-30,Lov om EØS-finanstilsyn,8,0.8612,0.75,,0
+2021-06-18-97,Lov om barnevern (barnevernsloven),183,0.8586,0.541,,0
+2019-06-21-63,Lov om forbud mot hold av pelsdyr,7,0.8568,0.8571,,0
+2006-06-30-50,Lov om europeiske samvirkeforetak (SCE-loven),15,0.8555,0.6,,0
+2001-06-15-53,Lov om erstatning ved pasientskader mv. (pasientskadeloven),25,0.8538,0.52,,0
+1918-05-31-4,"Lov om avslutning av avtaler, om fuldmagt og om ugyldige viljeserklæringer [avtaleloven]",45,0.8535,0.7556,0.84,1
+1997-06-13-55,Lov om serveringsvirksomhet (serveringsloven),29,0.8535,0.6207,,1
+2000-05-12-36,Lov om strålevern og bruk av stråling [strålevernloven],28,0.8534,0.6786,0.444,1
+2000-06-02-39,Lov om apotek (apotekloven),77,0.8531,0.6883,0.58,1
+2001-06-15-70,Lov om fastsetjing og endring av kommune- og fylkesgrenser (inndelingslova),33,0.8528,0.4848,,0
+2017-06-16-48,Lov om adopsjon (adopsjonsloven),54,0.8525,0.7593,,0
+2001-06-15-73,Lov om organisert kampaktivitet som tillater knockout [knockoutloven],4,0.852,0.75,,0
+1999-06-18-40,Lov om gjennomføring av Traktat om totalforbod mot kjernefysiske prøvesprengingar,7,0.8512,0.5714,,1
+2006-06-16-20,Lov om arbeids- og velferdsforvaltningen (arbeids- og velferdsforvaltningsloven) [Nav-loven],23,0.8484,0.4783,,0
+1997-06-13-45,Lov om allmennaksjeselskaper (allmennaksjeloven),323,0.8481,0.678,0.574,1
+2009-05-15-28,Lov om gjennomføring av Konvensjonen om klaseammunisjon,5,0.8477,0.4,,0
+2004-12-17-99,Lov om kvoteplikt og handel med kvoter for utslipp av klimagasser (klimakvoteloven),34,0.8458,0.5,,0
+1977-06-10-82,Lov om motorferdsel i utmark og vassdrag (motorferdselloven),19,0.8447,0.2632,,0
+1993-04-02-38,Lov om framstilling og bruk av genmodifiserte organismer m.m. (genteknologiloven),35,0.8444,0.6286,0.438,1
+1979-05-18-18,Lov om foreldelse av fordringer (foreldelsesloven),33,0.8435,0.6364,,1
+1985-12-20-108,Lov om folkebibliotek (folkebibliotekloven),10,0.8415,0.7,,0
+1999-01-29-6,Lov om interkommunale selskaper (IKS-loven),47,0.8402,0.4468,0.36,0
+2000-11-24-81,Lov om innskuddspensjon i arbeidsforhold (innskuddspensjonsloven),77,0.8402,0.6234,0.667,1
+2000-06-23-56,Lov om helsemessig og sosial beredskap (helseberedskapsloven),27,0.8389,0.6296,,1
+2022-06-17-49,Lov om informasjonstilgang for Riksrevisjonen ved undersøkelser av saker som gjelder stortingsrepresentantenes økonomiske ordninger,6,0.8362,0.8333,,0
+2012-06-22-43,Lov om arbeidsgivers innrapportering av ansettelses- og inntektsforhold m.m. (a-opplysningsloven),15,0.8358,0.3333,,0
+2004-12-10-82,Lov om Overenskomst om internasjonal jernbanetrafikk (COTIF-loven),10,0.8356,0.5,,0
+2005-06-17-62,"Lov om arbeidsmiljø, arbeidstid og stillingsvern mv. (arbeidsmiljøloven)",197,0.8298,0.5787,,0
+1992-05-15-47,Lov om laksefisk og innlandsfisk mv. (lakse- og innlandsfiskloven),54,0.8292,0.6111,0.817,1
+1992-07-03-93,Lov om avhending av fast eigedom (avhendingslova),60,0.8284,0.6833,0.464,1
+1954-11-26-3,Lov om stønad ved krigsskade på person [krigsskadestønadsloven],42,0.8274,0.4048,0.18,0
+2004-11-19-73,Lov om bokføring (bokføringsloven),21,0.8252,0.4286,,0
+2021-04-16-18,Lov om gjennomføring av internasjonale sanksjoner (sanksjonsloven),10,0.8231,0.8,,0
+1997-06-13-44,Lov om aksjeselskaper (aksjeloven),293,0.8211,0.6485,0.71,1
+2007-06-29-75,Lov om verdipapirhandel (verdipapirhandelloven),300,0.8172,0.7067,,0
+1985-06-21-83,Lov om ansvarlige selskaper og kommandittselskaper (Selskapsloven),82,0.8172,0.6098,0.565,1
+1972-05-12-28,Lov om atomenergivirksomhet [atomenergiloven],62,0.817,0.6935,0.808,1
+1959-10-23-3,Lov om oreigning av fast eigedom (oreigningslova),33,0.8163,0.6364,0.852,1
+2005-06-17-101,Lov om eigedomsregistrering (matrikkellova),54,0.8101,0.3333,,0
+2016-06-17-29,Lov om godkjenning av klageorganer for forbrukersaker (godkjenningsloven),28,0.8095,0.5714,,0
+1974-12-20-68,Lov om vegfraktavtaler [vegfraktloven],51,0.8044,0.2549,0.872,0
+2013-04-12-13,Lov om det frie varebytte i EØS (EØS-vareloven),6,0.7988,0.6667,,0
+2022-12-20-97,Lov om informasjonstilgang m.m. for Ekstremismekommisjonen,9,0.7986,0.3333,,0
+1990-06-15-27,Lov om vern av kretsmønstre for integrerte kretser [kretsmønsterloven],13,0.7986,0.5385,,1
+2002-06-21-45,Lov om yrkestransport med motorvogn og fartøy (yrkestransportlova),69,0.797,0.3768,,0
+2020-11-06-127,"Lov om integrering gjennom opplæring, utdanning og arbeid (integreringsloven)",63,0.7961,0.4921,,0
+1986-06-20-35,Lov om mesterbrev i håndverk og annen næring [mesterbrevloven],11,0.7955,0.7273,0.295,1
+2017-12-15-107,Lov om statlig tilsyn med helse- og omsorgstjenesten mv. (helsetilsynsloven),15,0.7942,0.4,,0
+2016-08-12-77,Lov om verneplikt og tjeneste i Forsvaret m.m. (forsvarsloven),94,0.793,0.7128,,0
+1998-06-26-41,Lov om kontantstøtte til småbarnsforeldre (kontantstøtteloven),29,0.7906,0.1724,,0
+1992-06-26-86,Lov om tvangsfullbyrdelse (tvangsfullbyrdelsesloven),249,0.7854,0.5663,0.51,1
+1992-07-17-99,Lov om frivillig og tvungen gjeldsordning for privatpersoner (gjeldsordningsloven),52,0.7851,0.5577,0.655,1
+1999-05-21-30,Lov om styrking av menneskerettighetenes stilling i norsk rett (menneskerettsloven),6,0.7832,0.6667,,1
+2013-06-07-31,Lov om Kulturrådet (kulturrådsloven),9,0.7831,0.7778,,0
+1997-06-19-62,Lov om familievernkontorer,19,0.7826,0.5789,,1
+2004-12-17-101,Lov om europeisk meldeplikt for tekniske regler m.m. (EØS-høringsloven),22,0.7801,0.5909,,0
+2008-05-15-35,Lov om utlendingers adgang til riket og deres opphold her (utlendingsloven),195,0.7797,0.5436,,0
+2012-12-14-81,Lov om fri rørsle av arbeidstakarar innanfor EØS mv. (EØS-arbeidstakarlova),4,0.7769,0.75,,0
+1994-06-24-39,Lov om sjøfarten (sjøloven),431,0.7718,0.6009,0.637,1
+1985-06-21-80,Lov om prokura [prokuraloven],6,0.7707,0.6667,,1
+2001-05-18-21,Lov om gjennomføring av straff mv. (straffegjennomføringsloven),89,0.7701,0.5056,0.378,0
+2008-06-20-44,Lov om medisinsk og helsefaglig forskning (helseforskningsloven),60,0.7667,0.4667,,0
+2004-03-05-12,Lov om konkurranse mellom foretak og kontroll med foretakssammenslutninger (konkurranseloven),56,0.7656,0.4464,,0
+2014-06-20-43,Lov om helseregistre og behandling av helseopplysninger (helseregisterloven),44,0.7626,0.4773,,0
+1995-05-12-23,Lov om jord (jordlova),17,0.7587,0.5882,0.15,1
+2014-06-20-42,Lov om behandling av helseopplysninger ved ytelse av helsehjelp (pasientjournalloven),35,0.7571,0.4,,0
+1994-08-05-55,Lov om vern mot smittsomme sykdommer [smittevernloven],62,0.7504,0.2581,0.693,0
+1999-03-26-15,Lov om retten til å delta i fiske og fangst (deltakerloven),36,0.7502,0.3333,,0
+2010-02-19-5,Lov om statstilskott til arbeidstakere som tar ut avtalefestet pensjon i privat sektor (AFP-tilskottsloven),33,0.7468,0.6364,,0
+1997-05-09-26,Lov om Statens investeringsfond for næringsvirksomhet i utviklingsland (Norfundloven),31,0.742,0.6774,,1
+2012-08-24-64,Lov om bustøtte og kommunale bustadtilskot (bustøttelova),20,0.7412,0.4,,0
+1992-12-04-130,Lov om husdyravl,10,0.7411,0.6,,0
+1983-06-03-54,Lov om tannhelsetjenesten (tannhelsetjenesteloven),37,0.7337,0.5676,0.727,1
+1975-06-06-31,Lov om utnytting av rettar og lunnende m.m. i statsallmenningane (fjellova),39,0.7312,0.641,0.691,1
+2005-04-29-20,Lov om innkreving av underholdsbidrag mv. (bidragsinnkrevingsloven),41,0.7286,0.1463,,0
+1990-06-29-50,"Lov om produksjon, omforming, overføring, omsetning, fordeling og bruk av energi m.m. (energiloven)",77,0.7195,0.5844,0.689,1
+2022-12-20-118,"Lov om informasjonstilgang m.m. for Koronautvalget, og endringer i voldserstatningsloven (ny forskriftshjemmel)",10,0.7194,0.3,,0
+1985-06-21-78,om registrering av foretak,49,0.7193,0.3469,0.575,0
+2003-02-21-12,Lov om behandlingsbiobanker (behandlingsbiobankloven),23,0.7186,0.3478,0.259,0
+1993-06-11-101,Lov om luftfart (luftfartsloven),318,0.7179,0.5755,0.598,1
+1995-02-24-12,Lov om helligdager og helligdagsfred,7,0.7174,0.5714,,1
+2009-06-19-44,Lov om kommunale krisesentertilbod (krisesenterlova),15,0.7119,0.1333,,0
+1990-05-18-11,Lov om stadnamn (stadnamnlova),16,0.7114,0.625,0.239,1
+1998-07-17-56,Lov om årsregnskap m.v. (regnskapsloven),143,0.7113,0.3357,0.418,0
+1993-06-04-58,Lov om allmenngjøring av tariffavtaler m.v. (allmenngjøringsloven),16,0.7107,0.5625,,1
+2020-11-27-131,Lov om overgangsregler mv. ved Storbritannias uttreden fra Den europeiske union (brexit-loven),5,0.7067,0.4,,0
+2003-12-05-100,Lov om humanmedisinsk bruk av bioteknologi m.m. (bioteknologiloven),71,0.7049,0.5915,0.556,0
+1992-12-04-127,Lov om kringkasting og audiovisuelle bestillingstjenester mv. (kringkastingsloven),75,0.7039,0.48,0.562,0
+2004-12-10-76,Lov om arbeidsmarkedstjenester (arbeidsmarkedsloven),28,0.7035,0.3571,,0
+1999-03-26-14,Lov om skatt av formue og inntekt (skatteloven),363,0.7031,0.4435,0.576,1
+1990-12-21-72,Lov om avgift på utslipp av CO<sub>2</sub> i petroleumsvirksomhet på kontinentalsokkelen,8,0.7026,0.375,,0
+1999-07-02-64,Lov om helsepersonell m.v. (helsepersonelloven),102,0.7015,0.5098,0.322,1
+1991-07-04-45,Lov om rett til felles bolig og innbo når husstandsfellesskap opphører [husstandsfellesskapsloven],6,0.701,0.5,0.67,1
+2016-06-17-73,Lov om offentlige anskaffelser (anskaffelsesloven),20,0.6925,0.6,,0
+2005-06-17-67,Lov om betaling og innkreving av skatte- og avgiftskrav (skattebetalingsloven),143,0.6915,0.2448,,0
+2020-12-04-136,Lov om informasjonstilgang m.m. for den uavhengige kommisjonen som skal gjennomgå og evaluere myndighetenes håndtering av covid-19-pandemien i Norge (Koronakomm,7,0.6879,0.2857,,0
+1994-07-01-49,Lov om avtalefestet pensjon for arbeidstakere med rett til medlemskap i Pensjonsordning for apotekvirksomhet mv.,5,0.6873,0.2,,0
+1991-07-04-47,Lov om ekteskap (ekteskapsloven),130,0.6842,0.5,0.712,1
+1993-06-11-100,"Lov om anlegg og drift av jernbane, herunder sporvei, tunnelbane og forstadsbane m.m. (jernbaneloven)",44,0.682,0.6136,0.661,1
+2010-06-25-45,Lov om sivil beskyttelse og beredskap (sivilbeskyttelsesloven),61,0.6815,0.4918,,0
+2009-06-19-58,Lov om merverdiavgift (merverdiavgiftsloven),199,0.6777,0.4824,,0
+1998-06-26-47,Lov om fritids- og småbåter (småbåtloven),34,0.6766,0.3824,,0
+2003-07-04-74,Lov om forsvarlig hundehold (hundeloven),38,0.6564,0.2368,0.356,0
+1982-12-17-86,Lov om rettsgebyr (rettsgebyrloven),38,0.6544,0.4474,,1
+1991-07-20-67,Lov om overføring av domfelte,19,0.6538,0.3684,0.701,0
+2005-06-03-37,Lov om utdanningsstøtte (utdanningsstøtteloven),28,0.6523,0.3214,,0
+1996-06-07-32,"Lov om gravplasser, kremasjon og gravferd (gravplassloven)",32,0.6523,0.3125,,1
+1985-06-21-79,Lov om enerett til foretaksnavn og andre forretningskjennetegn mv. (foretaksnavneloven),28,0.6498,0.3214,0.652,1
+1999-07-02-63,Lov om pasient- og brukerrettigheter (pasient- og brukerrettighetsloven),80,0.6413,0.45,,1
+2017-05-22-29,Lov om taubaner (taubaneloven),49,0.6302,0.551,,0
+2008-06-27-71,Lov om planlegging og byggesaksbehandling (plan- og bygningsloven),262,0.6288,0.5038,,0
+2011-06-24-29,Lov om folkehelsearbeid (folkehelseloven),41,0.6225,0.2195,,0
+1999-07-02-62,Lov om etablering og gjennomføring av psykisk helsevern (psykisk helsevernloven),76,0.6035,0.4474,0.437,1
+2017-05-22-30,Lov om fornøyelsesinnretninger (tivoliloven),45,0.5986,0.4889,,0
+1981-05-29-38,om viltet,62,0.5962,0.2581,0.642,0
+1981-04-08-7,Lov om barn og foreldre (barnelova),122,0.59,0.0574,0.375,0
+1992-12-04-132,Lov om legemidler m.v. (legemiddelloven),53,0.5842,0.1321,,0
+2017-06-16-60,Lov om klimamål (klimaloven),8,0.5838,0.5,,0
+1997-02-28-19,Lov om folketrygd (folketrygdloven),543,0.5697,0.3646,0.446,1
+1997-06-19-82,Lov om pass (passloven),17,0.5399,0.2353,0.488,1
+1974-06-07-22,Lov om prisregler for jern og stål,4,0.5389,0.25,,0
+1993-06-11-66,Lov om pristiltak,8,0.532,0.5,,1
+1999-07-02-61,Lov om spesialisthelsetjenesten m.m. (spesialisthelsetjenesteloven),64,0.5302,0.2969,0.437,1
+1981-05-22-25,Lov om rettergangsmåten i straffesaker (Straffeprosessloven),621,0.5292,0.2254,0.59,0
+2003-12-12-108,"Lov om kompensasjon av merverdiavgift for kommuner, fylkeskommuner mv. (merverdiavgiftskompensasjonsloven)",21,0.524,0.2381,,0
+1977-04-29-34,Lov om kommunal forkjøpsrett til leiegårder,12,0.5215,0.0833,,0
+2003-07-04-84,Lov om private skolar med rett til statstilskot (privatskolelova),91,0.4545,0.1429,,0
+1975-06-06-29,Lov om eigedomsskatt til kommunane (eigedomsskattelova),46,0.4483,0.1739,0.677,1
+1975-06-13-35,Lov om skattlegging av undersjøiske petroleumsforekomster mv. (petroleumsskatteloven),13,0.4429,0.1538,0.332,1
+2005-06-17-64,Lov om barnehager (barnehageloven),75,0.4428,0.2133,,0
+2010-06-25-28,Lov om avtalefestet pensjon for medlemmer av Statens pensjonskasse,17,0.4274,0.1765,,0
+2005-05-20-28,Lov om straff (straffeloven),397,0.3926,0.2922,,0
+1996-06-21-38,Lov om statlig naturoppsyn (naturoppsynsloven),7,0.3733,0.2857,,1
+2001-01-05-1,Lov om vaktvirksomhet (vaktvirksomhetsloven),22,0.3722,0.1364,0.389,0
+1949-07-28-26,Lov om Statens pensjonskasse,84,0.3595,0.0595,,0
+1999-07-16-66,Lov om Schengen informasjonssystem (SIS) [SIS-loven],24,0.323,0.0417,0.428,1
+1970-06-26-74,Lov om forskningsavgift på landbruksprodukter,7,0.3079,0.0,,1
+1977-06-10-73,Lov om jernbaneansvar (jernbaneansvarsloven),15,0.3034,0.0667,0.322,0
+1995-02-03-7,"Lov om kontroll med etterretnings-, overvåkings- og sikkerhetstjeneste (EOS-kontrolloven)",23,0.295,0.1304,,1
+2005-12-21-123,Lov om Statens pensjonsfond,12,0.2213,0.0,,0
+2005-06-10-44,Lov om forsikringsvirksomhet (forsikringsvirksomhetsloven),104,0.175,0.0673,,0
+1975-12-12-59,Lov om dokumentavgift (dokumentavgiftsloven),16,0.1632,0.0,,1
+2000-01-21-7,Lov om kornforvaltning m.v.,9,0.1558,0.0,,1
+2002-06-28-61,Lov om felles regler for det indre marked for naturgass (naturgassloven),14,0.1134,0.0,,0
