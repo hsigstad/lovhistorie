@@ -1,5 +1,20 @@
 # Done
 
+## 2026-10-16 (cont.) — Calibration: LOCAL content signal can't reach 90%-correct; proves GLOBAL today-constraint is necessary
+
+Tested whether a confidence threshold on the LOCAL content match (align.target_ledd) can hit HS's "90% sure"
+operating point. vphl, 3 held-out dates, unconditional-accept (no margin gate), 29 changed provisions:
+**0% correct (>=tau), 17% improved, 83% CLOBBERED a better provision** (e.g. §7-3 0.99->0.23, §9-2 0.95->0.2,
+§5-5a 1.0->0.31). With the strict margin gate the other extreme: ~0 coverage (abstains 59/66). So the local
+signal has NO threshold giving >=90% correct at useful coverage.
+- **KEY: every clobber is a MISPLACEMENT, not a fabrication** — the fallback only ever writes the verbatim
+  amendment new_text into a wrong ledd. Verbatim invariant held 100%. So we are already ~100% sure of no
+  fabrication; the problem is real statutory text in the wrong slot. HS's 90% tolerance doesn't bind on
+  fabrication at all — it binds on misplacement, which the local signal can't get near.
+- **Therefore the GLOBAL today-constraint is necessary, not optional:** it is the only filter strong enough to
+  reject these clobbers (clobbering §5-5a makes the chain diverge from today -> rejected). Spec for the
+  experiment: docs/notes/global_consistency_ledd.md. Scripts: scratchpad/ledd_calibration.py.
+
 ## 2026-10-16 (cont.) — Tested "allow confidence-gated ledd guesses" (HS proposal) — net-negative, leaky gate
 
 HS proposed relaxing flag-don't-fabricate: for the 89% of sub-ops whose new_text is VERBATIM from the act
