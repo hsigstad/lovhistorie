@@ -1,5 +1,36 @@
 # Done
 
+## 2026-10-16 — Large-law 2005-CD gold: segmenter bug FIXED, but NCC source is body-incomplete (hard data wall)
+
+Picked the parked "point-in-time ground truth" thread back up (prior session ended: convergence can't
+credit the applicator; need more point-in-time snapshots). Chose to exploit the 2005 Lovdata-CD oracle we
+already hold, starting with the two held-back large dev laws (kjøp 1988-05-13-27, aksje 1997-06-13-44).
+
+- **Found + fixed a real `extract_cd` segmenter bug.** The old `_chunks` split on EVERY `§` token
+  (1,843 in aksje, only ~293 real headings — the rest are cross-references), so ~2 of 12 chunks began
+  mid-provision on an apparatus line and the model silently dropped the run (one chunk returned 1
+  provision for 15 k chars). Replaced with **overlapping fixed windows (10 k / 50% overlap) + merge the
+  best-tracing copy per provision** (`source/llm/extract_cd.py`): a window that starts badly can no
+  longer drop a provision another window carried cleanly. Recovered aksje 215→261 extracted, closed the
+  flake-induced coverage holes (§3-4/§5-1 etc.).
+- **But `trace_μ` was masking a deeper, UNFIXABLE problem: the NCC/norkart 2005 CD is body-incomplete for
+  large laws.** Many provisions appear only as a TOC heading ("§3. Avtale og handelsbruk." — no body);
+  verified the body text ("Bestemmelsene i loven gjelder ikke…") has **0 occurrences anywhere** in the
+  kjøp block. NCC's training-chunk processing dropped it (a limitation the 2005-baseline note already
+  flagged). trace stays high because the title is faithful — so I added a **completeness guard**
+  (`ExtractReport.title_only` + `_is_title_only`): the trust signal is full-body completeness, NOT trace.
+  Per-law completeness: oreign 94%, aksje 86%, avtale 84%, **kjøp 60%** (39 title-only).
+- **Independent point-in-time numbers, and they INVERT the old "pit ≈ convergence" prediction for OCR
+  bases.** kjøp convergence-to-current 0.92 but pit@2005 only 0.48; aksje 0.82 vs 0.69. Mechanism:
+  the noisy OCR base is masked at "current" because post-2005 clean LTI amendments overwrote those
+  provisions, but pit@2005 rests on the raw base → **convergence OVERSTATES historical fidelity**
+  (exactly what a point-in-time oracle is for). kjøp's 0.48 is additionally depressed by the 40% missing
+  gold bodies, so its exact number isn't trustworthy; aksje's gap is largely real.
+- **Net:** the 2005-CD-via-NCC path is a clean oracle for SMALL laws (avtale/oreign, already trusted) but
+  hits a source-completeness wall for large laws. The clean fix for large laws + more dates is the native
+  structured discs (1995/2000/2005 — Route B), which are consolidated per-law, not NCC fragments.
+  `extract_cd` hardening committed; TRUSTED set unchanged (kjøp/aksje not promoted — see todo).
+
 ## 2026-10-12 — Ledd applicator BUILT end-to-end (applications.jsonl layer) + validated
 
 Built the LLM ledd-applicator as a git-tracked pointer layer (design: docs/notes/llm_ledd_applicator.md).

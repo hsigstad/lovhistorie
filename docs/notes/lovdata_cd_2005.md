@@ -79,3 +79,29 @@ pipeline's `target_localize` segmenter (heading-vs-cross-reference on noisy pros
 cleanly; then wire all 4 laws into `source/eval/status._point_in_time` as a public, on-disk point-in-time
 oracle (unlike Lovdata Pro, this is NLOD 2.0 / publishable). Output lives in `data/ground_truth/2005/`
 (gitignored like the rest of ground_truth; regenerate with `python -m source.scrape.build_gt_lovdata_cd`).
+
+---
+
+## 2026-10-16 — CORRECTION: the 2026-08-25 verdict was over-optimistic for LARGE laws (source is body-incomplete)
+
+The "per-law extraction is SOLID" claim held only for the small TRUSTED laws. Revisiting the two held-back
+large dev laws (kjøp/aksje) with an LLM clean-text extractor (`source/llm/extract_cd.py`, which supersedes
+the `parse_provs`/`target_localize` plan — same idea, better):
+
+- **A real segmenter bug was found and fixed**: `_chunks` split on every `§` token (mostly cross-refs), so
+  chunks began mid-provision and the model dropped runs. Fixed with overlapping windows (50% overlap) +
+  best-trace merge. Recovered aksje 215→261.
+- **But the binding limit is SOURCE INCOMPLETENESS, not segmentation.** The NCC/norkart 2005 CD carries many
+  large-law provisions as a **TOC heading only** — the body was dropped by NCC's training-chunk processing.
+  Verified: kjøp §3's body text has **0 occurrences** anywhere in the block. No extractor can recover it.
+  **Per-law full-body completeness: oreign 94%, aksje 86%, avtale 84%, kjøp 60%.** `trace_μ` does NOT detect
+  this (a TOC title is faithful text), so trust the new `ExtractReport.title_only` completeness signal, not trace.
+- **Independent pit numbers invert the old "pit ≈ convergence" claim for OCR bases**: kjøp conv 0.92 vs
+  pit@2005 0.48; aksje 0.82 vs 0.69 — later clean amendments mask the noisy base at "current", so
+  convergence OVERSTATES historical fidelity. (kjøp's 0.48 is partly the 40% missing gold bodies.)
+
+**Implication.** The 2005-CD-via-NCC path is a clean, publishable oracle for SMALL/complete laws; for large
+laws it is capped by missing source bodies. To get trustworthy large-law AND earlier-date point-in-time
+ground truth, the path is the **native structured discs (1995/2000/2005)** — consolidated per-law, complete —
+not the NCC fragments. Scale-up plan: run `extract_cd` across the ~248 CD laws with a completeness gate
+(promote laws above ~85% full-body; flag the rest), rather than trusting all of them.
