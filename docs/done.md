@@ -1,5 +1,28 @@
 # Done
 
+## 2026-10-16 (cont.) — Deliverable re-characterized against TODAY (not the 2005 oracle): 328 laws scoreable, 147 at >=0.90
+
+Henrik: "measure against today's laws not 2005; does Norway not have more than 154 laws?" Both right — the
+154 was the 2005-CD-oracle subset (pre-2005 laws only, the worst case), never the universe. Real numbers
+(scratchpad/convergence_today_corpus.py, scoreable_laws.json, convergence_today.json):
+- **Universe we hold:** 755 laws in the current NLOD dump; **5,511** laws have an amendment stream harvested;
+  **507 reconstructable** (base + ops); **328 reconstructable AND have current text to score against**.
+- **Convergence vs TODAY (char-sim of reconstruct(law, today) to the current NLOD text), 328 laws:** mean
+  **0.813**, median **0.884**. >=0.95: **86** | >=0.90: **147** | >=0.85: 191 | >=0.80: 218 | >=0.70: 264.
+  Clean-base (256): mean 0.841, median 0.915, 135 >=0.90. OCR-base (72): mean 0.714, median 0.777, 12 >=0.90.
+  The >=0.90 tier (147) is 135 clean + 12 OCR. Provision-weighted rate>=tau = 0.581 over 20,114 provisions.
+- **CRUCIAL framing — two different quality claims, do not collapse:**
+  - **Current-text accuracy** (vs today) = BROAD (328 laws, 147 >=0.90) and PUBLISHABLE (NLOD current dump is
+    public-domain). This is what most consumers need ("what does the law say now + its amendment history").
+  - **Historical point-in-time fidelity** (vs a PAST date) = the project's real value-add, but today-
+    convergence OVERSTATES it (the last amendment sets today's text directly; pit_coverage.md: kjøpsloven
+    conv 0.92 vs pit@2005 0.48). Validated only where we hold past gold: 79 laws @2005 (mean 0.53) + vphl's
+    5 HIST dates (mu 0.87). The gap between 0.813-today and 0.53-@2005 IS this overstatement, quantified.
+- **Consumer implication:** the consume.py catalog (reliable_laws keyed to 2005-fidelity, 79 laws, 16 at
+  >=0.7) UNDERSELLS ~4x. Rebase it on the 328-law today-convergence -> Eivind/Sungho get ~147 laws at >=0.90
+  current-text + ~264 at >=0.70, with the historical-fidelity caveat flagged per law where past gold exists.
+  PROPOSED, not yet built.
+
 ## 2026-10-16 (cont.) — GLOBAL today-constraint GENERALIZED to 37-law corpus + validated on PAST gold: CEILING confirmed (both gates fail the <10% bar)
 
 Henrik: "test on a 2nd law first." No second clean-base law has multiple Lovdata-Pro HIST dates (vphl was
