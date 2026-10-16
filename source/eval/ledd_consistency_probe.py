@@ -76,6 +76,15 @@ def score(resolver=None, dates=None):
     return out
 
 
+def _agg(d):
+    return d["_AGG"]
+
+
 if __name__ == "__main__":
-    print("OFF :", score(None))
-    print("LOCAL:", score(resolve_local))
+    from source.eval import ledd_global_fit as gfit
+    off = score(None)
+    print("OFF  :", _agg(off))
+    print("LOCAL:", _agg(score(resolve_local)), "  (measured net-negative: clobbers)")
+    for mode, delta in [("strict", 0.0), ("margin", 0.05)]:
+        r = gfit.make_global_resolver(LAW, DK, mode=mode, delta=delta)
+        print("GLOBAL[%s]:" % mode, _agg(score(r)), "  accepted_ops=%d" % len(r.accepted))

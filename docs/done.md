@@ -1,5 +1,40 @@
 # Done
 
+## 2026-10-16 (cont.) — GLOBAL today-constraint (pure-ledd) MEASURED on vphl: net-NEUTRAL, honest-null — today is structurally blind to the gap
+
+Built + measured the one untested ledd lever (spec: docs/notes/global_consistency_ledd.md): use today's text
+as a GLOBAL consistency constraint (forward-replay of ALL dated ops must reproduce today) to disambiguate
+WHERE flagged sub-provision ops place their verbatim new_text. New `source/eval/ledd_global_fit.py`
+(fit + answer-key-free resolver) wired into the probe; v1 scope = **pure-ledd** replace/insert/repeal
+(bokstav/nr/punktum sub-list + OCR-blob ops abstain). Key engineering: a sub-op only touches its OWN
+provision, so the fit replays just a provision's op sub-chain through the real `replay._apply_change_type`
+(byte-identical to full reconstruct, verified on all 5 provisions) — ~1000× faster, makes the slot search
+tractable (full reconstruct is ~3s; the search needs thousands of replays).
+
+- **Result: 0 ops accepted → GLOBAL == OFF exactly (0.8699), both strict and clearly-better-by-margin.**
+  vphl has only **5** provisions with in-scope flagged pure-ledd ops, and on EVERY one the best placement is
+  ≤ abstaining, so the mandatory clobber floor rejects all 5. Two patterns: (a) **clobber correctly caught**
+  — §6-3 0.925→0.334, §17-3 0.693→0.674 (the exact LOCAL-experiment clobbers, now rejected); (b) **honest-null**
+  — §4-3/§7-3/§5-4 off=1.0 and ALL placements (448/2/1) also =1.0: today is reached REGARDLESS of the pick.
+- **The clobber floor is the transferable win:** "never accept a placement scoring worse against today than
+  abstaining" converts LOCAL's net-NEGATIVE (0.8678, clobbers) into net-NEUTRAL (0.8699). It would have
+  rejected every LOCAL clobber.
+- **WHY today is blind (mechanism, spec-anticipated):** vphl repeatedly OVERWRITES provisions wholesale at
+  LATER dates, mooting the earlier hard sub-ops for today. §4-3 is a renumber carousel ending in a 2022
+  whole-§ rewrite (`Ny § 4-3 skal lyde:`) → today's §4-3 is independent of where the 2012–13 sub-ledd ops
+  landed (448 placements all hit today). §17-3's 2010–17 `annet ledd nr. X` ops are mooted by the 2018
+  `annet ledd skal lyde` full-ledd rewrite. Today does NOT depend on exactly the ops that make up the gap,
+  so the global-today constraint cannot disambiguate them — the pre-committed honest-negative outcome.
+- **Implication:** the pre-committed success (past-gold pit RISES at <10% misplacement) is NOT met on vphl
+  pure-ledd — the pit is flat (0 accepted). The ledd/sub-provision tail is a genuine ceiling *w.r.t. the
+  today-constraint*; resolving the PAST placements needs independent past evidence (earlier CD snapshots =
+  Route B), not today. Reconfirms the done.md standing conclusion via the strongest available filter.
+- **Scope caveat (untested, not null):** v1 measured pure-ledd only; the bulk of the 44% gap is nr/bokstav
+  sub-list ops, whose location search is a different build. The same overwrite-mooting mechanism is visible
+  on §17-3's sub-list ops, so extension is EXPECTED (not proven) to hit the same ceiling. Decision pending
+  (Henrik): extend the search to sub-list to prove it, or declare the today-constraint ceiling and move the
+  lever to coverage / Route-B past snapshots.
+
 ## 2026-10-16 (cont.) — Calibration: LOCAL content signal can't reach 90%-correct; proves GLOBAL today-constraint is necessary
 
 Tested whether a confidence threshold on the LOCAL content match (align.target_ledd) can hit HS's "90% sure"
