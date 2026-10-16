@@ -1,5 +1,18 @@
 # Done
 
+## 2026-10-16 (cont.) — "Is quality improvable before more segmentation?" — grounded: largely a wall on safe levers
+
+- **Pit gap is REAL, not a measurement artifact.** Re-scored the 79 reconstructable laws with heading-
+  prefix + whitespace + case normalization: fidelity moved only 0.577 -> 0.584 (median 0.548 -> 0.559).
+  So format normalization is NOT a lever; the low-scoring provisions are genuinely wrong, not cosmetic.
+  Don't re-chase a "strip apparatus" measurement fix on the 2005 pit.
+- **loss_breakdown (227 dev misses):** ledd/sub-provision engine 44% (the applicator — proven ~zero today
+  — was its tool; the rest is fabrication-risky), missing-amendment/coverage ~30% (= the segmentation/
+  harvest lever), OCR 12% (known low ceiling), renumber/move ~14%.
+- **Only bounded SAFE code lever left without more segmentation:** productionize the renumber/move matcher
+  (`source/parse/align.py` built but unwired into replay) — ~14% of misses, modest (~+3-4pp). Everything
+  else is either a ceiling (ledd tail, OCR) or needs more segmentation (coverage).
+
 ## 2026-10-16 (cont.) — Consumer access layer for the handoff (catalog + law_as_of + quickstart)
 
 Lowest-bang-for-buck handoff unblock: a legible front door so Eivind/Sungho consume the panel without
