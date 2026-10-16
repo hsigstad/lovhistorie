@@ -79,6 +79,8 @@
   .badge.good{background:var(--good-bg);color:var(--good)} .badge.good .b-dot{background:var(--good)}
   .badge.warn{background:var(--warn-bg);color:var(--warn)} .badge.warn .b-dot{background:var(--warn)}
   .badge.bad{background:var(--bad-bg);color:var(--bad)} .badge.bad .b-dot{background:var(--bad)}
+  .lawmeta{margin:7px 0 2px;font-size:.73rem;color:var(--muted);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .lawmeta .badge{font-size:.7rem;padding:3px 9px}
 
   .card{background:var(--surface);border:1px solid var(--hair);border-radius:14px;box-shadow:var(--shadow);margin:18px 0;padding:20px 22px 24px}
   .card-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;margin-bottom:18px}
@@ -193,6 +195,7 @@
     <aside class="side" aria-label="Statute and section picker">
       <div class="side-head">
         <select class="lawsel" id="lawSelect" aria-label="Choose a statute"></select>
+        <div class="lawmeta" id="lawMeta" aria-live="polite"></div>
         <input class="search" id="search" type="search" placeholder="Find a section — e.g. 7-15" aria-label="Find a section" />
       </div>
       <div class="side-scroll" id="picker"><div class="loading">Loading…</div></div>
@@ -262,14 +265,14 @@
       gazette instead — owned, and correct back to 1877.</p>
 
       <h3>How good is it, honestly</h3>
-      <p><b>72% of provisions on the 9-law development set reconstruct to today's official text</b> (convergence 72.3%, as of 2026-08-24) — but that headline is a single strict
-      bar, and "reconstructs or doesn't" hides how close the rest land. Across all 829 provisions, 618 (75%) reconstruct to within 90% character-identity and 509 to within 98%; most of the gap is near-misses (an OCR character, an editorial note), with the genuine failures a 92-provision tail below 50%. This site shows you
+      <p><b>Across the 328 statutes we can check against today's official text, the median law reconstructs to 89% of the current wording, and 152 match it to within 90%. Quality varies by law — the picker and the per-section fidelity badge show exactly where each one lands.</b> Across all 18,594 provisions in these 328 statutes, 13017 (70%) reconstruct to within 90% character-identity and 10873 to within 98%; most of the gap is near-misses (an OCR character, an editorial note), with the genuine failures a 3088-provision tail below 50%. A strict per-provision convergence of 72.3% is the internal gate on the 9-law development set (as of 2026-08-25). This site shows you
       exactly where each provision falls — and how far off — via the fidelity badge and the
-      reconstruction-vs-official comparison on every section. Reproducing a past date is scored against
-      held-out Lovdata Pro versions internally,
-      but that licensed text is never shown here — which is the whole reason the corpus is built from the
-      gazette.</p>
-      <figure class="distfig"><div class="distbar" role="img" aria-label="character-similarity distribution of 829 provisions"><span class="d-b1" style="width:31.85%" title="= 1.000: 264 (32%)"></span><span class="d-b2" style="width:29.55%" title="0.98–1.0: 245 (30%)"></span><span class="d-b3" style="width:7.00%" title="0.95–0.98: 58 (7%)"></span><span class="d-b4" style="width:6.15%" title="0.90–0.95: 51 (6%)"></span><span class="d-b5" style="width:7.00%" title="0.80–0.90: 58 (7%)"></span><span class="d-b6" style="width:7.36%" title="0.50–0.80: 61 (7%)"></span><span class="d-b7" style="width:11.10%" title="< 0.50: 92 (11%)"></span></div><figcaption class="distlegend"><span><i class="d-b1"></i>= 1.000 <b>264</b></span><span><i class="d-b2"></i>0.98–1.0 <b>245</b></span><span><i class="d-b3"></i>0.95–0.98 <b>58</b></span><span><i class="d-b4"></i>0.90–0.95 <b>51</b></span><span><i class="d-b5"></i>0.80–0.90 <b>58</b></span><span><i class="d-b6"></i>0.50–0.80 <b>61</b></span><span><i class="d-b7"></i>< 0.50 <b>92</b></span></figcaption></figure>
+      reconstruction-vs-official comparison on every section. Quality is strongest for clean-base and
+      post-2005 laws and weakest for the OCR-based older tail; the picker is sorted best-first so the
+      honest state across every law is visible at a glance. Reproducing a past date is scored against
+      held-out Lovdata Pro versions internally, but that licensed text is never shown here — which is the
+      whole reason the corpus is built from the gazette.</p>
+      <figure class="distfig"><div class="distbar" role="img" aria-label="character-similarity distribution of 18594 provisions"><span class="d-b1" style="width:38.92%" title="= 1.000: 7236 (39%)"></span><span class="d-b2" style="width:19.56%" title="0.98–1.0: 3637 (20%)"></span><span class="d-b3" style="width:5.89%" title="0.95–0.98: 1096 (6%)"></span><span class="d-b4" style="width:5.64%" title="0.90–0.95: 1048 (6%)"></span><span class="d-b5" style="width:5.91%" title="0.80–0.90: 1098 (6%)"></span><span class="d-b6" style="width:7.48%" title="0.50–0.80: 1391 (7%)"></span><span class="d-b7" style="width:16.61%" title="< 0.50: 3088 (17%)"></span></div><figcaption class="distlegend"><span><i class="d-b1"></i>= 1.000 <b>7236</b></span><span><i class="d-b2"></i>0.98–1.0 <b>3637</b></span><span><i class="d-b3"></i>0.95–0.98 <b>1096</b></span><span><i class="d-b4"></i>0.90–0.95 <b>1048</b></span><span><i class="d-b5"></i>0.80–0.90 <b>1098</b></span><span><i class="d-b6"></i>0.50–0.80 <b>1391</b></span><span><i class="d-b7"></i>< 0.50 <b>3088</b></span></figcaption></figure>
 
       <div class="doclinks">
         <a href="docs/goal.html">Goal</a>
@@ -282,7 +285,7 @@
   </section>
 
   <p class="foot">
-    870 provisions across 9 statutes, each rebuilt by <code>reconstruct(law, date)</code>
+    18,594 provisions across 328 statutes, each rebuilt by <code>reconstruct(law, date)</code>
     from the enactment plus every gazette amendment. Reconstructed statutory text and the official current
     text (NLOD) are public-domain; Lovdata's editorial <em>“Endret ved lover …”</em> annotations are set
     aside for the fidelity comparison. Generated from the <code>lovhistorie</code> pipeline.
@@ -336,7 +339,7 @@
     return["bad",Math.round(f*100)+"% — reconstruction differs"];}
 
   const el=id=>document.getElementById(id);
-  const E={};["stats","lawSelect","search","picker","provId","provName","fidBadge","rail","railFill",
+  const E={};["stats","lawSelect","lawMeta","search","picker","provId","provName","fidBadge","rail","railFill",
     "handle","scrub","asofDate","asofAct","redlineBtn","legend","legendVs","statute","fidBtn","fidSub",
     "fidDiff","srcBtn","srcBox","minYear","maxYear"].forEach(k=>E[k]=el(k));
   const MND=["","januar","februar","mars","april","mai","juni","juli","august","september","oktober","november","desember"];
@@ -430,6 +433,11 @@
     E.picker.innerHTML='<div class="loading">Loading…</div>';
     const data=await (await fetch("laws/"+dk+".json")).json();
     provs=data.provisions;curLaw=data;E.search.value="";
+    const ir=INDEX.find(r=>r.datokode===dk)||{};
+    const lc=data.fidelity>=0.90?"good":data.fidelity>=0.70?"warn":"bad";
+    E.lawMeta.innerHTML='<span class="badge '+lc+'"><span class="b-dot"></span>'+Math.round((data.fidelity||0)*100)
+      +'% to today’s text</span><span>'+provs.length+' sections · enacted '+data.enacted
+      +(ir.ocr?' · OCR base':'')+'</span>';
     // per-law timeline: start ~200 days before enactment, end at the corpus horizon
     RMIN=Date.parse(data.enacted)-200*864e5;
     E.minYear.textContent=new Date(RMIN).getUTCFullYear();
@@ -440,7 +448,8 @@
   function buildLawSelect(){
     E.lawSelect.innerHTML="";
     INDEX.forEach(r=>{const o=document.createElement("option");o.value=r.datokode;
-      o.textContent=r.law.charAt(0).toUpperCase()+r.law.slice(1)+"  ·  "+r.n_provisions+" §";E.lawSelect.appendChild(o);});
+      o.textContent=r.law.charAt(0).toUpperCase()+r.law.slice(1)+"  ·  "+r.n_provisions+" §  ·  "
+        +Math.round((r.fidelity||0)*100)+"% to today";E.lawSelect.appendChild(o);});
     E.lawSelect.addEventListener("change",()=>loadLaw(E.lawSelect.value));
   }
   async function boot(){
