@@ -1,5 +1,23 @@
 # Done
 
+## 2026-10-16 (cont.) — DECISIVE: applicator on/off vs the independent 2005 gold — net ~zero (stop signal)
+
+Used the new corpus-wide 2005 gold to run the test the prior session couldn't (reconstruct WITH vs WITHOUT
+the ledd applicator, `ledd_fallback=ledd_apply.make_fallback(...)` vs a no-op, scored against the 2005
+oracle instead of current text). Over the 56 trusted laws (~49 scoreable):
+- Applicator changed >=1 provision in only **6 laws**. Aggregate pit mean **OFF 0.4232 -> ON 0.4219
+  (delta -0.0013)**; rate>=0.9 0.245 -> 0.244. Deltas small + two-signed (+0.013/+0.004 vs -0.015/-0.007/
+  -0.005) = churn, not improvement. The one high-footprint scoreable law (1981-05-22-25, 352 application
+  rows, 58 provisions changed) went **-0.005**.
+- **So the flat current-text result REPRODUCES against an independent oracle** — the applicator does not
+  improve the point-in-time deliverable. Legit stop signal: do not invest further in the applicator absent
+  a new reason.
+- **CRITICAL caveat -> Route B:** the applicator's two biggest laws, folketrygdloven (1,015 application
+  rows, 31% complete) and helsepersonelloven (94 rows, 26%), are NCC-body-incomplete and NOT in the
+  scoreable set. The applicator works hardest exactly where the 2005-NCC oracle is blind. The decisive
+  test on those needs COMPLETE gold = the native earlier CD discs (Route B). Script:
+  scratchpad/applicator_pit.py (reproduce via pipeline.reconstruct on/off).
+
 ## 2026-10-16 (cont.) — Scaled the 2005-CD oracle corpus-wide: 185 laws extracted, 56 pass the completeness gate
 
 Built `build_gt_lovdata_cd.build_corpus()` (+ `resolve_blocks`/`_current_index`) and ran it over the whole
