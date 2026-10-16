@@ -1,5 +1,21 @@
 # Done
 
+## 2026-10-16 (cont.) — Made the deliverable LEGIBLE: corpus-wide pit report (handoff prep for Eivind/Sungho)
+
+Turned today's 2005 oracle into a readable deliverable-quality picture (no new data). New
+`source/eval/pit_corpus.py` (`python -m source.eval.pit_corpus` -> `build/eval/pit_2005_corpus.csv`)
+scores reconstruct@2005 vs the gold over FULL-BODY gold provisions only (fair to the reconstruction),
+per law, splitting RECONSTRUCTABLE laws from those with no base/stream. Summary: `docs/reference/pit_coverage.md`.
+
+- **185 laws of 2005 gold; 142 body-trustworthy.** Of 154 with >=5 full-body gold provisions, the pipeline
+  **reconstructs only 79** -> reconstruction coverage, not oracle coverage, is now the binding constraint.
+- **Fidelity over the 79: mean 0.53, median 0.56, 0 laws >=0.90.** Independent confirmation that dev-set
+  convergence (72.3%) OVERSTATES the point-in-time deliverable.
+- Fixed the completeness-metric confound: the trust gate is now INTRINSIC body-completeness (real-body
+  fraction of extracted provisions), with coverage-vs-current reported separately. This also fixed the
+  avtaleloven index REGRESSION (now 0.95 -> trusted); trusted set 56 -> 142. kjøp stays flagged (0.75).
+- Scripts/outputs committed: pit_corpus.py, build_gt_lovdata_cd.py (intrinsic gate), pit_coverage.md.
+
 ## 2026-10-16 (cont.) — DECISIVE: applicator on/off vs the independent 2005 gold — net ~zero (stop signal)
 
 Used the new corpus-wide 2005 gold to run the test the prior session couldn't (reconstruct WITH vs WITHOUT

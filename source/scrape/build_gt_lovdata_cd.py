@@ -212,18 +212,19 @@ def build_corpus(min_completeness: float = 0.85, limit: int | None = None):
     manifest, index_rows = [], []
     for n, (dk, blk) in enumerate(items, 1):
         provs, rep = extract_cd.extract_law(dk, blk)
+        # TRUST gate = INTRINSIC body-completeness: of the provisions the CD gold gives us, what fraction
+        # carry a real body (not a title-only TOC heading). This is the honest signal for "can we score
+        # against this gold". Do NOT gate on gold/current ratio: that conflates NCC body-drops with
+        # provisions ADDED after 2005 (a law grown since 2005 would look incomplete though its 2005 gold is
+        # fine). COVERAGE vs current is reported separately for transparency. See docs/notes/lovdata_cd_2005.md.
+        completeness = 1 - len(rep.title_only) / (rep.n or 1)
         try:
             cur = gate.current_provisions(dk)
+            order = [p for p in cur if not metrics.is_convention_annex(p)] if cur else []
+            coverage = round(len([p for p in order if p in provs]) / len(order), 3) if order else 0.0
         except Exception:
-            cur = None
-        if cur:
-            order = [p for p in cur if not metrics.is_convention_annex(p)]
-            full_body = [p for p in order if p in provs and not extract_cd._is_title_only(provs[p])]
-            completeness = len(full_body) / len(order) if order else 0.0
-            denom = len(order)
-        else:                                            # no current text: fall back to intrinsic
-            completeness = 1 - len(rep.title_only) / (rep.n or 1)
-            denom = rep.n
+            coverage = 0.0
+        denom = rep.n
         trusted = completeness >= min_completeness and rep.n >= 5
         json.dump(provs, open(OUT / f"{dk}.json", "w"), ensure_ascii=False)
         if trusted:
@@ -233,13 +234,14 @@ def build_corpus(min_completeness: float = 0.85, limit: int | None = None):
                                "filename": "2005-12-31.json", "source": "lovdata_cd_2005",
                                "era": dk[:3] + "0s", "size_class": "", "amendment_intensity": ""})
         manifest.append({"datokode": dk, "n": rep.n, "denom": denom,
-                         "completeness": round(completeness, 3), "title_only": len(rep.title_only),
+                         "completeness": round(completeness, 3), "coverage": coverage,
+                         "title_only": len(rep.title_only),
                          "low_trace": len(rep.low_trace), "trusted": int(trusted)})
-        print(f"[{n}/{len(items)}] {dk}: n={rep.n} complete={completeness:.0%} "
+        print(f"[{n}/{len(items)}] {dk}: n={rep.n} body_complete={completeness:.0%} coverage={coverage:.0%} "
               f"title_only={len(rep.title_only)} low_trace={len(rep.low_trace)} "
               f"{'TRUSTED' if trusted else 'flag'}", flush=True)
     with open(OUT / "corpus_manifest.csv", "w", encoding="utf-8", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=["datokode", "n", "denom", "completeness",
+        w = csv.DictWriter(fh, fieldnames=["datokode", "n", "denom", "completeness", "coverage",
                                            "title_only", "low_trace", "trusted"])
         w.writeheader(); w.writerows(manifest)
     if index_rows:
