@@ -1,5 +1,31 @@
 # Done
 
+## 2026-10-16 (cont.) — Scaled the 2005-CD oracle corpus-wide: 185 laws extracted, 56 pass the completeness gate
+
+Built `build_gt_lovdata_cd.build_corpus()` (+ `resolve_blocks`/`_current_index`) and ran it over the whole
+CD 'Norges Lover' selection. `resolve_blocks` maps CD header blocks -> current-dump datokodes by exact
+korttittel ([()/[]]) + unique title (disambiguates aksjeloven vs allmennaksjeloven); 185 of ~453 raw header
+blocks resolve to scoreable current laws (the rest are repealed/absent from the current dump). extract_cd
+(hardened) ran on all 185 (~$25 gpt-4.1, llmkit-cached/resumable).
+
+**Result: 185 laws / 7,820 provisions extracted; 56 clear the >=85%-full-body gate -> 2,829 provisions of
+trustworthy 2005 gold wired into index.csv (was 2 laws).** Completeness median 73% / mean 68%; 41 laws <50%.
+This QUANTIFIES the NCC body-incompleteness at corpus scale: only ~30% of consolidated laws survive intact;
+the NCC training-chunk processing dropped bodies broadly, not just for a few large laws. Manifest:
+`data/ground_truth/2005/corpus_manifest.csv` (per-law n/completeness/title_only/low_trace/trusted).
+
+**Two known caveats (follow-ups):**
+- The completeness metric (full gold bodies / CURRENT statutory count) CONFLATES real NCC body-drops with
+  legitimate post-2005 provision ADDITIONS (a law grown since 2005 scores "incomplete" for provisions that
+  correctly didn't exist in 2005). So the 56/185 is a LOWER bound on usable laws; refine by dating provisions
+  or using an intrinsic (1 - title_only/n) signal cross-checked against entirely-dropped ids.
+- REGRESSION: `_update_index` replaces all lovdata_cd_2005 rows, and avtaleloven (1918-05-31-4) came in at
+  84% (just under the 0.85 bar, partly the confound above) so it dropped OUT of the index though it was a
+  validated TRUSTED dev law (pit 0.79). Its gold is still on disk. Restore by lowering the bar to ~0.80 or
+  whitelisting the validated dev small laws. oreign (94%), aksje (86%) are in; kjøp (60%) correctly flagged.
+- Scoring still runs only over `gate.DEV_LAWS`; the 56-law gold is on disk + indexed but not yet scored
+  corpus-wide (expand DEV_LAWS or the status scorer to use the full trusted set).
+
 ## 2026-10-16 — Large-law 2005-CD gold: segmenter bug FIXED, but NCC source is body-incomplete (hard data wall)
 
 Picked the parked "point-in-time ground truth" thread back up (prior session ended: convergence can't
