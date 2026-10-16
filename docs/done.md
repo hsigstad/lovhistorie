@@ -1,5 +1,26 @@
 # Done
 
+## 2026-10-16 (cont.) — Tested "allow confidence-gated ledd guesses" (HS proposal) — net-negative, leaky gate
+
+HS proposed relaxing flag-don't-fabricate: for the 89% of sub-ops whose new_text is VERBATIM from the act
+(REPLACE 70% / INSERT-ledd 10% / REPEAL 9%; only 7% INSERT-punktum is true fabrication risk), a "guess" is
+a splice-LOCATION choice, not text invention — and "not applying is also an assembly error". Correct framing.
+Tested directly: a content-gated splice fallback (align.target_ledd margin gate + idempotency) wired as the
+replay ledd_fallback, on vphl (clean base, 5 held-out Lovdata-Pro dates — the ideal testbed).
+- **Net pit: OFF 0.8699 -> ON 0.8678 (slightly NEGATIVE).** At 2021 (66 flagged ops): gate abstained on 59
+  (ambiguous), spliced 6; net 1 provision changed and it was a LOSS — §5-5a 1.0 -> 0.31, a "confident"
+  margin match CLOBBERED an already-correct provision.
+- **Lessons:** (1) "only guess when obvious" abstains on ~89% of the gap — the residual is genuinely
+  ambiguous-location (amendment new_text doesn't map onto the drifted/restructured provision), not
+  over-strictness. (2) A similarity-margin confidence signal is LEAKY: it yields confident-wrong splices that
+  overwrite correct text (the exact failure flag-don't-fabricate guards). (3) Deep reason: safely applying a
+  hard op needs an independent past-state VERIFIER, which is what we lack — so the strict rule was rational,
+  not dogma. Scripts: scratchpad/ledd_experiment{,2}.py.
+- **Only genuinely-untested lever left:** boundary recovery on OCR bases from the amendment "skal lyde"
+  bodies (date-correct, public-domain) — but given the leaky gate, it must be paired with end-state
+  verification, not a margin. NOT today's current text (structure drifts -> wrong past structure + biases to
+  present + contaminates eval).
+
 ## 2026-10-16 (cont.) — "Is quality improvable before more segmentation?" — grounded: largely a wall on safe levers
 
 - **Pit gap is REAL, not a measurement artifact.** Re-scored the 79 reconstructable laws with heading-
