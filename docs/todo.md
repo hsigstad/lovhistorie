@@ -3,9 +3,14 @@
 - **FRIDAY SEGMENTATION — 2026-10-17 session (budget-capped):** corpus 318 -> 384 issues (+66),
   all gated (0 misses) + pushed. Ran Tier-1 DENSEST-FIRST and finished the entire >=23-`skal lyde`
   band; stopped at a natural density cliff when the weekly cap hit. REMAINING Tier-1: 167 issues (all
-  <=22 markers, 1,749 markers left) + 91 Tier-2 giants. RESUME: `python3 scratchpad/seg_prep.py <N>`
-  reads docs/notes/t1_order (densest-first minus segmented) -> Workflow(seg_workflow.js) -> seg_fold.py
-  -> gated commit. Harness: source/scrape/fold_append.py; one subagent per unit (segment_prompt.SCHEMA).
+  <=22 markers, 1,749 markers left) + 91 Tier-2 giants. RESUME (per friday_segmentation_worklist.md):
+  rank docs/notes/friday_issue_priority.json by skal_lyde DESC minus iids already in data/segments.jsonl;
+  for the next N: `python -m source.scrape.fold_append prepare --iids <csv>` -> a Workflow runs one
+  subagent per unit with segment_prompt.SCHEMA (agent reads the job's .txt, returns {segments}) ->
+  collect results -> `python -m source.scrape.fold_append fold --results r.json` -> pre-commit hook runs
+  both --diff gates -> commit data/segments.jsonl + data/segments_meta.json. Batches of ~2-12; verify
+  fold reports 0 misses before committing. (Session-local orchestration helpers were ephemeral; the
+  tracked tooling above is all that's needed.)
 
 ## Reconstruction-quality follow-ups (2026-10-05 — see done.md attribution)
 
