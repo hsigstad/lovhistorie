@@ -1,5 +1,12 @@
 # Todo
 
+- **FRIDAY SEGMENTATION — 2026-10-17 session (budget-capped):** corpus 318 -> 384 issues (+66),
+  all gated (0 misses) + pushed. Ran Tier-1 DENSEST-FIRST and finished the entire >=23-`skal lyde`
+  band; stopped at a natural density cliff when the weekly cap hit. REMAINING Tier-1: 167 issues (all
+  <=22 markers, 1,749 markers left) + 91 Tier-2 giants. RESUME: `python3 scratchpad/seg_prep.py <N>`
+  reads docs/notes/t1_order (densest-first minus segmented) -> Workflow(seg_workflow.js) -> seg_fold.py
+  -> gated commit. Harness: source/scrape/fold_append.py; one subagent per unit (segment_prompt.SCHEMA).
+
 ## Reconstruction-quality follow-ups (2026-10-05 — see done.md attribution)
 
 Attribution on the 90 base-reconstructable in-force laws (4,352 provisions): 35% match · ~19% assembly
