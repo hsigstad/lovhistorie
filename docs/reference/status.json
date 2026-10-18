@@ -8,8 +8,8 @@
       "dates": [
         {
           "date": "2005-12-31",
-          "rate": 0.667,
-          "mean": 0.826
+          "rate": 0.644,
+          "mean": 0.804
         }
       ]
     },
@@ -22,7 +22,20 @@
         {
           "date": "2005-12-31",
           "rate": 0.515,
-          "mean": 0.818
+          "mean": 0.805
+        }
+      ]
+    },
+    {
+      "datokode": "1986-06-20-35",
+      "law": "mesterbrevloven",
+      "tau": 0.9,
+      "n_provisions": 11,
+      "dates": [
+        {
+          "date": "2005-12-31",
+          "rate": 0.091,
+          "mean": 0.293
         }
       ]
     },
@@ -43,9 +56,14 @@
           "mean": 0.848
         },
         {
+          "date": "2005-12-31",
+          "rate": 0.328,
+          "mean": 0.691
+        },
+        {
           "date": "2024-01-01",
-          "rate": 0.642,
-          "mean": 0.823
+          "rate": 0.645,
+          "mean": 0.824
         }
       ]
     },
@@ -67,17 +85,17 @@
         },
         {
           "date": "2014-01-01",
-          "rate": 0.863,
-          "mean": 0.976
+          "rate": 0.86,
+          "mean": 0.975
         },
         {
           "date": "2018-07-20",
-          "rate": 0.407,
+          "rate": 0.41,
           "mean": 0.534
         },
         {
           "date": "2021-10-04",
-          "rate": 0.707,
+          "rate": 0.71,
           "mean": 0.844
         }
       ]
@@ -102,22 +120,22 @@
     }
   ],
   "point_in_time_summary": {
-    "n_versions": 12,
-    "rate_mean": 0.7522,
-    "similarity_mean": 0.8698
+    "n_versions": 14,
+    "rate_mean": 0.6735,
+    "similarity_mean": 0.8133
   },
-  "as_of": "2026-08-25",
-  "convergence": 0.7226,
-  "convergence_strict": 0.614,
-  "matched": 599,
-  "matched_strict": 509,
+  "as_of": "2026-10-18",
+  "convergence": 0.7262,
+  "convergence_strict": 0.62,
+  "matched": 602,
+  "matched_strict": 514,
   "distribution": {
     "n": 829,
     "bands": [
       {
         "label": "exact (=1.000)",
         "lo": 1.0,
-        "count": 264
+        "count": 269
       },
       {
         "label": "0.98–<1.00",
@@ -132,33 +150,33 @@
       {
         "label": "0.90–<0.95",
         "lo": 0.9,
-        "count": 51
+        "count": 50
       },
       {
         "label": "0.80–<0.90",
         "lo": 0.8,
-        "count": 58
+        "count": 56
       },
       {
         "label": "0.50–<0.80",
         "lo": 0.5,
-        "count": 61
+        "count": 60
       },
       {
         "label": "<0.50",
         "lo": 0.0,
-        "count": 92
+        "count": 91
       }
     ],
     "cum": {
-      "0.98": 509,
-      "0.95": 567,
-      "0.90": 618,
-      "0.80": 676,
-      "0.50": 737
+      "0.98": 514,
+      "0.95": 572,
+      "0.90": 622,
+      "0.80": 678,
+      "0.50": 738
     },
-    "median": 0.9944,
-    "mean": 0.8675
+    "median": 0.9947,
+    "mean": 0.8695
   },
   "total": 829,
   "annex_out_of_scope": 138,
@@ -202,7 +220,7 @@
     {
       "datokode": "1982-12-17-86",
       "law": "rettsgebyrloven",
-      "matched": 16,
+      "matched": 17,
       "total": 34,
       "tau": 0.9,
       "annex": 0
@@ -218,7 +236,7 @@
     {
       "datokode": "1988-05-13-27",
       "law": "kjøpsloven",
-      "matched": 70,
+      "matched": 72,
       "total": 87,
       "tau": 0.9,
       "annex": 92
@@ -226,7 +244,7 @@
     {
       "datokode": "1997-06-13-44",
       "law": "aksjeloven",
-      "matched": 189,
+      "matched": 190,
       "total": 291,
       "tau": 0.9,
       "annex": 0
@@ -234,7 +252,7 @@
     {
       "datokode": "2007-06-29-75",
       "law": "verdipapirhandelloven",
-      "matched": 213,
+      "matched": 212,
       "total": 268,
       "tau": 0.98,
       "annex": 0
