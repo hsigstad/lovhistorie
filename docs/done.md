@@ -1,5 +1,27 @@
 # Done
 
+## 2026-10-19 — Eivind benchmark + FIX: law_as_of fails loudly on missing base (was silent-partial)
+
+Eivind Hammersmark (UiO) independently benchmarked lovhistorie (commit 090431d) against official Lovdata
+HIST versions for 32 labour laws, every 1 Jan 1990-2026, section-by-section (difflib ratio, autojunk off).
+This is the dated, external validation set we lacked.
+- **BUG he found + FIXED here:** for a law with NO enactment base (post-2001 laws absent from a clone —
+  only the 9 dev bases are tracked; the other ~433 under data/enactment/ are built locally), `law_as_of`
+  did NOT return {} — it silently returned only the whole-replaced sections (arbeidstvisteloven 5 of 65),
+  no warning. Fixed: `source/consume.py` `law_as_of` now RAISES LookupError when `has_base()` is false,
+  with the per-law build command (`python -m source.scrape.build_enactment <dk>`; post-2001 via
+  build_post2001 from lti.tar.gz). Added `consume.has_base()`. (Tested: based law OK, no-base raises.)
+  Open decision (Tue 13:00 meeting): ALSO ship the 442 bases (+20M, regenerable) vs keep build-after-clone.
+  Fail-loud makes build-after-clone safe, so shipping is optional convenience.
+- **Benchmark (independent confirmation of our findings):** across 349 law-years, 49% of sections >=0.98,
+  59% >=0.90. Few-amendment laws stay ~0.97-0.99; heavily-amended decline with unapplied-amendment count
+  (folketrygdloven 649 flags by 2026 -> 0.61; sjomannsloven 1975 -> 0.23). At 0.99 residual is OCR noise.
+  Matches the convergence/pit story exactly (coverage is the lever).
+- **OFFER (valuable, licence-safe):** they hold Lovdata HIST for ~30 labour laws 1990-2026; licence bars
+  passing texts, but they can rerun + send PER-SECTION SCORES anytime (federated validation without
+  encumbering our corpus); script + output ready. Eivind also offered the HIST texts (Henrik has Lovdata
+  Pro). Their pre-2001 rebuilds (arbeidsmiljøloven 1977, ferieloven) could cross-check ours.
+
 ## 2026-10-16 (cont.) — Consumer catalog rebased on today-convergence + public browser expanded to ALL laws
 
 Acted on the re-characterization: the consumer front door and the public site now show the honest state

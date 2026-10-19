@@ -58,16 +58,31 @@ def _norm(datokode: str) -> str:
     return dk if dk.startswith("lov/") else "lov/" + dk
 
 
+def has_base(datokode: str) -> bool:
+    """True if the law has an enactment base (data/enactment/<dk>.json or the segments corpus).
+    Without a base, reconstruction would silently return only whole-replaced sections."""
+    from source.parse import pipeline
+    return bool(pipeline.enactment_base(_norm(datokode)))
+
+
 def law_as_of(datokode: str, date: str | None = None) -> dict:
     """{paragraf_id: text} for one law as of `date` (YYYY-MM-DD), or latest if date is None.
 
-    Thin wrapper over source.parse.pipeline.reconstruct (drops the flags tuple). Returns {} if the
-    pipeline has no base/stream for the law. Check `catalog()` for which laws are reliable."""
+    Thin wrapper over source.parse.pipeline.reconstruct (drops the flags tuple).
+
+    FAILS LOUDLY when the law has no enactment base: without one, reconstruction does NOT return {} —
+    it silently returns only the sections that amending acts replaced WHOLE (e.g. 5 of 65), with no
+    other signal (bug found by Eivind Hammersmark 2026-10-19). A clone ships only the dev-set bases;
+    build the rest offline (`python -m source.scrape.build_enactment <datokode>`, post-2001 bases come
+    from lti.tar.gz via build_post2001). Use `has_base()` / `catalog()` to check availability first."""
+    law = _norm(datokode)
+    if not has_base(datokode):
+        raise LookupError(
+            f"{law}: no enactment base — reconstruction would silently be PARTIAL (only whole-replaced "
+            f"sections). Build it with `python -m source.scrape.build_enactment {law.split('/')[-1]}` "
+            f"(post-2001 bases come from lti.tar.gz), or pick a law listed in docs/reference/laws_catalog.csv.")
     from source.parse import pipeline
-    try:
-        provs, _ = pipeline.reconstruct(_norm(datokode), date)
-    except Exception:
-        return {}
+    provs, _ = pipeline.reconstruct(law, date)
     return provs
 
 
