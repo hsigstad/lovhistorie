@@ -105,3 +105,18 @@ laws it is capped by missing source bodies. To get trustworthy large-law AND ear
 ground truth, the path is the **native structured discs (1995/2000/2005)** — consolidated per-law, complete —
 not the NCC fragments. Scale-up plan: run `extract_cd` across the ~248 CD laws with a completeness gate
 (promote laws above ~85% full-body; flag the rest), rather than trusting all of them.
+
+---
+
+## 2026-10-19 — NB closed the CD-extract door; route to Lovdata (parked, not blocking)
+
+Henrik's escalated request (named Wetjen + de la Rosa, cc ai-lab) got a reply from Wilfred Østgulen
+(NB IT-director): NB will NOT provide a pre-split 2005 extract or the earlier (~1995/2000) CD editions.
+For Lovdata CD/DVD content, **contact Lovdata (the foundation) directly**. He pointed to
+`github.com/NationalLibraryOfNorway/lovdata-public-conversion-script` ("the only thing we use in training
+now") — but that is Lovdata's **public API / current consolidated text + amendment pointers (NLOD 2.0)**,
+NOT historical point-in-time versions, so it does not fill the NCC-2005 gaps and is the same current-text
+category we already have via NLOD (and already judged forward-only, decisions.md item 3). **Route B (the
+CDs) now routes to Lovdata, and its priority has dropped:** point-in-time GROUND TRUTH is now covered by
+Lovdata Pro (Henrik) + Eivind's HIST texts (30 labour laws, eval-only), and the publishable corpus comes
+from gazette segmentation. Parked as an option (≥15-yr CD content is out of DB protection), not blocking.
