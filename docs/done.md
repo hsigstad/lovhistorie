@@ -1,5 +1,21 @@
 # Done
 
+## 2026-10-20 — Wired in Eivind's Lovdata-HIST labour-law gold (independent dated validation; reproduces his benchmark)
+
+Eivind shared the official Lovdata HIST consolidated text of 31 labour laws at every 1 Jan 1990-2026 (613
+`exact` snapshots) via bi-dropbox-ro:Lovdata_HIST_labour_laws. Pulled to data/ground_truth/_eivind_hist/
+(gitignored — Lovdata-Pro LICENSED, do-not-redistribute; kept local, never committed; NOT added to the
+tracked index.csv). New tracked scorer `source/eval/hist_labour.py` reads the local gold, reconstructs each
+law at each exact date, scores section-by-section; emits nothing if the gold is absent (like the other eval
+entrypoints). Code tracked, texts local.
+- **16 of 31 laws reconstructable here** (the rest need bases built — post-2001 from lti / pre-2001 NB gaps).
+- **Our scores reproduce Eivind's**: 317 law-years / 27,084 sections -> 46.0% >=0.98, 58.3% >=0.90 vs his
+  49% / 59%. Two different methods (his difflib, our char-sim) agree. Per-law pattern matches: modern laws
+  high (arbeidstvisteloven 2012 0.978/91%; 2017-18 laws 0.97+), heavily-amended/older decline (statens
+  pensjonskasse 1949 0.42, folketrygd 1997 0.65). build/eval/hist_labour_scores.csv (per law-year).
+- This is the dated point-in-time validation we lacked, now permanent (re-run as the corpus improves).
+
+
 ## 2026-10-19 — Eivind benchmark + FIX: law_as_of fails loudly on missing base (was silent-partial)
 
 Eivind Hammersmark (UiO) independently benchmarked lovhistorie (commit 090431d) against official Lovdata
