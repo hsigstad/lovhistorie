@@ -1,5 +1,28 @@
 # Done
 
+## 2026-10-23 — Friday segmentation: +130 issues (384 -> 514), Tier-1 >=6-`skal lyde` band essentially done
+
+Continued the coverage-gap harvest (`docs/notes/friday_segmentation_worklist.md`). Seven gated,
+pure-addition batches, densest-first by `skal_lyde` (22 down to 6); ~20M subagent tokens. Each batch:
+`prep_batch.py N` -> `segment_workflow.js` (one Claude subagent per issue/chunk unit, each Writes its
+`{segments}` JSON) -> `assemble_results.py` -> `fold_append fold` -> commit (pre-commit hook runs both
+`--diff` gates). All 7 committed + pushed; every batch PASSED `classification_qa` + `segments_quality`
+`--diff` (no structural regression; new `target-*` queue entries only, gated on common issues per
+decisions.md 2026-10-05).
+
+- **Corpus 384 -> 514 distinct issues** (+130). Rows 163,655 -> 191,622. Roughly +6,400 provisions and
+  +3,440 amend_ops added across the batches. Commits: `3124b28` (b1, +12), `445ec55` (b2, +18),
+  `af2336d` (b3, +20), `ff093a1` (b4, +20), `0ab9d77` (b5, +20), `d004341` (b6, +20), `18ca0fb` (b7, +20).
+- **Anchor misses rare:** 0-3 per 20-issue batch (<1.5%), all within-issue; the fold's normalized
+  locator drops only the unfound anchor and keeps the partition gap-free. Both one-shot and chunked
+  (80k chunks) paths exercised, incl. a 537k-char 8-chunk issue (1969df1b).
+- **Loop now fully scripted + reusable** under `scratchpad/` (prep_batch.py / segment_workflow.js /
+  assemble_results.py) — the orchestration half that was ephemeral before. The tracked half
+  (`source/scrape/fold_append.py`, `fold_segmentation.py`) is unchanged.
+- **Remaining (resume pointer in todo.md):** ~37 Tier-1 at skal_lyde 5-6 (a batch-8 of 20 was launched
+  but API-overload stalled it at session end — just re-run the loop), then 239 Tier-3 (1-4 markers),
+  then the 91 Tier-2 giants (~8,889 markers — the largest remaining coverage lever, needs the chunker).
+
 ## 2026-10-20 — Wired in Eivind's Lovdata-HIST labour-law gold (independent dated validation; reproduces his benchmark)
 
 Eivind shared the official Lovdata HIST consolidated text of 31 labour laws at every 1 Jan 1990-2026 (613
