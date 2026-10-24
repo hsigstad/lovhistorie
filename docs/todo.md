@@ -1,7 +1,7 @@
 # Todo
 
 - **FRIDAY SEGMENTATION — 2026-10-23/24 session:** corpus 384 -> 636 issues (+252) across 7 sequential
-  batches (384->514) + a 5-concurrent-workflow parallel burn (514->605); ~30M+ subagent tokens.
+  batches (384->514) + a 5-concurrent-workflow parallel burn (514->636); ~30M+ subagent tokens.
   Finished the whole Tier-1 band (skal_lyde 22 down to 5) and a big chunk of Tier-3 (down to skal_lyde
   2). REMAINING: the un-finished units of slices seg_p4/p5/p6 (API-throttle tail at session end; low-
   value Tier-3 skal_lyde 2-3), the rest of Tier-3 (skal_lyde 1), and the 91 Tier-2 giants (>600k, need
