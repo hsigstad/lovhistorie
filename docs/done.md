@@ -1,5 +1,28 @@
 # Done
 
+## 2026-10-24 — Friday segmentation (cont.): parallel-burn to 605 issues (+91 past the 7-batch run)
+
+Extended the 2026-10-23 run into the weekly-limit reset window. Finished the Tier-1 skal_lyde 5-6
+tail and pushed well into Tier-3 (skal_lyde 4-2). Introduced a **5-concurrent-workflow burn mode**:
+`prep_parallel.py <slice> <K> <exclude_csv> [start_k]` carves the ranked remainder into K
+non-overlapping slices (each its own `seg_pN/` dir), then K `segment_workflow.js` runs fire at once;
+each subagent Writes its `{segments}` to `seg_pN/out/` so completed work is **durable on disk** and
+`assemble_results.py <dir>` only emits issues whose every chunk-unit is present (partial chunked
+issues deferred, never half-folded). Post-reset the Anthropic API was heavily throttled, so completion
+slowed to a trickle — but the crash-safe design meant the limit never risked finished work.
+
+- **Corpus 514 -> 605 distinct issues** (+91 this phase; +221 over the whole Fri/Sat session from 384).
+  Rows ~192k -> ~201k+. Commits: `3124b28`..`18ca0fb` (7 sequential batches, 384->514), then parallel
+  burn `ce962f1` (514->578), `fdc4e86` (587), `ddbda97` (590), `a9314d2` (593), `cf5c3a4` (603),
+  `590a307` (605). Every commit gate-clean (classification_qa + segments_quality --diff), pure-addition.
+- **Anchor misses** 0-3 per slice (<1.5%); one empty-chunk issue (651d0a5a) correctly deferred by the
+  guard rather than folded with a hole.
+- **Still deferred:** the un-finished units of slices seg_p4/p5/p6 (API-throttle tail, low-value
+  Tier-3 skal_lyde 2-3), plus remaining Tier-3 and the 91 Tier-2 giants (the big coverage lever).
+  Re-run via the scripted loop; prep recomputes "remaining" from segments.jsonl so nothing double-runs.
+- **Burn-mode tooling** (scratchpad/, recreate if reset): `prep_parallel.py`, `prep_batch.py`,
+  `segment_workflow.js`, `assemble_results.py`.
+
 ## 2026-10-23 — Friday segmentation: +130 issues (384 -> 514), Tier-1 >=6-`skal lyde` band essentially done
 
 Continued the coverage-gap harvest (`docs/notes/friday_segmentation_worklist.md`). Seven gated,

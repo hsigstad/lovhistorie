@@ -1,19 +1,24 @@
 # Todo
 
-- **FRIDAY SEGMENTATION — 2026-10-23 session:** corpus 384 -> 514 issues (+130) across 7 gated+pushed
-  batches (densest-first, skal_lyde 22 down to 6; ~20M subagent tokens). Finished essentially the whole
-  Tier-1 >=6-`skal lyde` band. REMAINING: ~37 Tier-1 issues at skal_lyde 5-6 (a batch-8 of 20 was in
-  flight at session end — API-overload stalled it; re-run via the tooling below), then 239 Tier-3
-  (1-4 markers), then 91 Tier-2 giants (>600k, need the chunker; ~8,889 markers = the big remaining
-  coverage lever). RESUME (per friday_segmentation_worklist.md): the loop is now fully scripted in
-  scratchpad/ (recreate if reset): `python scratchpad/prep_batch.py <N>` ranks
-  friday_issue_priority.json by skal_lyde DESC minus iids already in segments.jsonl, takes the next N
-  Tier-1, runs `fold_append prepare`, and writes scratchpad/seg_batch/wf_units.json (prints it for
-  Workflow args) -> run scratchpad/segment_workflow.js (one subagent per unit, each Writes its
-  {segments} to seg_batch/out/<iid>_<cidx>.json) -> `python scratchpad/assemble_results.py` builds
-  results.json -> `python -m source.scrape.fold_append fold --results scratchpad/seg_batch/results.json`
-  -> git add data/segments.jsonl data/segments_meta.json && commit (pre-commit hook runs both --diff
-  gates). Batches of ~20; a few anchor misses per batch (0-3, <1.5%) are normal and acceptable.
+- **FRIDAY SEGMENTATION — 2026-10-23/24 session:** corpus 384 -> 605 issues (+221) across 7 sequential
+  batches (384->514) + a 5-concurrent-workflow parallel burn (514->605); ~30M+ subagent tokens.
+  Finished the whole Tier-1 band (skal_lyde 22 down to 5) and a big chunk of Tier-3 (down to skal_lyde
+  2). REMAINING: the un-finished units of slices seg_p4/p5/p6 (API-throttle tail at session end; low-
+  value Tier-3 skal_lyde 2-3), the rest of Tier-3 (skal_lyde 1), and the 91 Tier-2 giants (>600k, need
+  the chunker; ~8,889 markers = the big remaining coverage lever). RESUME (per
+  friday_segmentation_worklist.md) — loop fully scripted in scratchpad/ (recreate if reset):
+  SEQUENTIAL one batch: `python scratchpad/prep_batch.py <N>` ranks friday_issue_priority.json by
+  skal_lyde DESC minus iids in segments.jsonl, preps + writes scratchpad/seg_batch/wf_units.json
+  (prints it for Workflow args) -> run scratchpad/segment_workflow.js (one subagent per unit, each
+  Writes {segments} to seg_batch/out/) -> `python scratchpad/assemble_results.py [dir]` builds
+  results.json (only issues whose every chunk is present) -> `python -m source.scrape.fold_append fold
+  --results scratchpad/seg_batch/results.json` -> commit data/segments.jsonl + data/segments_meta.json
+  (pre-commit hook runs both --diff gates). PARALLEL burn-mode (several slices at once): `python
+  scratchpad/prep_parallel.py <slice_size> <K> <exclude_csv> [start_k]` writes seg_p{start_k..}/ dirs;
+  launch K segment_workflow.js runs (one per dir's wf_units.json); fold each dir as its workflow
+  completes. Subagent outputs are durable on disk, so hitting the weekly limit mid-run never loses
+  finished work — just re-run the un-finished units (prep recomputes remaining, so nothing double-runs).
+  Anchor misses 0-3 per slice (<1.5%) are normal; empty-chunk issues are auto-deferred.
   (2026-10-17 predecessor: 318 -> 384, +66.)
 
 ## Reconstruction-quality follow-ups (2026-10-05 — see done.md attribution)
