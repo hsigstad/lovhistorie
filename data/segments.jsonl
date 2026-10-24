@@ -207889,3 +207889,619 @@
 {"issue_id": "caefcaa66cd9cc520e528ddb91247a93", "start": 31611, "end": 31619, "start_line": 703, "head": "742 743", "klass": "noise", "unit_key": "noise@31611"}
 {"issue_id": "caefcaa66cd9cc520e528ddb91247a93", "start": 31619, "end": 32004, "start_line": 705, "head": "Vedtaket lyder: Ny § 1. Utsalgssteder fo", "klass": "kunngjoring", "unit_key": "?:kunngjoring:25"}
 {"issue_id": "caefcaa66cd9cc520e528ddb91247a93", "start": 32004, "end": 32083, "start_line": 714, "head": "Utgiver: Statsrådsekretariatet. Grøndahl", "klass": "colophon", "unit_key": "?:colophon:26"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 0, "end": 3, "start_line": 0, "head": "47", "klass": "other", "unit_key": "lead@0"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 3, "end": 1220, "start_line": 1, "head": "Norsk Lovtidend Utgitt etter offentlig t", "klass": "front_matter", "unit_key": "?:front_matter:0"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 1220, "end": 1935, "start_line": 28, "head": "Skriv frå Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:1"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 1935, "end": 1943, "start_line": 42, "head": "67 1957", "klass": "noise", "unit_key": "noise@1935"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 1943, "end": 1952, "start_line": 44, "head": "31. des,", "klass": "kunngjoring", "unit_key": "?:kunngjoring:1"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 1952, "end": 1957, "start_line": 45, "head": "1958", "klass": "noise", "unit_key": "noise@1952"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 1957, "end": 2241, "start_line": 46, "head": "at bygningsrådet har uttala seg. Tomteei", "klass": "kunngjoring", "unit_key": "?:kunngjoring:1"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 2241, "end": 2246, "start_line": 51, "head": "1957", "klass": "noise", "unit_key": "noise@2241"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 2246, "end": 4397, "start_line": 52, "head": "31. des Grunneigarar, som etter at denne", "klass": "kunngjoring", "unit_key": "?:kunngjoring:1"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 4397, "end": 4403, "start_line": 91, "head": "48 49", "klass": "noise", "unit_key": "noise@4397"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 4403, "end": 5237, "start_line": 93, "head": "ning. Utstykking må berre gjerast etter", "klass": "kunngjoring", "unit_key": "?:kunngjoring:1"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 5237, "end": 5589, "start_line": 107, "head": "Rundskriv fra Sosialdepartementet. Endri", "klass": "amend_scope", "unit_key": "?:op2", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 5589, "end": 5711, "start_line": 114, "head": "I avdeling B I tilf øy es i alfabetisk r", "klass": "amend_op", "unit_key": "?:op3", "op_kind": "insert", "position": "i alfabetisk rekkefølge", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 5711, "end": 5900, "start_line": 118, "head": "Avdeling D I punkt 11 skal lyde «Plantev", "klass": "amend_op", "unit_key": "?:op4", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 5900, "end": 6268, "start_line": 122, "head": "I avdeling D II punkt 2 skal følgende en", "klass": "amend_op", "unit_key": "?:op5", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 6268, "end": 6278, "start_line": 130, "head": "1958 1957", "klass": "noise", "unit_key": "noise@6268"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 6278, "end": 6286, "start_line": 132, "head": "31. des", "klass": "amend_op", "unit_key": "?:op5", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 6286, "end": 6291, "start_line": 133, "head": "1958", "klass": "noise", "unit_key": "noise@6286"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 6291, "end": 6299, "start_line": 134, "head": "2. jan,", "klass": "amend_op", "unit_key": "?:op5", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 6299, "end": 6304, "start_line": 135, "head": "1958", "klass": "noise", "unit_key": "noise@6299"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 6304, "end": 6323, "start_line": 136, "head": "AVDELING E 2. jan,", "klass": "amend_op", "unit_key": "?:op5", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 6323, "end": 8040, "start_line": 138, "head": "Avdeling E skal lyde: Gifter og apotekva", "klass": "amend_op", "unit_key": "?:op6", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 8040, "end": 8046, "start_line": 179, "head": "50 51", "klass": "noise", "unit_key": "noise@8040"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 8046, "end": 8384, "start_line": 181, "head": "ing og forsikring, jfr. plakat av 29. au", "klass": "amend_op", "unit_key": "?:op6", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "de ved kgl. plakat av 26. februar 1954 gitte forskrifter om handel med gifter, apotekvarer og en del andre varer"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 8384, "end": 8507, "start_line": 186, "head": "Bestemmelsene vedrørende kalium- og natr", "klass": "in_force", "unit_key": "?:in_force:7"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 8507, "end": 10373, "start_line": 188, "head": "Skriv frå Justis- og politidepartementet", "klass": "kunngjoring", "unit_key": "?:kunngjoring:9"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 10373, "end": 10378, "start_line": 223, "head": "1958", "klass": "noise", "unit_key": "noise@10373"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 10378, "end": 10394, "start_line": 224, "head": "2. jan, 2. jan.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:9"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 10394, "end": 10399, "start_line": 226, "head": "1958", "klass": "noise", "unit_key": "noise@10394"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 10399, "end": 12915, "start_line": 227, "head": "På eller over offentleg stad er det forb", "klass": "kunngjoring", "unit_key": "?:kunngjoring:9"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 12915, "end": 12921, "start_line": 271, "head": "52 53", "klass": "noise", "unit_key": "noise@12915"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 12921, "end": 15424, "start_line": 273, "head": "Lause hundar eller andre dyr må ikkje ta", "klass": "kunngjoring", "unit_key": "?:kunngjoring:9"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 15424, "end": 15429, "start_line": 315, "head": "1958", "klass": "noise", "unit_key": "noise@15424"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 15429, "end": 15437, "start_line": 316, "head": "2. jan,", "klass": "kunngjoring", "unit_key": "?:kunngjoring:9"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 15437, "end": 15442, "start_line": 317, "head": "1958", "klass": "noise", "unit_key": "noise@15437"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 15442, "end": 17699, "start_line": 318, "head": "mannen) kan fastset ja tidlegare sluttid", "klass": "kunngjoring", "unit_key": "?:kunngjoring:9"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 17699, "end": 17705, "start_line": 361, "head": "54 55", "klass": "noise", "unit_key": "noise@17699"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 17705, "end": 18975, "start_line": 363, "head": "Som §§ 11, 12 13 og 14 vert fastsett: §", "klass": "kunngjoring", "unit_key": "?:kunngjoring:9"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 18975, "end": 19252, "start_line": 385, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:10"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 19252, "end": 19452, "start_line": 390, "head": "Skriv fra Fiskeridepartementet om at dep", "klass": "kunngjoring", "unit_key": "?:kunngjoring:11"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 19452, "end": 19907, "start_line": 394, "head": "Skriv fra Justis- og politidepartementet", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 19907, "end": 19912, "start_line": 401, "head": "1958", "klass": "noise", "unit_key": "noise@19907"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 19912, "end": 19942, "start_line": 402, "head": "2. jan. 4. jan. 4. jan 7. jan", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 19942, "end": 19947, "start_line": 406, "head": "1958", "klass": "noise", "unit_key": "noise@19942"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 19947, "end": 22319, "start_line": 407, "head": "mars 1936, stadfester Justisdepartemente", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 22319, "end": 22325, "start_line": 449, "head": "56 57", "klass": "noise", "unit_key": "noise@22319"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 22325, "end": 24829, "start_line": 451, "head": "På offentlig sted er det forbudt å gå me", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 24829, "end": 24834, "start_line": 494, "head": "1958", "klass": "noise", "unit_key": "noise@24829"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 24834, "end": 24841, "start_line": 495, "head": "7. jan", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 24841, "end": 24849, "start_line": 496, "head": "58 1958", "klass": "noise", "unit_key": "noise@24841"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 24849, "end": 27253, "start_line": 498, "head": "Under ingen omstendighet må det legges v", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 27253, "end": 27256, "start_line": 541, "head": "59", "klass": "noise", "unit_key": "noise@27253"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 27256, "end": 29390, "start_line": 542, "head": "er foreldet, skal det tas vekk av den so", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 29390, "end": 29395, "start_line": 582, "head": "1958", "klass": "noise", "unit_key": "noise@29390"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 29395, "end": 29402, "start_line": 583, "head": "7. jan", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 29402, "end": 29410, "start_line": 584, "head": "1958 60", "klass": "noise", "unit_key": "noise@29402"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 29410, "end": 31790, "start_line": 586, "head": "7. jan. mur, plankeverk, gjerde, port el", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 31790, "end": 31793, "start_line": 628, "head": "61", "klass": "noise", "unit_key": "noise@31790"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 31793, "end": 34270, "start_line": 629, "head": "nevnt i '§ 20 må bare holdes i lokaler o", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 34270, "end": 34275, "start_line": 670, "head": "1958", "klass": "noise", "unit_key": "noise@34270"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 34275, "end": 34283, "start_line": 671, "head": "7. jan,", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 34283, "end": 34291, "start_line": 672, "head": "62 1958", "klass": "noise", "unit_key": "noise@34283"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 34291, "end": 36501, "start_line": 674, "head": "Kapitel V. 7. jan. Om pantelånervirksomh", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 36501, "end": 36504, "start_line": 717, "head": "63", "klass": "noise", "unit_key": "noise@36501"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 36504, "end": 38823, "start_line": 718, "head": "Kloakksluk, rister og lignende må til en", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 38823, "end": 38828, "start_line": 759, "head": "1958", "klass": "noise", "unit_key": "noise@38823"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 38828, "end": 38836, "start_line": 760, "head": "7. jan,", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 38836, "end": 38841, "start_line": 761, "head": "1958", "klass": "noise", "unit_key": "noise@38836"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 38841, "end": 39900, "start_line": 762, "head": "7. jan. § 32. Unnlater noen å utføre det", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 39900, "end": 40563, "start_line": 782, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:13"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 40563, "end": 41116, "start_line": 795, "head": "Skriv frå Justis- og politidepartementet", "klass": "kunngjoring", "unit_key": "?:kunngjoring:14"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 41116, "end": 41122, "start_line": 806, "head": "64 65", "klass": "noise", "unit_key": "noise@41116"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 41122, "end": 42937, "start_line": 808, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:15"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 42937, "end": 43081, "start_line": 845, "head": "Skriv fra Fiskeridepartementet om at dep", "klass": "kunngjoring", "unit_key": "?:kunngjoring:16"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 43081, "end": 43086, "start_line": 848, "head": "1958", "klass": "noise", "unit_key": "noise@43081"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 43086, "end": 43102, "start_line": 849, "head": "8. jan. 8. jan.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:16"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 43102, "end": 43110, "start_line": 851, "head": "66 1958", "klass": "noise", "unit_key": "noise@43102"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 43110, "end": 43119, "start_line": 853, "head": "10. jan,", "klass": "kunngjoring", "unit_key": "?:kunngjoring:16"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 43119, "end": 43938, "start_line": 854, "head": "Kongelig resolusjon. I. I medhold av lov", "klass": "kunngjoring", "unit_key": "?:kunngjoring:17"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 43938, "end": 45312, "start_line": 871, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:20"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 45312, "end": 45315, "start_line": 896, "head": "67", "klass": "noise", "unit_key": "noise@45312"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 45315, "end": 46117, "start_line": 897, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:20"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 46117, "end": 46805, "start_line": 912, "head": "Skriv fra Justis- og politidepartementet", "klass": "kunngjoring", "unit_key": "?:kunngjoring:21"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 46805, "end": 47500, "start_line": 924, "head": "Skriv frå Justis- og politidepartementet", "klass": "kunngjoring", "unit_key": "?:kunngjoring:23"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 47500, "end": 47505, "start_line": 937, "head": "1958", "klass": "noise", "unit_key": "noise@47500"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 47505, "end": 47539, "start_line": 938, "head": "10. jan. 11. jan 11. jan 11. jan,", "klass": "kunngjoring", "unit_key": "?:kunngjoring:23"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 47539, "end": 47547, "start_line": 942, "head": "68 1958", "klass": "noise", "unit_key": "noise@47539"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 47547, "end": 48041, "start_line": 944, "head": "11. jan, stadfester Justisdepartementet", "klass": "kunngjoring", "unit_key": "?:kunngjoring:23"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 48041, "end": 49571, "start_line": 954, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:24"}
+{"issue_id": "c20716ae43994cd5af066db67b736c98", "start": 49571, "end": 49637, "start_line": 981, "head": "Grøndahl & Søns boktrykkeri, Oslo. Utgiv", "klass": "colophon", "unit_key": "?:colophon:25"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 0, "end": 1021, "start_line": 0, "head": "— 1111 — ■ OKI 195$ Norsk Lovtidend Utgi", "klass": "front_matter", "unit_key": "?:front_matter:0"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 1021, "end": 1915, "start_line": 22, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:2"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 1915, "end": 1925, "start_line": 41, "head": "1112 1959", "klass": "noise", "unit_key": "noise@1915"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 1925, "end": 2203, "start_line": 43, "head": "1. september 1959 om vedtekt til § 104 p", "klass": "kunngjoring", "unit_key": "?:kunngjoring:2"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 2203, "end": 2535, "start_line": 51, "head": "Skriv frå Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:3"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 2535, "end": 3408, "start_line": 58, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:4"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 3408, "end": 3701, "start_line": 75, "head": "Skriv fra Landbruksdepartementet. 3. okt", "klass": "forskrift", "unit_key": "?:forskrift:5"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 3701, "end": 3746, "start_line": 82, "head": "§ 1. Avgiften kreves opp av Omsetningsrå", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 3746, "end": 3876, "start_line": 83, "head": "§ 2. Ved salg av skinn som det er lagt a", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 3876, "end": 3881, "start_line": 85, "head": "1113", "klass": "noise", "unit_key": "noise@3876"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 3881, "end": 4092, "start_line": 86, "head": "fra oppdretter til pelsforhandler, pelss", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 4092, "end": 4614, "start_line": 90, "head": "§ 3. Ved utførsel av skinn som ikke er s", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 4614, "end": 5103, "start_line": 98, "head": "§ 4. Norsk auksjonsfirma, norsk represen", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 5103, "end": 5749, "start_line": 106, "head": "§ 5. Ved salg direkte fra oppdretter til", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 5749, "end": 6095, "start_line": 117, "head": "§ 6. Når skinn blir levert til beredning", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 6095, "end": 6486, "start_line": 123, "head": "§ 7. Omsetningsrådet eller den det gir f", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 6486, "end": 6491, "start_line": 129, "head": "1959", "klass": "noise", "unit_key": "noise@6486"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 6491, "end": 6499, "start_line": 130, "head": "3. okt.", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 6499, "end": 6509, "start_line": 131, "head": "1114 1959", "klass": "noise", "unit_key": "noise@6499"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 6509, "end": 6661, "start_line": 133, "head": "3. okt. har taushetsplikt om drifts- og", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 6661, "end": 6853, "start_line": 137, "head": "§ 8. Omsetningsrådet kan gi nærmere regl", "klass": "provision", "unit_key": "?:§8", "para": "§8"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 6853, "end": 6916, "start_line": 140, "head": "§ 9. Overtredelse av bestemmelser i diss", "klass": "provision", "unit_key": "?:§9", "para": "§9"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 6916, "end": 7119, "start_line": 141, "head": "§ 10. Disse regler trer i kraft straks.", "klass": "provision", "unit_key": "?:§10", "para": "§10"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 7119, "end": 7849, "start_line": 145, "head": "Skriv fra Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:16"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 7849, "end": 8421, "start_line": 159, "head": "Skriv fra Landbruksdepartementet. 6. okt", "klass": "amend_op", "unit_key": "?:op17", "op_kind": "set_text"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 8421, "end": 8588, "start_line": 170, "head": "I de av Landbruksdepartementet samme dag", "klass": "amend_scope", "unit_key": "?:op18", "instrument": "forskrift", "target_cite": "regler og orientering til bestemmelser"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 8588, "end": 8593, "start_line": 174, "head": "1115", "klass": "noise", "unit_key": "noise@8588"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 8593, "end": 8905, "start_line": 175, "head": "Siste punktum i 3. avsnitt under «Ad II.", "klass": "amend_op", "unit_key": "?:op19", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "regler og orientering til bestemmelser"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 8905, "end": 9656, "start_line": 181, "head": "3. avsnitt under «Ad punkt 7, ad b.» ska", "klass": "amend_op", "unit_key": "?:op20", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "regler og orientering til bestemmelser"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 9656, "end": 9696, "start_line": 193, "head": "Disse bestemmelser trer i kraft straks.", "klass": "in_force", "unit_key": "?:in_force:21"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 9696, "end": 9998, "start_line": 194, "head": "Bestemmelse om endring i bestemmelser, g", "klass": "amend_scope", "unit_key": "?:op22", "instrument": "forskrift", "target_cite": "bestemmelser av 29. juli 1955"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 9998, "end": 10080, "start_line": 201, "head": "§ 2: nytt annet ledd: «Departementet kan", "klass": "amend_op", "unit_key": "?:op23", "op_kind": "insert", "position": "nytt annet ledd", "instrument": "forskrift", "target_cite": "bestemmelser av 29. juli 1955"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 10080, "end": 10162, "start_line": 203, "head": "§ 4: nytt annet ledd: «Det samme gjelder", "klass": "amend_op", "unit_key": "?:op24", "op_kind": "insert", "position": "nytt annet ledd", "instrument": "forskrift", "target_cite": "bestemmelser av 29. juli 1955"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 10162, "end": 10511, "start_line": 205, "head": "§ 17. 1. skal lyde: «Valutaprovisjon med", "klass": "amend_op", "unit_key": "?:op25", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "bestemmelser av 29. juli 1955"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 10511, "end": 10632, "start_line": 211, "head": "Kongelig resolusjon. I de bestemmelsene", "klass": "amend_op", "unit_key": "?:op26", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "bestemmelser av 29. juli 1955"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 10632, "end": 10637, "start_line": 214, "head": "1959", "klass": "noise", "unit_key": "noise@10632"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 10637, "end": 10660, "start_line": 215, "head": "6. okt 7. okt. 9. okt.", "klass": "amend_op", "unit_key": "?:op26", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "bestemmelser av 29. juli 1955"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 10660, "end": 10665, "start_line": 218, "head": "1959", "klass": "noise", "unit_key": "noise@10660"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 10665, "end": 11119, "start_line": 219, "head": "9. okt. deler som ble fastsatt ved konge", "klass": "amend_op", "unit_key": "?:op26", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "bestemmelser av 29. juli 1955"}
+{"issue_id": "ab057d95f98dc06d8cb44e7d0b870801", "start": 11119, "end": 11197, "start_line": 228, "head": "Grøndahl & Søns boktrykkeri, Oslo. 1116", "klass": "colophon", "unit_key": "?:colophon:27"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 0, "end": 1344, "start_line": 0, "head": "801 Norsk Lovtidend Utgitt etter offentl", "klass": "front_matter", "unit_key": "?:front_matter:0"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 1344, "end": 1895, "start_line": 30, "head": "Skrivelse fra Kommunal- og arbeidsdepart", "klass": "kunngjoring", "unit_key": "?:kunngjoring:1"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 1895, "end": 1904, "start_line": 42, "head": "802 1955", "klass": "noise", "unit_key": "noise@1895"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 1904, "end": 2558, "start_line": 44, "head": "29. juli B. På søn- og helligdager, samt", "klass": "kunngjoring", "unit_key": "?:kunngjoring:1"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 2558, "end": 4163, "start_line": 58, "head": "Skrivelse fra Kommunal- og arbeidsdepart", "klass": "kunngjoring", "unit_key": "?:kunngjoring:2"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 4163, "end": 4167, "start_line": 87, "head": "803", "klass": "noise", "unit_key": "noise@4163"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 4167, "end": 4811, "start_line": 88, "head": "§ 4. Utsalgssteder som selger varer som", "klass": "kunngjoring", "unit_key": "?:kunngjoring:2"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 4811, "end": 5715, "start_line": 100, "head": "Skrivelse fra Kommunal- og arbeidsdepart", "klass": "kunngjoring", "unit_key": "?:kunngjoring:3"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 5715, "end": 6261, "start_line": 118, "head": "Skrivelse fra Finans- og tolldepartement", "klass": "kunngjoring", "unit_key": "?:kunngjoring:4"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 6261, "end": 6266, "start_line": 128, "head": "1955", "klass": "noise", "unit_key": "noise@6261"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 6266, "end": 6292, "start_line": 129, "head": "29. juli 29. juli 1. aug.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:4"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 6292, "end": 6301, "start_line": 132, "head": "804 1955", "klass": "noise", "unit_key": "noise@6292"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 6301, "end": 8246, "start_line": 134, "head": "Skrivelse fra Kommunal- og arbeidsdepart", "klass": "kunngjoring", "unit_key": "?:kunngjoring:5"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 8246, "end": 8428, "start_line": 173, "head": "Skrivelse fra Kommunal- og arbeidsdepart", "klass": "kunngjoring", "unit_key": "?:kunngjoring:6"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 8428, "end": 8432, "start_line": 177, "head": "805", "klass": "noise", "unit_key": "noise@8428"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 8432, "end": 10096, "start_line": 178, "head": "den 25. mai 1955 om regulering av Slåbrå", "klass": "kunngjoring", "unit_key": "?:kunngjoring:6"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 10096, "end": 10626, "start_line": 207, "head": "Skrivelse fra Kommunal- og arbeidsdepart", "klass": "kunngjoring", "unit_key": "?:kunngjoring:7"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 10626, "end": 10631, "start_line": 218, "head": "1955", "klass": "noise", "unit_key": "noise@10626"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 10631, "end": 10647, "start_line": 219, "head": "8. aug. 8. aug.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:7"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 10647, "end": 10656, "start_line": 221, "head": "806 1955", "klass": "noise", "unit_key": "noise@10647"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 10656, "end": 11286, "start_line": 223, "head": "få utkjørsel til hovedvegen (riksvegen),", "klass": "kunngjoring", "unit_key": "?:kunngjoring:7"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 11286, "end": 12788, "start_line": 236, "head": "Skriv frå Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:8"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 12788, "end": 12792, "start_line": 266, "head": "807", "klass": "noise", "unit_key": "noise@12788"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 12792, "end": 13179, "start_line": 267, "head": "gateflukt og skal difor godkjennast av b", "klass": "kunngjoring", "unit_key": "?:kunngjoring:8"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 13179, "end": 13745, "start_line": 275, "head": "Skrivelse fra Fiskeridepartementet. I me", "klass": "kunngjoring", "unit_key": "?:kunngjoring:9"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 13745, "end": 14474, "start_line": 290, "head": "Skrivelse fra Kommunal- og arbeidsdepart", "klass": "kunngjoring", "unit_key": "?:kunngjoring:10"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 14474, "end": 14479, "start_line": 305, "head": "1955", "klass": "noise", "unit_key": "noise@14474"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 14479, "end": 14502, "start_line": 306, "head": "8- aug 9. aug 11. aug.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:10"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 14502, "end": 14511, "start_line": 309, "head": "808 1955", "klass": "noise", "unit_key": "noise@14502"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 14511, "end": 15388, "start_line": 311, "head": "tens nettoareal. Gesimshøyden må ikke væ", "klass": "kunngjoring", "unit_key": "?:kunngjoring:10"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 15388, "end": 16486, "start_line": 330, "head": "Skriv frå Kommunal- og arbeidsdepartemen", "klass": "kunngjoring", "unit_key": "?:kunngjoring:11"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 16486, "end": 16610, "start_line": 352, "head": "Skrivelse fra Kommunal- og arbeidsdepart", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 16610, "end": 16614, "start_line": 355, "head": "809", "klass": "noise", "unit_key": "noise@16610"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 16614, "end": 18123, "start_line": 356, "head": "departementet i samsvar med vedtak av Tr", "klass": "kunngjoring", "unit_key": "?:kunngjoring:12"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 18123, "end": 19245, "start_line": 380, "head": "Kronprinsregentens resolusjon. § 1. Fra", "klass": "kunngjoring", "unit_key": "?:kunngjoring:13"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 19245, "end": 19250, "start_line": 398, "head": "1955", "klass": "noise", "unit_key": "noise@19245"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 19250, "end": 19266, "start_line": 399, "head": "11. aug 12. aug", "klass": "kunngjoring", "unit_key": "?:kunngjoring:13"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 19266, "end": 19275, "start_line": 401, "head": "810 1955", "klass": "noise", "unit_key": "noise@19266"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 19275, "end": 21782, "start_line": 403, "head": "østre side av en prosjektert vei til gre", "klass": "kunngjoring", "unit_key": "?:kunngjoring:13"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 21782, "end": 21786, "start_line": 447, "head": "811", "klass": "noise", "unit_key": "noise@21782"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 21786, "end": 22944, "start_line": 448, "head": "Vedkommende departement gir nærmere fors", "klass": "kunngjoring", "unit_key": "?:kunngjoring:13"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 22944, "end": 24023, "start_line": 469, "head": "Kronprinsregentens resolusjon. I. I medh", "klass": "kunngjoring", "unit_key": "?:kunngjoring:14"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 24023, "end": 24028, "start_line": 489, "head": "1955", "klass": "noise", "unit_key": "noise@24023"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 24028, "end": 24044, "start_line": 490, "head": "12. aug 12. aug", "klass": "kunngjoring", "unit_key": "?:kunngjoring:14"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 24044, "end": 24053, "start_line": 492, "head": "812 1955", "klass": "noise", "unit_key": "noise@24044"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 24053, "end": 24433, "start_line": 494, "head": "De i denne paragraf omhandlede varer kan", "klass": "kunngjoring", "unit_key": "?:kunngjoring:14"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 24433, "end": 24705, "start_line": 504, "head": "Kronprinsregentens resolusjon. 12. aug.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:15"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 24705, "end": 25401, "start_line": 510, "head": "Kronprinsregentens resolusjon. 12. aug.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:16"}
+{"issue_id": "1a807ef111bb26b705985c55b2777263", "start": 25401, "end": 25468, "start_line": 524, "head": "Grøndahl & Søns Boktrykkeri, Oslo. Utgi", "klass": "colophon", "unit_key": "?:colophon:17"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 0, "end": 2, "start_line": 0, "head": "$", "klass": "other", "unit_key": "lead@0"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 2, "end": 3187, "start_line": 1, "head": "Norsk Lovtidend Avd. I Lover og sentrale", "klass": "front_matter", "unit_key": "?:front_matter:0"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 3187, "end": 3555, "start_line": 81, "head": "10. mars Nr. 1097 Forskrift om prøveordn", "klass": "forskrift", "unit_key": "?:forskrift:1"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 3555, "end": 4004, "start_line": 87, "head": "§ 1. Følgende embeter omfattes av prøveo", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 4004, "end": 4485, "start_line": 100, "head": "§ 2. Retten avgjør om lydopptak skal for", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 4485, "end": 4723, "start_line": 107, "head": "§ 3. Det skal opplyses i rettsboken om l", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 4723, "end": 4750, "start_line": 111, "head": "1997 2014 10 mars Nr. 1097", "klass": "noise", "unit_key": "noise@4723"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 4750, "end": 5291, "start_line": 115, "head": "lydopptaket startet og når det ble avslu", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 5291, "end": 5472, "start_line": 123, "head": "§ 4. Retten kan unntaksvis beslutte at l", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 5472, "end": 5714, "start_line": 126, "head": "§ 5. Originalen av lydopptaket sikres mo", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 5714, "end": 6495, "start_line": 130, "head": "§ 6. Siktede har, etter at retten har av", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 6495, "end": 6585, "start_line": 142, "head": "§ 7. Utskrift av lydopptaket kan i særli", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 6585, "end": 6694, "start_line": 144, "head": "§ 8. Kgl.res. av 15. november 1985 nr. 1", "klass": "provision", "unit_key": "?:§8", "para": "§8"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 6694, "end": 6823, "start_line": 146, "head": "§ 9. Justisdepartementet fastsetter hvor", "klass": "provision", "unit_key": "?:§9", "para": "§9"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 6823, "end": 6869, "start_line": 148, "head": "§ 10. Forskriften trer i kraft 15. mars", "klass": "provision", "unit_key": "?:§10", "para": "§10"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 6869, "end": 6886, "start_line": 149, "head": "12 juni Nr. 1098", "klass": "noise", "unit_key": "noise@6869"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 6886, "end": 7038, "start_line": 151, "head": "Spilleregler for fotballtipping. Fastsat", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 7038, "end": 7060, "start_line": 154, "head": "2015 juni Nr. 1098 12", "klass": "noise", "unit_key": "noise@7038"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 7060, "end": 9443, "start_line": 157, "head": "Disse regler gjelder for fotballspillet", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 9443, "end": 9475, "start_line": 198, "head": "1997 1997 2016 juni Nr. 1098 12", "klass": "noise", "unit_key": "noise@9443"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 9475, "end": 11631, "start_line": 203, "head": "3. Kupongens utfylling 3.1 Spillet marke", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 11631, "end": 11650, "start_line": 246, "head": "2017 juni Nr. 1098", "klass": "noise", "unit_key": "noise@11631"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 11650, "end": 12754, "start_line": 248, "head": "12. fem eller ti for å angi hvor mange u", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 12754, "end": 12759, "start_line": 299, "head": "1997", "klass": "noise", "unit_key": "noise@12754"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 12759, "end": 12934, "start_line": 300, "head": "7 8 9 10 11 12 HUB HUB HUB HUH UHU HHH H", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 12934, "end": 12958, "start_line": 328, "head": "1997 2018 juni Nr. 1098", "klass": "noise", "unit_key": "noise@12934"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 12958, "end": 13814, "start_line": 331, "head": "12. b) Spilleren ber kommisjonæren om et", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 13814, "end": 13816, "start_line": 347, "head": "5", "klass": "noise", "unit_key": "noise@13814"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 13816, "end": 14299, "start_line": 348, "head": "Ved direktespill skal det sammen med for", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 14299, "end": 14301, "start_line": 356, "head": "5", "klass": "noise", "unit_key": "noise@14299"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 14301, "end": 14524, "start_line": 357, "head": "Flerukers spill gjelder fortløpende fra", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 14524, "end": 14526, "start_line": 361, "head": "6", "klass": "noise", "unit_key": "noise@14524"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 14526, "end": 15322, "start_line": 362, "head": "Former for deltakelse Deltakelse i fotba", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 15322, "end": 15344, "start_line": 378, "head": "2019 juni Nr. 1098 12", "klass": "noise", "unit_key": "noise@15322"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 15344, "end": 16708, "start_line": 381, "head": "7. Spillekvittering og kontroll Når spil", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 16708, "end": 16710, "start_line": 405, "head": "8", "klass": "noise", "unit_key": "noise@16708"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 16710, "end": 16995, "start_line": 406, "head": "Innsatsbeløpet for antall spilte rekker", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 16995, "end": 16999, "start_line": 413, "head": "9 9", "klass": "noise", "unit_key": "noise@16995"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 16999, "end": 17638, "start_line": 415, "head": "1 Spilleren kan annullere sine spill sam", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 17638, "end": 17670, "start_line": 426, "head": "1997 1997 2020 12 juni Nr. 1098", "klass": "noise", "unit_key": "noise@17638"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 17670, "end": 20218, "start_line": 431, "head": "For annullert spill tilbakebetales innsa", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 20218, "end": 20240, "start_line": 474, "head": "2021 juni Nr. 1098 12", "klass": "noise", "unit_key": "noise@20218"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 20240, "end": 22587, "start_line": 477, "head": "Det trekkes egne erstatningsresultater f", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 22587, "end": 22602, "start_line": 519, "head": "1997 1997 2022", "klass": "noise", "unit_key": "noise@22587"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 22602, "end": 25110, "start_line": 522, "head": "12. juni Nr. 1098 12.3 Alle rekker er li", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 25110, "end": 25132, "start_line": 566, "head": "2023 juni Nr. 1098 12", "klass": "noise", "unit_key": "noise@25110"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 25132, "end": 25401, "start_line": 569, "head": "nye spillekvitteringen gjelder samme spi", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 25401, "end": 25404, "start_line": 574, "head": "15", "klass": "noise", "unit_key": "noise@25401"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 25404, "end": 26475, "start_line": 575, "head": "spillekvitteringen, og de spill som er r", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 26475, "end": 26478, "start_line": 593, "head": "76", "klass": "noise", "unit_key": "noise@26475"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 26478, "end": 26946, "start_line": 594, "head": "1 En spiller som ikke har mottatt den pr", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 26946, "end": 26949, "start_line": 601, "head": "16", "klass": "noise", "unit_key": "noise@26946"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 26949, "end": 27281, "start_line": 602, "head": "tre måneder etter utløpet av spilleomgan", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 27281, "end": 27284, "start_line": 609, "head": "16", "klass": "noise", "unit_key": "noise@27281"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 27284, "end": 27512, "start_line": 610, "head": "Selskapet gir melding om resultatet av p", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 27512, "end": 27527, "start_line": 614, "head": "1997 1997 2024", "klass": "noise", "unit_key": "noise@27512"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 27527, "end": 27531, "start_line": 617, "head": "12.", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 27531, "end": 27545, "start_line": 618, "head": "juni Nr. 1098", "klass": "noise", "unit_key": "noise@27531"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 27545, "end": 27794, "start_line": 619, "head": "18. Andre bestemmelser Spillereglene gje", "klass": "forskrift", "unit_key": "?:forskrift:12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 27794, "end": 27811, "start_line": 625, "head": "juni Nr. 1099 19", "klass": "noise", "unit_key": "noise@27794"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 27811, "end": 28038, "start_line": 627, "head": "Forskrift om eksamen ved Norges teknisk-", "klass": "forskrift", "unit_key": "?:forskrift:13"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 28038, "end": 29051, "start_line": 631, "head": "§ 1. Formål Forskriften gir regler om ek", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 29051, "end": 29478, "start_line": 652, "head": "§ 2. Definisjoner Allmennvitenskapelige", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 29478, "end": 29500, "start_line": 660, "head": "2025 juni Nr. 1099 19", "klass": "noise", "unit_key": "noise@29478"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 29500, "end": 30646, "start_line": 663, "head": "Studieplan: En angivelse av faglige mål", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 30646, "end": 30849, "start_line": 683, "head": "§ 3. Studienes organisering I alle grade", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 30849, "end": 30997, "start_line": 688, "head": "§ 4. Deltidsstudier De fleste studier ve", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 30997, "end": 31435, "start_line": 691, "head": "§ 5. Permisjon Permisjon fra studiene gi", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 31435, "end": 31683, "start_line": 699, "head": "§ 6. Tidspunkt for eksamen Ved de allmen", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 31683, "end": 31715, "start_line": 704, "head": "1997 1997 2026 juni Nr. 1099 19", "klass": "noise", "unit_key": "noise@31683"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 31715, "end": 32256, "start_line": 709, "head": "Ved profesjonsstudiene holdes ordinær ek", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 32256, "end": 32869, "start_line": 718, "head": "§ 7. Frister for oppmelding til eksamen", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 32869, "end": 33169, "start_line": 729, "head": "§ 8. Adgang til eksamen For å få adgang", "klass": "provision", "unit_key": "?:§8", "para": "§8"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 33169, "end": 33765, "start_line": 734, "head": "§ 9. Fremstilling til eksamen Som fremst", "klass": "provision", "unit_key": "?:§9", "para": "§9"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 33765, "end": 34027, "start_line": 746, "head": "§ 10. Antall forsøk til eksamen En stude", "klass": "provision", "unit_key": "?:§10", "para": "§10"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 34027, "end": 34049, "start_line": 751, "head": "2027 juni Nr. 1099 19", "klass": "noise", "unit_key": "noise@34027"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 34049, "end": 34244, "start_line": 754, "head": "Begrensninger i antall forsøk til eksame", "klass": "provision", "unit_key": "?:§10", "para": "§10"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 34244, "end": 34454, "start_line": 757, "head": "§ll. Eksamensformer Studieplanen angir e", "klass": "provision", "unit_key": "?:§11", "para": "§11"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 34454, "end": 34943, "start_line": 761, "head": "§ 12. Praktisk gjennomføring av eksamen", "klass": "provision", "unit_key": "?:§12", "para": "§12"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 34943, "end": 35412, "start_line": 769, "head": "§ 13. Særordninger under eksamen For å g", "klass": "provision", "unit_key": "?:§13", "para": "§13"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 35412, "end": 35621, "start_line": 778, "head": "§ 14. Avbrutt eksamen En student som fre", "klass": "provision", "unit_key": "?:§14", "para": "§14"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 35621, "end": 36436, "start_line": 782, "head": "§ 15. Sykdom i forbindelse med eksamen D", "klass": "provision", "unit_key": "?:§15", "para": "§15"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 36436, "end": 36468, "start_line": 795, "head": "1997 1997 2028 juni Nr. 1099 19", "klass": "noise", "unit_key": "noise@36436"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 36468, "end": 36824, "start_line": 800, "head": "§ 16. Annullering au eksamen Eksamen ell", "klass": "provision", "unit_key": "?:§16", "para": "§16"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 36824, "end": 37488, "start_line": 806, "head": "§l7. Gjentak au eksamen Det er adgang ti", "klass": "provision", "unit_key": "?:§17", "para": "§17"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 37488, "end": 38116, "start_line": 819, "head": "§lB. Fritak for eksamen og prøve Fritak", "klass": "provision", "unit_key": "?:§18", "para": "§18"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 38116, "end": 38484, "start_line": 831, "head": "§l9. Sensorer Alle eksamener/prøver der", "klass": "provision", "unit_key": "?:§19", "para": "§19"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 38484, "end": 38579, "start_line": 838, "head": "§ 20. Scnsurfrister Ifølge universitetsl", "klass": "provision", "unit_key": "?:§20", "para": "§20"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 38579, "end": 38601, "start_line": 840, "head": "2029 juni Nr. 1099 19", "klass": "noise", "unit_key": "noise@38579"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 38601, "end": 38749, "start_line": 843, "head": "hvis ikke særlige grunner gjør det nødve", "klass": "provision", "unit_key": "?:§20", "para": "§20"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 38749, "end": 39449, "start_line": 846, "head": "§2l. Karaktersystem Eksamen/prøven bedøm", "klass": "provision", "unit_key": "?:§21", "para": "§21"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 39449, "end": 39676, "start_line": 857, "head": "§ 22. Hovedkarakter Med hovedkarakter me", "klass": "provision", "unit_key": "?:§22", "para": "§22"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 39676, "end": 40020, "start_line": 862, "head": "§ 23. Begrunnelse og klage Eksamenskandi", "klass": "provision", "unit_key": "?:§23", "para": "§23"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 40020, "end": 40811, "start_line": 869, "head": "§ 24. Vitnemål Vitnemål utstedes ved ful", "klass": "provision", "unit_key": "?:§24", "para": "§24"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 40811, "end": 40843, "start_line": 883, "head": "1997 1997 2030 juni Nr. 1099 19", "klass": "noise", "unit_key": "noise@40811"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 40843, "end": 41067, "start_line": 888, "head": "Gradsforskriftene gir nærmere bestemmels", "klass": "provision", "unit_key": "?:§24", "para": "§24"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 41067, "end": 41400, "start_line": 891, "head": "§ 25. Karakterutskrifter Studenter som h", "klass": "provision", "unit_key": "?:§25", "para": "§25"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 41400, "end": 41723, "start_line": 897, "head": "§ 26. Ikrafttredelse Denne forskrift tre", "klass": "provision", "unit_key": "?:§26", "para": "§26"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 41723, "end": 41803, "start_line": 903, "head": "§ 27. Gradsforskrifter Kollegiet -etter", "klass": "provision", "unit_key": "?:§27", "para": "§27"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 41803, "end": 41820, "start_line": 905, "head": "juli Nr. 1100 15", "klass": "noise", "unit_key": "noise@41803"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 41820, "end": 42891, "start_line": 907, "head": "Spilleregler for Lotto. Fastsatt av Kult", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 42891, "end": 42913, "start_line": 927, "head": "2031 juli Nr. 1100 15", "klass": "noise", "unit_key": "noise@42891"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 42913, "end": 44855, "start_line": 930, "head": "Departementet avgjør i tvilstilfelle om", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 44855, "end": 44887, "start_line": 973, "head": "1997 1997 2032 juli Nr. 1100 15", "klass": "noise", "unit_key": "noise@44855"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 44887, "end": 46985, "start_line": 978, "head": "11 kryss, som tilsvarer 330 rekker 12 kr", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 46985, "end": 47007, "start_line": 1021, "head": "2033 juli Nr. 1100 15", "klass": "noise", "unit_key": "noise@46985"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 47007, "end": 47609, "start_line": 1024, "head": "Eventuelt spillerkort som ønskes benytte", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 47609, "end": 47611, "start_line": 1037, "head": "6", "klass": "noise", "unit_key": "noise@47609"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 47611, "end": 48696, "start_line": 1038, "head": "Norsk Tipping AS' registreringsskjema. D", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 48696, "end": 48698, "start_line": 1059, "head": "7", "klass": "noise", "unit_key": "noise@48696"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 48698, "end": 49250, "start_line": 1060, "head": "spilleform og gyldighetstid er riktig og", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 49250, "end": 49282, "start_line": 1069, "head": "1997 1997 2034 juli Nr. 1100 15", "klass": "noise", "unit_key": "noise@49250"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 49282, "end": 49608, "start_line": 1074, "head": "utbetaling av premie i de tilfelle utbet", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 49608, "end": 49610, "start_line": 1081, "head": "8", "klass": "noise", "unit_key": "noise@49608"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 49610, "end": 49863, "start_line": 1082, "head": "Innsatsbeløpet for antall spilte rekker", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 49863, "end": 49865, "start_line": 1089, "head": "9", "klass": "noise", "unit_key": "noise@49863"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 49865, "end": 51276, "start_line": 1090, "head": "Spilleren kan annullere sine spill samme", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 51276, "end": 51281, "start_line": 1116, "head": "2035", "klass": "noise", "unit_key": "noise@51276"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 51281, "end": 51295, "start_line": 1117, "head": "juli Nr. llOO", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 51295, "end": 51298, "start_line": 1118, "head": "15", "klass": "noise", "unit_key": "noise@51295"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 51298, "end": 53221, "start_line": 1119, "head": "Trekningen foregår ellers på den måten s", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 53221, "end": 53253, "start_line": 1161, "head": "1997 1997 2036 juli Nr. 1100 15", "klass": "noise", "unit_key": "noise@53221"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 53253, "end": 55608, "start_line": 1166, "head": "registrerte innehaveren av det spillerko", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 55608, "end": 55627, "start_line": 1210, "head": "2037 juli Nr. 1100", "klass": "noise", "unit_key": "noise@55608"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 55627, "end": 57672, "start_line": 1212, "head": "15. Norsk Tipping AS svarer ikke for tap", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 57672, "end": 57707, "start_line": 1254, "head": "1997 1997 2038 juli Nr. 1100 15 11", "klass": "noise", "unit_key": "noise@57672"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 57707, "end": 57786, "start_line": 1260, "head": "De nye spillereglene erstatter spillereg", "klass": "forskrift", "unit_key": "?:forskrift:41"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 57786, "end": 57803, "start_line": 1262, "head": "22 juli Nr. 1101", "klass": "noise", "unit_key": "noise@57786"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 57803, "end": 59574, "start_line": 1264, "head": "Spilleregler for Viking Lotto. Fastsatt", "klass": "forskrift", "unit_key": "?:forskrift:42"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 59574, "end": 59593, "start_line": 1301, "head": "2039 juli Nr. 1101", "klass": "noise", "unit_key": "noise@59574"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 59593, "end": 59597, "start_line": 1303, "head": "2.3", "klass": "forskrift", "unit_key": "?:forskrift:42"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 59597, "end": 59600, "start_line": 1304, "head": "22", "klass": "noise", "unit_key": "noise@59597"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 59600, "end": 61559, "start_line": 1305, "head": "Kupongen har et gangefelt der spilleren", "klass": "forskrift", "unit_key": "?:forskrift:42"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 61559, "end": 61591, "start_line": 1348, "head": "1997 1997 2040 juli Nr. 1101 22", "klass": "noise", "unit_key": "noise@61559"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 61591, "end": 63766, "start_line": 1353, "head": "4. Innleveringsfrist - Lukningstid Norsk", "klass": "forskrift", "unit_key": "?:forskrift:42"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 63766, "end": 63788, "start_line": 1397, "head": "2041 juli Nr. 1101 22", "klass": "noise", "unit_key": "noise@63766"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 63788, "end": 65956, "start_line": 1400, "head": "6. Former for deltakelse Deltakelse i Vi", "klass": "forskrift", "unit_key": "?:forskrift:42"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 65956, "end": 65988, "start_line": 1440, "head": "1997 1997 2042 22 juli Nr. 1101", "klass": "noise", "unit_key": "noise@65956"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 65988, "end": 67968, "start_line": 1445, "head": "8. Betaling Innsatsbeløpet for antall sp", "klass": "forskrift", "unit_key": "?:forskrift:42"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 67968, "end": 68192, "start_line": 1482, "head": "trollen er ansvarlig overfor - departeme", "klass": "forskrift", "unit_key": "?:forskrift:43"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 68192, "end": 68214, "start_line": 1487, "head": "2043 juli Nr. 1101 22", "klass": "noise", "unit_key": "noise@68192"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 68214, "end": 70168, "start_line": 1490, "head": "Trekningen skjer ved at det først trekke", "klass": "forskrift", "unit_key": "?:forskrift:43"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 70168, "end": 70200, "start_line": 1532, "head": "1997 1997 2044 22 juli Nr. 1101", "klass": "noise", "unit_key": "noise@70168"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 70200, "end": 72524, "start_line": 1537, "head": "12.3 Fordelingsreglene for 2., 3., 4. og", "klass": "forskrift", "unit_key": "?:forskrift:43"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 72524, "end": 72546, "start_line": 1580, "head": "2045 juli Nr. 1101 22", "klass": "noise", "unit_key": "noise@72524"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 72546, "end": 74857, "start_line": 1583, "head": "a) Når samlet premie på en spillekvitter", "klass": "forskrift", "unit_key": "?:forskrift:43"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 74857, "end": 74889, "start_line": 1625, "head": "1997 1997 2046 22 juli Nr. 1101", "klass": "noise", "unit_key": "noise@74857"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 74889, "end": 76369, "start_line": 1630, "head": "Erstatningens størrelse er under enhver", "klass": "forskrift", "unit_key": "?:forskrift:43"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 76369, "end": 76392, "start_line": 1663, "head": "2047 sept. Nr. 1102 29", "klass": "noise", "unit_key": "noise@76369"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 76392, "end": 77797, "start_line": 1666, "head": "Forskrift om endring i forskrift om tekn", "klass": "forskrift", "unit_key": "?:forskrift:44"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 77797, "end": 77813, "start_line": 1687, "head": "okt. Nr. 1103 1", "klass": "noise", "unit_key": "noise@77797"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 77813, "end": 78369, "start_line": 1689, "head": "Målvedtak i kommunar og fylkeskommunar.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 78369, "end": 78374, "start_line": 1715, "head": "1997", "klass": "noise", "unit_key": "noise@78369"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 78374, "end": 78376, "start_line": 1716, "head": "/", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 78376, "end": 78402, "start_line": 1717, "head": "1997 2048 okt. Nr. 1103 1", "klass": "noise", "unit_key": "noise@78376"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 78402, "end": 79096, "start_line": 1721, "head": "Kommune Målform Moss nøytral bokmål bokm", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 79096, "end": 79117, "start_line": 1798, "head": "2049 okt. Nr. 1103 1", "klass": "noise", "unit_key": "noise@79096"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 79117, "end": 79605, "start_line": 1801, "head": "04. Hedmark fylke Bokmål: 15 Nynorsk: -", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 79605, "end": 79610, "start_line": 1861, "head": "1997", "klass": "noise", "unit_key": "noise@79605"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 79610, "end": 80037, "start_line": 1862, "head": "Målform Kommune nøytral bokmål bokmål bo", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 80037, "end": 80063, "start_line": 1914, "head": "1997 2050 1 okt. Nr. 1103", "klass": "noise", "unit_key": "noise@80037"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 80063, "end": 80810, "start_line": 1918, "head": "06. Buskerud fylke Bokmål: 13 Nynorsk: 3", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 80810, "end": 80831, "start_line": 2010, "head": "2051 okt. Nr. 1103 1", "klass": "noise", "unit_key": "noise@80810"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 80831, "end": 81340, "start_line": 2013, "head": "Målform Kommune nøytral nøytral nøytral", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 81340, "end": 81345, "start_line": 2071, "head": "1997", "klass": "noise", "unit_key": "noise@81340"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 81345, "end": 81741, "start_line": 2072, "head": "Målform Kommune nøytral nøytral nynorsk", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 81741, "end": 81767, "start_line": 2114, "head": "1997 2052 1 okt. Nr. 1103", "klass": "noise", "unit_key": "noise@81741"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 81767, "end": 82686, "start_line": 2118, "head": "Kommune Målform Songdalen Søgne nøytral", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 82686, "end": 82707, "start_line": 2232, "head": "2053 okt. Nr. 1103 1", "klass": "noise", "unit_key": "noise@82686"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 82707, "end": 83251, "start_line": 2235, "head": "Målform Kommune Kvinnherad nynorsk Jonda", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 83251, "end": 83256, "start_line": 2275, "head": "1997", "klass": "noise", "unit_key": "noise@83251"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 83256, "end": 83678, "start_line": 2276, "head": "Målform Kommune nynorsk nynorsk nynorsk", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 83678, "end": 83704, "start_line": 2330, "head": "1997 2054 1 okt. Nr. 1103", "klass": "noise", "unit_key": "noise@83678"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 83704, "end": 84704, "start_line": 2334, "head": "Kommune Målform Ålesund Vanylven Sande n", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 84704, "end": 84725, "start_line": 2464, "head": "2055 okt. Nr. 1103 1", "klass": "noise", "unit_key": "noise@84704"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 84725, "end": 85283, "start_line": 2467, "head": "17. Nord-Trøndelag fylke Bokmål: 6 Nynor", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 85283, "end": 85288, "start_line": 2533, "head": "1997", "klass": "noise", "unit_key": "noise@85283"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 85288, "end": 85737, "start_line": 2534, "head": "Målform Kommune nøytral nøytral nøytral", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 85737, "end": 85763, "start_line": 2592, "head": "1997 2056 okt. Nr. 1103 1", "klass": "noise", "unit_key": "noise@85737"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 85763, "end": 86665, "start_line": 2596, "head": "Kommune Målform Hemnes Rana nøytral nøyt", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 86665, "end": 86686, "start_line": 2708, "head": "2057 okt. Nr. 1103 1", "klass": "noise", "unit_key": "noise@86665"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 86686, "end": 86967, "start_line": 2711, "head": "Målform Kommune Kautokeino bokmål Alta b", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 86967, "end": 86969, "start_line": 2730, "head": "1", "klass": "noise", "unit_key": "noise@86967"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 86969, "end": 87565, "start_line": 2731, "head": "22 15 04. Hedmark 05. Oppland 06. Busker", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 87565, "end": 87570, "start_line": 2755, "head": "1997", "klass": "noise", "unit_key": "noise@87565"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 87570, "end": 87754, "start_line": 2756, "head": "Målform Kommune nøytral bokmål bokmål bo", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 87754, "end": 87766, "start_line": 2778, "head": "1997 2058 1", "klass": "noise", "unit_key": "noise@87754"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 87766, "end": 88039, "start_line": 2781, "head": ". okt. Nr. 1103 Oslo Hedmark Oppland Bus", "klass": "kunngjoring", "unit_key": "?:kunngjoring:45"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 88039, "end": 88055, "start_line": 2801, "head": "okt. Nr. 1104 1", "klass": "noise", "unit_key": "noise@88039"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 88055, "end": 88602, "start_line": 2803, "head": "Forskrift om forbud mot utsetting i Norg", "klass": "forskrift", "unit_key": "?:forskrift:46"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 88602, "end": 88618, "start_line": 2812, "head": "okt. Nr. 1105 1", "klass": "noise", "unit_key": "noise@88602"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 88618, "end": 89187, "start_line": 2814, "head": "Forskrift om forbud mot utsetting i Norg", "klass": "forskrift", "unit_key": "?:forskrift:47"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 89187, "end": 89203, "start_line": 2823, "head": "okt. Nr. 1106 1", "klass": "noise", "unit_key": "noise@89187"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 89203, "end": 89649, "start_line": 2825, "head": "Forskrift om forbud mot utsetting i Norg", "klass": "forskrift", "unit_key": "?:forskrift:48"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 89649, "end": 89670, "start_line": 2836, "head": "2059 okt. Nr. 1106 1", "klass": "noise", "unit_key": "noise@89649"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 89670, "end": 89900, "start_line": 2839, "head": "Utsetting, herunder markedsføring, i Nor", "klass": "forskrift", "unit_key": "?:forskrift:48"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 89900, "end": 89916, "start_line": 2843, "head": "okt. Nr. 1107 1", "klass": "noise", "unit_key": "noise@89900"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 89916, "end": 90452, "start_line": 2845, "head": "Forskrift om forbud mot utsetting i Norg", "klass": "forskrift", "unit_key": "?:forskrift:49"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 90452, "end": 90468, "start_line": 2853, "head": "okt. Nr. 1108 1", "klass": "noise", "unit_key": "noise@90452"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 90468, "end": 91019, "start_line": 2855, "head": "Forskrift om forbud mot utsetting i Norg", "klass": "forskrift", "unit_key": "?:forskrift:50"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 91019, "end": 91035, "start_line": 2863, "head": "okt. Nr. 1109 1", "klass": "noise", "unit_key": "noise@91019"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 91035, "end": 91548, "start_line": 2865, "head": "Forskrift om forbud mot utsetting i Norg", "klass": "forskrift", "unit_key": "?:forskrift:51"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 91548, "end": 91564, "start_line": 2873, "head": "okt. Nr. 1110 9", "klass": "noise", "unit_key": "noise@91548"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 91564, "end": 91781, "start_line": 2875, "head": "Midlertidig forskrift om kringkastingsav", "klass": "forskrift", "unit_key": "?:forskrift:52"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 91781, "end": 91796, "start_line": 2879, "head": "1997 1997 2060", "klass": "noise", "unit_key": "noise@91781"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 91796, "end": 91799, "start_line": 2882, "head": "9.", "klass": "forskrift", "unit_key": "?:forskrift:52"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 91799, "end": 91813, "start_line": 2883, "head": "okt. Nr. 1110", "klass": "noise", "unit_key": "noise@91799"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 91813, "end": 92216, "start_line": 2884, "head": "§ 1. Betaling au kringkastingsavgift Kri", "klass": "forskrift", "unit_key": "?:forskrift:52"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 92216, "end": 92233, "start_line": 2893, "head": "okt. Nr. 1111 14", "klass": "noise", "unit_key": "noise@92216"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 92233, "end": 92618, "start_line": 2895, "head": "Forskrift om endring i forskrift om regu", "klass": "amend_scope", "unit_key": "?:op53", "instrument": "forskrift", "target_cite": "forskrift av 20. desember 1996 nr. 1198 om regulering av fiske etter norsk vårgytende sild i 1997"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 92618, "end": 92981, "start_line": 2902, "head": "§4-1 annet ledd skal lyde: Av gruppekvot", "klass": "amend_op", "unit_key": "?:op54", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "forskrift av 20. desember 1996 nr. 1198 om regulering av fiske etter norsk vårgytende sild i 1997"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 92981, "end": 93012, "start_line": 2909, "head": "Endringen trer i kraft straks.", "klass": "in_force", "unit_key": "?:in_force:55"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 93012, "end": 93029, "start_line": 2910, "head": "okt. Nr. 1112 16", "klass": "noise", "unit_key": "noise@93012"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 93029, "end": 93715, "start_line": 2912, "head": "Forskrift om delegering av fullmakt til", "klass": "delegering", "unit_key": "?:delegering:56"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 93715, "end": 93720, "start_line": 2924, "head": "2061", "klass": "noise", "unit_key": "noise@93715"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 93720, "end": 93798, "start_line": 2925, "head": "16. okt. Nr. 1112 // Denne bestemmelse t", "klass": "delegering", "unit_key": "?:delegering:56"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 93798, "end": 94461, "start_line": 2929, "head": "Forskrift om endring i forskrift om luft", "klass": "forskrift", "unit_key": "?:forskrift:57"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 94461, "end": 95131, "start_line": 2941, "head": "Forskrift om endring i forskrift om flyt", "klass": "forskrift", "unit_key": "?:forskrift:58"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 95131, "end": 95494, "start_line": 2953, "head": "Forskrift om endring av forskrift om reg", "klass": "amend_scope", "unit_key": "?:op59", "instrument": "forskrift", "target_cite": "forskrift av 21. desember 1996 nr. 1359 om regulering av trålfiske etter torsk og hyse nord for 62° N i 1997"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 95494, "end": 95674, "start_line": 2960, "head": "Ny § 7 skal lyde: Ved forlis eller havar", "klass": "amend_op", "unit_key": "?:op60", "op_kind": "insert", "instrument": "forskrift", "target_cite": "forskrift av 21. desember 1996 nr. 1359 om regulering av trålfiske etter torsk og hyse nord for 62° N i 1997"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 95674, "end": 95706, "start_line": 2963, "head": "1997 1997 2062 22 okt. Nr. 1115", "klass": "noise", "unit_key": "noise@95674"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 95706, "end": 96049, "start_line": 2968, "head": "at kvoten fiskes av et annet fartøy som", "klass": "amend_op", "unit_key": "?:op60", "op_kind": "insert", "instrument": "forskrift", "target_cite": "forskrift av 21. desember 1996 nr. 1359 om regulering av trålfiske etter torsk og hyse nord for 62° N i 1997"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 96049, "end": 96104, "start_line": 2973, "head": "Nåværende §§ 7 til 14 blir henholdsvis §", "klass": "amend_op", "unit_key": "?:op61", "op_kind": "renumber", "from": "§§ 7 til 14", "to": "§§ 8 til 15", "instrument": "forskrift", "target_cite": "forskrift av 21. desember 1996 nr. 1359 om regulering av trålfiske etter torsk og hyse nord for 62° N i 1997"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 96104, "end": 96136, "start_line": 2975, "head": "Endringene trer i kraft straks.", "klass": "in_force", "unit_key": "?:in_force:62"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 96136, "end": 96153, "start_line": 2976, "head": "okt. Nr. 1116 23", "klass": "noise", "unit_key": "noise@96136"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 96153, "end": 98070, "start_line": 2978, "head": "Forskrift om gjennomføring av De Forente", "klass": "forskrift", "unit_key": "?:forskrift:63"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 98070, "end": 98075, "start_line": 3009, "head": "2063", "klass": "noise", "unit_key": "noise@98070"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 98075, "end": 98261, "start_line": 3010, "head": "23. okt. Nr. 1116 § 5. Utenriksdeparteme", "klass": "forskrift", "unit_key": "?:forskrift:63"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 98261, "end": 98795, "start_line": 3015, "head": "Forskrift om opphevelse av forskrift om", "klass": "repeal", "unit_key": "?:repeal:64"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 98795, "end": 99377, "start_line": 3026, "head": "Forskrift om opphevelse av forskrift om", "klass": "repeal", "unit_key": "?:repeal:65"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 99377, "end": 99697, "start_line": 3038, "head": "Forskrift om opphevelse av forskrift for", "klass": "repeal", "unit_key": "?:repeal:66"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 99697, "end": 99729, "start_line": 3045, "head": "1997 1997 2064 24 okt. Nr. 1119", "klass": "noise", "unit_key": "noise@99697"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 99729, "end": 99769, "start_line": 3050, "head": "// Denne forskrift trer i kraft straks.", "klass": "repeal", "unit_key": "?:repeal:66"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 99769, "end": 99786, "start_line": 3052, "head": "24 okt. Nr. 1120", "klass": "noise", "unit_key": "noise@99769"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 99786, "end": 100231, "start_line": 3054, "head": "Forskrift om opphevelse av forskrift om", "klass": "repeal", "unit_key": "?:repeal:67"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 100231, "end": 100248, "start_line": 3064, "head": "27 okt. Nr. 1121", "klass": "noise", "unit_key": "noise@100231"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 100248, "end": 100633, "start_line": 3066, "head": "Forskrift om endring i forskrift for god", "klass": "amend_scope", "unit_key": "?:op68", "instrument": "forskrift", "target_cite": "forskrift av 13. januar 1984 nr. 3520 for godkjenning av lærebøker for grunnskole og videregående skole"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 100633, "end": 100650, "start_line": 3073, "head": "§ 4 oppheves. II", "klass": "amend_op", "unit_key": "?:op69", "op_kind": "repeal", "instrument": "forskrift", "target_cite": "forskrift av 13. januar 1984 nr. 3520 for godkjenning av lærebøker for grunnskole og videregående skole"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 100650, "end": 100671, "start_line": 3075, "head": "trer i kraft straks.", "klass": "in_force", "unit_key": "?:in_force:70"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 100671, "end": 101311, "start_line": 3076, "head": "Rettelser. Det som er rettet er satt i k", "klass": "rettelser", "unit_key": "?:rettelser:71"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 101311, "end": 101352, "start_line": 3090, "head": "Utgiver: Justis- og politidepartementet", "klass": "colophon", "unit_key": "?:colophon:72"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 101352, "end": 102456, "start_line": 3092, "head": "Oversikt over rettelser som er inntatt i", "klass": "rettelser", "unit_key": "?:rettelser:73"}
+{"issue_id": "37a6cb35c471c2c96a392c5b35db74b0", "start": 102456, "end": 104100, "start_line": 3254, "head": "NORSK LOVTIDEND Avd I Lover og sentrale", "klass": "colophon", "unit_key": "?:colophon:74"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 0, "end": 2322, "start_line": 0, "head": "1 NORSK LOVTIDEND Avd. I. Lover og sentr", "klass": "front_matter", "unit_key": "?:front_matter:0"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 2322, "end": 2477, "start_line": 41, "head": "2. jan. Prisføresegner for kjøt og flesk", "klass": "forskrift", "unit_key": "?:forskrift:1"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 2477, "end": 2716, "start_line": 44, "head": "4. jan. Forskrifter om regulering av Nor", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 2716, "end": 3298, "start_line": 48, "head": "§ 1. Det er forbudt å fiske sild i tiden", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 3298, "end": 3528, "start_line": 59, "head": "§ 2. Uten hinder av forbudet i § 1er det", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 3528, "end": 3671, "start_line": 63, "head": "§ 3. Forbudet i § 1 gjelder ikke for fan", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 3671, "end": 3675, "start_line": 66, "head": "2 3", "klass": "noise", "unit_key": "noise@3671"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 3675, "end": 3864, "start_line": 68, "head": "§ 4. Disse forskrifter trer i kraft stra", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 3864, "end": 4173, "start_line": 71, "head": "Forskrift om forskningsavgift på visse l", "klass": "forskrift", "unit_key": "?:forskrift:7"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 4173, "end": 4274, "start_line": 76, "head": "Vedtekter for Statens kunstakademi. Fast", "klass": "forskrift", "unit_key": "?:forskrift:8"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 4274, "end": 4551, "start_line": 78, "head": "§ 1. Formål og inndeling. Statens kunsta", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 4551, "end": 4641, "start_line": 84, "head": "§ 2. Studietid. Vanlig studietid er 4 år", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 4641, "end": 5412, "start_line": 87, "head": "§ 3. Opptak. For å bli opptatt som stude", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 5412, "end": 5417, "start_line": 102, "head": "1974", "klass": "noise", "unit_key": "noise@5412"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 5417, "end": 5433, "start_line": 103, "head": "4. jan. 5. jan.", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 5433, "end": 5438, "start_line": 105, "head": "1974", "klass": "noise", "unit_key": "noise@5433"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 5438, "end": 5446, "start_line": 106, "head": "5. jan.", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 5446, "end": 6114, "start_line": 107, "head": "§ 4. Undervisning. Undervisningen gis de", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 6114, "end": 6508, "start_line": 120, "head": "§ 5. Vitnemål. Studenter som ved studiet", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 6508, "end": 6619, "start_line": 130, "head": "§ 6. Utstilling. Det skal avholdes utsti", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 6619, "end": 7186, "start_line": 135, "head": "§ 7. Styre, rektor og prorektor. Styret", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 7186, "end": 7190, "start_line": 146, "head": "4 5", "klass": "noise", "unit_key": "noise@7186"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 7190, "end": 8094, "start_line": 148, "head": "§ 8. Valg til styret. Valget til styret", "klass": "provision", "unit_key": "?:§8", "para": "§8"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 8094, "end": 8326, "start_line": 165, "head": "§ 9. Styremøter. Styret er beslutningsdy", "klass": "provision", "unit_key": "?:§9", "para": "§9"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 8326, "end": 8530, "start_line": 170, "head": "§10. Særlige utvalg. Styret kan nedsette", "klass": "provision", "unit_key": "?:§10", "para": "§10"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 8530, "end": 9051, "start_line": 174, "head": "§ 11. Tilsettinger. Akademiets professor", "klass": "provision", "unit_key": "?:§11", "para": "§11"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 9051, "end": 9056, "start_line": 184, "head": "1974", "klass": "noise", "unit_key": "noise@9051"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 9056, "end": 9064, "start_line": 185, "head": "5. jan.", "klass": "provision", "unit_key": "?:§11", "para": "§11"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 9064, "end": 9069, "start_line": 186, "head": "1974", "klass": "noise", "unit_key": "noise@9064"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 9069, "end": 9182, "start_line": 187, "head": "5. jan. Gruppen øvrige lærere og annet p", "klass": "provision", "unit_key": "?:§11", "para": "§11"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 9182, "end": 9426, "start_line": 190, "head": "§ 12. Budsjettforslag. Utkast til styret", "klass": "provision", "unit_key": "?:§12", "para": "§12"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 9426, "end": 10635, "start_line": 195, "head": "§ 13. Avdelingsutvalg. Avdelingsutvalget", "klass": "provision", "unit_key": "?:§13", "para": "§13"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 10635, "end": 10894, "start_line": 218, "head": "§ 14. Høgskolerådet. Høgskolerådet bestå", "klass": "provision", "unit_key": "?:§14", "para": "§14"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 10894, "end": 10898, "start_line": 224, "head": "6 7", "klass": "noise", "unit_key": "noise@10894"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 10898, "end": 11304, "start_line": 226, "head": "Ved avstemninger i saker som gjelder for", "klass": "provision", "unit_key": "?:§14", "para": "§14"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 11304, "end": 11813, "start_line": 233, "head": "§ 15. Høgskolerådets oppgåver. Høgskoler", "klass": "provision", "unit_key": "?:§15", "para": "§15"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 11813, "end": 12690, "start_line": 244, "head": "§ 16. Ymse om møter m. v. Styret, avdeli", "klass": "provision", "unit_key": "?:§16", "para": "§16"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 12690, "end": 12695, "start_line": 263, "head": "1974", "klass": "noise", "unit_key": "noise@12690"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 12695, "end": 12703, "start_line": 264, "head": "5. jan.", "klass": "provision", "unit_key": "?:§16", "para": "§16"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 12703, "end": 12708, "start_line": 265, "head": "1974", "klass": "noise", "unit_key": "noise@12703"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 12708, "end": 12716, "start_line": 266, "head": "7. jan.", "klass": "provision", "unit_key": "?:§16", "para": "§16"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 12716, "end": 12906, "start_line": 267, "head": "Reglement for instituttrådet ved Det nor", "klass": "forskrift", "unit_key": "?:forskrift:25"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 12906, "end": 13500, "start_line": 270, "head": "§ 1. Rådets funksjon og sammensetning er", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 13500, "end": 13930, "start_line": 282, "head": "§ 2. De fire representanter for tjeneste", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 13930, "end": 14476, "start_line": 289, "head": "§ 3. Saker som forelegges rådet til utta", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 14476, "end": 14480, "start_line": 300, "head": "8 9", "klass": "noise", "unit_key": "noise@14476"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 14480, "end": 14643, "start_line": 302, "head": "Når det ansees hensiktsmessig kan rådet", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 14643, "end": 14983, "start_line": 305, "head": "§ 4. Foreligger det for rådet saker som", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 14983, "end": 15726, "start_line": 312, "head": "§ 5. Det skal føres protokoll over rådet", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 15726, "end": 15946, "start_line": 327, "head": "§ 6 Saker som direktøren legger fram for", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 15946, "end": 16069, "start_line": 332, "head": "§ 7 Rådet velger møtestyrer. Sekretær fo", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16069, "end": 16172, "start_line": 335, "head": "§ 8. Rådets medlemmer er undergitt de va", "klass": "provision", "unit_key": "?:§8", "para": "§8"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16172, "end": 16298, "start_line": 338, "head": "§ 9 Rådet skal hvert år gi en oversikt o", "klass": "provision", "unit_key": "?:§9", "para": "§9"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16298, "end": 16350, "start_line": 341, "head": "§ 10. Dette reglement trer i kraft 1. fe", "klass": "provision", "unit_key": "?:§10", "para": "§10"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16350, "end": 16355, "start_line": 343, "head": "§ 11", "klass": "provision", "unit_key": "?:§11", "para": "§11"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16355, "end": 16360, "start_line": 344, "head": "1974", "klass": "noise", "unit_key": "noise@16355"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16360, "end": 16367, "start_line": 345, "head": "7. jan", "klass": "provision", "unit_key": "?:§11", "para": "§11"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16367, "end": 16375, "start_line": 346, "head": "1974 10", "klass": "noise", "unit_key": "noise@16367"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16375, "end": 16383, "start_line": 348, "head": "7. jan.", "klass": "provision", "unit_key": "?:§11", "para": "§11"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16383, "end": 16871, "start_line": 349, "head": "Forskrifter for transport med sivilt luf", "klass": "forskrift", "unit_key": "?:forskrift:37"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 16871, "end": 17395, "start_line": 356, "head": "§ 1. Disse forskrifter gjelder for trans", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17395, "end": 17397, "start_line": 366, "head": "§", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17397, "end": 17399, "start_line": 367, "head": "2", "klass": "noise", "unit_key": "noise@17397"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17399, "end": 17748, "start_line": 368, "head": "Farlige stoffer skal transporteres i sam", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17748, "end": 17750, "start_line": 374, "head": "§", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17750, "end": 17752, "start_line": 375, "head": "3", "klass": "noise", "unit_key": "noise@17750"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17752, "end": 17852, "start_line": 376, "head": "Med farlige stoffer forstås de stoffer s", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17852, "end": 17854, "start_line": 378, "head": "§", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17854, "end": 17856, "start_line": 379, "head": "4", "klass": "noise", "unit_key": "noise@17854"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 17856, "end": 18216, "start_line": 380, "head": "Luftfartsdirektoratet bistår med suppler", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 18216, "end": 18218, "start_line": 386, "head": "§", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 18218, "end": 18220, "start_line": 387, "head": "5", "klass": "noise", "unit_key": "noise@18218"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 18220, "end": 18522, "start_line": 388, "head": "Luftfartsdirektoratet kan i samråd med n", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 18522, "end": 18524, "start_line": 394, "head": "§", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 18524, "end": 18529, "start_line": 395, "head": "6 11", "klass": "noise", "unit_key": "noise@18524"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 18529, "end": 18812, "start_line": 397, "head": "§ 7. Disse forskrifter trer i kraft stra", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 18812, "end": 19092, "start_line": 402, "head": "Forskrifter om beriktigelse av stempelav", "klass": "forskrift", "unit_key": "?:forskrift:45"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 19092, "end": 19930, "start_line": 407, "head": "§ 1. Fonds- og aksjemeglere som formidle", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 19930, "end": 20569, "start_line": 422, "head": "§ 2. Fonds- og aksjemeglere skal betale", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 20569, "end": 20574, "start_line": 434, "head": "1974", "klass": "noise", "unit_key": "noise@20569"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 20574, "end": 20588, "start_line": 435, "head": "7. jan 8. jan", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 20588, "end": 20596, "start_line": 437, "head": "1974 12", "klass": "noise", "unit_key": "noise@20588"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 20596, "end": 20850, "start_line": 439, "head": "§ 3. Av avgiftsbeløp som betales etter f", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 20850, "end": 20981, "start_line": 443, "head": "§ 4. Direktoratet for toll og særavgifte", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 20981, "end": 21050, "start_line": 445, "head": "§ 5. Disse forskrifter trer i kraft med", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 21050, "end": 21246, "start_line": 446, "head": "Forskrifter for fabrikkmessig framstilli", "klass": "forskrift", "unit_key": "?:forskrift:51"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 21246, "end": 22283, "start_line": 450, "head": "§ 1. For bedrifter som driver eller ønsk", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 22283, "end": 22411, "start_line": 470, "head": "§ 2. Bedrift som framstiller betongvarer", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 22411, "end": 22414, "start_line": 472, "head": "13", "klass": "noise", "unit_key": "noise@22411"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 22414, "end": 23077, "start_line": 473, "head": "Bedriftens tekniske personell skal ha de", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 23077, "end": 23329, "start_line": 484, "head": "§ 3. Kontrollrådet kan gi nærmere bestem", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 23329, "end": 23464, "start_line": 488, "head": "§ 4. For godkjenning og kontroll etter d", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 23464, "end": 23642, "start_line": 490, "head": "§ 5. Disse forskrifter trer i kraft 1. f", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 23642, "end": 23890, "start_line": 493, "head": "Endringer i forskrifter om gjennomføring", "klass": "forskrift", "unit_key": "?:forskrift:57"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 23890, "end": 24046, "start_line": 498, "head": "I Finansdepartementets forskrifter om gj", "klass": "amend_scope", "unit_key": "?:op58", "instrument": "forskrift", "target_cite": "Finansdepartementets forskrifter om gjennomføringen av avgiftsfritaket for tidsskrifter av 5. april 1972 med senere endringer"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 24046, "end": 24342, "start_line": 501, "head": "§ 3 skal lyde: § 3. Et tidsskrift blir a", "klass": "amend_op", "unit_key": "?:op59", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "Finansdepartementets forskrifter om gjennomføringen av avgiftsfritaket for tidsskrifter av 5. april 1972 med senere endringer"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 24342, "end": 24347, "start_line": 507, "head": "1974", "klass": "noise", "unit_key": "noise@24342"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 24347, "end": 24362, "start_line": 508, "head": "8. jan. 9. jan", "klass": "amend_op", "unit_key": "?:op59", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "Finansdepartementets forskrifter om gjennomføringen av avgiftsfritaket for tidsskrifter av 5. april 1972 med senere endringer"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 24362, "end": 24370, "start_line": 510, "head": "1974 14", "klass": "noise", "unit_key": "noise@24362"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 24370, "end": 24701, "start_line": 512, "head": "Ved fastsettelse av medlemsandelen (det", "klass": "amend_op", "unit_key": "?:op59", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "Finansdepartementets forskrifter om gjennomføringen av avgiftsfritaket for tidsskrifter av 5. april 1972 med senere endringer"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 24701, "end": 25696, "start_line": 519, "head": "§ 7 skal lyde: § 7. Et trykkeri kan innt", "klass": "amend_op", "unit_key": "?:op60", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "Finansdepartementets forskrifter om gjennomføringen av avgiftsfritaket for tidsskrifter av 5. april 1972 med senere endringer"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 25696, "end": 26221, "start_line": 537, "head": "Forskrifter om pliktmessig avhold fra al", "klass": "forskrift", "unit_key": "?:forskrift:61"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 26221, "end": 26224, "start_line": 548, "head": "15", "klass": "noise", "unit_key": "noise@26221"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 26224, "end": 26489, "start_line": 549, "head": "Televerkets tjenestemenn når de utfører", "klass": "forskrift", "unit_key": "?:forskrift:61"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 26489, "end": 27513, "start_line": 554, "head": "Forskrift om at det skal innhentes oppgå", "klass": "forskrift", "unit_key": "?:forskrift:62"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 27513, "end": 28260, "start_line": 571, "head": "Forskrift om at det skal utføres en unde", "klass": "forskrift", "unit_key": "?:forskrift:63"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 28260, "end": 28265, "start_line": 583, "head": "1974", "klass": "noise", "unit_key": "noise@28260"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 28265, "end": 28290, "start_line": 584, "head": "10. jan 10. jan 10. jan.", "klass": "forskrift", "unit_key": "?:forskrift:63"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 28290, "end": 28298, "start_line": 587, "head": "1974 16", "klass": "noise", "unit_key": "noise@28290"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 28298, "end": 28694, "start_line": 589, "head": "10. jan. regnet hagebruk under glass/pla", "klass": "forskrift", "unit_key": "?:forskrift:63"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 28694, "end": 29484, "start_line": 597, "head": "Forskrift om at det skal holdes en bedri", "klass": "forskrift", "unit_key": "?:forskrift:64"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 29484, "end": 30385, "start_line": 610, "head": "Sammenslåing av Havne-, Fyr- og Losdirek", "klass": "kunngjoring", "unit_key": "?:kunngjoring:65"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 30385, "end": 30388, "start_line": 627, "head": "17", "klass": "noise", "unit_key": "noise@30385"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 30388, "end": 30820, "start_line": 628, "head": "ningene for Statens havnevesen og for Fy", "klass": "kunngjoring", "unit_key": "?:kunngjoring:65"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 30820, "end": 31171, "start_line": 635, "head": "Delegasjon av myndighet til Fiskeridepar", "klass": "delegering", "unit_key": "?:delegering:66"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 31171, "end": 32114, "start_line": 645, "head": "F orskrifter om fiske med småmasket flyt", "klass": "forskrift", "unit_key": "?:forskrift:67"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 32114, "end": 32119, "start_line": 664, "head": "1974", "klass": "noise", "unit_key": "noise@32114"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 32119, "end": 32144, "start_line": 665, "head": "10. jan. 11. jan. 11.jan", "klass": "forskrift", "unit_key": "?:forskrift:67"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 32144, "end": 32152, "start_line": 668, "head": "1974 18", "klass": "noise", "unit_key": "noise@32144"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 32152, "end": 32161, "start_line": 670, "head": "11. jan.", "klass": "forskrift", "unit_key": "?:forskrift:67"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 32161, "end": 32533, "start_line": 671, "head": "Forskrifter om regulering av fiske ved F", "klass": "forskrift", "unit_key": "?:forskrift:68"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 32533, "end": 32980, "start_line": 677, "head": "§ 1. Ingen må drive fiske i det område s", "klass": "provision", "unit_key": "?:§1", "para": "§1"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 32980, "end": 33140, "start_line": 686, "head": "§ 2. Enhver som driver fiske i det områd", "klass": "provision", "unit_key": "?:§2", "para": "§2"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 33140, "end": 33384, "start_line": 689, "head": "§ 3. Fiskeridirektøren kan forby ethvert", "klass": "provision", "unit_key": "?:§3", "para": "§3"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 33384, "end": 33777, "start_line": 693, "head": "§ 4. Disse forskrifter gjelder for farva", "klass": "provision", "unit_key": "?:§4", "para": "§4"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 33777, "end": 33865, "start_line": 699, "head": "§ 5. Fiskeridirektøren kan gi nærmere fo", "klass": "provision", "unit_key": "?:§5", "para": "§5"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 33865, "end": 33944, "start_line": 701, "head": "§ 6. Det er forbudt å drive fiske med tr", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 33944, "end": 33947, "start_line": 703, "head": "19", "klass": "noise", "unit_key": "noise@33944"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 33947, "end": 34982, "start_line": 704, "head": "Underområde 1: 8 nautiske mil utenfor fi", "klass": "provision", "unit_key": "?:§6", "para": "§6"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 34982, "end": 35025, "start_line": 733, "head": "§ 7. Disse forskrifter trer i kaft strak", "klass": "provision", "unit_key": "?:§7", "para": "§7"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35025, "end": 35273, "start_line": 734, "head": "Opprettelse av et midlertidig oljeforsyn", "klass": "kunngjoring", "unit_key": "?:kunngjoring:76"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35273, "end": 35278, "start_line": 739, "head": "1974", "klass": "noise", "unit_key": "noise@35273"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35278, "end": 35294, "start_line": 740, "head": "11.jan 11. jan.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:76"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35294, "end": 35302, "start_line": 742, "head": "1974 20", "klass": "noise", "unit_key": "noise@35294"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35302, "end": 35311, "start_line": 744, "head": "11. jan.", "klass": "kunngjoring", "unit_key": "?:kunngjoring:76"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35311, "end": 35620, "start_line": 745, "head": "Endring i forskrifter om regulering av b", "klass": "forskrift", "unit_key": "?:forskrift:77"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35620, "end": 35740, "start_line": 751, "head": "I Kronprinsregentens resolusjon av 15. f", "klass": "amend_scope", "unit_key": "?:op78", "instrument": "forskrift", "target_cite": "Kronprinsregentens resolusjon av 15. februar 1957 om regulering av byggevirksomheten"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35740, "end": 35834, "start_line": 753, "head": "§ 2 A. Punkt 9. Bygg som skal nyttes som", "klass": "amend_op", "unit_key": "?:op79", "op_kind": "set_text", "instrument": "forskrift", "target_cite": "Kronprinsregentens resolusjon av 15. februar 1957 om regulering av byggevirksomheten"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 35834, "end": 36006, "start_line": 756, "head": "Punkt 11 b og c (nye). b) Sykeavdelinger", "klass": "amend_op", "unit_key": "?:op80", "op_kind": "insert", "instrument": "forskrift", "target_cite": "Kronprinsregentens resolusjon av 15. februar 1957 om regulering av byggevirksomheten"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 36006, "end": 36317, "start_line": 760, "head": "Punkt 13 (ny). Lokaler spesielt beregnet", "klass": "amend_op", "unit_key": "?:op81", "op_kind": "insert", "instrument": "forskrift", "target_cite": "Kronprinsregentens resolusjon av 15. februar 1957 om regulering av byggevirksomheten"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 36317, "end": 36383, "start_line": 766, "head": "Punkt 14 (ny). Bygg for kraftstasjoner o", "klass": "amend_op", "unit_key": "?:op82", "op_kind": "insert", "instrument": "forskrift", "target_cite": "Kronprinsregentens resolusjon av 15. februar 1957 om regulering av byggevirksomheten"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 36383, "end": 36422, "start_line": 768, "head": "Disse forskrifter trer i kraft straks.", "klass": "in_force", "unit_key": "?:in_force:83"}
+{"issue_id": "fe31812c4f574e9a07b73fa9d88e2b2e", "start": 36422, "end": 36489, "start_line": 769, "head": "Grøndahl & Søn. Oslo. 1. 74. I II Utgive", "klass": "colophon", "unit_key": "?:colophon:84"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 0, "end": 136, "start_line": 0, "head": "751 Norsk lovtidend Avd. I. Lover og sen", "klass": "front_matter", "unit_key": "?:front_matter:0"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 136, "end": 1463, "start_line": 5, "head": "Endring i forskrifter om vegnormaler. Fa", "klass": "forskrift", "unit_key": "?:forskrift:1"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 1463, "end": 1472, "start_line": 31, "head": "1978 752", "klass": "noise", "unit_key": "noise@1463"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 1472, "end": 1480, "start_line": 33, "head": "23. okt", "klass": "forskrift", "unit_key": "?:forskrift:1"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 1480, "end": 3406, "start_line": 34, "head": "Forskrifter om krav til drikkevannsanleg", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 3406, "end": 3410, "start_line": 70, "head": "753", "klass": "noise", "unit_key": "noise@3406"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 3410, "end": 5283, "start_line": 71, "head": "§ 3 (Kapasitet) Drikkevannsanlegget skal", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 5283, "end": 5288, "start_line": 107, "head": "1978", "klass": "noise", "unit_key": "noise@5283"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 5288, "end": 5296, "start_line": 108, "head": "23. okt", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 5296, "end": 5300, "start_line": 109, "head": "754", "klass": "noise", "unit_key": "noise@5296"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 5300, "end": 6997, "start_line": 110, "head": "23. okt. § 10 (Om beskyttelse av rørende", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 6997, "end": 7001, "start_line": 142, "head": "755", "klass": "noise", "unit_key": "noise@6997"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 7001, "end": 8830, "start_line": 143, "head": "§ 16 (Drikkevann hentet fra land) Når de", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 8830, "end": 8835, "start_line": 180, "head": "1978", "klass": "noise", "unit_key": "noise@8830"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 8835, "end": 8843, "start_line": 181, "head": "23. okt", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 8843, "end": 8847, "start_line": 182, "head": "756", "klass": "noise", "unit_key": "noise@8843"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 8847, "end": 11072, "start_line": 183, "head": "Vannmengdemåler 23. okt. Eventuelt annet", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 11072, "end": 11076, "start_line": 223, "head": "757", "klass": "noise", "unit_key": "noise@11072"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 11076, "end": 13290, "start_line": 224, "head": "2. Beholder for hypoklarittoppløsning sk", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 13290, "end": 13299, "start_line": 263, "head": "1978 758", "klass": "noise", "unit_key": "noise@13290"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 13299, "end": 14893, "start_line": 265, "head": "4. De apparatdeler som kommer i berøring", "klass": "forskrift", "unit_key": "?:forskrift:2"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 14893, "end": 15395, "start_line": 296, "head": "Forskrifter om meldeplikt for visse bivi", "klass": "forskrift", "unit_key": "?:forskrift:3"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 15395, "end": 15399, "start_line": 306, "head": "759", "klass": "noise", "unit_key": "noise@15395"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 15399, "end": 15712, "start_line": 307, "head": "B. Bivirkninger som har gitt varige alvo", "klass": "forskrift", "unit_key": "?:forskrift:3"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 15712, "end": 16207, "start_line": 314, "head": "Endring i forskrifter om bygging av pass", "klass": "forskrift", "unit_key": "?:forskrift:4"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 16207, "end": 16713, "start_line": 323, "head": "Endring i forskrifter om bygging av last", "klass": "forskrift", "unit_key": "?:forskrift:5"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 16713, "end": 17226, "start_line": 332, "head": "Unntak fra forskrifter om prisstopp. Tur", "klass": "forskrift", "unit_key": "?:forskrift:6"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 17226, "end": 17230, "start_line": 348, "head": "760", "klass": "noise", "unit_key": "noise@17226"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 17230, "end": 17239, "start_line": 349, "head": "17. nov.", "klass": "forskrift", "unit_key": "?:forskrift:6"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 17239, "end": 18053, "start_line": 350, "head": "Forskrifter om regulering av fiske etter", "klass": "forskrift", "unit_key": "?:forskrift:7"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 18053, "end": 18681, "start_line": 366, "head": "Endring i forskrifter om fravikelse av v", "klass": "forskrift", "unit_key": "?:forskrift:8"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 18681, "end": 18685, "start_line": 384, "head": "761", "klass": "noise", "unit_key": "noise@18681"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 18685, "end": 18924, "start_line": 385, "head": "Lov om endring i lov av 11. juni 1971 nr", "klass": "enactment_heading", "unit_key": "?:enactment_heading:9", "datokode": ""}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 18924, "end": 19025, "start_line": 390, "head": "I lov av 11. juni 1971 nr. 56 om rettled", "klass": "amend_scope", "unit_key": "?:op10", "datokode": "", "instrument": "lov", "target_cite": "lov av 11. juni 1971 nr. 56 om rettledningstjenesten i fiskeri næringen", "target": "1971-06-11-56"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 19025, "end": 19771, "start_line": 392, "head": "§ 5 skal lyde: Vedkommende kommunestyre", "klass": "amend_op", "unit_key": "?:op11", "para": "§5", "op_kind": "set_text", "datokode": "", "instrument": "lov", "target_cite": "lov av 11. juni 1971 nr. 56 om rettledningstjenesten i fiskeri næringen", "target": "1971-06-11-56"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 19771, "end": 20051, "start_line": 406, "head": "§ 8 skal lyde: Fiskerisjefen ansettes av", "klass": "amend_op", "unit_key": "?:op12", "para": "§8", "op_kind": "set_text", "datokode": "", "instrument": "lov", "target_cite": "lov av 11. juni 1971 nr. 56 om rettledningstjenesten i fiskeri næringen", "target": "1971-06-11-56"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 20051, "end": 20068, "start_line": 412, "head": "§ 9 oppheves. II", "klass": "amend_op", "unit_key": "?:op13", "para": "§9", "op_kind": "repeal", "datokode": "", "instrument": "lov", "target_cite": "lov av 11. juni 1971 nr. 56 om rettledningstjenesten i fiskeri næringen", "target": "1971-06-11-56"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 20068, "end": 20099, "start_line": 414, "head": "Denne lov trer i kraft straks.", "klass": "in_force", "unit_key": "?:in_force:14", "datokode": ""}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 20099, "end": 20318, "start_line": 415, "head": "Ikrafttredelse av lov av 21. april 1978", "klass": "ikrafttredelse", "unit_key": "?:ikrafttredelse:15"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 20318, "end": 20323, "start_line": 419, "head": "1978", "klass": "noise", "unit_key": "noise@20318"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 20323, "end": 20348, "start_line": 420, "head": "24. nov. Nr. 76 24. nov.", "klass": "ikrafttredelse", "unit_key": "?:ikrafttredelse:15"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 20348, "end": 20357, "start_line": 423, "head": "762 1978", "klass": "noise", "unit_key": "noise@20348"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 20357, "end": 22177, "start_line": 425, "head": "Forskrifter for tildeling av konsesjon f", "klass": "forskrift", "unit_key": "?:forskrift:16"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 22177, "end": 22181, "start_line": 461, "head": "763", "klass": "noise", "unit_key": "noise@22177"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 22181, "end": 23644, "start_line": 462, "head": "§ 6 Til konsesjonen kan knyttes vilkår,", "klass": "forskrift", "unit_key": "?:forskrift:16"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 23644, "end": 23649, "start_line": 493, "head": "1978", "klass": "noise", "unit_key": "noise@23644"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 23649, "end": 23658, "start_line": 494, "head": "24. nov.", "klass": "forskrift", "unit_key": "?:forskrift:16"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 23658, "end": 23667, "start_line": 495, "head": "1978 764", "klass": "noise", "unit_key": "noise@23658"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 23667, "end": 23676, "start_line": 497, "head": "24. nov.", "klass": "forskrift", "unit_key": "?:forskrift:16"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 23676, "end": 24369, "start_line": 498, "head": "Endring i midl. forskrifter om regulerin", "klass": "forskrift", "unit_key": "?:forskrift:17"}
+{"issue_id": "84ecb66daaba9a0c7aa02fc792a1dd03", "start": 24369, "end": 24412, "start_line": 512, "head": "Utgi ver: Statsministerens kontor 765 *", "klass": "colophon", "unit_key": "?:colophon:18"}
