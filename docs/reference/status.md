@@ -3,7 +3,7 @@
 
 **Convergence: 72.6%** (OCR-calibrated) &nbsp;·&nbsp; 602/829
 statutory dev-set provisions &nbsp;·&nbsp; **62.0%** at the strict ≥98% bar
-&nbsp;·&nbsp; anti-gaming guards **PASS** &nbsp;·&nbsp; as of 2026-10-18.
+&nbsp;·&nbsp; anti-gaming guards **PASS** &nbsp;·&nbsp; as of 2026-10-25.
 
 ## What this number means
 
