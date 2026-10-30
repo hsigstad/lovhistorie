@@ -1,5 +1,26 @@
 # Todo
 
+- **FRIDAY SEGMENTATION — 2026-10-30 session (GIANTS):** Tier-1 is DONE; the 91 Tier-2 giants
+  (8,889 markers ≈ 47% of all remaining amendment coverage) are the only lever left. Validated the
+  giant chunk-stitch loop end-to-end on `bc9cc206` (10 chunks, 0 misses, gates pass → 637 issues),
+  then launched 6 concurrent workflows over the 30 densest giants (~1,186 chunks). **Hit the weekly
+  spend cap at ~21% (251/1,186 chunks done).** Salvaged the 2 giants whose every chunk landed —
+  `be0218598856` (110mk) + `f180c69351ed` (78mk) — folded clean, both --diff gates pass → **639 issues**
+  committed. Corpus is now **52 MB (over GitHub's 50 MB soft warning — consider git-LFS or external
+  storage soon).**
+  - **RESUME (cheap — only re-run the missing chunks; 174 completed chunks are banked on disk under
+    `scratchpad/seg_g*/out/`, which is in-repo persistent disk, NOT /tmp):** for each partial giant,
+    `python scratchpad/prep_giants.py` already wrote its `wf_units.json`; re-launch `burn_workflow.js`
+    with a compact spec `[{dir,iid,n}]` — subagents skip chunks whose `out/<iid>_<cidx>.json` exists?
+    NO: the workflow re-runs every unit, so to avoid re-paying, filter the spec to missing cidx only
+    (or just let assemble defer until complete). Partial giants awaiting tail chunks:
+    g0 `126d0417` 40/44 (634mk) · g5 `7530e26d` 41/47 (437mk) · g10 `38881a37` 46/55 (238mk) ·
+    g15 `c2098e2d` 35/39 (207mk) · g21 `efa991eb` 5/28 (106mk) · g26 `6c090474` 7/36 (72mk).
+  - **Also pre-staged, never launched:** giants 31–60 prepped into `scratchpad/seg_g30..59/` (+ the
+    low-density tail g60–90 unprepped). Driver scripts: `scratchpad/{prep_giants,burn_workflow,assemble_results}.py/js`.
+  - **NOTE for next run:** cost ran ~115k tokens/chunk; the full 91-giant burn is ~2,352 chunks ≈ 270M
+    tokens — budget across multiple weekly windows, folding+committing each complete giant as it lands.
+
 - **FRIDAY SEGMENTATION — 2026-10-23/24 session:** corpus 384 -> 636 issues (+252) across 7 sequential
   batches (384->514) + a 5-concurrent-workflow parallel burn (514->636); ~30M+ subagent tokens.
   Finished the whole Tier-1 band (skal_lyde 22 down to 5) and a big chunk of Tier-3 (down to skal_lyde
