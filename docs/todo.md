@@ -21,6 +21,13 @@
   - **NOTE for next run:** cost ran ~115k tokens/chunk; the full 91-giant burn is ~2,352 chunks ≈ 270M
     tokens — budget across multiple weekly windows, folding+committing each complete giant as it lands.
 
+- **EIVIND HANDOFF — ACTIVE (2026-10-30):** Eivind is helping segment giants on his own Claude quota.
+  Self-contained agent-followable instructions: `docs/notes/eivind_segmentation_handoff.md` (clone +
+  restore `lovtidend_text.tar.gz` from `bi-dropbox:pipelines/lovhistorie/` + install hooks + run the
+  loop). **Division: Henrik owns giants ranked 0–29; Eivind owns ranks 30+** (prep script skips
+  Henrik's top-30 automatically, so no collision). OCR tarball is dated 2026-08-12 — Eivind's agent
+  verifies it holds his giants after restore. Email drafted to him 2026-10-30.
+
 - **FRIDAY SEGMENTATION — 2026-10-23/24 session:** corpus 384 -> 636 issues (+252) across 7 sequential
   batches (384->514) + a 5-concurrent-workflow parallel burn (514->636); ~30M+ subagent tokens.
   Finished the whole Tier-1 band (skal_lyde 22 down to 5) and a big chunk of Tier-3 (down to skal_lyde
