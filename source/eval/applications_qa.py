@@ -87,12 +87,13 @@ def report(path: Path = APPS) -> dict:
 
 
 def _head_file():
+    from source.eval.classification_qa import _resolve_lfs
     r = subprocess.run(["git", "-C", str(_REPO), "show", "HEAD:data/applications.jsonl"],
                        capture_output=True, text=True)
     if r.returncode != 0:
         return None
     f = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False, encoding="utf-8")
-    f.write(r.stdout)
+    f.write(_resolve_lfs(r.stdout))
     f.close()
     return Path(f.name)
 

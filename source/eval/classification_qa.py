@@ -129,8 +129,33 @@ def report():
     return total
 
 
+_LFS_MAGIC = "version https://git-lfs.github.com/spec/v1"
+
+
+def _resolve_lfs(content: str) -> str:
+    """If `content` is a git-LFS pointer, return the real blob read straight from the
+    local LFS object store (.git/lfs/objects/aa/bb/<oid>). Reads the object directly so
+    the gate does not depend on the git-lfs binary being on the pre-commit hook's PATH;
+    right after a local commit the object is always present in the cache. Non-pointer
+    content (or an absent object) is returned unchanged."""
+    if not content.startswith(_LFS_MAGIC):
+        return content
+    oid = None
+    for line in content.splitlines():
+        if line.startswith("oid sha256:"):
+            oid = line.split(":", 1)[1].strip()
+            break
+    if not oid:
+        return content
+    obj = _REPO / ".git" / "lfs" / "objects" / oid[:2] / oid[2:4] / oid
+    if obj.exists():
+        return obj.read_text(encoding="utf-8")
+    return content
+
+
 def _git_head_version(repo_path: str):
-    """Write HEAD:<repo_path> to a temp file; None if the path isn't in HEAD yet."""
+    """Write HEAD:<repo_path> to a temp file; None if the path isn't in HEAD yet.
+    Transparently resolves a git-LFS pointer to its real content."""
     import subprocess
     import tempfile
     r = subprocess.run(["git", "-C", str(_REPO), "show", f"HEAD:{repo_path}"],
@@ -138,7 +163,7 @@ def _git_head_version(repo_path: str):
     if r.returncode != 0:
         return None
     tf = tempfile.NamedTemporaryFile("w", suffix=Path(repo_path).suffix, delete=False, encoding="utf-8")
-    tf.write(r.stdout); tf.close()
+    tf.write(_resolve_lfs(r.stdout)); tf.close()
     return tf.name
 
 
