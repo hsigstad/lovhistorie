@@ -1,11 +1,20 @@
 # Todo
 
 - **FRIDAY SEGMENTATION — 2026-11-20 session (GIANTS, git-LFS gate RESOLVED):** Burned the whole missing
-  cidx set across all 21 Henrik giants — 8 concurrent `burn_shard.js` shards → **banked ~315 new chunks
-  (739 → 424 missing)**, hit the weekly cap. **0 giants folded this week** (none crossed the finish line —
-  the tail 1-2 chunks of nearly-done giants kept dying on rate-limit/spend-limit), so **corpus stays 645
-  issues**. But almost every giant is now past halfway, several 1-8 chunks short — next week's first wave
-  should complete many early.
+  cidx set across all 21 Henrik giants — 8 concurrent `burn_shard.js` shards → **banked ~473 chunks
+  (739 → 266 missing)**, hit the weekly cap. **Corpus stays 645 issues** — g8 `17055e0a` reached 39/39
+  but its fold is **gate-blocked** (see below); every other giant is 1-16 chunks short.
+  - **⚠ MISPLACED-OUTPUT BUG (recovered):** some subagents wrote their chunk to `seg_g<N>/out/` **relative
+    to the repo root** instead of the absolute `scratchpad/seg_g<N>/out/` path in the prompt. 158 valid
+    chunks were sitting in root-level `seg_g*/` dirs, uncounted. Merged them into scratchpad (preferring
+    the valid copy where the scratchpad one was an empty 15-byte file), then removed the root dirs. Next
+    week: after any burn, also sweep `seg_g*/out` at repo root, or harden `burn_shard.js` to `cd` / assert
+    the absolute outfile path before writing.
+  - **⚠ g8 `17055e0a` fold GATE-BLOCKED:** all 39 chunks present & valid, but `segments_quality --diff`
+    rejects the fold — base `1958-12-12-10` regresses **0.639 → 0.486** (one g8 chunk mis-segments content
+    touching that 1958 law's base). `classification_qa` passes (+718 target rows). NOT folded; working tree
+    restored. Next session: diff which g8 chunk introduces `1958-12-12-10` base segments, fix/drop it, then
+    re-fold. Do NOT force past the gate.
   - **✅ git-LFS gate CLEARED (Henrik: forward-only LFS):** `data/segments.jsonl` is now git-LFS-tracked
     (commit `f54c743`, pushed). Folds past GitHub's 100 MB limit are unblocked — new versions store as LFS
     pointers. The pre-commit `--diff` gate helpers (`_git_head_version` in `classification_qa`, `_head_file`
@@ -19,15 +28,17 @@
     `assemble_results.py <dir>` + `fold_append fold` each COMPLETE giant, gate + commit per giant (now
     LFS-backed). ⚠ `burn_shard.js` reports `ok:true` when an agent *returns*, NOT when the out file lands —
     always recompute missing from disk (`wf_units.json` cidx minus present `out/<iid>_<cidx>.json`), never
-    trust the workflow result array. The 21 partial giants (densest first, banked/total; **424 missing**):
-    seg_g1 `af1db44a` 573mk 34/35 · seg_g2 `9f63b3ac` 540mk 16/47 · seg_g3 `1b3fa975` 499mk 15/42
-    seg_g4 `365712be` 457mk 14/48 · seg_g6 `0e7d8748` 269mk 22/43 · seg_g7 `2b211353` 267mk 10/54
-    seg_g8 `17055e0a` 244mk 33/39 · seg_g9 `15ada757` 242mk 7/52 · seg_g11 `a1014507` 238mk 1/55
+    trust the workflow result array, and recompute with a validity check (a 15-byte `{"segments":[]}` is
+    NOT a done chunk). The 21 partial giants (densest first, banked/total; **266 missing**, post-merge):
+    seg_g1 `af1db44a` 573mk 34/35 · seg_g2 `9f63b3ac` 540mk 41/47 · seg_g3 `1b3fa975` 499mk 37/42
+    seg_g4 `365712be` 457mk 39/48 · seg_g6 `0e7d8748` 269mk 40/43 · seg_g7 `2b211353` 267mk 39/54
+    seg_g8 `17055e0a` 244mk 39/39 (GATE-BLOCKED) · seg_g9 `15ada757` 242mk 39/52 · seg_g11 `a1014507` 238mk 2/55
     seg_g12 `0ffb6620` 238mk 25/41 · seg_g13 `d9f99fdc` 229mk 24/26 · seg_g14 `0fdfc472` 222mk 26/33
     seg_g16 `10d016a8` 206mk 6/42 · seg_g17 `603ec326` 202mk 26/33 · seg_g18 `251f4d17` 186mk 23/28
     seg_g19 `d8096f88` 130mk 1/41 · seg_g22 `01bb41a0` 93mk 28/33 · seg_g23 `156dda59` 84mk 24/32
     seg_g24 `50bfa67b` 81mk 17/28 · seg_g27 `4d0d9da3` 72mk 26/34 · seg_g28 `f9f3d1dd` 71mk 22/38
-    Closest to foldable: g1 (1), g13 (2), g18/g22 (5), g8 (6), g14/g17 (7), g23/g27 (8).
+    Closest to foldable next week: g1 (1 miss), g13 (2), g6 (3), g3/g18/g22 (5), g2 (6), g14/g17 (7),
+    g23/g27 (8) — several giants per shard should complete in the first wave. (g8 needs the gate fix first.)
 
 - **FRIDAY SEGMENTATION — 2026-10-30 session (GIANTS):** Tier-1 is DONE; the 91 Tier-2 giants
   (8,889 markers ≈ 47% of all remaining amendment coverage) are the only lever left. Validated the
