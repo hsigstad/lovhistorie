@@ -32,6 +32,17 @@ densest giants (ranks 0–29); **your block is the rest** (see step 3). No overl
 4. **Install the commit gates** (git hooks are not cloned):
    `python -m source.eval.install_hooks`  — writes `.git/hooks/pre-commit` (runs
    `classification_qa --diff` then `segments_quality --diff`; blocks any degrading commit).
+5. **git-LFS (REQUIRED since 2026-11-20).** `data/segments.jsonl` is now git-LFS-tracked (it crosses
+   GitHub's 100 MB limit). You MUST have git-lfs installed, or your clone's working tree will contain
+   a tiny pointer file instead of the real JSONL and both the gates and the pipeline will break:
+   ```bash
+   git lfs install        # one-time, enables the smudge/clean filters in this repo
+   git lfs pull           # fetch the real segments.jsonl blob
+   head -c 60 data/segments.jsonl   # sanity: must be JSON ({"issue_id": ...), NOT "version https://git-lfs..."
+   ```
+   If `git lfs` is missing, install it (`apt install git-lfs`, `brew install git-lfs`, or drop the
+   static binary from github.com/git-lfs/git-lfs/releases into your PATH). When you fold a complete
+   giant and commit, the new `segments.jsonl` version is stored as an LFS pointer automatically.
 
 Read `CLAUDE.md` (the "Pipeline map") and `docs/notes/friday_segmentation_worklist.md` for context.
 The canonical loop is: **`fold_append prepare` → one subagent per chunk → `fold_append fold` →

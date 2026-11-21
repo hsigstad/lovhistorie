@@ -1,5 +1,29 @@
 # Done
 
+## 2026-11-20 — Friday segmentation (giants): git-LFS gate cleared; +315 chunks banked, 0 folded (645 holds)
+
+Friday quota burn + the long-flagged git-LFS blocker finally resolved. No corpus growth this week
+(no giant completed), but the fold path is now permanently unblocked and progress is banked.
+
+- **git-LFS migration (Henrik approved forward-only).** `data/segments.jsonl` crosses GitHub's 100 MB
+  hard push limit once the giants fold in. Installed git-lfs **v3.5.1 to `~/.local/bin`** (not system;
+  Educloud has no git-lfs), `git lfs track data/segments.jsonl`, committed+pushed (`f54c743`, 66 MB
+  object → GitHub LFS). No history rewrite — old <100 MB blobs stay; future versions are LFS pointers.
+  Patched the pre-commit `--diff` gate helpers (`classification_qa._git_head_version`,
+  `applications_qa._head_file`) to resolve an LFS pointer by reading `.git/lfs/objects/` directly, so the
+  gate baseline doesn't depend on the git-lfs binary being on the hook PATH. Round-trip verified
+  (gate reads 14540 from the 133-byte pointer baseline). `applications.jsonl` left non-LFS (1.9 MB).
+- **Burn: 8 concurrent `burn_shard.js` shards over all 21 Henrik giants, missing-cidx-only spec.**
+  Banked **~315 new chunks (739 → 424 missing)** before the weekly cap; ~2,900 giant chunks' worth of
+  subagent tokens (8 shards × ~7 M). Durable under `scratchpad/seg_g*/out/`.
+- **0 giants folded.** None crossed the finish line: the last 1-2 chunks of nearly-complete giants kept
+  dying on server-side 429 / monthly-spend-limit errors right at the end. Corpus **stays 645 issues.**
+  Most giants are now past halfway though — g1 34/35, g13 24/26, g8 33/39, g18 23/28, g22 28/33 — so
+  next week's first wave should complete several early. Resume pointer refreshed in `todo.md`
+  (+ `scratchpad/burn_spec_resume.json` holds the missing-only spec).
+- **Caveat logged:** `burn_shard.js` reports `ok:true` when an agent *returns*, not when its out file
+  actually lands — always recompute missing from disk, never trust the workflow result array.
+
 ## 2026-11-06/07 — Friday segmentation (giants): +3 giants to 645 issues, 21 banked-partial for next week
 
 Resumed the Tier-2 **giant** burn (Henrik owns ranks 0-29; Eivind owns 30+). Folded 3 giants and

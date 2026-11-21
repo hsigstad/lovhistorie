@@ -1,26 +1,33 @@
 # Todo
 
-- **FRIDAY SEGMENTATION — 2026-11-06/07 session (GIANTS, cheap-resume primitive built):** Folded 3 giants
-  → **corpus 645 issues, Henrik's block 9/30 giants done** (see done.md). Built `scratchpad/burn_shard.js`:
-  compact per-giant spec `[{dir,iid,cidxs}]`, runs **only missing cidx** (banked chunks never re-paid).
-  8 concurrent shards fired over all 21 remaining Henrik giants; **hit the weekly cap mid-burn** (~85
-  partial chunks + g26 completed banked). Server-side 429s cap useful fan-out at ~8 workflows.
-  - **RESUME next week (CHEAP — only the missing cidx; 85 chunks already banked on disk under
-    `scratchpad/seg_g*/out/`):** for each partial dir, rebuild its compact spec = `wf_units.json` cidx
-    minus present `out/<iid>_<cidx>.json`, then re-fire `burn_shard.js` (shard across ~8 workflows),
-    `assemble_results.py` + `fold_append fold` each COMPLETE giant, gate + commit per giant. The 21
-    partial Henrik giants (densest first, banked/total; **739 chunks still missing**):
-    seg_g1 `af1db44a` 573mk 21/35 · seg_g2 `9f63b3ac` 540mk 8/47 · seg_g3 `1b3fa975` 499mk 2/42
-    seg_g4 `365712be` 457mk 7/48 · seg_g6 `0e7d8748` 269mk 4/43 · seg_g7 `2b211353` 267mk 10/54
-    seg_g8 `17055e0a` 244mk 12/39 · seg_g9 `15ada757` 242mk 7/52 · seg_g11 `a1014507` 238mk 1/55
-    seg_g12 `0ffb6620` 238mk 3/41 · seg_g13 `d9f99fdc` 229mk 5/26 · seg_g14 `0fdfc472` 222mk 3/33
-    seg_g16 `10d016a8` 206mk 1/42 · seg_g17 `603ec326` 202mk 1/33 · seg_g18 `251f4d17` 186mk 0/28
-    seg_g19 `d8096f88` 130mk 0/41 · seg_g22 `01bb41a0` 93mk 0/33 · seg_g23 `156dda59` 84mk 0/32
-    seg_g24 `50bfa67b` 81mk 0/28 · seg_g27 `4d0d9da3` 72mk 0/34 · seg_g28 `f9f3d1dd` 71mk 0/38
-  - **⚠ git-LFS GATE before folding these:** `segments.jsonl` is **60 MB**; folding the 21 banked
-    partials crosses GitHub's **100 MB hard limit**. Migrate `data/segments.jsonl` to git-LFS (or external
-    storage) FIRST — needs Henrik's go-ahead (history rewrite). Burn (segment) is unaffected; only the
-    fold/commit/push is blocked by size.
+- **FRIDAY SEGMENTATION — 2026-11-20 session (GIANTS, git-LFS gate RESOLVED):** Burned the whole missing
+  cidx set across all 21 Henrik giants — 8 concurrent `burn_shard.js` shards → **banked ~315 new chunks
+  (739 → 424 missing)**, hit the weekly cap. **0 giants folded this week** (none crossed the finish line —
+  the tail 1-2 chunks of nearly-done giants kept dying on rate-limit/spend-limit), so **corpus stays 645
+  issues**. But almost every giant is now past halfway, several 1-8 chunks short — next week's first wave
+  should complete many early.
+  - **✅ git-LFS gate CLEARED (Henrik: forward-only LFS):** `data/segments.jsonl` is now git-LFS-tracked
+    (commit `f54c743`, pushed). Folds past GitHub's 100 MB limit are unblocked — new versions store as LFS
+    pointers. The pre-commit `--diff` gate helpers (`_git_head_version` in `classification_qa`, `_head_file`
+    in `applications_qa`) now resolve an LFS pointer by reading `.git/lfs/objects/`, so they don't need the
+    git-lfs binary on PATH. **git-lfs is installed at `~/.local/bin/git-lfs` (v3.5.1), NOT system-wide** —
+    any session that folds/commits/checks-out `segments.jsonl` must have `~/.local/bin` on PATH, or the
+    working tree gets pointers instead of JSONL. (See `reference_git_lfs_educloud` memory + Eivind handoff.)
+  - **RESUME next week (CHEAP — only the missing cidx; 400 chunks already banked under
+    `scratchpad/seg_g*/out/`, durable on Educloud disk):** `scratchpad/burn_spec_resume.json` already holds
+    the missing-only spec (regenerated this session). Shard it across ~8 `burn_shard.js` workflows, then
+    `assemble_results.py <dir>` + `fold_append fold` each COMPLETE giant, gate + commit per giant (now
+    LFS-backed). ⚠ `burn_shard.js` reports `ok:true` when an agent *returns*, NOT when the out file lands —
+    always recompute missing from disk (`wf_units.json` cidx minus present `out/<iid>_<cidx>.json`), never
+    trust the workflow result array. The 21 partial giants (densest first, banked/total; **424 missing**):
+    seg_g1 `af1db44a` 573mk 34/35 · seg_g2 `9f63b3ac` 540mk 16/47 · seg_g3 `1b3fa975` 499mk 15/42
+    seg_g4 `365712be` 457mk 14/48 · seg_g6 `0e7d8748` 269mk 22/43 · seg_g7 `2b211353` 267mk 10/54
+    seg_g8 `17055e0a` 244mk 33/39 · seg_g9 `15ada757` 242mk 7/52 · seg_g11 `a1014507` 238mk 1/55
+    seg_g12 `0ffb6620` 238mk 25/41 · seg_g13 `d9f99fdc` 229mk 24/26 · seg_g14 `0fdfc472` 222mk 26/33
+    seg_g16 `10d016a8` 206mk 6/42 · seg_g17 `603ec326` 202mk 26/33 · seg_g18 `251f4d17` 186mk 23/28
+    seg_g19 `d8096f88` 130mk 1/41 · seg_g22 `01bb41a0` 93mk 28/33 · seg_g23 `156dda59` 84mk 24/32
+    seg_g24 `50bfa67b` 81mk 17/28 · seg_g27 `4d0d9da3` 72mk 26/34 · seg_g28 `f9f3d1dd` 71mk 22/38
+    Closest to foldable: g1 (1), g13 (2), g18/g22 (5), g8 (6), g14/g17 (7), g23/g27 (8).
 
 - **FRIDAY SEGMENTATION — 2026-10-30 session (GIANTS):** Tier-1 is DONE; the 91 Tier-2 giants
   (8,889 markers ≈ 47% of all remaining amendment coverage) are the only lever left. Validated the
