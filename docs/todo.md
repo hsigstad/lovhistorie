@@ -1,6 +1,36 @@
 # Todo
 
-- **FRIDAY SEGMENTATION — 2026-11-20 session (GIANTS, git-LFS gate RESOLVED):** Burned the whole missing
+- **FRIDAY SEGMENTATION — 2026-11-27 session (DONE — Henrik's range EXHAUSTED):** Recomputed missing from
+  disk (`scratchpad/recompute_missing.py` — authoritative, validity-checked), then burned the whole
+  remaining seg_g0–g29 tail across **7 calibrated workflows** (each sized to complete, not get cut mid-run):
+  267 chunks, **0 agent errors**, ~35M subagent tokens, weekly cap hit 94% at the end (not before). Folded
+  **19 giants → corpus 647→666 issues** (6 commits, each gated + LFS-pushed): g1,g2,g3,g6,g13,g14,g15,g17,
+  g18,g23 → g22,g27,g4 → g24,g9,g7 → g12 → g16 → g19 → g11. seg_g30–g59 = **Eivind's range, untouched.**
+  - **DEFERRED: g8 `17055e0a` + g28 `f9f3d1dd`** — both complete on disk but hit the cross-issue
+    duplicate-enactment gate trap (see the diagnosis below). Bank them once the `enactment_bases` decision
+    is made. Together ~37 new laws.
+  - **NEXT FRIDAY:** Henrik's giants are done — the remaining lever is (a) the g8/g28 gate decision, then
+    fold both; (b) **Eivind's seg_g30–g59** (ranks 30+, ~936 chunks on disk, mostly 0/N) if the division
+    is revisited; (c) the low-density tail g60–90 (unprepped). Resume is still cheap: recompute from disk,
+    shard, fold per complete giant. Driver: `scratchpad/{recompute_missing,fold_ready}.py` + `burn_shard.js`.
+  - **g8 `17055e0a` GATE-BLOCK — DIAGNOSED, deferred for HS sign-off (do NOT force the gate).** Root cause
+    is NOT a bad g8 chunk — it is a **latent `segments_quality` bug**: `enactment_bases()` concatenates a
+    datokode's provision char-spans across ALL issues, but spans are per-issue offsets into different frozen
+    texts, so a law enacted in two issues gets a garbage merged base. g8 legitimately re-enacts 19 laws
+    already cleanly in the corpus (incl. `1958-12-12-10` yrkesskadetrygd, fully enacted in issue `8ccf8ae4`,
+    82 provisions, 0.639); folding g8 flips that law's span-set → "touched" → scored on the corrupt merge →
+    0.639→0.486. **13 datokodes are ALREADY multi-issue in HEAD** (1955-12-09-*, 1970-06-19-*, 1969-06-13-25)
+    — the bug is pre-existing, g8 just trips it. g8 also adds **12 genuinely new laws** (1959-05-08-*,
+    1959-05-22-*, 1959-12-04/11-*). **Recommended fix (needs sign-off, modifies a committed gate):** make
+    `enactment_bases` key a datokode's provisions to a SINGLE issue (the one with the most provision rows /
+    the enactment_heading), never merge cross-issue. Applied symmetrically to HEAD+working it is a pure
+    correctness fix (not a threshold loosen) and makes g8 pass without masking real regressions. Alternative
+    (no gate change): strip the 19 duplicate enactments from g8's fold, keeping only its 12 new laws.
+  - **g28 `f9f3d1dd` joins the same bucket:** complete (38/38 banked) but re-enacts 7 corpus laws
+    (1950-06-30-6/12/13/14/15/16 + one) → same cross-issue merge trap; DEFERRED with g8 pending the
+    `enactment_bases` decision (~25 new laws once resolved). NB: this host has no answer key so
+    segments_quality skips — do NOT fold the dup giants on a keyless host to slip them past the gate.
+
   cidx set across all 21 Henrik giants — 8 concurrent `burn_shard.js` shards → **banked ~473 chunks
   (739 → 266 missing)**, hit the weekly cap. **Corpus stays 645 issues** — g8 `17055e0a` reached 39/39
   but its fold is **gate-blocked** (see below); every other giant is 1-16 chunks short.
